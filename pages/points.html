@@ -19,7 +19,17 @@
       font-family: minecraft-five;
       src: url('../font/Minecraft-Five.ttf');
     }
-
+.show {
+      align-self: flex-start;
+  border: 2px solid #3D3D3D;
+  border: 2px solid #DCDCDC;
+  background-color: #FFFFFF;
+  box-shadow: 0px 2px 0px rgba(111, 111, 111, 1);
+  font-size: 1px;
+  color: white;
+ padding: 5px; 
+ 
+}
     /* التنبيهات المخصصة */
     .custom-alert {
       display: none;
@@ -81,7 +91,7 @@
 </head>
 <body>
   <div class="header"> 
-    My coins 
+   general 
     <div class="description">
       <h1 id="welcomeMessage"></h1>
       <div class="points">
@@ -95,7 +105,15 @@
             <div class="button">
               <button id="greenButton">Dev.Chat page <img src="../imag/comments_light-88de7.png" height="15"></button>
             </div>
-          </a>
+          </a> 
+          <div class="description"> 
+            <div class="title">marketplace</div> Buy features and things for your account 
+            using your coins
+            <a href="marketplace.html">
+            <div class="button">
+                 <button id="greenButton">Dev.Marketplace <img src="../imag/marketplace-icon-7f96f.png" height="15"></button></div>
+                 </div>
+              </a> 
         </div>
         <div class="description">  
           <div class="title"> Pay coins 
@@ -115,7 +133,7 @@
           </div> 
           <div class="description">
             <div class="title"> User coins
-            </div> see how much have other users coins.
+            </div>Click on show to see how much have other users coins.
             <div class="button"> 
               <button id="viewOthersPoints">Show <img src="../imag/friends@0.5x.icon-23e24.png" height="15"></button>
             </div>

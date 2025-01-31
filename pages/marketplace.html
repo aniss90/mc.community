@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Mod</title>
+    <link rel="stylesheet" href="../style/main.css">
+    <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
+    <style>
+        @font-face {
+            font-family: minecraft;
+            src: url('../font/Minecraft-Default.otf');
+        }
+
+        @font-face {
+            font-family: minecraft-ten;
+            src: url('../font/Minecraft-Ten.ttf');
+        }
+
+        @font-face {
+            font-family: minecraft-five;
+            src: url('../font/Minecraft-Five.ttf');
+        }
+
+        #points {
+            color: #FFBC13; 
+            font-size: 15px; 
+        }
+
+        #welcomeMessage {
+            color: #FFFFFF; 
+            font-size: 15px; 
+            font-family: minecraft-five; 
+        }
+
+        /* ✅ ترتيب العناصر في صف أفقي مع انتقالها لسطر جديد عند الحاجة */
+        .shop {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+
+        /* ✅ تصميم صندوق الشراء */
+        .shop-item {
+            background: #222;
+            border: 2px solid #FFBC13;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            width: 150px;
+            flex-shrink: 0; /* منع تصغير العناصر */
+        }
+
+        .img-shop img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .shop-item button {
+            background: #FFBC13;
+            color: black;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .shop-item button:hover {
+            background: #e6a800;
+        }
+        .header {
+          color: #FF820E
+          
+        }
+    </style>
+</head>
+<body>
+    <div class="header"> 
+        marketplace page
+        <div class="description">
+            <h1 id="welcomeMessage"></h1>
+            <div class="points">
+                <div class="title">My coins: <span id="points">0</span> <img src="../imag/MCoin.png" alt="عملة" height="15"></div>
+            </div>
+            
+    <!-- ✅ المتجر - سيتم ترتيب العناصر بشكل أفقي -->
+    <div class="shop">
+        <div class="shop-item">
+            <div class="img-shop"> 
+                <img src="../imag/sus.png" alt="Item">
+            </div> 
+            <p class="item-name">SUs Emoji</p>
+            <p>Price: <span class="itemPrice">99</span> <img src="../imag/MCoin.png" alt="عملة" height="15"></p>
+            <button class="buyButton">Buy</button>
+        </div>
+
+        <div class="shop-item">
+            <div class="img-shop"> 
+                <img src="../imag/sus.png" alt="Item">
+            </div> 
+            <p class="item-name">Another Item</p>
+            <p>Price: <span class="itemPrice">50</span> <img src="../imag/MCoin.png" alt="عملة" height="15"></p>
+            <button class="buyButton">Buy</button>
+        </div>
+
+        <div class="shop-item">
+            <div class="img-shop"> 
+                <img src="../imag/sus.png" alt="Item">
+            </div> 
+            <p class="item-name">Special Sword</p>
+            <p>Price: <span class="itemPrice">120</span> <img src="../imag/MCoin.png" alt="عملة" height="15"></p>
+            <button class="buyButton">Buy</button>
+        </div>
+    </div>
+        </div>
+    </div>
+
+
+    <script type="module">
+        import { db } from '../scripts/main.js'; 
+        import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; 
+
+        const activeUser = localStorage.getItem('activeUser');
+
+        if (!activeUser) {
+            alert('Please log in first!');
+            window.location.href = 'login.html';
+        }
+
+        async function getUserData() {
+            const welcomeMsg = document.getElementById('welcomeMessage');
+            const pointsElem = document.getElementById('points');
+
+            if (!welcomeMsg || !pointsElem) {
+                console.error("Elements not found!");
+                return;
+            }
+
+            const userDocRef = doc(db, 'users', activeUser);
+            const userDoc = await getDoc(userDocRef);
+
+            if (userDoc.exists()) {
+                const user = userDoc.data();
+                welcomeMsg.innerText = `Welcome ${activeUser}!`;
+                pointsElem.innerText = user.points;
+            } else {
+                alert('User does not exist in the database!');
+                window.location.href = 'login.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', getUserData);
+
+        // 🛒 كود الشراء لكل عنصر
+        document.querySelectorAll('.buyButton').forEach(button => {
+            button.addEventListener('click', async function () {
+                const shopItem = this.closest('.shop-item');
+                const itemPrice = parseInt(shopItem.querySelector('.itemPrice').innerText);
+                const userDocRef = doc(db, 'users', activeUser);
+                const userDoc = await getDoc(userDocRef);
+
+                if (userDoc.exists()) {
+                    let user = userDoc.data();
+
+                    if (user.points >= itemPrice) {
+                        user.points -= itemPrice;
+                        await updateDoc(userDocRef, { points: user.points });
+                        document.getElementById('points').innerText = user.points;
+                        alert('Purchase successful!');
+                    } else {
+                        alert('Not enough coins!');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
