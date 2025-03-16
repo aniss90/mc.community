@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../style/main.css">
+  <title>Register page</title>
   <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
+  <link rel="stylesheet" href="../style/main.css">
   
   <style>
     @font-face {
@@ -54,10 +56,9 @@
     }
   </style>
 
-  <title>login page</title>
 </head>
 <body>
-  <div class="header"> Login <img src="../imag/gif_test-83efe.gif" height="30">
+  <div class="header"> register  <img src="../imag/gif_test-83efe.gif" height="30">
   <div class="description"> 
   <div class="login-box">
     <form id="loginForm">
@@ -67,14 +68,11 @@
       </br>  
       
       <br>
-      <input type="password" id="password" placeholder="Password" required>
+      <input type="password" id="password" placeholder="your Password" required>
       </br> 
-      <div class="description">
-        <div class="button"> 
-          <button type="submit" id="greenButton"> Log in <img src="../imag/enter-icon-31b5a.png" height="15"></button>
-        </div> 
-      </div> 
-      <div> 
+       <br>
+      <input type="password" id="password" placeholder="confirm Password" required>
+      </br> 
         <div class="description">
           <div class="button"> 
             <button type="button" id="whiteButton"> Register <img src="../imag/add-player@0.5x.icon-2f437.png" height="15"></button>
@@ -85,11 +83,44 @@
     </form>
   </div>
 
+  
+  
+  
+  
+
   <script type="module">
     import { db } from '../scripts/main.js'; // استيراد قاعدة البيانات من Firebase
     import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; 
 
-    // دالة لعرض التنبيه المخصص
+  document.getElementById('whiteButton').addEventListener('click', async function () {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username || !password) {
+        showAlert('Please fill out all fields to create the account', 'error');
+        return;
+      }
+
+      try {
+        // تحقق من إذا كان اسم المستخدم موجودًا
+        const userDocRef = doc(db, 'users', username);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          showAlert('Username already exists', 'error');
+          return;
+        }
+
+        // إنشاء الحساب وإضافته إلى Firestore
+        await setDoc(userDocRef, { password, points: 0 });
+        showAlert(`The account has been created successfully, welcome ${username}.`, 'success');
+      } catch (error) {
+        console.error('Error while creating the account:', error);
+        showAlert('An error occurred while creating the account. Try again.', 'error');
+      }
+    });
+    
+    
     function showAlert(message, type) {
       const alertBox = document.createElement('div');
       alertBox.classList.add('custom-alert');
@@ -113,44 +144,12 @@
       document.body.removeChild(alertBox);
     }
 
-    // تسجيل الدخول
-    document.getElementById('loginForm').addEventListener('submit', async function (e) {
-      e.preventDefault(); // منع التحديث الافتراضي للصفحة
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-
-      if (!username || !password) {
-        showAlert('Please fill out all fields', 'error');
-        return;
-      }
-
-      try {
-        // جلب بيانات المستخدم من Firestore
-        const userDocRef = doc(db, 'users', username);
-        const userDoc = await getDoc(userDocRef);
-
-        if (userDoc.exists() && userDoc.data().password === password) {
-          showAlert(`Welcome back ${username}!`, 'success');
-          localStorage.setItem('activeUser', username); // تخزين المستخدم النشط محليًا
-          window.location.href = 'points.html'; // الانتقال إلى صفحة النقاط
-        } else {
-          showAlert('Invalid username or password!', 'error');
-        }
-      } catch (error) {
-        console.error(' An error occurred while logging in:', error);
-        showAlert('An error occurred while logging in, try again please.', 'error');
-      }
-    });
-
-    // إنشاء حساب جديد
-    
-  </script> 
-
+</script>
   <script>
     function openWebsite(url) {
       window.open(url, "_blank");
     }
   </script>
   <script src="scripts/main.js"></script> 
-</body>
+</body> 
 </html>

@@ -26,3 +26,25 @@ const db = getFirestore(app);
 
 // تصدير الدوال اللازمة للاستخدام في أماكن أخرى
 export { db, collection, addDoc, onSnapshot };
+function showAlert(message, type) {
+      const alertBox = document.createElement('div');
+      alertBox.classList.add('custom-alert');
+      alertBox.classList.add(type); // إما success أو error
+      alertBox.innerHTML = `${message}<br><button onclick="closeAlert(this)">موافق</button>`;
+      document.body.appendChild(alertBox);
+
+      // عرض التنبيه لمدة 3 ثواني ثم إخفاءه
+      setTimeout(() => {
+        alertBox.style.display = 'none';
+        document.body.removeChild(alertBox);
+      }, 3000);
+
+      alertBox.style.display = 'block';
+    }
+
+    // دالة لإغلاق التنبيه
+    function closeAlert(button) {
+      const alertBox = button.parentElement;
+      alertBox.style.display = 'none';
+      document.body.removeChild(alertBox);
+    }
