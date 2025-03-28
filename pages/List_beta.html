@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../style/main.css">
+    <title>قائمة المستخدمين</title>
+    <style>
+    @font-face {
+        font-family: minecraft;
+        src: url('../font/Minecraft-Default.otf');
+    }
+    @font-face {
+        font-family: minecraft-ten;
+        src: url('../font/Minecraft-Ten.ttf');
+    }
+    @font-face {
+        font-family: minecraft-five;
+        src: url('../font/Minecraft-Five.ttf');
+    }
+        body { font-family: Arial, sans-serif; text-align: center;  }
+        h2 { color: #333; }
+        table { width: 50%; margin: 20px auto; border-collapse: collapse; background: white; }
+        th, td { padding: 10px; border: 1px solid #ddd; }
+        th { background: #3498db; color: white; }
+        tbody.link {
+    color: #0088FF;
+     font-family: minecraft-five;
+}
+    </style>
+</head>
+<body>
+
+    <h2>قائمة المستخدمين ونقاطهم</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>الاسم</th>
+                <th>النقاط</th>
+            </tr>
+        </thead>
+   <tbody id="userList">
+    <tr><td colspan="2">جارِ تحميل البيانات...</td></tr>
+</tbody>
+    </table>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        // إعداد Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
+            authDomain: "minecraft-community-4fd3d.firebaseapp.com",
+            projectId: "minecraft-community-4fd3d",
+            storageBucket: "minecraft-community-4fd3d.firebasestorage.app",
+            messagingSenderId: "550140131027",
+            appId: "1:550140131027:web:a5186726cf5372e138c626",
+            measurementId: "G-F18SFG2LMZ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // جلب قائمة المستخدمين من Firestore وتحديثها في الوقت الحقيقي
+        const userList = document.getElementById("userList");
+
+        onSnapshot(collection(db, "users"), (snapshot) => {
+    userList.innerHTML = ""; // تفريغ الجدول قبل التحديث
+// ✅ التحقق مما إذا كان المستخدم مسجلاً
+const activeUser = localStorage.getItem("activeUser");
+
+if (!activeUser) {
+    alert("يجب عليك تسجيل الدخول أولاً!");
+    window.location.href = "login.html"; // تغيير الرابط إلى صفحة تسجيل الدخول المناسبة لديك
+}
+    if (snapshot.empty) {
+        userList.innerHTML = "<tr><td colspan='2'>لم يتم العثور على مستخدمين</td></tr>";
+    } else {
+        const activeUser = localStorage.getItem("activeUser"); // اسم المستخدم المسجل
+
+        snapshot.forEach((doc) => {
+            const username = doc.id; // اسم المستخدم
+            const points = doc.data().points || 0; // عدد النقاط
+
+            console.log(`تم العثور على: ${username} - نقاط: ${points}`);
+
+            // 🔹 إذا كان هذا المستخدم هو المستخدم المسجل، لا تجعله رابطًا
+            const row = (username === activeUser)
+                ? `<tr><td><strong>${username}</strong> (أنت)</td><td>${points}</td></tr>`
+                : `<tr><td><a href="chat_beta.html?user=${encodeURIComponent(username)}">${username}</a></td><td>${points}</td></tr>`;
+
+            userList.innerHTML += row;
+            
+        });
+    }
+});
+    </script>
+
+</body>
+</html>

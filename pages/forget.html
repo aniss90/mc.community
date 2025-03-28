@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="../style/main.css">
+    <title>استرجاع كلمة المرور</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        @font-face {
+      font-family: minecraft;
+      src: url('../font/Minecraft-Default.otf');
+    }
+    @font-face {
+      font-family: minecraft-ten;
+      src: url('../font/Minecraft-Ten.ttf');
+    }
+    @font-face {
+      font-family: minecraft-five;
+      src: url('../font/Minecraft-Five.ttf');
+    }
+    
+            .note {  
+        background: #222;  
+        border: 3px solid #FFBC13;  
+        box-shadow: 0px 3px 0px rgba(139, 92, 0, 1);   
+        text-align: center;  
+        color: #FFFFFF;  
+        width: auto;  
+        padding: 5px  
+        
+    }  
+    .note note {  
+        background: #FFBC13;  
+        color: black;  
+        border: 1px solid goldenrod;  
+        padding: 5px;  
+        font-weight: bold;  
+        height: 24px;   
+    }  
+      
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #emailDisplay {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        #sendPasswordBtn {
+            display: none;
+        }
+        .bord {
+       border: 5px solid #ff1e1e1;
+       border: 2px solid #1E1E1F;
+       background-color: #2F2F2F;
+       box-shadow: 0px 5px 0px rgba(80, 80, 80, 1);
+       justify-self: center; 
+       text-align: center;
+       width: 80%; 
+    
+        } 
+        p {
+          color: #FFFFFF
+        }
+        h2 {
+          color: #FFFFFF
+        } 
+        label {
+          color: #FFFFFF
+        }
+    </style>
+</head>
+<body>
+
+  <div class="header">forget password <img src="../imag/gif_test-83efe.gif" height="30">
+       <div class="description"> 
+             <div class="note">  
+        <note>  
+        
+          IMPORTANT NOTE!!<img src="../imag/WarningGlyph.png" height="12" weight="auto">
+          <br>
+          </note>  
+        <br>   
+        
+  🔹If you forgot your password, you can get it by sending it to your email account that you previously entered into the account.
+
+  <p> If you have not entered it before, contact support for assistance.</p>
+  
+<a href="mc.community31" class="link">  CLICK HERE  <img src="../imag/enter-icon-31b5a.png" height="12"></a> To contact with us.
+      </div>  
+      <br>
+      <div class="bord">
+      <p><h2>Recover your password </h2></p> 
+     <label for="username">Your username :</label>
+ 
+   <p>   <input type="text" id="username" placeholder=" Enter your username  ">
+   </p> 
+        <br> 
+        <button id="fetchEmailBtn">Show the email  </button>
+        <p id="emailDisplay"></p> 
+        <button id="sendPasswordBtn">إرسال كلمة المرور</button>
+      </div>
+    </div>
+  </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        // إعداد Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
+            authDomain: "minecraft-community-4fd3d.firebaseapp.com",
+            projectId: "minecraft-community-4fd3d",
+            storageBucket: "minecraft-community-4fd3d.firebasestorage.app",
+            messagingSenderId: "550140131027",
+            appId: "1:550140131027:web:a5186726cf5372e138c626",
+            measurementId: "G-F18SFG2LMZ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let currentEmail = "";
+        let currentPassword = "";
+
+        // عند الضغط على زر عرض البريد الإلكتروني
+        document.getElementById("fetchEmailBtn").addEventListener("click", async () => {
+            const username = document.getElementById("username").value.trim();
+            const emailDisplay = document.getElementById("emailDisplay");
+            const sendPasswordBtn = document.getElementById("sendPasswordBtn");
+
+            if (!username) {
+                emailDisplay.textContent = "❌ الرجاء إدخال اسم المستخدم!";
+                emailDisplay.style.color = "red";
+                sendPasswordBtn.style.display = "none";
+                return;
+            }
+
+            const userRef = doc(db, "users", username);
+            const userSnap = await getDoc(userRef);
+
+            if (userSnap.exists()) {
+                currentEmail = userSnap.data().email;
+                currentPassword = userSnap.data().password;
+
+                emailDisplay.textContent = `📧 your email it's : ${currentEmail}`;
+                emailDisplay.style.color = "green";
+                sendPasswordBtn.style.display = "block"; // إظهار زر الإرسال
+            } else {
+                emailDisplay.textContent = "❌ اسم المستخدم غير موجود!";
+                emailDisplay.style.color = "red";
+                sendPasswordBtn.style.display = "none";
+            }
+        });
+
+        // عند الضغط على زر إرسال كلمة المرور
+        document.getElementById("sendPasswordBtn").addEventListener("click", async () => {
+            if (!currentEmail || !currentPassword) {
+                alert("❌ لم يتم العثور على بيانات الحساب!");
+                return;
+            }
+
+            emailjs.send("service_y3lbl2i", "template_i52530c", {
+                to_email: currentEmail,
+                user_name: document.getElementById("username").value.trim(),
+                password: currentPassword
+            }, "XJZUq8LRFG1aasSHu")
+            .then(() => {
+                alert("✅ تم إرسال كلمة المرور إلى بريدك الإلكتروني!");
+            })
+            .catch(error => {
+                console.error("❌ خطأ في إرسال الإيميل:", error);
+                alert("حدث خطأ أثناء إرسال البريد الإلكتروني!");
+            });
+        });
+
+    </script>
+
+</body>
+</html>

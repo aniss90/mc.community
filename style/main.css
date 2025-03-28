@@ -45,7 +45,7 @@ input {
 
 * {
     font-family: minecraft;
-    color: #000;
+    color: #000000;
     font-size: 14px
 }
 
@@ -76,6 +76,10 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
     background-color: #69696967
 }
+img {
+  image-rendering: crisp-edges; /* يجعل الصورة أكثر وضوحًا */
+  image-rendering: -webkit-optimize-contrast; /* تحسين الوضوح على متصفح كروم */
+}
 
 div.header {
     top: 0;
@@ -89,7 +93,8 @@ div.header {
     z-index: 100;
     font-size: 35px;
     position: static;
-    border-bottom: 4px solid #a4a4a4
+    border-bottom: 4px solid #a4a4a4;
+
 }
 div.nane {
     top: 0;
@@ -139,7 +144,7 @@ div.title {
 }
 
 a.link {
-    color: #08f;
+    color: #0088FF;
      font-family: minecraft-five;
 }
 
@@ -206,18 +211,7 @@ a.link:hover {
   margin: auto;
   border: 2px solid #00000000;
 }
-.search {
-  font-family: minecraft-five; 
-  font-style: 10px; 
-  background-color: #303233; 
-  border: 2px solid #1E1E1F;
-  border-bottom: 2px solid #242424;
-  display: block;
-  margin: auto; 
-  width: 400px;
-  color: #FFFFFF;
 
-} 
   .login-box input {
   width: 50%;
   padding: 10px;
@@ -251,6 +245,24 @@ a.link:hover {
     
   }
   
+input {
+  width: 50%;
+  padding: 10px;
+  margin: auto;
+  border: 2px solid #303233;
+  box-shadow: 0px 3px 0px rgba(60, 60, 60, 1); 
+  background: #1e1e1f;
+  text-align: center;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  transition: filter 0.5s, transform 0.3s;
+    
+  } 
+  input:hover {
+  filter: blur(0);
+  transform: scale(1.05);
+  }
 
 
 

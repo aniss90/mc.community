@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دردشة مع المستخدم</title>
+      <link rel="stylesheet" href="../style/main.css">
+    <style>
+        @font-face {
+        font-family: minecraft;
+        src: url('../font/Minecraft-Default.otf');
+    }
+    @font-face {
+        font-family: minecraft-ten;
+        src: url('../font/Minecraft-Ten.ttf');
+    }
+    @font-face {
+        font-family: minecraft-five;
+        src: url('../font/Minecraft-Five.ttf');
+    }
+        body { font-family: Arial, sans-serif; text-align: center; }
+        h2 { color: #333; }
+    
+ 
+     #sendButton, #upload-btn {
+      padding: 15px;
+      color: white;
+      border: none;
+      cursor: pointer;
+      background-color: #2C8014;
+      color: #FFFFFF;
+      border: 2px solid #4f913c;
+      box-shadow: 0px 3px 0px #1d4d13;
+      font-size: 16px;
+      display: inline-block;
+      margin:auto;
+    }
+
+    #sendButton:hover, #upload-btn:hover {
+      background-color: #123D06;
+      top: 2px;
+    }
+#chat-box {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-bottom: 60px; /* ترك مساحة في الأسفل للأزرار */
+  background: #454444;
+} 
+.input-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0px;
+  background-color: #303233; /* يمكنك تغيير اللون حسب التصميم */
+  z-index: 10; /* تأكد أن الأزرار تظهر فوق الرسائل */
+  display: flex;
+  flex: 1;
+} 
+#messageInput {
+  flex: 1;
+  padding: 15px;
+  outline: none;
+  background-color: #1E1E1F; 
+  border: 3px solid #303233;
+  box-shadow: 0px 3px 0px rgba(60, 60, 60, 1);
+  color: #FFFFFF;
+  background: #1e1e1f;
+  margin: auto;
+  
+}
+.input-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0px;
+  background-color: #303233; /* يمكنك تغيير اللون حسب التصميم */
+  z-index: 10; /* تأكد أن الأزرار تظهر فوق الرسائل */
+  display: flex;
+  flex: 1;
+} 
+h2 {
+  color: #FFFFFF; 
+}
+    .message {
+    max-width: 60%;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px;
+    word-wrap: break-word;
+    display: inline-block;
+}
+
+.myMessage {
+    align-self: flex-end;
+    background-color: #2C8014;
+    border: 2px solid #4f913c;
+    box-shadow: 0px 3px 0px #1d4d13;
+    font-size: 16px;
+    color: white;
+    text-align: right;
+    margin-left: auto;
+    border-radius: 15px 15px 0px 15px;
+}
+
+.otherMessage {
+    align-self: flex-start;
+    background-color: #FFFFFF;
+    border: 2px solid #DCDCDC;
+    box-shadow: 0px 3px 0px rgba(111, 111, 111, 1);
+    font-size: 16px;
+    color: black;
+    text-align: left;
+    margin-right: auto;
+    border-radius: 15px 15px 15px 0px;
+}
+    
+    
+    
+    </style>
+</head>
+<body>
+    <div class="header"> chating with <span id="chatUser"></span> <img src="../imag/gif_test-83efe.gif" height="30">
+    </div> 
+    <div id="chatBox"></div>
+    <input type="text" id="messageInput" placeholder="اكتب رسالتك...">
+    <button id="sendButton">إرسال</button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        // ✅ إعداد Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
+            authDomain: "minecraft-community-4fd3d.firebaseapp.com",
+            projectId: "minecraft-community-4fd3d",
+            storageBucket: "minecraft-community-4fd3d.firebasestorage.app",
+            messagingSenderId: "550140131027",
+            appId: "1:550140131027:web:a5186726cf5372e138c626",
+            measurementId: "G-F18SFG2LMZ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ✅ جلب المستخدم الحالي من LocalStorage
+        const activeUser = localStorage.getItem("activeUser");
+
+        // ✅ جلب اسم المستلم من الرابط
+        const urlParams = new URLSearchParams(window.location.search);
+        const receiver = urlParams.get("user");
+
+        if (!activeUser || !receiver) {
+            alert("يجب تسجيل الدخول واختيار مستخدم للدردشة!");
+            window.location.href = "List_beta.html";
+        }
+
+        document.getElementById("chatUser").innerText = receiver;
+
+        // ✅ مرجع مجموعة الرسائل في Firestore
+        const messagesRef = collection(db, "messages");
+
+        // ✅ عرض الرسائل في الوقت الحقيقي
+        const chatBox = document.getElementById("chatBox");
+
+        const messagesQuery = query(
+            messagesRef,
+            where("sender", "in", [activeUser, receiver]),
+            where("receiver", "in", [activeUser, receiver]),
+            orderBy("timestamp")
+        );
+
+        onSnapshot(messagesQuery, (snapshot) => {
+            chatBox.innerHTML = "";
+
+            snapshot.forEach((doc) => {
+    const data = doc.data();
+    const isMyMessage = (data.sender === activeUser);
+
+    const messageElement = document.createElement("div");
+    messageElement.classList.add("message", isMyMessage ? "myMessage" : "otherMessage");
+    messageElement.innerHTML = `<strong>${data.sender}:</strong> ${data.message}`;
+
+    chatBox.appendChild(messageElement);
+});
+
+            chatBox.scrollTop = chatBox.scrollHeight; // التمرير لآخر رسالة
+        });
+
+        // ✅ إرسال رسالة جديدة
+        const messageInput = document.getElementById("messageInput");
+        const sendButton = document.getElementById("sendButton");
+
+        async function sendMessage() {
+            const messageText = messageInput.value.trim();
+
+            if (messageText === "") {
+                alert("لا يمكن إرسال رسالة فارغة!");
+                return;
+            }
+
+            try {
+                await addDoc(messagesRef, {
+                    sender: activeUser,
+                    receiver: receiver,
+                    message: messageText,
+                    timestamp: new Date()
+                });
+
+                messageInput.value = ""; // تفريغ خانة الإدخال بعد الإرسال
+            } catch (error) {
+                console.error("خطأ في إرسال الرسالة:", error);
+            }
+        }
+
+        sendButton.addEventListener("click", sendMessage);
+    </script>
+</body>
+</html>

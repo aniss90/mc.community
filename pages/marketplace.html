@@ -34,9 +34,10 @@
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        justify-content: flex-start;
+        justify-content: center; 
         box-orient: center; 
-        padding: 15px;
+        padding: 1px;
+
     }
 
     .shop-item {
@@ -49,6 +50,7 @@
         padding-left: 5px;
         padding-right: 5px;
         padding-top: 5px
+        
         
     }
 
@@ -64,6 +66,9 @@
         padding: 5px;
         cursor: pointer;
         font-weight: bold;
+        height: 24px
+        
+        
     }
 
     .shop-item button:hover {
@@ -179,7 +184,7 @@
                 const buyButton = item.querySelector('.buyButton');
 
                 if (purchasedItems.includes(itemName)) {
-                    buyButton.innerText = "Purchased ✅";
+                    buyButton.innerText = "Purchased ✓";
                     buyButton.disabled = true;
                 }
             });
@@ -223,6 +228,7 @@
             }
         });
     });
+    
 </script>
 
 </body>
