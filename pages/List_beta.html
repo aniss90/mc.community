@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../style/main.css">
-    <title>قائمة المستخدمين</title>
+    <title>Users list </title>
     <style>
     @font-face {
         font-family: minecraft;
@@ -27,20 +27,108 @@
     color: #0088FF;
      font-family: minecraft-five;
 }
+    .note {  
+        background: #222;  
+        border: 3px solid #FFBC13;  
+        box-shadow: 0px 3px 0px rgba(139, 92, 0, 1);   
+        text-align: center;  
+        color: white;  
+        width: auto;  
+        padding: 5px  
+        
+    }  
+    .note note {  
+        background: #FFBC13;  
+        color: black;  
+        border: 1px solid goldenrod;  
+        padding: 5px;  
+        font-weight: bold;  
+        height: 24px;   
+    }  
+    p {  
+      color: #FFFFFF  
+    }  
+    .note button {  
+        background: #FFBC13;  
+        color: black;  
+        border: 1px solid goldenrod;  
+        padding: 5px;  
+        font-weight: bold;  
+        height: 24px;   
+    }  
+    table {
+    width: 99%;
+    max-width: 600px;
+    height: auto;
+    background-color: #222222;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 20px auto;
+    border-collapse: collapse;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #FFFFFF;
+    color: black;
+    padding: 10px;
+}
+
+td {
+    background-color: #4D4D4D;
+    color: white;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+td a {
+    color: #FFFFFF; /* لون ذهبي */
+    font-weight: bold;
+    text-decoration: none;
+}
+
+td a:hover {
+    color: #9F9F9F; /* برتقالي عند المرور */
+    text-decoration: underline;
+}
+
+td strong {
+    color: #00FF00; /* لون أخضر للمستخدم النشط */
+}
+
+
+th, td {
+    border: none; /* إزالة الحدود */
+}
     </style>
 </head>
 <body>
+<div class="header"> User list   <img src="../imag/friends-9e435.png" height="20">  
+  <div class="description">   
+    
+      <div class="button">  
+      <div class="note">  
+        <note>  
+          What's new?!!<img src="../imag/WarningGlyph.png" height="12" weight="auto">  
+          </note>  
+        <br>   
+        <p>   
+If you want to communicate with a user, click on his name and it will take you to the communication page. 
 
-    <h2>قائمة المستخدمين ونقاطهم</h2>
+  </br>   
+  </p>   
+إذا كنت تريد التواصل مع مستخدم ما، انقر على اسمه وسوف يأخذك إلى صفحة التواصل. 
+      </div>  
+    </div>  
     <table>
         <thead>
             <tr>
-                <th>الاسم</th>
-                <th>النقاط</th>
+                <th>username</th>
+                <th>coins</th>
             </tr>
         </thead>
    <tbody id="userList">
-    <tr><td colspan="2">جارِ تحميل البيانات...</td></tr>
+    <tr><td colspan="2">Loading data...</td></td></tr>
 </tbody>
     </table>
 
@@ -71,24 +159,24 @@
 const activeUser = localStorage.getItem("activeUser");
 
 if (!activeUser) {
-    alert("يجب عليك تسجيل الدخول أولاً!");
+    alert("You must log in first!");
     window.location.href = "login.html"; // تغيير الرابط إلى صفحة تسجيل الدخول المناسبة لديك
 }
     if (snapshot.empty) {
-        userList.innerHTML = "<tr><td colspan='2'>لم يتم العثور على مستخدمين</td></tr>";
+        userList.innerHTML = "<tr><td colspan='2'>No users found</td></tr>";
     } else {
         const activeUser = localStorage.getItem("activeUser"); // اسم المستخدم المسجل
 
         snapshot.forEach((doc) => {
             const username = doc.id; // اسم المستخدم
-            const points = doc.data().points || 0; // عدد النقاط
+            const points = doc.data().points || 0 ; // عدد النقاط
 
-            console.log(`تم العثور على: ${username} - نقاط: ${points}`);
+            
 
             // 🔹 إذا كان هذا المستخدم هو المستخدم المسجل، لا تجعله رابطًا
             const row = (username === activeUser)
-                ? `<tr><td><strong>${username}</strong> (أنت)</td><td>${points}</td></tr>`
-                : `<tr><td><a href="chat_beta.html?user=${encodeURIComponent(username)}">${username}</a></td><td>${points}</td></tr>`;
+                ? `<tr><td><strong>${username}</strong> (it's You)</td><td class="points">${points} <img src="../imag/MCoin.png" alt="Coin" height="15"></td></tr>`
+                : `<tr><td><a href="chat_beta.html?user=${encodeURIComponent(username)}">${username}</a></td><td class="points">${points} <img src="../imag/MCoin.png" alt="Coin" height="12"></td></tr>`;
 
             userList.innerHTML += row;
             

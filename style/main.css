@@ -94,7 +94,7 @@ div.header {
     font-size: 35px;
     position: static;
     border-bottom: 4px solid #a4a4a4;
-
+    
 }
 div.nane {
     top: 0;
@@ -263,7 +263,10 @@ input {
   filter: blur(0);
   transform: scale(1.05);
   }
-
+  .points {
+      color: #FFBC13; 
+      font-size: 15px; 
+    }
 
 
 #whiteButton:hover {
@@ -420,3 +423,7 @@ color: #FFFFFF;
   margin: auto;
   
 }
+    #points {
+      color: #FFBC13; 
+      font-size: 15px; 
+    }
