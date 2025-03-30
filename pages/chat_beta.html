@@ -21,9 +21,14 @@
         body { font-family: Arial, sans-serif; text-align: center; }
         h2 { color: #333; }
     
- 
-     #sendButton, #upload-btn {
+ html, body {
+  height: 100%;
+  overflow: hidden; /* يمنع التمرير الزائد */
+  touch-action: none; /* يمنع تأثير السحب في الهواتف */
+}
+         #send-btn, #upload-btn {
       padding: 15px;
+      height: 50px;
       color: white;
       border: none;
       cursor: pointer;
@@ -36,54 +41,10 @@
       margin:auto;
     }
 
-    #sendButton:hover, #upload-btn:hover {
-      background-color: #123D06;
-      top: 2px;
-    }
-#chat-box {
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  padding-bottom: 60px; /* ترك مساحة في الأسفل للأزرار */
-  background: #454444;
-} 
-.input-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 0px;
-  background-color: #303233; /* يمكنك تغيير اللون حسب التصميم */
-  z-index: 10; /* تأكد أن الأزرار تظهر فوق الرسائل */
-  display: flex;
-  flex: 1;
-} 
-#messageInput {
-  flex: 1;
-  padding: 15px;
-  outline: none;
-  background-color: #1E1E1F; 
-  border: 3px solid #303233;
-  box-shadow: 0px 3px 0px rgba(60, 60, 60, 1);
-  color: #FFFFFF;
-  background: #1e1e1f;
-  margin: auto;
-  
-}
-.input-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 0px;
-  background-color: #303233; /* يمكنك تغيير اللون حسب التصميم */
-  z-index: 10; /* تأكد أن الأزرار تظهر فوق الرسائل */
-  display: flex;
-  flex: 1;
-} 
+    #send-btn:hover, #upload-btn:hover {
+      background-color: #45a049;
+    } 
+
 h2 {
   color: #FFFFFF; 
 }
@@ -120,20 +81,146 @@ h2 {
     border-radius: 15px 15px 15px 0px;
 }
     
+    #chatUser {
+      font-family: minecraft-ten; 
+      font-size: 35px;
+    }
+
+
+    #chatBox {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* المحادثات تبدأ من اليسار */
+  padding-bottom: 60px; /* ترك مساحة للأزرار */
+  height: calc(100vh - 120px); /* 100vh ناقص ارتفاع الهيدر وشريط الإدخال */
+  overflow-y: auto; /* السماح بالتمرير فقط داخل المحادثة */
+  -webkit-overflow-scrolling: touch; /* تحسين التمرير في الهواتف */
+  margin-top: 60px;
+}
+
+/* تنسيق الرسائل */
+.message {
+  max-width: 70%;
+  padding-top: 50px;
+  padding: 10px;
+  border-radius: 15px;
+  margin: 5px;
+  word-wrap: break-word;
+  display: flex;
+  margin-top: 5px;
+}
+
+/* رسائلي */
+.myMessage {
+  align-self: flex-end; /* يجعل الرسالة على اليمين */
+  background-color: #2C8014;
+  border: 2px solid #4f913c;
+  box-shadow: 0px 3px 0px #1d4d13;
+  font-size: 16px;
+  color: white;
+  text-align: right;
+  border-radius: 15px 15px 0px 15px;
+}
+
+/* رسائل صديقي */
+.otherMessage {
+  align-self: flex-start; /* يجعل الرسالة على اليسار */
+  background-color: #FFFFFF;
+  border: 2px solid #DCDCDC;
+  box-shadow: 0px 3px 0px rgba(111, 111, 111, 1);
+  font-size: 16px;
+  color: black;
+  text-align: left;
+  border-radius: 15px 15px 15px 0px;
+}
+.input-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0px;
+  background-color: #303233; /* يمكنك تغيير اللون حسب التصميم */
+  z-index: 10; /* تأكد أن الأزرار تظهر فوق الرسائل */
+  display: flex;
+  flex: 1;
+  
+}
+div.header {
+
+ 
+  position: fixed;
     
-    
+}
+#message-input {
+  width: 100%;
+  min-height: 40px; /* الحد الأدنى للحجم */
+  max-height: 150px; /* الحد الأقصى لمنع التمدد الزائد */
+  resize: none;
+  overflow: hidden;
+  font-size: 16px;
+  padding: 10px;
+}
+/* تأثير البلور على الخلفية فقط، مع استثناء الرسالة المحددة */
+.blur-background .message:not(.selected-message) {
+    filter: blur(4px);
+}
+
+/* قائمة الخيارات */
+.message-options {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    gap: 10px;
+    bottom: -40px; /* الأزرار تظهر تحت الرسالة */
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    z-index: 100;
+}
+
+/* تنسيق الأزرار */
+.option-btn {
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.option-btn.copy {
+    background-color: green;
+    color: white;
+}
+
+.option-btn.delete {
+    background-color: red;
+    color: white;
+}
+ 
     </style>
 </head>
 <body>
-    <div class="header"> chating with <span id="chatUser"></span> <img src="../imag/gif_test-83efe.gif" height="30">
+    <div class="header"> <span id="chatUser"></span> <img src="../imag/player-head-128-052ba.png" height="25">
     </div> 
     <div id="chatBox"></div>
-    <input type="text" id="messageInput" placeholder="اكتب رسالتك...">
-    <button id="sendButton">إرسال</button>
+            <div id="chat-box"></div>
+    <div class="input-container">
+<textarea id="message-input" rows="1" maxlength="150" placeholder="Write something..."></textarea>
+      <input type="file" id="image-input" style="display: none;">
+      <button id="upload-btn">img <img src="../imag/gallery-10d21.png" alt="Coin" height="13"></button>
+      <button id="send-btn">send</button>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getFirestore, collection, addDoc, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
         // ✅ إعداد Firebase
         const firebaseConfig = {
@@ -193,32 +280,171 @@ h2 {
             chatBox.scrollTop = chatBox.scrollHeight; // التمرير لآخر رسالة
         });
 
-        // ✅ إرسال رسالة جديدة
-        const messageInput = document.getElementById("messageInput");
-        const sendButton = document.getElementById("sendButton");
+        // ✅ إرسال رسالة جدي
+        const messageInput = document.getElementById("message-input");
 
-        async function sendMessage() {
-            const messageText = messageInput.value.trim();
+messageInput.addEventListener("input", () => {
+    messageInput.style.height = "auto";  // إعادة تعيين الارتفاع
+    messageInput.style.height = (messageInput.scrollHeight) + "px"; // توسيعه حسب المحتوى
+});
 
-            if (messageText === "") {
-                alert("لا يمكن إرسال رسالة فارغة!");
-                return;
+async function sendMessage() {
+    let messageText = messageInput.value.trim();
+
+    if (messageText === "") {
+        alert("لا يمكن إرسال رسالة فارغة!");
+        return;
+    }
+
+    const maxChars = 150;
+    if (messageText.length > maxChars) {  
+        messageText = messageText.substring(0, maxChars);
+        alert("لا يمكنك إرسال رسالة تحتوي على أكثر من 150 حرفًا!");
+    }
+
+    try {
+        await addDoc(messagesRef, {
+            sender: activeUser,
+            receiver: receiver,
+            message: messageText,
+            timestamp: new Date()
+        });
+
+        // ✅ تفريغ خانة الإدخال وإعادتها لحجمها الأصلي
+        messageInput.value = "";
+        messageInput.style.height = "40px";  // إعادة الحجم الافتراضي
+    } catch (error) {
+        console.error("حدث خطأ أثناء إرسال الرسالة:", error);
+    }
+}
+        const sendButton = document.getElementById("send-btn");
+
+      function escapeHTML(text) {
+    return text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+// عند عرض الرسائل
+onSnapshot(messagesQuery, (snapshot) => {
+    chatBox.innerHTML = "";
+
+    snapshot.forEach((doc) => {
+        const data = doc.data();
+        const isMyMessage = (data.sender === activeUser);
+
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("message", isMyMessage ? "myMessage" : "otherMessage");
+
+        // ✅ تحويل الأكواد البرمجية إلى نصوص عادية
+        const escapedMessage = escapeHTML(data.message);
+
+        messageElement.innerHTML = `<strong>${data.sender}:</strong> ${escapedMessage}`;
+
+        chatBox.appendChild(messageElement);
+    });
+
+    chatBox.scrollTop = chatBox.scrollHeight; // التمرير لآخر رسالة
+});  
+document.addEventListener("DOMContentLoaded", () => {
+    const chatBox = document.getElementById("chatBox");
+    let holdTimeout;
+    let isHolding = false;
+
+    chatBox.addEventListener("mousedown", handleLongPress);
+    chatBox.addEventListener("touchstart", handleLongPress);
+    chatBox.addEventListener("mouseup", cancelHold);
+    chatBox.addEventListener("touchend", cancelHold);
+    chatBox.addEventListener("mouseleave", cancelHold);
+
+    function handleLongPress(event) {
+        if (!event.target.classList.contains("message")) return;
+
+        let messageElement = event.target;
+        let messageText = messageElement.innerText;
+
+        isHolding = true;
+
+        holdTimeout = setTimeout(() => {
+            if (isHolding) {
+                showOptions(messageElement, messageText);
             }
+        }, 1000); // ⏳ انتظار 3 ثوانٍ قبل عرض الخيارات
+    }
 
-            try {
-                await addDoc(messagesRef, {
-                    sender: activeUser,
-                    receiver: receiver,
-                    message: messageText,
-                    timestamp: new Date()
-                });
+    function cancelHold() {
+        isHolding = false;
+        clearTimeout(holdTimeout);
+    }
 
-                messageInput.value = ""; // تفريغ خانة الإدخال بعد الإرسال
-            } catch (error) {
-                console.error("خطأ في إرسال الرسالة:", error);
-            }
-        }
+    function showOptions(messageElement, messageText) {
+        closeOptions(); // إغلاق أي خيارات مفتوحة مسبقًا
 
+        // ✅ جعل الخلفية ضبابية مع استثناء الرسالة المحددة
+        document.body.classList.add("blur-background");
+        messageElement.classList.add("selected-message");
+
+        // ✅ إنشاء قائمة الخيارات
+        let optionsContainer = document.createElement("div");
+        optionsContainer.classList.add("message-options");
+
+        // ✅ زر النسخ
+        let copyBtn = document.createElement("button");
+        copyBtn.innerText = "نسخ";
+        copyBtn.classList.add("option-btn", "copy");
+        copyBtn.addEventListener("click", () => {
+            navigator.clipboard.writeText(messageText);
+            alert("تم نسخ الرسالة!");
+            closeOptions();
+        });
+
+        // ✅ زر الحذف (يظهر فقط لرسائل المستخدم نفسه)
+        let deleteBtn = document.createElement("button");
+        deleteBtn.innerText = "حذف";
+        deleteBtn.classList.add("option-btn", "delete");
+        deleteBtn.style.display = messageElement.classList.contains("myMessage") ? "block" : "none";
+      deleteBtn.addEventListener("click", async () => {
+    if (confirm("هل تريد حذف هذه الرسالة؟")) {
+        await deleteMessage(messageId, messageElement);
+        closeOptions();
+    }
+});
+
+        // ✅ إضافة الأزرار للرسالة
+        optionsContainer.appendChild(copyBtn);
+        optionsContainer.appendChild(deleteBtn);
+        messageElement.appendChild(optionsContainer);
+        optionsContainer.style.display = "flex";
+
+        // ✅ إغلاق الخيارات عند الضغط خارجها
+        setTimeout(() => {
+            document.addEventListener("click", closeOptions);
+        }, 100);
+    }
+
+    function closeOptions() {
+        let options = document.querySelector(".message-options");
+        if (options) options.remove();
+        document.body.classList.remove("blur-background");
+
+        let selectedMessage = document.querySelector(".selected-message");
+        if (selectedMessage) selectedMessage.classList.remove("selected-message");
+
+        document.removeEventListener("click", closeOptions);
+    }
+
+    
+
+
+async function deleteMessage(docId, messageElement) {
+    try {
+        const messageRef = doc(db, "messages", docId);
+        await deleteDoc(messageRef);
+        messageElement.remove(); // حذف الرسالة من الواجهة
+        console.log("تم حذف الرسالة بنجاح!");
+    } catch (error) {
+        console.error("فشل في حذف الرسالة:", error);
+    }
+}
+});
         sendButton.addEventListener("click", sendMessage);
     </script>
 </body>

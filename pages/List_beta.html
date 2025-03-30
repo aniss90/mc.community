@@ -18,7 +18,11 @@
         font-family: minecraft-five;
         src: url('../font/Minecraft-Five.ttf');
     }
-        body { font-family: Arial, sans-serif; text-align: center;  }
+        body { 
+        font-family: Arial, sans-serif; 
+        text-align: center;  
+          
+        }
         h2 { color: #333; }
         table { width: 50%; margin: 20px auto; border-collapse: collapse; background: white; }
         th, td { padding: 10px; border: 1px solid #ddd; }
@@ -63,16 +67,21 @@
     background-color: #222222;
     color: white;
     border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     margin: 20px auto;
     border-collapse: collapse;
-    border-collapse: collapse;
-}
+    border-bottom: 3px solid #737373;
+    border-left: 3px solid #737373;
+    border-right: 3px solid #737373;
+
+    
+    } 
 
 th {
     background-color: #FFFFFF;
     color: black;
     padding: 10px;
+    
+  
 }
 
 td {
@@ -80,6 +89,7 @@ td {
     color: white;
     padding: 10px;
     border: 1px solid #ddd;
+    
 }
 td a {
     color: #FFFFFF; /* لون ذهبي */
@@ -123,15 +133,16 @@ If you want to communicate with a user, click on his name and it will take you t
     <table>
         <thead>
             <tr>
-                <th>username</th>
-                <th>coins</th>
+                <th>Username  <img src="../imag/player-head-128-052ba.png" height="12"></th>
+                <th>Coins  <img src="../imag/MCoin.png" alt="Coin" height="12"></th>
             </tr>
         </thead>
    <tbody id="userList">
-    <tr><td colspan="2">Loading data...</td></td></tr>
+    <tr><td colspan="2">  <img src="../imag/loading_spinner.gif" height="20"></td></td></tr>
 </tbody>
     </table>
-
+    </div> 
+  <img src="../imag/Sign-in_Prompts_Launch Animated-fdbda.gif" height="auto" width="250">
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
