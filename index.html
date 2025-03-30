@@ -4,6 +4,17 @@
     <title>Minecraft community</title>
     <link rel="stylesheet" href="style/main.css">
     <link rel="icon" type="image/x-icon" href="web/ytlogo.png">
+    <link rel="manifest" href="/manifest.json">
+    <!-- أيقونة الموقع الأساسية -->
+<link rel="icon" href="icons/icon-192x192.png" type="image/png">
+
+<!-- لأجهزة iOS -->
+<link rel="apple-touch-icon" href="icons/icon-180x180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<!-- لون شريط العنوان في Chrome -->
+<meta name="theme-color" content="#000000">
     <style>
         @font-face {
             font-family: minecraft;
@@ -47,9 +58,10 @@
             <a href="pages/downloads.html"> 
             <div class="button">
               <button id="greenButton">Downloads <img src="imag/download-062b3.png" height="15">
-              </button></a> 
+              </button></a> <button id="installButton" style="display: none;">ثبّت التطبيق</button>
               </div> 
        </div>
+       
 
         </div>
     </div>
@@ -60,6 +72,38 @@
   </script>
 
   <script type="module" src="scripts/main.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then((registration) => {
+          console.log('ServiceWorker registered:', registration.scope);
+        })
+        .catch((error) => {
+          console.error('ServiceWorker registration failed:', error);
+        });
+    });
+  }
+  let deferredPrompt;
 
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  deferredPrompt = event;
+  const installButton = document.getElementById('installButton');
+  installButton.style.display = 'block';
+  
+  installButton.addEventListener('click', () => {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choice) => {
+      if (choice.outcome === 'accepted') {
+        console.log('تم تثبيت التطبيق');
+      } else {
+        console.log('رفض المستخدم التثبيت');
+      }
+      deferredPrompt = null;
+    });
+  });
+});
+</script>
 
 </body></html>
