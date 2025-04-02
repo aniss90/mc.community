@@ -340,6 +340,11 @@ onSnapshot(messagesQuery, (snapshot) => {
         messageElement.innerHTML = `<strong>${data.sender}:</strong> ${escapedMessage}`;
 
         chatBox.appendChild(messageElement);
+
+        // ✅ إرسال إشعار إذا كانت الرسالة من شخص آخر
+        if (!isMyMessage && document.hidden) {
+            showNotification(data.sender, data.message);
+        }
     });
 
     chatBox.scrollTop = chatBox.scrollHeight; // التمرير لآخر رسالة
@@ -445,6 +450,15 @@ async function deleteMessage(docId, messageElement) {
     }
 }
 });
+function showNotification(sender, message) {
+    if (Notification.permission === "granted") {
+        new Notification(`رسالة جديدة من ${sender}`, {
+            body: message,
+            icon: "../imag/player-head-128-052ba.png" // استبدله بأيقونة مناسبة
+        });
+    }
+}
+
         sendButton.addEventListener("click", sendMessage);
     </script>
 </body>
