@@ -86,7 +86,7 @@
   Notification.requestPermission().then(permission => {
     if (permission === "granted") {
       console.log("إذن الإشعارات ممنوح!");
-      getToken(messaging, { vapidKey: "5P78dz4__7Zl3oV3Lt4_hsaQXFDZniCF10Ut5C3D_LA" })
+      getToken(messaging, { vapidKey: "BKr9_yZic3lEvoZSAzx64GCELceKgqA6AWsnaZvsSAPplWo99IONeYgMoipVV8TMELaDc4GE_MabtqLnkBFwiPM" })
         .then(token => console.log("توكن الجهاز:", token))
         .catch(err => console.log("خطأ في جلب التوكن:", err));
     } else {
