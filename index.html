@@ -64,7 +64,45 @@
            </div>
         </div>
     </div>
-      
+      <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+  import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-messaging.js";
+  
+  const firebaseConfig = {
+    apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
+    authDomain: "minecraft-community-4fd3d.firebaseapp.com",
+    projectId: "minecraft-community-4fd3d",
+    storageBucket: "minecraft-community-4fd3d.firebasestorage.app",
+    messagingSenderId: "550140131027",
+    appId: "1:550140131027:web:a5186726cf5372e138c626",
+    measurementId: "G-F18SFG2LMZ"
+  };
+
+  // تهيئة Firebase
+  const app = initializeApp(firebaseConfig);
+  const messaging = getMessaging(app);
+
+  // طلب إذن الإشعارات
+  Notification.requestPermission().then(permission => {
+    if (permission === "granted") {
+      console.log("إذن الإشعارات ممنوح!");
+      getToken(messaging, { vapidKey: "5P78dz4__7Zl3oV3Lt4_hsaQXFDZniCF10Ut5C3D_LA" })
+        .then(token => console.log("توكن الجهاز:", token))
+        .catch(err => console.log("خطأ في جلب التوكن:", err));
+    } else {
+      console.log("تم رفض الإذن!");
+    }
+  });
+
+  // استقبال الإشعارات أثناء تشغيل التطبيق
+  onMessage(messaging, (payload) => {
+    console.log("إشعار جديد:", payload);
+    new Notification(payload.notification.title, {
+      body: payload.notification.body,
+      icon: payload.notification.icon
+    });
+  });
+</script>
 
   <script type="module" src="scripts/main.js"></script>
 
