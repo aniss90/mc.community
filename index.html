@@ -1,7 +1,7 @@
 <html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Minecraft community</title>
+    <title>mc community</title>
     <link rel="stylesheet" href="style/main.css">
     <link rel="icon" type="image/x-icon" href="web/ytlogo.png">
     <link rel="manifest" href="/manifest.json">
@@ -33,78 +33,41 @@
 
 <body>
     <div class="header">  Mc community 
-     <a href="pages/login.html">
-       <button id="loginButton" onclick="onClick()"><img  src="imag/add-player@0.5x.icon-2f437.png" height="25"></button></a> 
     </div> 
     <div class="content">
-        <div class="description">Website for Minecraft Clinte, Addons and Apps made by ANISKING<br>+
-          Creator: <a href="YOUTUBE CHANNEL" target="_blank" class="link">ANISKING <img src="imag/op.png" height="15"></a> 
+           <a href="pages/login.html">
+       <button id="greenButton" onclick="onClick()">Login & Register <img  src="imag/add-player@0.5x.icon-2f437.png" height="15"></button></a> 
+        <div class="description">A site to communicate with other users, interact and have fun. <br>+
+          Creator: <a href="YOUTUBE CHANNEL" target="_blank" class="link">Aniss <img src="imag/op.png" height="15"></a> 
             <br>+
             Source Credits: <a href="https://www.youtube.com/@T1M0THYYT" target="_blank" class="link">TIМ0THY YT <img src="imag/iconStarGolden-e2d94.png" height="15"></a>
         </div>
         <div class="description">
-          <button id="installButton" style="display: none;">ثبّت التطبيق</button>
-            <div class="title">What is Minecraft client?</div>Minecraft clinte  is a modified version of mcpe with custom ui's created and mods by ANISKING with the help of other creators.
+            <div class="title">What is  mc community?</div>Mc community a public site that includes all people. Its features include collecting coins and purchasing items from the store or sending them to others. It also provides a chat feature and allows you to communicate with other users and interact with them. 
           </div>
          <div class="description">
-            <div class="title">server ip
-            </div>click to get more information .
+            <div class="title">about the developers
+            </div>Click to get more information .
             <a href="pages/lay.html"> 
             <div class="button">
-              <button id="purpleButton">IP and port <img src="imag/icon_blackfriday.png" height="15"></button></a> 
+              <button id="purpleButton">About the Developers <img src="imag/icon_blackfriday.png" height="15"></button></a> 
               </div> 
         </div>
         <div class="description">
-            <div class="title">Download Page </div>This going to change in later updates
-            <a href="pages/downloads.html"> 
+            <div class="title"> privacy policy </div>This going to change in later updates
+            <a href="pages/privacy.html"> 
             <div class="button">
-              <button id="greenButton">Downloads <img src="imag/download-062b3.png" height="15">
-              </button></a> <button id="installButton" style="display: none;">ثبّت التطبيق</button>
+              <button id="greenButton">Privacy policy 
+              <img src="imag/achievements-17c5b.png" height="15">
+              </button></a> 
               </div> 
-       </div>
-       
-
+           </div>
         </div>
     </div>
-      <script>
-    function openWebsite(url) {
-      window.open(url, "_blank");
-    }
-  </script>
+      
 
   <script type="module" src="scripts/main.js"></script>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then((registration) => {
-          console.log('ServiceWorker registered:', registration.scope);
-        })
-        .catch((error) => {
-          console.error('ServiceWorker registration failed:', error);
-        });
-    });
-  }
-  let deferredPrompt;
 
-window.addEventListener('beforeinstallprompt', (event) => {
-  event.preventDefault();
-  deferredPrompt = event;
-  const installButton = document.getElementById('installButton');
-  installButton.style.display = 'block';
-  
-  installButton.addEventListener('click', () => {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choice) => {
-      if (choice.outcome === 'accepted') {
-        console.log('تم تثبيت التطبيق');
-      } else {
-        console.log('رفض المستخدم التثبيت');
-      }
-      deferredPrompt = null;
-    });
-  });
-});
-</script>
 
-</body></html>
+</body>
+</html>
