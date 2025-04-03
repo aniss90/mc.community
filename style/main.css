@@ -269,7 +269,19 @@ input {
       font-size: 15px; 
     }
 
-
+       .back {
+            position: absolute;
+            border: none;
+            top: 20px;
+            left: 10px;
+            cursor: pointer;
+          padding: 10px;
+            background: url(../imag/arrowBack-b77b1.png);
+            background-size:  contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 20px;
+        } 
 #whiteButton:hover {
     top: 2px;
     height: 40px;

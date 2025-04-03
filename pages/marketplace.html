@@ -101,6 +101,7 @@
 
 </head>
 <body>
+      <button class="back" id="backButton" type="button" onclick="goBack()"></button>
     <div class="header"> 
         Marketplace <img src="../imag/store_home_icon.png" height="20" />
     </div> 
@@ -230,6 +231,14 @@
     });
     
 </script>
-
+  <script>
+  function goBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
+    }
+  }
+</script>
 </body>
 </html>

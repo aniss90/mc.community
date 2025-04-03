@@ -20,10 +20,28 @@
       font-family: minecraft-five;
       src: url('../font/Minecraft-Five.ttf');
     }
-    
+    .password-container {
+  position: relative;
+  margin: 10px 0;
+}
+
+.toggle-password {
+  position: fixed; 
+  top: 154px;
+  transform: translateY(-50%);
+  transform: translateX(-150%);
+  cursor: pointer;
+  user-select: none;
+  opacity: 0.7;
+}
+
+.toggle-password:hover {
+  opacity: 1;
+} 
     </style> 
 </head>
 <body>
+      <button class="back" id="backButton" type="button" onclick="goBack()"></button>
   <div class="header"> Login <img src="../imag/gif_test-83efe.gif" height="30">
   <div class="description"> 
   <div class="login-box">
@@ -32,7 +50,10 @@
       <input type="text" id="username" placeholder="Username" required>
       </br>  
       <br>
-      <input type="password" id="password" placeholder="Password" required>
+ <div class="password-container">
+  <input type="password" id="password" placeholder="Password" required>
+  <span class="toggle-password">👁️</span>
+</div>
       </br> 
      <br>
       
@@ -57,9 +78,21 @@
   <button id="logoutButton" style="display: none; margin-top: 20px;">Log out</button>
 
   <script type="module">
+  
     import { db } from '../scripts/main.js'; // استيراد قاعدة البيانات من Firebase
     import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; 
+    
+const togglePassword = document.querySelector('.toggle-password');
+const passwordInput = document.getElementById('password');
 
+togglePassword.addEventListener('click', function () {
+  // Toggle the type attribute
+  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+  passwordInput.setAttribute('type', type);
+  
+  // Toggle the eye icon
+  this.textContent = type === 'password' ? '👁️' : '👁️🗨️';
+});
     const logoutButton = document.getElementById("logoutButton");
 
     // ✅ إذا كان المستخدم مسجلًا بالفعل، يتم نقله مباشرة إلى الصفحة الرئيسية
@@ -110,6 +143,17 @@
       window.location.reload(); // إعادة تحميل الصفحة للعودة إلى تسجيل الدخول
     });
 
+
+
   </script> 
+  <script>
+  function goBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
+    }
+  }
+</script>
 </body>
 </html>

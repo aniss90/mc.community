@@ -78,9 +78,29 @@
         font-weight: bold;  
         height: 24px;   
     }  
+        .password-container {
+  position: relative;
+  margin: 10px 0;
+}
+
+.toggle-password {
+  position: fixed; 
+  top: 140px;
+  transform: translateY(-50%);
+  transform: translateX(-150%);
+  cursor: pointer;
+  user-select: none;
+  opacity: 0.7;
+}
+
+.toggle-password:hover {
+  opacity: 1;
+} 
         
-  </style>  </head>  
+  </style> 
+  </head>  
 <body>  
+    <button class="back" id="backButton" type="button" onclick="goBack()"></button>
   <div class="header"> register  <img src="../imag/gif_test-83efe.gif" height="30">  
   <div class="description">   
   <div class="login-box">  
@@ -88,8 +108,10 @@
       <br>  
       <input type="text" id="username" placeholder="Username " required>  
       </br>    
-      <br>  
-      <input type="password" id="password" placeholder="Password" required>  
+        
+      <div class="password-container">
+  <input type="password" id="password" placeholder="Password" required>
+  <span class="toggle-password">👁️</span> 
       </br>   
        <br>  
       <input type="email" id="email" placeholder="your email" required>  
@@ -118,6 +140,17 @@
     import { db } from '../scripts/main.js'; // استيراد قاعدة البيانات من Firebase  
     import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";   
   
+  const togglePassword = document.querySelector('.toggle-password');
+const passwordInput = document.getElementById('password');
+
+togglePassword.addEventListener('click', function () {
+  // Toggle the type attribute
+  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+  passwordInput.setAttribute('type', type);
+  
+  // Toggle the eye icon
+  this.textContent = type === 'password' ? '👁️' : '👁️🗨️';
+});
   document.getElementById('whiteButton').addEventListener('click', async function () {  
       const username = document.getElementById('username').value.trim();  
       const password = document.getElementById('password').value.trim();  
@@ -151,5 +184,16 @@
     function openWebsite(url) {  
       window.open(url, "_blank");  
     }  
-  </script>    <script src="scripts/main.js"></script>   </body>   
+  </script>   
+  <script src="scripts/main.js"></script> 
+    <script>
+  function goBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
+    }
+  }
+</script>
+  </body>   
 </html>

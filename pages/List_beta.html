@@ -113,6 +113,7 @@ th, td {
     </style>
 </head>
 <body>
+      <button class="back" id="backButton" type="button" onclick="goBack()"></button>
 <div class="header"> User list   <img src="../imag/friends-9e435.png" height="20">  
   <div class="description">   
     
@@ -123,7 +124,7 @@ th, td {
           </note>  
         <br>   
         <p>   
-If you want to communicate with a user, click on his name and it will take you to the communication page. 
+If you want to chating with a user, click on his name and it will take you to the chanting page. 
 
   </br>   
   </p>   
@@ -195,6 +196,15 @@ if (!activeUser) {
     }
 });
     </script>
+      <script>
+  function goBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
+    }
+  }
+</script>
 
 </body>
 </html>

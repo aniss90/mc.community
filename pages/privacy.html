@@ -113,6 +113,7 @@
     </style>
 </head>
 <body>
+      <button class="back" id="backButton" type="button" onclick="goBack()"></button>
     <button id="translate-btn" class="translate-btn">ترجم إلى العربية</button>
 
     <div class="header">
@@ -273,5 +274,14 @@ function translateToEnglish() {
     document.querySelector('footer p').innerHTML = '&copy; 2025/2026 mc.community. All rights reserved.';
 }
     </script>
+      <script>
+  function goBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
+    }
+  }
+</script>
 </body>
 </html>

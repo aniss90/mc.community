@@ -22,6 +22,7 @@
     </style>
     </head>
     <body>
+          <button class="back" id="backButton" type="button" onclick="goBack()"></button>
         <div class="header">
             lay
         </div>
@@ -82,7 +83,15 @@
     }
   </script>
             <script type="module" src="../scripts/main.js"></script>
-        </div>
+          <script>
+  function goBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
+    }
+  }
+</script>
     
 </body>
 </html>

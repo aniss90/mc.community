@@ -93,12 +93,9 @@ h2 {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* المحادثات تبدأ من اليسار */
-  padding-bottom: 60px; /* ترك مساحة للأزرار */
-  height: calc(100vh - 120px); /* 100vh ناقص ارتفاع الهيدر وشريط الإدخال */
-  overflow-y: auto; /* السماح بالتمرير فقط داخل المحادثة */
-  -webkit-overflow-scrolling: touch; /* تحسين التمرير في الهواتف */
-  margin-top: 60px;
+  align-items: flex-start;
+  height: calc(100vh - 140px); /* تقليل المساحة بحيث لا تتجاوز الرسائل مربع الإدخال */
+  padding-bottom: 15px; /* ترك مسافة فارغة فوق الإدخال */
 }
 
 /* تنسيق الرسائل */
@@ -151,7 +148,7 @@ h2 {
 div.header {
 
  
-  position: fixed;
+  position: ;
     
 }
 #message-input {
@@ -206,6 +203,7 @@ div.header {
     </style>
 </head>
 <body>
+      <button class="back" id="backButton" type="button" onclick="goBack()"></button>
     <div class="header"> <span id="chatUser"></span> <img src="../imag/player-head-128-052ba.png" height="25">
     </div> 
     <div id="chatBox"></div>
@@ -461,5 +459,14 @@ function showNotification(sender, message) {
 
         sendButton.addEventListener("click", sendMessage);
     </script>
+      <script>
+  function goBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
+    }
+  }
+</script>
 </body>
 </html>

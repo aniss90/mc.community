@@ -1,0 +1,11 @@
+<button class="back" id="backButton" type="button" onclick="goBack()">Retry <img src="../imag/Redo.png" height="auto" width="15px" ></button>
+
+<script>
+  function goBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
+    }
+  }
+</script>

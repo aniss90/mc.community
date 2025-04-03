@@ -76,7 +76,7 @@
     </style>
 </head>
 <body>
-
+    <button class="back" id="backButton" type="button" onclick="goBack()"></button>
   <div class="header">forget password <img src="../imag/gif_test-83efe.gif" height="30">
        <div class="description"> 
              <div class="note">  
@@ -181,6 +181,15 @@
         });
 
     </script>
+      <script>
+  function goBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
+    }
+  }
+</script>
 
 </body>
 </html>
