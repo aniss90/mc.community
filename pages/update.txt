@@ -1,7 +1,9 @@
 
-📍add a back button ✅. 
-📍add a show and hide password in login page✅. 
-🔸new items in marketplace✅. 
-🔹change the ui of general page✅. 
-🔸new icons styles ✅
+📍add a back button ✅. إضافة زر الرجوع
+📍add a show and hide password in login page✅. إضافة إظهار وإخفاء كلمة المرور في صفحة تسجيل الدخول
+🔸new items in marketplace✅. العناصر جديدة في المتجرر
+🔹change the ui of general page✅.تغيير واجهة المستخدم للصفحة العامة.
+🔸new icons styles ✅أنماط الأيقونات الجديدة
   bug fixed...
+  اصلاح لبعض الاخطاء...
+  
