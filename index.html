@@ -32,6 +32,30 @@
 </head>
 
 <body>
+      <script>
+  // دالة بسيطة لحساب تجزئة للنص (مثل البصمة)
+  function hashString(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash << 5) - hash + str.charCodeAt(i);
+      hash |= 0; // تحويل إلى 32bit
+    }
+    return hash;
+  }
+
+  fetch("pages/update.txt")
+    .then(res => res.text())
+    .then(text => {
+      const currentHash = hashString(text);
+      const savedHash = localStorage.getItem("lastUpdateHash");
+
+      if (savedHash !== String(currentHash)) {
+        alert(" ✨ New updates  :\n" + text);
+        localStorage.setItem("lastUpdateHash", currentHash);
+      }
+    })
+    .catch(err => console.error("تعذر تحميل التحديث:", err));
+</script>
     <div class="header">  Mc community 
     </div> 
     <div class="content">
@@ -66,30 +90,7 @@
            </div>
         </div>
     </div>
-    <script>
-  // دالة بسيطة لحساب تجزئة للنص (مثل البصمة)
-  function hashString(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = (hash << 5) - hash + str.charCodeAt(i);
-      hash |= 0; // تحويل إلى 32bit
-    }
-    return hash;
-  }
 
-  fetch("pages/update.txt")
-    .then(res => res.text())
-    .then(text => {
-      const currentHash = hashString(text);
-      const savedHash = localStorage.getItem("lastUpdateHash");
-
-      if (savedHash !== String(currentHash)) {
-        alert(" ✨ New updates  :\n" + text);
-        localStorage.setItem("lastUpdateHash", currentHash);
-      }
-    })
-    .catch(err => console.error("تعذر تحميل التحديث:", err));
-</script>
       <script type="module">
 if (Notification.permission !== "granted") {
     Notification.requestPermission().then(permission => {
