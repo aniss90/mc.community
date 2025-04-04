@@ -109,99 +109,112 @@
         <h1 id="welcomeMessage"></h1>
         <div class="points">
             <div class="title">My coins: <span id="points">0</span> <img src="../imag/MCoin.png" alt="Coin" height="15"></div>
+            <div class="shop">
+    <!-- سيتم إضافة العناصر هنا بشكل ديناميكي -->
+</div>
         </div>
     </div> 
-    <div class="card">
-        <div class="card-body">
-            <div class="shop">
-                <div class="shop-item">
-                    <div class="img-shop"> 
-                        <img src="../imag/sus.png" alt="Item">
-                    </div> 
-                    <p class="item-name">S Emoji</p>
-                    <p class="price-label">Price: <span class="itemPrice">99</span> <img src="../imag/MCoin.png" alt="Coin" height="15"></p>
-                    <button class="buyButton">Buy</button>
-                </div><div class="shop-item">
-                <div class="img-shop"> 
-                    <img src="../imag/icon_best3.png" alt="Item">
-                </div> 
-                <p class="item-name">Diamonds</p>
-                <p class="price-label">Price: <span class="itemPrice">1</span> <img src="../imag/MCoin.png" alt="Coin" height="15"></p>
-                <button class="buyButton">Buy</button>
-            </div>
-
-            <div class="shop-item">
-                <div class="img-shop"> 
-                    <img src="../imag/sus.png" alt="Item">
-                </div> 
-                <p class="item-name">Another Item</p>
-                <p class="price-label">Price: <span class="itemPrice">50</span> <img src="../imag/MCoin.png" alt="Coin" height="15"></p>
-                <button class="buyButton">Buy</button>
-            </div>
-
-            <div class="shop-item">
-                <div class="img-shop"> 
-                    <img src="../imag/sus.png" alt="Item">
-                </div> 
-                <p class="item-name">Special Sword</p>
-                <p class="price-label">Price: <span class="itemPrice">120</span> <img src="../imag/MCoin.png" alt="Coin" height="15"></p>
-                <button class="buyButton">Buy</button>
-            </div>
-        </div>
-    </div>
+    
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="module">
     import { db } from '../scripts/main.js'; 
-    import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; 
+import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; 
 
-    const activeUser = localStorage.getItem('activeUser');
+const activeUser = localStorage.getItem('activeUser');
 
-    if (!activeUser) {
-        alert('Please log in first!');
+if (!activeUser) {
+    alert('Please log in first!');
+    window.location.href = 'login.html';
+}
+
+const shopItems = [
+    { name: "Axe enchanted", price: 1520, imageUrl: "../emojis/axe_gif.gif" },
+    { name: "The CD", price: 200, imageUrl: "../emojis/cd_gif.gif" },
+    { name: "Special diamond", price: 70, imageUrl: "../emojis/diamond_gif.gif" },
+    { name: "Special water tap ", price: 120, imageUrl: "../Emojis/tap_gif.gif" }, 
+    { name: "The pumpkin", price: 340, imageUrl: "../Emojis/spooky_gif.gif" },
+    { name: "Pokeball", price: 280, imageUrl: "../emojis/pokeball_gif.gif" },
+    { name: "Grass block", price: 153000, imageUrl: "../emojis/minecraft_gif.gif" },
+    
+    
+    
+    
+    
+    
+    
+];
+async function getUserData() {
+    const welcomeMsg = document.getElementById('welcomeMessage');
+    const pointsElem = document.getElementById('points');
+
+    if (!welcomeMsg || !pointsElem) {
+        console.error("Elements not found!");
+        return;
+    }
+
+    const userDocRef = doc(db, 'users', activeUser);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+        const user = userDoc.data();
+        welcomeMsg.innerText = `Welcome ${activeUser}!`;
+        pointsElem.innerText = user.points;
+
+        const purchasedItems = user.purchasedItems || [];
+        document.querySelectorAll('.shop-item').forEach(item => {
+            const itemName = item.querySelector('.item-name').innerText;
+            const buyButton = item.querySelector('.buyButton');
+
+            if (purchasedItems.includes(itemName)) {
+                buyButton.innerText = "Purchased ";
+                let img = document.createElement("img");
+                img.src = "../emojis/check.png";
+                img.width = 10;
+                img.height = 10;
+                buyButton.appendChild(img);
+                buyButton.disabled = true;
+            }
+        });
+    } else {
+        alert('User does not exist in the database!');
         window.location.href = 'login.html';
     }
+}
 
-    async function getUserData() {
-        const welcomeMsg = document.getElementById('welcomeMessage');
-        const pointsElem = document.getElementById('points');
+document.addEventListener('DOMContentLoaded', () => {
+    createShopItems();
+    getUserData();
+});
 
-        if (!welcomeMsg || !pointsElem) {
-            console.error("Elements not found!");
-            return;
-        }
+function createShopItems() {
+    const shopContainer = document.querySelector('.shop');
+    shopItems.forEach(item => {
+        const shopItem = document.createElement('div');
+        shopItem.classList.add('shop-item');
 
-        const userDocRef = doc(db, 'users', activeUser);
-        const userDoc = await getDoc(userDocRef);
+        const imgShop = document.createElement('div');
+        imgShop.classList.add('img-shop');
+        const img = document.createElement('img');
+        img.src = item.imageUrl;
+        img.alt = item.name;
+        img.height = 50;
+        imgShop.appendChild(img);
 
-        if (userDoc.exists()) {
-            const user = userDoc.data();
-            welcomeMsg.innerText = `Welcome ${activeUser}!`;
-            pointsElem.innerText = user.points;
+        const itemName = document.createElement('p');
+        itemName.classList.add('item-name');
+        itemName.innerText = item.name;
 
-            const purchasedItems = user.purchasedItems || [];
-            document.querySelectorAll('.shop-item').forEach(item => {
-                const itemName = item.querySelector('.item-name').innerText;
-                const buyButton = item.querySelector('.buyButton');
+        const priceLabel = document.createElement('p');
+        priceLabel.classList.add('price-label');
+        priceLabel.innerHTML = `Price: <span class="itemPrice">${item.price}</span><img src="../imag/MCoin.png" alt="Coin" height="12">`;
 
-                if (purchasedItems.includes(itemName)) {
-                    buyButton.innerText = "Purchased ✓";
-                    buyButton.disabled = true;
-                }
-            });
-        } else {
-            alert('User does not exist in the database!');
-            window.location.href = 'login.html';
-        }
-    }
+        const buyButton = document.createElement('button');
+        buyButton.classList.add('buyButton');
+        buyButton.innerText = "Buy";
 
-    document.addEventListener('DOMContentLoaded', getUserData);
-
-    document.querySelectorAll('.buyButton').forEach(button => {
-        button.addEventListener('click', async function () {
-            const shopItem = this.closest('.shop-item');
-            const itemName = shopItem.querySelector('.item-name').innerText;
-            const itemPrice = parseInt(shopItem.querySelector('.itemPrice').innerText);
+        buyButton.addEventListener('click', async function () {
+            const itemPrice = item.price;
             const userDocRef = doc(db, 'users', activeUser);
             const userDoc = await getDoc(userDocRef);
 
@@ -209,36 +222,48 @@
                 let user = userDoc.data();
                 let purchasedItems = user.purchasedItems || [];
 
-                if (purchasedItems.includes(itemName)) {
+                if (purchasedItems.includes(item.name)) {
                     alert("You already purchased this item!");
                     return;
                 }
 
                 if (user.points >= itemPrice) {
                     user.points -= itemPrice;
-                    purchasedItems.push(itemName);
+                    purchasedItems.push(item.name);
                     await updateDoc(userDocRef, { points: user.points, purchasedItems: purchasedItems });
 
                     document.getElementById('points').innerText = user.points;
-                    this.innerText = "Purchased ✅";
+                    this.innerText = "Purchased ";
+                    let img = document.createElement("img");
+                    img.src = "../emojis/check.png";
+                    img.width = 10;
+                    img.height = 10;
+                    this.appendChild(img);
                     this.disabled = true;
-                    alert('Purchase successful!');
+                    alert('Purchase successfu!🤝');
                 } else {
-                    alert('Not enough coins!');
+                    alert("Not enough coins!");
                 }
             }
         });
+
+        shopItem.appendChild(imgShop);
+        shopItem.appendChild(itemName);
+        shopItem.appendChild(priceLabel);
+        shopItem.appendChild(buyButton);
+
+        shopContainer.appendChild(shopItem);
     });
-    
-</script>
-  <script>
-  function goBack() {
+}
+
+function goBack() {
     if (window.history.length > 1) {
-      window.history.back();
+        window.history.back();
     } else {
-      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
+        window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
     }
-  }
+}
 </script>
+  
 </body>
 </html>
