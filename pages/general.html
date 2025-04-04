@@ -34,37 +34,7 @@
  
 }
     /* التنبيهات المخصصة */
-    .custom-alert {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 20px;
-      border-radius: 5px;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      z-index: 9999;
-      min-width: 200px;
-      backdrop-filter: blur(5px); /* تأثير التشويش */
-      background-color: rgba(0, 0, 0, 0.4); /* خلفية شبه شفافة */
-    }
-    .custom-alert.success {
-      background-color: rgba(40, 167, 69, 0.8); /* الأخضر */
-    }
-    .custom-alert.error {
-      background-color: rgba(220, 53, 69, 0.8); /* الأحمر */
-    }
-    .custom-alert button {
-      background-color: white;
-      color: black;
-      border: none;
-      padding: 10px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-top: 10px;
-    }
+    
 
     #points {
       color: #FFBC13; 
@@ -207,17 +177,23 @@
 
     // إضافة النقاط للمستخدم
     document.getElementById('whiteButton').addEventListener('click', async function () {
-      const userDocRef = doc(db, 'users', activeUser);
-      const userDoc = await getDoc(userDocRef);
+    const userDocRef = doc(db, 'users', activeUser);
+    const userDoc = await getDoc(userDocRef);
 
-      if (userDoc.exists()) {
+    if (userDoc.exists()) {
         const user = userDoc.data();
         user.points++;
+
         await updateDoc(userDocRef, { points: user.points });
+
         document.getElementById('points').innerText = user.points;
-        showAlert('Coin added successfully!', 'success');
-      }
-    });
+
+        // تنبيه كلاسيكي عند نجاح العملية
+        alert('تمت إضافة نقطة بنجاح!');
+    } else {
+        alert('المستخدم غير موجود!');
+    }
+});
     // تسجيل الخروج
 document.getElementById('backButton').addEventListener('click', function () {
   const confirmLogout = confirm('هل أنت متأكد أنك تريد تسجيل الخروج؟');
