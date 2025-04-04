@@ -134,7 +134,25 @@
       showAlert('Please log in first!', 'error');
       window.location.href = 'login.html';
     }
+   // إضافة النقاط للمستخدم
+    document.getElementById('whiteButton').addEventListener('click', async function () {
+    const userDocRef = doc(db, 'users', activeUser);
+    const userDoc = await getDoc(userDocRef);
 
+    if (userDoc.exists()) {
+        const user = userDoc.data();
+        user.points++;
+
+        await updateDoc(userDocRef, { points: user.points });
+
+        document.getElementById('points').innerText = user.points;
+
+        // تنبيه كلاسيكي عند نجاح العملية
+        alert('تمت إضافة نقطة بنجاح!');
+    } else {
+        alert('المستخدم غير موجود!');
+    }
+});
     // دالة لعرض التنبيه المخصص
     function showAlert(message, type) {
       const alertBox = document.createElement('div');
@@ -175,25 +193,7 @@
 
     getUserData();
 
-    // إضافة النقاط للمستخدم
-    document.getElementById('whiteButton').addEventListener('click', async function () {
-    const userDocRef = doc(db, 'users', activeUser);
-    const userDoc = await getDoc(userDocRef);
-
-    if (userDoc.exists()) {
-        const user = userDoc.data();
-        user.points++;
-
-        await updateDoc(userDocRef, { points: user.points });
-
-        document.getElementById('points').innerText = user.points;
-
-        // تنبيه كلاسيكي عند نجاح العملية
-        alert('تمت إضافة نقطة بنجاح!');
-    } else {
-        alert('المستخدم غير موجود!');
-    }
-});
+ 
     // تسجيل الخروج
 document.getElementById('backButton').addEventListener('click', function () {
   const confirmLogout = confirm('هل أنت متأكد أنك تريد تسجيل الخروج؟');
@@ -217,6 +217,11 @@ document.getElementById('backButton').addEventListener('click', function () {
     // إرسال النقاط لمستخدم آخر
     document.getElementById('redButton').addEventListener('click', async function () {
       const sender = activeUser;
+      if (receiver === sender) {
+  showAlert('لا يمكنك إرسال النقاط إلى نفسك!', 'error');
+  return;
+}
+      
       const receiver = document.getElementById('receiverUsername').value.trim();
       const points = parseInt(document.getElementById('sendPointsAmount').value);
 
