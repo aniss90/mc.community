@@ -1,159 +1,149 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../style/main.css">
-  <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
-  
-  <title>Login Page</title>
-  <style>
-    @font-face {
-      font-family: minecraft;
-      src: url('../font/Minecraft-Default.otf');
-    }
-    @font-face {
-      font-family: minecraft-ten;
-      src: url('../font/Minecraft-Ten.ttf');
-    }
-    @font-face {
-      font-family: minecraft-five;
-      src: url('../font/Minecraft-Five.ttf');
-    }
-    .password-container {
-  position: relative;
-  margin: 10px 0;
-}
-
-.toggle-password {
-  position: fixed; 
-  top: 154px;
-  transform: translateY(-50%);
-  transform: translateX(-150%);
-  cursor: pointer;
-  user-select: none;
-  opacity: 0.7;
+<!DOCTYPE html>  <html>  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1">  
+  <link rel="stylesheet" href="../style/main.css">  
+  <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">    <title>Login Page</title>  
+  <style>  
+    @font-face {  
+      font-family: minecraft;  
+      src: url('../font/Minecraft-Default.otf');  
+    }  
+    @font-face {  
+      font-family: minecraft-ten;  
+      src: url('../font/Minecraft-Ten.ttf');  
+    }  
+    @font-face {  
+      font-family: minecraft-five;  
+      src: url('../font/Minecraft-Five.ttf');  
+    }  
+    .password-container {  
+  position: relative;  
+  margin: 10px 0;  
+}  .toggle-password {
+position: fixed;
+margin-top: 11px;
+transform: translateY(-50%);
+transform: translateX(-150%);
+cursor: pointer;
+user-select: none;
+opacity: 0.7;
 }
 
 .toggle-password:hover {
-  opacity: 1;
-} 
-    </style> 
-</head>
-<body>
-      <button class="back" id="backButton" type="button" onclick="goBack()"></button>
-  <div class="header"> Login <img src="../imag/gif_test-83efe.gif" height="30">
-  <div class="description"> 
-  <div class="login-box">
-    <form id="loginForm">
-      <br>
-      <input type="text" id="username" placeholder="Username" required>
-      </br>  
-      <br>
- <div class="password-container">
-  <input type="password" id="password" placeholder="Password" required>
-  <span class="toggle-password">👁️</span>
-</div>
-      </br> 
-     <br>
-      
-       <a href="forget.html" class="link" >forget password <img height="12px" src="../imag/25-Achievement-Book-9e9a7.png"></a>
-     </br>
-      
-      <div class="description">
-        <div class="button"> 
-          <button type="submit" id="greenButton"> Log in <img src="../imag/enter-icon-31b5a.png" height="15"></button>
-        </div> 
-      </div> 
-      <div> 
-        <div class="description">
-          🔸Don't have an account? <a href="Register.html" class="link">Register <img  src="../imag/IconAddPlayerWhite-c25a0.png"  height="12px"></a> 
-        </div>
-      </div>
-      <img src="../imag/empty-592da.png" height="auto" width="300">
-    </form>
-  </div>
+opacity: 1;
+}
+</style>
 
-  <!-- زر تسجيل الخروج (يظهر فقط إذا كان المستخدم مسجلاً) -->
-  <button id="logoutButton" style="display: none; margin-top: 20px;">Log out</button>
-
-  <script type="module">
-  
-    import { db } from '../scripts/main.js'; // استيراد قاعدة البيانات من Firebase
-    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; 
+</head>  
+<body>  
+      <button class="back" id="backButton" type="button" onclick="goBack()"></button>  
+  <div class="header"> Login <img src="../imag/gif_test-83efe.gif" height="30">  
+  <div class="description">   
+  <div class="login-box">  
+    <form id="loginForm">  
+      <br>  
+      <input type="text" id="username" placeholder="Username" required>  
+      </br>    
+      <br>  
+ <div class="password-container">  
+  <input type="password" id="password" placeholder="Password" required>  
+  <span class="toggle-password">️🙉</span>  
+</div>  
+      </br>   
+     <br>  <a href="forget.html" class="link" >forget password <img height="12px" src="../imag/25-Achievement-Book-9e9a7.png"></a>  
+ </br>  
     
-const togglePassword = document.querySelector('.toggle-password');
-const passwordInput = document.getElementById('password');
+  <div class="description">  
+    <div class="button">   
+      <button type="submit" id="greenButton"> Log in <img src="../imag/enter-icon-31b5a.png" height="15"></button>  
+    </div>   
+  </div>   
+  <div>   
+    <div class="description">  
+      🔸Don't have an account? <a href="Register.html" class="link">Register <img  src="../imag/IconAddPlayerWhite-c25a0.png"  height="12px"></a>   
+    </div>  
+  </div>  
+  <img src="../imag/empty-592da.png" height="auto" width="300">  
+</form>
 
-togglePassword.addEventListener('click', function () {
-  // Toggle the type attribute
-  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-  passwordInput.setAttribute('type', type);
+  </div>    <!-- زر تسجيل الخروج (يظهر فقط إذا كان المستخدم مسجلاً) -->  <button id="logoutButton" style="display: none; margin-top: 20px;">Log out</button>
+
+  <script type="module">  
+    
+    import { db } from '../scripts/main.js'; // استيراد قاعدة البيانات من Firebase  
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";   
+      
+const togglePassword = document.querySelector('.toggle-password');  
+const passwordInput = document.getElementById('password');  
   
-  // Toggle the eye icon
-  this.textContent = type === 'password' ? '👁️' : '👁️🗨️';
-});
-    const logoutButton = document.getElementById("logoutButton");
-
-    // ✅ إذا كان المستخدم مسجلًا بالفعل، يتم نقله مباشرة إلى الصفحة الرئيسية
-    window.onload = function () {
-      let activeUser = localStorage.getItem("activeUser");
-      if (activeUser) {
-        window.location.href = "points.html"; // نقل المستخدم تلقائيًا
-      }
-    };
-
-    // تسجيل الدخول
-    document.getElementById('loginForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
-
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-
-      if (!username || !password) {
-        alert('Please fill out all fields');
-        return;
-      }
-
-      try {
-        // جلب بيانات المستخدم من Firebase
-        const userDocRef = doc(db, 'users', username);
-        const userDoc = await getDoc(userDocRef);
-
-        if (userDoc.exists() && userDoc.data().password === password) {
-          alert(`Welcome back ${username}!`);
-
-          // ✅ حفظ بيانات تسجيل الدخول في LocalStorage
-          localStorage.setItem('activeUser', username);
-
-          window.location.href = 'points.html'; // الانتقال إلى الصفحة الرئيسية
-        } else {
-          alert('Invalid username or password!');
-        }
-      } catch (error) {
-        console.error('Error during login:', error);
-        alert('An error occurred while logging in, try again please.');
-      }
-    });
-
-    // ✅ تسجيل الخروج
-    logoutButton.addEventListener("click", function () {
-      localStorage.removeItem("activeUser"); // حذف بيانات المستخدم
-      alert("You have logged out successfully.");
-      window.location.reload(); // إعادة تحميل الصفحة للعودة إلى تسجيل الدخول
-    });
-
-
-
-  </script> 
-  <script>
-  function goBack() {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
-    }
-  }
-</script>
-</body>
-</html>
+togglePassword.addEventListener('click', function () {  
+  // Toggle the type attribute  
+  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';  
+  passwordInput.setAttribute('type', type);  
+    
+  // Toggle the eye icon  
+  this.textContent = type === 'password' ? '️🙉' :'️️🙈';
+});  
+    const logoutButton = document.getElementById("logoutButton");  
+  
+    // ✅ إذا كان المستخدم مسجلًا بالفعل، يتم نقله مباشرة إلى الصفحة الرئيسية  
+    window.onload = function () {  
+      let activeUser = localStorage.getItem("activeUser");  
+      if (activeUser) {  
+        window.location.href = "general.html"; // نقل المستخدم تلقائيًا  
+      }  
+    };  
+  
+    // تسجيل الدخول  
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {  
+      e.preventDefault();  
+  
+      const username = document.getElementById('username').value.trim();  
+      const password = document.getElementById('password').value.trim();  
+  
+      if (!username || !password) {  
+        alert('Please fill out all fields');  
+        return;  
+      }  
+  
+      try {  
+        // جلب بيانات المستخدم من Firebase  
+        const userDocRef = doc(db, 'users', username);  
+        const userDoc = await getDoc(userDocRef);  
+  
+        if (userDoc.exists() && userDoc.data().password === password) {  
+          alert(`Welcome back ${username}!`);  
+  
+          // ✅ حفظ بيانات تسجيل الدخول في LocalStorage  
+          localStorage.setItem('activeUser', username);  
+  
+          window.location.href = 'general.html'; // الانتقال إلى الصفحة الرئيسية  
+        } else {  
+          alert('Invalid username or password!');  
+        }  
+      } catch (error) {  
+        console.error('Error during login:', error);  
+        alert('An error occurred while logging in, try again please.');  
+      }  
+    });  
+  
+    // ✅ تسجيل الخروج  
+    logoutButton.addEventListener("click", function () {  
+      localStorage.removeItem("activeUser"); // حذف بيانات المستخدم  
+      alert("You have logged out successfully.");  
+      window.location.reload(); // إعادة تحميل الصفحة للعودة إلى تسجيل الدخول  
+    });  
+  
+  
+  
+  </script>     <script>  
+  function goBack() {  
+    if (window.history.length > 1) {  
+      window.history.back();  
+    } else {  
+      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك  
+    }  
+  }  
+</script>  </body>  
+</html>  

@@ -275,7 +275,7 @@ input {
             top: 20px;
             left: 10px;
             cursor: pointer;
-          padding: 10px;
+            padding: 10px;
             background: url(../imag/arrowBack-b77b1.png);
             background-size:  contain;
             background-position: center;
@@ -378,6 +378,30 @@ input {
   display: inline-block;
   padding: 10px;
   color: #FFFFFF;
+  margin: auto;
+}
+#goldButton:hover {
+  top: 2px;
+  height: 40px;
+  width: 100%;
+  position: relative;
+  background-color: #BEBB00;
+}
+
+#goldButton {
+  
+  height: 40px;
+  width: 100%;
+  border: 2px solid #FFFFFF;
+  border: 2px solid #FFFB8D;
+  background-color: #FFFB00;
+  box-shadow: 0px 3px 0px rgba(224, 155, 0, 1);
+  font-size: 16px;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  padding: 10px;
+  color: #000000;
   margin: auto;
 }
  #loginbutton:hover {

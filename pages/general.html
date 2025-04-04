@@ -93,6 +93,7 @@
   <title>generalpage </title>
 </head>
 <body>
+   <button class="back" id="backButton" type="button" onclick="goBack()"></button>
   <div class="header"> 
    general 
     <div class="description">
@@ -100,7 +101,7 @@
       <div class="points">
         <div class="title"> my coins : <span id="points">0</span><img src="../imag/MCoin.png" alt="عملة" height="15"></div> 
         <div class="description"> 
-          <button id="greenButton"> Get coins <img src="../Emojis/dollar.png" height="14"></button>
+          <button id="whiteButton"> Get coins <img src="../Emojis/dollar.png" height="14"></button>
         </div> 
         <div class="description">
           <div class="title">taking chat</div>Chat for talking with other users.
@@ -130,7 +131,7 @@
               <input type="number" id="sendPointsAmount" name="points" placeholder="coins" required>
               </br>
               <br>
-              <button id="whiteButton" style="width: 200px">Send <img src="../Emojis/gift_gif.gif" height="15"> </button>
+              <button id="redButton" style="width: 200px">Send <img src="../Emojis/gift_gif.gif" height="15"> </button>
             </div> 
               </br>
             </div> 
@@ -147,11 +148,7 @@
               <div id="othersPoints"></div>
             </div> 
           </div>
-          <hr>
-          <div class="description"> 
-            <button id="redButton"> Sign out <img src="../imag/switch_accounts.png" height="13"></button>
-            <hr>
-          </div> 
+        
         </div>
       </div>
     </div>
@@ -209,7 +206,7 @@
     getUserData();
 
     // إضافة النقاط للمستخدم
-    document.getElementById('greenButton').addEventListener('click', async function () {
+    document.getElementById('whiteButton').addEventListener('click', async function () {
       const userDocRef = doc(db, 'users', activeUser);
       const userDoc = await getDoc(userDocRef);
 
@@ -221,12 +218,14 @@
         showAlert('Coin added successfully!', 'success');
       }
     });
-
     // تسجيل الخروج
-    document.getElementById('redButton').addEventListener('click', function () {
-      localStorage.removeItem('activeUser');
-      window.location.href = 'login.html';
-    });
+document.getElementById('backButton').addEventListener('click', function () {
+  const confirmLogout = confirm('هل أنت متأكد أنك تريد تسجيل الخروج؟');
+  if (confirmLogout) {
+    localStorage.removeItem('activeUser');
+    window.location.href = 'login.html';
+  }
+});
 
     // عرض نقاط المستخدمين الآخرين
     document.getElementById('viewOthersPoints').addEventListener('click', async function () {
@@ -240,7 +239,7 @@
     });
 
     // إرسال النقاط لمستخدم آخر
-    document.getElementById('whiteButton').addEventListener('click', async function () {
+    document.getElementById('redButton').addEventListener('click', async function () {
       const sender = activeUser;
       const receiver = document.getElementById('receiverUsername').value.trim();
       const points = parseInt(document.getElementById('sendPointsAmount').value);
