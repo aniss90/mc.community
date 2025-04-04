@@ -82,6 +82,8 @@
         .content {
             flex-grow: 1;
             padding-bottom: 60px;
+            padding-top: 40px;
+            
         }
 
         footer {
@@ -94,17 +96,21 @@
         }
 
         .translate-btn {
-            position: fixed;
-            top: 50px;
-            right: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
-        } 
+    position: relative;
+    top: 5px;
+    right: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    z-index: 10;
+    margin-bottom: 20px; /* إضافة مسافة تحت الزر */
+}
+
+
         /* إضافة هذه القاعدة لجعل النص يظهر من اليمين لليسار عند استخدام العربية */
 [lang="ar"] {
     direction: rtl;
@@ -185,7 +191,7 @@
         document.getElementById("translate-btn").addEventListener("click", function() {
     if (this.textContent === "ترجم إلى العربية") {
         translateToArabic();
-        this.textContent = "ترجم إلى الإنجليزية";
+        this.textContent =  "To English";
         document.documentElement.setAttribute('lang', 'ar'); // تغيير اللغة إلى العربية
     } else {
         translateToEnglish();

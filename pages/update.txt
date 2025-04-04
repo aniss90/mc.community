@@ -1,4 +1,6 @@
-🔸add a back button 
-🔸add a show and hide password in login page
-🔹new items in marketplace
-🔹change the ui of general page
+
+📍add a back button ✅. 
+📍add a show and hide password in login page✅. 
+🔸new items in marketplace✅. 
+🔹change the ui of general page✅. 
+🔸new icons styles ✅
