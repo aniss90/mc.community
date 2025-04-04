@@ -132,16 +132,17 @@ const shopItems = [
     { name: "Axe enchanted", price: 1520, imageUrl: "../emojis/axe_gif.gif" },
     { name: "The CD", price: 200, imageUrl: "../emojis/cd_gif.gif" },
     { name: "Special diamond", price: 70, imageUrl: "../emojis/diamond_gif.gif" },
-    { name: "Special water tap ", price: 120, imageUrl: "../Emojis/tap_gif.gif" }, 
+    { name: "Water tap ", price: 120, imageUrl: "../Emojis/tap_gif.gif" }, 
     { name: "The pumpkin", price: 340, imageUrl: "../Emojis/spooky_gif.gif" },
     { name: "Pokeball", price: 280, imageUrl: "../emojis/pokeball_gif.gif" },
-    { name: "Grass block", price: 153000, imageUrl: "../emojis/minecraft_gif.gif" },
-    
-    
-    
-    
-    
-    
+    { name: "Grass block", price: 130000, imageUrl: "../emojis/minecraft_gif.gif" },
+    { name: "Camera", price: 710, imageUrl: "../emojis/camera_gif.gif" },
+    { name: "The burger", price: 220, imageUrl: "../emojis/burger_gif.gif" },
+    { name: "The betahat", price: 530, imageUrl: "../emojis/betahat.gif" },
+    { name: "8Ball", price: 800, imageUrl: "../emojis/8ball.png" },
+    { name: "Crystall ball", price: 320, imageUrl: "../emojis/crystalball_gif.gif" },
+    { name: "Eye", price: 2050, imageUrl: "../emojis/eye_gif.gif" },
+    { name: "Galaxy", price: 3200, imageUrl: "../emojis/galaxy_gif.gif" },
     
 ];
 async function getUserData() {
@@ -255,7 +256,8 @@ function createShopItems() {
         shopContainer.appendChild(shopItem);
     });
 }
-
+</script>
+<script>
 function goBack() {
     if (window.history.length > 1) {
         window.history.back();
