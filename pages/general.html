@@ -124,77 +124,68 @@
     </div>
   </div>
 
-  <script type="module">
-    import { db } from '../scripts/main.js'; 
-    import { doc, getDoc, setDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; 
+<script type="module">
+import { db } from '../scripts/main.js'; 
+import { doc, getDoc, setDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; 
 
-    const activeUser = localStorage.getItem('activeUser');
+const activeUser = localStorage.getItem('activeUser');
 
-    if (!activeUser) {
-      showAlert('Please log in first!', 'error');
-      window.location.href = 'login.html';
-    }
-   // إضافة النقاط للمستخدم
-    document.getElementById('whiteButton').addEventListener('click', async function () {
-    const userDocRef = doc(db, 'users', activeUser);
-    const userDoc = await getDoc(userDocRef);
+if (!activeUser) {
+  alert('Please log in first!');
+  window.location.href = 'login.html';
+}
 
-    if (userDoc.exists()) {
-        const user = userDoc.data();
-        user.points++;
+// إضافة النقاط للمستخدم
+document.getElementById('whiteButton').addEventListener('click', async function () {
+  const userDocRef = doc(db, 'users', activeUser);
+  const userDoc = await getDoc(userDocRef);
 
-        await updateDoc(userDocRef, { points: user.points });
+  if (userDoc.exists()) {
+    const user = userDoc.data();
+    user.points++;
 
-        document.getElementById('points').innerText = user.points;
+    await updateDoc(userDocRef, { points: user.points });
 
-        // تنبيه كلاسيكي عند نجاح العملية
-        alert('تمت إضافة نقطة بنجاح!');
-    } else {
-        alert('المستخدم غير موجود!');
-    }
+    document.getElementById('points').innerText = user.points;
+
+    alert('تمت إضافة نقطة بنجاح!');
+  } else {
+    alert('المستخدم غير موجود!');
+  }
 });
-    // دالة لعرض التنبيه المخصص
-    function showAlert(message, type) {
-      const alertBox = document.createElement('div');
-      alertBox.classList.add('custom-alert');
-      alertBox.classList.add(type); // إما success أو error
-      alertBox.innerHTML = `${message}<br><button onclick="closeAlert(this)">موافق</button>`;
-      document.body.appendChild(alertBox);
 
-      setTimeout(() => {
-        alertBox.style.display = 'none';
-        document.body.removeChild(alertBox);
-      }, 3000);
+// جلب بيانات المستخدم من Firestore
+async function getUserData() {
+  const userDocRef = doc(db, 'users', activeUser);
+  const userDoc = await getDoc(userDocRef);
 
-      alertBox.style.display = 'block';
+  if (userDoc.exists()) {
+    const user = userDoc.data();
+    document.getElementById('welcomeMessage').innerText = `Welcome ${activeUser}!`;
+    document.getElementById('points').innerText = user.points;
+
+    // تحقق من وجود إشعار غير مقروء
+    if (user.notification && user.notification.read === false) {
+      const from = user.notification.from;
+      const amount = user.notification.amount;
+
+      alert(`لقد استلمت ${amount} نقطة من ${from}!`);
+
+      // تعليم الإشعار كمقروء
+      await updateDoc(userDocRef, {
+        "notification.read": true
+      });
     }
 
-    // دالة لإغلاق التنبيه
-    function closeAlert(button) {
-      const alertBox = button.parentElement;
-      alertBox.style.display = 'none';
-      document.body.removeChild(alertBox);
-    }
+  } else {
+    alert('User does not exist in the database!');
+    window.location.href = 'login.html';
+  }
+}
 
-    // جلب بيانات المستخدم من Firestore
-    async function getUserData() {
-      const userDocRef = doc(db, 'users', activeUser);
-      const userDoc = await getDoc(userDocRef);
-      
-      if (userDoc.exists()) {
-        const user = userDoc.data();
-        document.getElementById('welcomeMessage').innerText = `Welcome ${activeUser}!`;
-        document.getElementById('points').innerText = user.points;
-      } else {
-        showAlert('User does not exist in the database!', 'error');
-        window.location.href = 'login.html';
-      }
-    }
+getUserData();
 
-    getUserData();
-
- 
-    // تسجيل الخروج
+// تسجيل الخروج
 document.getElementById('backButton').addEventListener('click', function () {
   const confirmLogout = confirm('هل أنت متأكد أنك تريد تسجيل الخروج؟');
   if (confirmLogout) {
@@ -203,51 +194,78 @@ document.getElementById('backButton').addEventListener('click', function () {
   }
 });
 
-    // عرض نقاط المستخدمين الآخرين
-    document.getElementById('viewOthersPoints').addEventListener('click', async function () {
-      const usersSnapshot = await getDocs(collection(db, 'users'));
-      const othersPointsHtml = usersSnapshot.docs
-        .filter(doc => doc.id !== activeUser)
-        .map(doc => `<p>${doc.id}: ${doc.data().points} coins</p>`)
-        .join('');
-      
-      document.getElementById('othersPoints').innerHTML = othersPointsHtml;
-    });
+// عرض نقاط المستخدمين الآخرين
+document.getElementById('viewOthersPoints').addEventListener('click', async function () {
+  const usersSnapshot = await getDocs(collection(db, 'users'));
+  const othersPointsHtml = usersSnapshot.docs
+    .filter(doc => doc.id !== activeUser)
+    .map(doc => `<p>${doc.id}: ${doc.data().points} coins</p>`)
+    .join('');
+  
+  document.getElementById('othersPoints').innerHTML = othersPointsHtml;
+});
 
-    // إرسال النقاط لمستخدم آخر
-    document.getElementById('redButton').addEventListener('click', async function () {
-      const sender = activeUser;
-      if (receiver === sender) {
-  showAlert('لا يمكنك إرسال النقاط إلى نفسك!', 'error');
-  return;
-}
-      
-      const receiver = document.getElementById('receiverUsername').value.trim();
-      const points = parseInt(document.getElementById('sendPointsAmount').value);
+// إرسال النقاط لمستخدم آخر
+document.getElementById('redButton').addEventListener('click', async function () {
+  const sender = activeUser;
+  const receiver = document.getElementById('receiverUsername').value.trim();
+  const pointsValue = document.getElementById('sendPointsAmount').value.trim();
 
-      const userDocRef = doc(db, 'users', sender);
-      const receiverDocRef = doc(db, 'users', receiver);
+  if (!receiver || !pointsValue) {
+    alert('يرجى ملء كل الخانات!');
+    return;
+  }
 
-      const senderDoc = await getDoc(userDocRef);
-      const receiverDoc = await getDoc(receiverDocRef);
+  const points = parseInt(pointsValue);
 
-      if (!receiver || !receiverDoc.exists()) {
-        showAlert('User not found!', 'error');
-        return;
-      }
+  if (isNaN(points) || points <= 0) {
+    alert('يرجى إدخال عدد نقاط صحيح وأكبر من 0!');
+    return;
+  }
 
-      if (points <= 0 || senderDoc.data().points < points) {
-        showAlert('Not enough coins!', 'error');
-        return;
-      }
+  if (receiver === sender) {
+    alert('لا يمكنك إرسال النقاط إلى نفسك!');
+    return;
+  }
 
-      // تقليص النقاط من المرسل وزيادتها في حساب المستقبل
-      await updateDoc(userDocRef, { points: senderDoc.data().points - points });
-      await updateDoc(receiverDocRef, { points: (receiverDoc.data().points || 0) + points });
+  const senderDocRef = doc(db, 'users', sender);
+  const receiverDocRef = doc(db, 'users', receiver);
 
-      document.getElementById('points').innerText = senderDoc.data().points - points;
-      showAlert('Coins sent successfully!', 'success');
-    });
-  </script>
+  const senderDocSnap = await getDoc(senderDocRef);
+  const receiverDocSnap = await getDoc(receiverDocRef);
+
+  if (!receiverDocSnap.exists()) {
+    alert('اسم المستخدم المستقبل غير موجود!');
+    return;
+  }
+
+  const senderData = senderDocSnap.data();
+  const receiverData = receiverDocSnap.data();
+
+  if (senderData.points < points) {
+    alert('ليس لديك نقاط كافية!');
+    return;
+  }
+
+  // خصم وإضافة النقاط
+  await updateDoc(senderDocRef, {
+    points: senderData.points - points
+  });
+
+  await updateDoc(receiverDocRef, {
+    points: (receiverData.points || 0) + points,
+    notification: {
+      from: sender,
+      amount: points,
+      read: false
+    }
+  });
+
+  document.getElementById('points').innerText = senderData.points - points;
+
+  // تنبيه بالتفاصيل
+  alert(`تم إرسال ${points} نقطة بنجاح إلى ${receiver}!\nتم خصمها من حسابك.`);
+});
+</script>
 </body>
 </html>
