@@ -187,11 +187,9 @@ getUserData();
 
 // تسجيل الخروج
 document.getElementById('backButton').addEventListener('click', function () {
-  const confirmLogout = confirm('هل أنت متأكد أنك تريد تسجيل الخروج؟');
-  if (confirmLogout) {
-    localStorage.removeItem('activeUser');
-    window.location.href = 'login.html';
-  }
+  alert('سيتم تسجيل الخروج الآن');
+  localStorage.removeItem('activeUser');
+  window.location.href = 'login.html';
 });
 
 // عرض نقاط المستخدمين الآخرين

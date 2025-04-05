@@ -96,20 +96,19 @@ h2 {
   align-items: flex-start;  
   height: calc(100vh - 140px); /* تقليل المساحة بحيث لا تتجاوز الرسائل مربع الإدخال */  
   padding-bottom: 15px; /* ترك مسافة فارغة فوق الإدخال */  
-  overflow-x: hidden;
 }  
   
 /* تنسيق الرسائل */  
-.message {
-  max-width: 70%;
-  padding: 10px;
-  border-radius: 15px;
-  margin: 5px;
-  display: inline-block;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
-} 
+.message {  
+  max-width: 70%;  
+  padding-top: 50px;  
+  padding: 10px;  
+  border-radius: 15px;  
+  margin: 5px;  
+  word-wrap: break-word;  
+  display: flex;  
+  margin-top: 5px;  
+}  
   
 /* رسائلي */  
 .myMessage {  
@@ -326,25 +325,19 @@ async function sendMessage() {
 onSnapshot(messagesQuery, (snapshot) => {  
     chatBox.innerHTML = "";  
   
-    snapshot.forEach((doc) => {  
-        const data = doc.data();  
-        const isMyMessage = (data.sender === activeUser);  
-  
-        const messageElement = document.createElement("div");  
-        messageElement.classList.add("message", isMyMessage ? "myMessage" : "otherMessage");  
-  
-        // ✅ تحويل الأكواد البرمجية إلى نصوص عادية  
-        const escapedMessage = escapeHTML(data.message);  
-  
-        messageElement.innerHTML = `<strong>${data.sender}:</strong> ${escapedMessage}`;  
-  
-        chatBox.appendChild(messageElement);  
-  
-        // ✅ إرسال إشعار إذا كانت الرسالة من شخص آخر  
-        if (!isMyMessage && document.hidden) {  
-            showNotification(data.sender, data.message);  
-        }  
-    });  
+    snapshot.forEach((docSnap) => {
+    const data = docSnap.data();
+    const isMyMessage = (data.sender === activeUser);
+
+    const messageElement = document.createElement("div");
+    messageElement.classList.add("message", isMyMessage ? "myMessage" : "otherMessage");
+    messageElement.setAttribute("data-id", docSnap.id); // حفظ معرف الرسالة
+
+    const escapedMessage = escapeHTML(data.message);
+    messageElement.innerHTML = `<strong>${data.sender}:</strong> ${escapedMessage}`;
+
+    chatBox.appendChild(messageElement);
+}); 
   
     chatBox.scrollTop = chatBox.scrollHeight; // التمرير لآخر رسالة  
 });    
@@ -371,7 +364,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (isHolding) {  
                 showOptions(messageElement, messageText);  
             }  
-        }, 1000); // ⏳ انتظار 3 ثوانٍ قبل عرض الخيارات  
+        }, 500); // ⏳ انتظار 3 ثوانٍ قبل عرض الخيارات  
     }  
   
     function cancelHold() {  
@@ -407,7 +400,8 @@ document.addEventListener("DOMContentLoaded", () => {
         deleteBtn.style.display = messageElement.classList.contains("myMessage") ? "block" : "none";  
       deleteBtn.addEventListener("click", async () => {  
     if (confirm("هل تريد حذف هذه الرسالة؟")) {  
-        await deleteMessage(messageId, messageElement);  
+        const docId = messageElement.getAttribute("data-id");
+await deleteMessage(docId, messageElement);  
         closeOptions();  
     }  
 });  
