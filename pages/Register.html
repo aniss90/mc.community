@@ -111,7 +111,7 @@
         
       <div class="password-container">
   <input type="password" id="password" placeholder="Password" required>
-  <span class="toggle-password">👁️</span> 
+  <span class="toggle-password">️🙉</span> 
       </br>   
        <br>  
       <input type="email" id="email" placeholder="your email" required>  
@@ -149,7 +149,7 @@ togglePassword.addEventListener('click', function () {
   passwordInput.setAttribute('type', type);
   
   // Toggle the eye icon
-  this.textContent = type === 'password' ? '👁️' : '👁️🗨️';
+  this.textContent = type === 'password' ? '️🙈' : '️🙉';
 });
   document.getElementById('whiteButton').addEventListener('click', async function () {  
       const username = document.getElementById('username').value.trim();  
@@ -157,34 +157,37 @@ togglePassword.addEventListener('click', function () {
       const email = document.getElementById('email').value.trim();  
   
       if (!username || !password || !email) {  
-        showAlert('Please fill out all fields to create the account', 'error');  
+        alert('Please fill out all fields to create the account 💡', 'error');  
         return;  
       }  
   
-      try {  
-        // تحقق من إذا كان اسم المستخدم موجودًا  
-        const userDocRef = doc(db, 'users', username);  
-        const userDoc = await getDoc(userDocRef);  
-  
-        if (userDoc.exists()) {  
-          showAlert('Username already exists', 'error');  
-          return;  
-        }  
-  
-        // إنشاء الحساب وإضافته إلى Firestore  
-        await setDoc(userDocRef, { password, points: 0 });  
-        showAlert(`The account has been created successfully, welcome ${username}.`, 'success');  
-      } catch (error) {  
-        console.error('Error while creating the account:', error);  
-        showAlert('An error occurred while creating the account. Try again.', 'error');  
-      }  
+      try {
+  // تحقق من إذا كان اسم المستخدم موجودًا
+  const userDocRef = doc(db, 'users', username);  
+  console.log('Checking if user exists:', username); // إضافة log هنا
+  const userDoc = await getDoc(userDocRef);  
+
+  if (userDoc.exists()) {  
+    console.log('Username already exists '); // إضافة log هنا
+    alert('Username already exists ❌', 'error');  
+    return;  
+  }  
+
+  // إنشاء الحساب وإضافته إلى Firestore
+  console.log('Creating new account for:', username); // إضافة log هنا
+  await setDoc(userDocRef, { 
+    password, 
+    points: 0, 
+    email: email // إضافة البريد الإلكتروني
+  });  
+  alert(`The account has been created successfully ✅, welcome ${username}.✨`, 'success');  
+} catch (error) {  
+  console.error('Error while creating the account ❌:', error);  
+  alert('An error occurred while creating the account. Try again.', 'error');  
+}
     });  
   
-</script>    <script>  
-    function openWebsite(url) {  
-      window.open(url, "_blank");  
-    }  
-  </script>   
+</script> 
   <script src="scripts/main.js"></script> 
     <script>
   function goBack() {

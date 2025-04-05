@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../style/main.css">
-    <title>Users list </title>
+    <link rel="stylesheet" href="../style/main.css">
+    <title>Users list</title>
     <style>
     @font-face {
         font-family: minecraft;
@@ -18,19 +18,18 @@
         font-family: minecraft-five;
         src: url('../font/Minecraft-Five.ttf');
     }
-        body { 
+    body { 
         font-family: Arial, sans-serif; 
         text-align: center;  
-          
-        }
-        h2 { color: #333; }
-        table { width: 50%; margin: 20px auto; border-collapse: collapse; background: white; }
-        th, td { padding: 10px; border: 1px solid #ddd; }
-        th { background: #3498db; color: white; }
-        tbody.link {
-    color: #0088FF;
-     font-family: minecraft-five;
-}
+    }
+    h2 { color: #333; }
+    table { width: 50%; margin: 20px auto; border-collapse: collapse; background: white; }
+    th, td { padding: 10px; border: 1px solid #ddd; }
+    th { background: #3498db; color: white; }
+    tbody.link {
+        color: #0088FF;
+        font-family: minecraft-five;
+    }
     .note {  
         background: #222222;  
         border: 3px solid #FFBC13;  
@@ -39,7 +38,6 @@
         color: white;  
         width: auto;  
         padding: 5px  
-        
     }  
     .note note {  
         background: #FFBC13;  
@@ -50,7 +48,7 @@
         height: 24px;   
     }  
     p {  
-      color: #FFFFFF  
+        color: #FFFFFF  
     }  
     .note button {  
         background: #FFBC13;  
@@ -61,89 +59,121 @@
         height: 24px;   
     }  
     table {
-    width: 99%;
-    max-width: 97%;
-    height: auto;
-    background-color: #222222;
-    color: white;
-    border-radius: 10px;
-    margin: 20px auto;
-    border-collapse: collapse;
-    border-bottom: 3px solid #737373;
-    border-left: 3px solid #737373;
-    border-right: 3px solid #737373;
-
-    
+        width: 99%;
+        max-width: 97%;
+        height: auto;
+        background-color: #222222;
+        color: white;
+        border-radius: 10px;
+        margin: 20px auto;
+        border-collapse: collapse;
+        border-bottom: 3px solid #737373;
+        border-left: 3px solid #737373;
+        border-right: 3px solid #737373;
     } 
 
-th {
-    background-color: #FFFFFF;
-    color: black;
-    padding: 10px;
+    th {
+        background-color: #FFFFFF;
+        color: black;
+        padding: 10px;
+    }
+
+    td {
+        background-color: #4D4D4D;
+        color: white;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+    td a {
+        color: #FFFFFF;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    td a:hover {
+        color: #9F9F9F;
+        text-decoration: underline;
+    }
+
+    td strong {
+        color: #00FF00;
+    }
+
+    th, td {
+        border: none;
+    }
     
-  
-}
-
-td {
-    background-color: #4D4D4D;
-    color: white;
-    padding: 10px;
-    border: 1px solid #ddd;
+    /* Search box styles */
+    .search-container {
+        margin: 20px auto;
+        width: 50%;
+    }
     
-}
-td a {
-    color: #FFFFFF; /* لون ذهبي */
-    font-weight: bold;
-    text-decoration: none;
-}
-
-td a:hover {
-    color: #9F9F9F; /* برتقالي عند المرور */
-    text-decoration: underline;
-}
-
-td strong {
-    color: #00FF00; /* لون أخضر للمستخدم النشط */
-}
-
-
-th, td {
-    border: none; /* إزالة الحدود */
-}
+    #searchInput {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 2px solid #FFBC13;
+        border-radius: 2px;
+        background-color: #222222;
+        color: white;
+        font-size: 13px;
+        background-image: url('../imag/magnifyingGlass-52f96.png');
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 15px;
+    }
+    
+    #searchInput:focus {
+        outline: none;
+        border-color: #FFD700;
+    }
+    
+    .no-results {
+        color: #FF5555;
+        padding: 10px;
+        font-weight: bold;
+    }
     </style>
 </head>
 <body>
-      <button class="back" id="backButton" type="button" onclick="goBack()"></button>
-<div class="header"> User list   <img src="../imag/friends-9e435.png" height="20">  
-  <div class="description">   
+    <button class="back" id="backButton" type="button" onclick="goBack()"></button>
+    <div class="header"> User list <img src="../imag/friends-9e435.png" height="20">  
+        <div class="description">   
+            <div class="button">  
+                <div class="note">  
+                    <note>  
+                        What's new?!!<img src="../imag/WarningGlyph.png" height="12" weight="auto">  
+                    </note>  
+                    <br>   
+                    <p>   
+                        If you want to chating with a user, click on his name and it will take you to the chanting page. 
+                        </br>   
+                    </p>   
+                    إذا كنت تريد التواصل مع مستخدم ما، انقر على اسمه وسوف يأخذك إلى صفحة التواصل. 
+                </div>  
+            </div>  
+            
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search for users..." onkeyup="searchUsers()">
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username <img src="../imag/player-head-128-052ba.png" height="12"></th>
+                        <th>Coins <img src="../imag/MCoin.png" alt="Coin" height="12"></th>
+                    </tr>
+                </thead>
+                <tbody id="userList">
+                    <tr><td colspan="2"><img src="../imag/loading_spinner.gif" height="20"></td></tr>
+                </tbody>
+            </table>
+        </div> 
+    <img src="../imag/Sign-in_Prompts_Launch Animated-fdbda.gif" height="auto" width="250">
     
-      <div class="button">  
-      <div class="note">  
-        <note>  
-          What's new?!!<img src="../imag/WarningGlyph.png" height="12" weight="auto">  
-          </note>  
-        <br>   
-        <p>   
-If you want to chating with a user, click on his name and it will take you to the chanting page. 
-
-  </br>   
-  </p>   
-إذا كنت تريد التواصل مع مستخدم ما، انقر على اسمه وسوف يأخذك إلى صفحة التواصل. 
-      </div>  
-    </div>  
-    <table>
-        <thead>
-            <tr>
-                <th>Username  <img src="../imag/player-head-128-052ba.png" height="12"></th>
-                <th>Coins  <img src="../imag/MCoin.png" alt="Coin" height="12"></th>
-            </tr>
-        </thead>
-   <tbody id="userList">
-    <tr><td colspan="2">  <img src="../imag/loading_spinner.gif" height="20"></td></td></tr>
-</tbody>
-    </table>
-    </div> 
-  <img src="../imag/Sign-in_Prompts_Launch Animated-fdbda.gif" height="auto" width="250">
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
@@ -153,7 +183,7 @@ If you want to chating with a user, click on his name and it will take you to th
             apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
             authDomain: "minecraft-community-4fd3d.firebaseapp.com",
             projectId: "minecraft-community-4fd3d",
-            storageBucket: "minecraft-community-4fd3d.firebasestorage.app",
+            storageBucket: "minecraft-community-4fd3d.appspot.com",
             messagingSenderId: "550140131027",
             appId: "1:550140131027:web:a5186726cf5372e138c626",
             measurementId: "G-F18SFG2LMZ"
@@ -164,47 +194,83 @@ If you want to chating with a user, click on his name and it will take you to th
 
         // جلب قائمة المستخدمين من Firestore وتحديثها في الوقت الحقيقي
         const userList = document.getElementById("userList");
+        let allUsers = []; // لتخزين جميع المستخدمين للبحث
 
         onSnapshot(collection(db, "users"), (snapshot) => {
-    userList.innerHTML = ""; // تفريغ الجدول قبل التحديث
-// ✅ التحقق مما إذا كان المستخدم مسجلاً
-const activeUser = localStorage.getItem("activeUser");
-
-if (!activeUser) {
-    alert("You must log in first!");
-    window.location.href = "login.html"; // تغيير الرابط إلى صفحة تسجيل الدخول المناسبة لديك
-}
-    if (snapshot.empty) {
-        userList.innerHTML = "<tr><td colspan='2'>No users found</td></tr>";
-    } else {
-        const activeUser = localStorage.getItem("activeUser"); // اسم المستخدم المسجل
-
-        snapshot.forEach((doc) => {
-            const username = doc.id; // اسم المستخدم
-            const points = doc.data().points || 0 ; // عدد النقاط
-
+            userList.innerHTML = ""; // تفريغ الجدول قبل التحديث
             
-
-            // 🔹 إذا كان هذا المستخدم هو المستخدم المسجل، لا تجعله رابطًا
-            const row = (username === activeUser)
-                ? `<tr><td><strong>${username}</strong> (it's You)</td><td class="points">${points} <img src="../imag/MCoin.png" alt="Coin" height="15"></td></tr>`
-                : `<tr><td><a href="chat_beta.html?user=${encodeURIComponent(username)}">${username}</a></td><td class="points">${points} <img src="../imag/MCoin.png" alt="Coin" height="12"></td></tr>`;
-
-            userList.innerHTML += row;
+            // ✅ التحقق مما إذا كان المستخدم مسجلاً
+            const activeUser = localStorage.getItem("activeUser");
+            if (!activeUser) {
+                alert("You must log in first!");
+                window.location.href = "login.html";
+                return;
+            }
             
+            if (snapshot.empty) {
+                userList.innerHTML = "<tr><td colspan='2'>No users found</td></tr>";
+            } else {
+                allUsers = []; // إعادة تهيئة مصفوفة المستخدمين
+                snapshot.forEach((doc) => {
+                    const username = doc.id;
+                    const points = doc.data().points || 0;
+                    allUsers.push({username, points}); // تخزين البيانات للبحث
+                    
+                    displayUser(username, points, activeUser);
+                });
+            }
         });
-    }
-});
-    </script>
-      <script>
-  function goBack() {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
-    }
-  }
-</script>
 
+        function displayUser(username, points, activeUser) {
+            const row = (username === activeUser)
+                ? `<tr class="user-row"><td><strong>${username}</strong> (it's You)</td><td class="points">${points} <img src="../imag/MCoin.png" alt="Coin" height="15"></td></tr>`
+                : `<tr class="user-row"><td><a href="chat_beta.html?user=${encodeURIComponent(username)}">${username}</a></td><td class="points">${points} <img src="../imag/MCoin.png" alt="Coin" height="12"></td></tr>`;
+            
+            userList.innerHTML += row;
+        }
+    </script>
+    
+    <script>
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '/';
+            }
+        }
+        
+        // دالة البحث عن المستخدمين
+        function searchUsers() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toUpperCase();
+            const rows = document.getElementsByClassName("user-row");
+            let found = false;
+            
+            for (let i = 0; i < rows.length; i++) {
+                const username = rows[i].getElementsByTagName("td")[0].textContent || 
+                                rows[i].getElementsByTagName("td")[0].innerText;
+                
+                if (username.toUpperCase().indexOf(filter) > -1) {
+                    rows[i].style.display = "";
+                    found = true;
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+            
+            // إظهار رسالة إذا لم يتم العثور على نتائج
+            const noResults = document.querySelector(".no-results");
+            if (!found) {
+                if (!noResults) {
+                    const msg = document.createElement("div");
+                    msg.className = "no-results";
+                    msg.textContent = "No users found matching your search.";
+                    userList.appendChild(msg);
+                }
+            } else if (noResults) {
+                noResults.remove();
+            }
+        }
+    </script>
 </body>
 </html>
