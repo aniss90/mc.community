@@ -1,403 +1,48 @@
-
 <!DOCTYPE html>
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../style/main.css">
-  <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
-  <title>Dino Game - Earn Coins</title>
-  <style>
-    body {
-      background-color: #f7f7f7;
-      text-align: center;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-    }
-    
-    #gameContainer {
-      margin: 0 auto;
-      width: 600px;
-      position: relative;
-    }
-    
-    #dinoCanvas {
-      background-color: white;
-      border: 2px solid #3D3D3D;
-      box-shadow: 0px 2px 0px rgba(111, 111, 111, 1);
-    }
-    
-    #startButton {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 20px;
-      border-radius: 5px;
-    }
-    
-    #scoreContainer {
-      margin-top: 20px;
-      font-size: 18px;
-    }
-    
-    #instructions {
-      margin-top: 20px;
-      background-color: #f0f0f0;
-      padding: 15px;
-      border-radius: 5px;
-    }
-    
-    .back-button {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background-color: #f44336;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-  </style>
+  <title>Push Notification</title>
 </head>
 <body>
-  <button class="back-button" onclick="goBack()">Back</button>
-  <div id="gameContainer">
-    <h2>Dino Game - Earn Coins</h2>
-    <p>Play the game to earn coins! Jump over cacti by pressing the SPACE key.</p>
-    
-    <canvas id="dinoCanvas" width="600" height="150"></canvas>
-    
-    <div id="scoreContainer">
-      Score: <span id="score">0</span> | 
-      Coins Earned: <span id="coinsEarned">0</span>
-    </div>
-    
-    <button id="startButton">Start Game</button>
-    
-    <div id="instructions">
-      <h3>How to Play:</h3>
-      <p>Press SPACE to jump</p>
-      <p>Each 100 points = 1 coin</p>
-      <p>Game ends when you hit an obstacle</p>
-    </div>
-  </div>
-
+  <button onclick="sendNotification()">ورر ارسال</button>
+ <script>
+   self.addEventListener('notificationclick', function(event) {
+  event.notification.close();
+  // ممكن تضيف هنا أي إجراء عند النقر على الإشعار
+});
+ </script>
   <script>
-    // Back button function
-    function goBack() {
-      window.location.href = 'generalpage.html';
+    // تسجيل Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').then(function(reg) {
+        console.log("تم تسجيل Service Worker");
+      }).catch(function(error) {
+        console.error("فشل تسجيل Service Worker", error);
+      });
     }
 
-    // Game variables
-    const canvas = document.getElementById('dinoCanvas');
-    const ctx = canvas.getContext('2d');
-    const startButton = document.getElementById('startButton');
-    const scoreElement = document.getElementById('score');
-    const coinsEarnedElement = document.getElementById('coinsEarned');
-    
-    let gameSpeed = 5;
-    let score = 0;
-    let coinsEarned = 0;
-    let gameStarted = false;
-    let gameOver = false;
-    let animationId;
-    
-    // Dino properties
-    const dino = {
-      x: 50,
-      y: 100,
-      width: 30,
-      height: 50,
-      isJumping: false,
-      jumpVelocity: 0,
-      gravity: 0.4
-    };
-    
-    // Cactus properties
-    const cacti = [];
-    let cactusFrequency = 0;
-    
-    // Cloud properties
-    const clouds = [];
-    
-    // Ground properties
-    const ground = {
-      x: 0,
-      height: 10,
-      width: canvas.width
-    };
-    
-    // Event listeners
-    startButton.addEventListener('click', startGame);
-    document.addEventListener('keydown', function(e) {
-      if (e.code === 'Space' && !dino.isJumping && gameStarted && !gameOver) {
-        dino.isJumping = true;
-        dino.jumpVelocity = -10;
-      }
-      
-      if (e.code === 'Space' && gameOver) {
-        resetGame();
-        startGame();
-      }
-    });
-    
-    // Start game function
-    function startGame() {
-      if (!gameStarted) {
-        gameStarted = true;
-        gameOver = false;
-        score = 0;
-        startButton.style.display = 'none';
-        animate();
-      }
-    }
-    
-    // Reset game function
-    function resetGame() {
-      gameOver = false;
-      score = 0;
-      dino.y = 100;
-      dino.isJumping = false;
-      cacti.length = 0;
-      clouds.length = 0;
-      gameSpeed = 5;
-    }
-    
-    // Game loop
-    function animate() {
-      if (gameOver) {
-        cancelAnimationFrame(animationId);
-        startButton.style.display = 'block';
-        startButton.textContent = 'Play Again';
-        saveCoins();
-        return;
-      }
-      
-      // Clear canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Update and draw ground
-      ground.x -= gameSpeed;
-      if (ground.x <= -canvas.width) ground.x = 0;
-      
-      ctx.fillStyle = '#535353';
-      ctx.fillRect(0, canvas.height - ground.height, canvas.width, ground.height);
-      
-      // Draw ground pattern
-      ctx.fillStyle = '#7d7d7d';
-      for (let i = 0; i < canvas.width + Math.abs(ground.x); i += 20) {
-        ctx.fillRect(ground.x + i, canvas.height - ground.height, 10, ground.height);
-      }
-      
-      // Update and draw dino
-            // Update and draw dino
-      if (dino.isJumping) {
-        dino.y += dino.jumpVelocity;
-        dino.jumpVelocity += dino.gravity;
-        
-        if (dino.y >= 100) {
-          dino.y = 100;
-          dino.isJumping = false;
-          dino.jumpVelocity = 0;
-        }
-      }
-      
-      // Draw dino character
-      ctx.fillStyle = '#535353';
-      ctx.fillRect(dino.x, canvas.height - dino.height - ground.height, dino.width, dino.height);
-      
-      // Draw dino legs (animation)
-      const legPosition = Math.sin(Date.now() / 100) * 5;
-      if (!dino.isJumping && gameSpeed > 0) {
-        ctx.fillRect(dino.x + 5, canvas.height - 15, 5, 5);
-        ctx.fillRect(dino.x + 20, canvas.height - 15 + legPosition, 5, 5);
-      }
-      
-      // Generate cacti obstacles
-      cactusFrequency++;
-      if (cactusFrequency > 100 + Math.random() * 100 && gameStarted) {
-        const height = 30 + Math.random() * 20;
-        const width = 15 + Math.random() * 10;
-        cacti.push({
-          x: canvas.width,
-          y: canvas.height - height - ground.height,
-          width: width,
-          height: height,
-          type: Math.floor(Math.random() * 3) // Different cactus types
-        });
-        cactusFrequency = 0;
-      }
-      
-      // Update and draw cacti
-      for (let i = 0; i < cacti.length; i++) {
-        const cactus = cacti[i];
-        cactus.x -= gameSpeed;
-        
-        // Draw different cactus types
-        ctx.fillStyle = '#2E8B57';
-        if (cactus.type === 0) {
-          // Single cactus
-          ctx.fillRect(cactus.x, cactus.y, cactus.width, cactus.height);
-        } else if (cactus.type === 1) {
-          // Double cactus
-          ctx.fillRect(cactus.x, cactus.y, cactus.width, cactus.height);
-          ctx.fillRect(cactus.x + cactus.width + 5, cactus.y + 5, cactus.width/2, cactus.height - 5);
-        } else {
-          // Triple cactus
-          ctx.fillRect(cactus.x, cactus.y, cactus.width, cactus.height);
-          ctx.fillRect(cactus.x + cactus.width + 3, cactus.y + 8, cactus.width/1.5, cactus.height - 8);
-          ctx.fillRect(cactus.x + cactus.width * 1.8 + 3, cactus.y + 12, cactus.width/2, cactus.height - 12);
-        }
-        
-        // Collision detection
-        if (
-          dino.x + dino.width > cactus.x &&
-          dino.x < cactus.x + cactus.width &&
-          dino.y + dino.height > cactus.y
-        ) {
-          gameOver = true;
-          // Play crash sound
-          playSound('crash');
-        }
-        
-        // Remove off-screen cacti
-        if (cactus.x + cactus.width < 0) {
-          cacti.splice(i, 1);
-          i--;
-          score++;
-          scoreElement.textContent = score;
-          
-          // Calculate coins (1 coin per 100 points)
-          const newCoins = Math.floor(score / 100);
-          if (newCoins > coinsEarned) {
-            coinsEarned = newCoins;
-            coinsEarnedElement.textContent = coinsEarned;
-            // Play coin sound when reaching 100 points
-            if (score % 100 === 0) {
-              playSound('coin');
-            }
+    // دالة إرسال الإشعار
+    function sendNotification() {
+      if (Notification.permission === "granted") {
+        navigator.serviceWorker.getRegistration().then(function(reg) {
+          if (reg) {
+            reg.showNotification("هلاا بيكم");
           }
-          
-          // Increase game speed gradually
-          if (score % 20 === 0) {
-            gameSpeed += 0.3;
-          }
-        }
-      }
-      
-      // Generate clouds (decorative)
-      if (Math.random() < 0.01 && gameStarted) {
-        const size = 20 + Math.random() * 15;
-        clouds.push({
-          x: canvas.width,
-          y: 30 + Math.random() * 40,
-          width: size,
-          height: size / 2
         });
-      }
-      
-      // Update and draw clouds
-      for (let i = 0; i < clouds.length; i++) {
-        const cloud = clouds[i];
-        cloud.x -= gameSpeed / 3;
-        
-        ctx.fillStyle = '#f0f0f0';
-        ctx.beginPath();
-        ctx.ellipse(cloud.x, cloud.y, cloud.width, cloud.height, 0, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Remove off-screen clouds
-        if (cloud.x + cloud.width < 0) {
-          clouds.splice(i, 1);
-          i--;
-        }
-      }
-      
-      // Draw sun
-      ctx.fillStyle = '#FFD700';
-      ctx.beginPath();
-      ctx.arc(550, 30, 20, 0, Math.PI * 2);
-      ctx.fill();
-      
-      // Draw game over message
-      if (gameOver) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        ctx.fillStyle = '#fff';
-        ctx.font = '30px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('انتهت اللعبة!', canvas.width/2, canvas.height/2 - 20);
-        ctx.font = '20px Arial';
-        ctx.fillText(`النقاط: ${score}`, canvas.width/2, canvas.height/2 + 20);
-        ctx.fillText(`العملات المكتسبة: ${coinsEarned}`, canvas.width/2, canvas.height/2 + 50);
-      }
-      
-      animationId = requestAnimationFrame(animate);
-    }
-    
-    // Sound effects
-    function playSound(type) {
-      if (type === 'jump') {
-        const jumpSound = new Audio('../sounds/jump.mp3');
-        jumpSound.volume = 0.3;
-        jumpSound.play();
-      } else if (type === 'crash') {
-        const crashSound = new Audio('../sounds/crash.mp3');
-        crashSound.play();
-      } else if (type === 'coin') {
-        const coinSound = new Audio('../sounds/coin.mp3');
-        coinSound.volume = 0.5;
-        coinSound.play();
-      }
-    }
-    
-    // Save earned coins to Firebase
-    async function saveCoins() {
-      const activeUser = localStorage.getItem('activeUser');
-      if (!activeUser || coinsEarned === 0) return;
-      
-      try {
-        // Import Firebase functions
-        const { db } = await import('../scripts/main.js');
-        const { doc, getDoc, updateDoc } = await import('https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js');
-        
-        const userDocRef = doc(db, 'users', activeUser);
-        const userDoc = await getDoc(userDocRef);
-        
-        if (userDoc.exists()) {
-          const currentPoints = userDoc.data().points || 0;
-          await updateDoc(userDocRef, {
-            points: currentPoints + coinsEarned
-          });
-          
-          // Show success message
-          const message = document.createElement('div');
-          message.style.position = 'fixed';
-          message.style.top = '20px';
-          message.style.left = '50%';
-          message.style.transform = 'translateX(-50%)';
-          message.style.backgroundColor = '#4CAF50';
-          message.style.color = 'white';
-          message.style.padding = '15px';
-          message.style.borderRadius = '5px';
-          message.style.zIndex = '1000';
-          message.textContent = `تم إضافة ${coinsEarned} عملة إلى حسابك بنجاح!`;
-          document.body.appendChild(message);
-          
-          setTimeout(() => {
-            document.body.removeChild(message);
-          }, 3000);
-        }
-      } catch (error) {
-        console.error('Error saving coins:', error);
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(function (permission) {
+          if (permission === "granted") {
+            navigator.serviceWorker.getRegistration().then(function(reg) {
+              if (reg) {
+                reg.showNotification("هلاا بيكم");
+              }
+            });
+          }
+        });
       }
     }
   </script>
+  
 </body>
 </html>
