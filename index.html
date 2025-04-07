@@ -55,10 +55,16 @@
       }
     })
     .catch(err => console.error("تعذر تحميل التحديث:", err));
+    if (localStorage.getItem(id)) {
+    // إذا كان الملف موجودًا في التخزين المحلي، حمله مباشرة
+    var cachedFile = localStorage.getItem(id);
+    sendMessage({ event: 'fileStart', id: id, size: cachedFile.size });
+}
 </script>
     <div class="header">  Mc community 
     </div> 
     <div class="content">
+      <progress id="fileProgress" value="0" max="100"></progress>
            <a href="pages/login.html">
        <button id="goldButton" >Login & Register <img  src="imag/add-player@0.5x.icon-2f437.png" height="15"></button></a> 
         <div class="description">A site to communicate with other users, interact and have fun. <br>+
