@@ -118,8 +118,8 @@
   color: #000000;
   height: 40px;
   width: 100%; 
-  border: 2px solid #C0C0C0;
-  box-shadow: 0px 3px 0px #D3D3D3;
+  border: 2px solid #EAEAEA;
+  box-shadow: 0px 3px 0px #B0B0B0;
   font-size: 16px;
   cursor: pointer;
   position: relative;
@@ -137,7 +137,7 @@
 }
 
 .purpleButton {
-  text-shadow: 1px 1px 0.9px #000000;
+  text-shadow: 1px 1px 0.9px rgba(157, 0, 157, 1);
   height: 40px;
   width: 100%;
   border: 2px solid #FE26FF;
@@ -152,7 +152,7 @@
   color: #FFFFFF;
   margin: auto;
 }
-.goldButton:hover {
+.goldeButton:hover {
   top: 2px;
   height: 40px;
   width: 100%;
@@ -160,8 +160,8 @@
   background-color: #BEBB00;
 }
 
-.goldButton {
-  
+.goldeButton {
+  text-shadow: 1px 1px 0.9px rgba(224, 155, 0, 1);
   height: 40px;
   width: 100%;
   border: 2px solid #FFFFFF;
@@ -191,16 +191,24 @@
             <div class="title">My coins: <span id="points">0</span> <img src="../imag/MCoin.png" alt="Coin" height="15"></div>
             <div class="loot-boxes">
                 <!-- صناديق loot buttons -->
-                   <div class="description"> 
-                <div class="title"> gifts boxs</div> Buy a box to get random coins
-             
+                   
+                     <div class="description"> 
+                <div class="title"> silver box</div> 
+              
+                You can get between 1 to 1000 coins.
              <button class="silverButton" id="cheapBox" onclick="openLootBox('cheap')">Silver Box (199<img src="../imag/MCoin.png" alt="Coin" height="14">)</button>
                 </div>
-                <div class="description"
-<button class="goldButton" id="mediumBox" onclick="openLootBox('medium')">Gold Box (2900<img src="../imag/MCoin.png" alt="Coin" height="14">)</button>
+                
+                <div class="description"> 
+            <div class="title"> gold box</div> 
+                You can get between 99 to 3000 coins.
+<button class="goldeButton" id="mediumBox" onclick="openLootBox('medium')">Gold Box (2900<img src="../imag/MCoin.png" alt="Coin" height="14">)</button>
             </div>
+            
             <div class="description"> 
-<button class="purpleButton" id="expensiveBox" onclick="openLootBox('expensive')">Legendary Box (10100<img src="../imag/MCoin.png" alt="Coin" height="14">)</button>
+                            <div class="title">Legendary  box</div> 
+                You can get between 1 to 90k coins.
+<button class="purpleButton" id="expensiveBox" onclick="openLootBox('expensive')">Legendary Box (10.1K<img src="../imag/MCoin.png" alt="Coin" height="14">)</button>
             </div>
             </div>
             <div class="title"> items shop</div> 
@@ -223,26 +231,26 @@
     }
 
     const shopItems = [
-        { name: "Axe enchanted", price: 2420, imageUrl: "../Emojis/axe_gif.gif" },
+        { name: "Axe enchanted", price: 7420, imageUrl: "../Emojis/axe_gif.gif" },
         { name: "The CD", price: 20000, imageUrl: "../Emojis/cd_gif.gif" },
         { name: "Special diamond", price: 70, imageUrl: "../Emojis/diamond_gif.gif" },
-        { name: "Water tap ", price: 120, imageUrl: "../Emojis/tap_gif.gif" }, 
-        { name: "The pumpkin", price: 340, imageUrl: "../Emojis/spooky_gif.gif" },
-        { name: "Pokeball", price: 280, imageUrl: "../Emojis/pokeball_gif.gif" },
+        { name: "Water tap ", price: 11100, imageUrl: "../Emojis/tap_gif.gif" }, 
+        { name: "The pumpkin", price: 5340, imageUrl: "../Emojis/spooky_gif.gif" },
+        { name: "Pokeball", price: 8980, imageUrl: "../Emojis/pokeball_gif.gif" },
         { name: "Grass block", price: 530000, imageUrl: "../Emojis/minecraft_gif.gif" },
-        { name: "Camera", price: 710, imageUrl: "../Emojis/camera_gif.gif" },
-        { name: "The burger", price: 220, imageUrl: "../Emojis/burger_gif.gif" },
+        { name: "Camera", price: 7100, imageUrl: "../Emojis/camera_gif.gif" },
+        { name: "The burger", price: 1790, imageUrl: "../Emojis/burger_gif.gif" },
         { name: "The betahat", price: 530, imageUrl: "../Emojis/betahat.gif" },
-        { name: "8Ball", price: 800, imageUrl: "../Emojis/8ball.png" },
-        { name: "Crystall ball", price: 320, imageUrl: "../Emojis/crystalball_gif.gif" },
-        { name: "Eye", price: 2050, imageUrl: "../Emojis/eye_gif.gif" },
-        { name: "Galaxy", price: 3200, imageUrl: "../Emojis/galaxy_gif.gif" },
-        { name: "Stero berry", price: 430, imageUrl: "../Emojis/berryspin.gif" },
-        { name: "Enchanted table", price: 1800, imageUrl: "../Emojis/enchantedtable.gif" },
+        { name: "8Ball", price: 8000, imageUrl: "../Emojis/8ball.png" },
+        { name: "Crystall ball", price: 72020, imageUrl: "../Emojis/crystalball_gif.gif" },
+        { name: "Eye", price: 40950, imageUrl: "../Emojis/eye_gif.gif" },
+        { name: "Galaxy", price: 32900, imageUrl: "../Emojis/galaxy_gif.gif" },
+        { name: "Stero berry", price: 1730, imageUrl: "../Emojis/berryspin.gif" },
+        { name: "Enchanted table", price: 9800, imageUrl: "../Emojis/enchantedtable.gif" },
         { name: "Iron pick", price: 36, imageUrl: "../Emojis/ironpick.png" },
-        { name: "The Skull", price: 709, imageUrl: "../Emojis/SpinningSkull.gif" },
+        { name: "The Skull", price: 70009, imageUrl: "../Emojis/SpinningSkull.gif" },
         { name: "The poop", price: 8900, imageUrl: "../Emojis/poop.png" },
-        { name: "Portel", price: 1500, imageUrl: "../Emojis/portal_anim.gif" },
+        { name: "Portel", price: 15000, imageUrl: "../Emojis/portal_anim.gif" },
     ];
 
     function formatNumber(num) {

@@ -79,7 +79,7 @@
           <div class="title">taking chat</div>Chat for talking with other users.
           <a href="List_beta.html">
             <div class="button">
-              <button id="greenButton">Dev.The Chat <img src="../imag/comments_light-88de7.png" height="15"></button>
+              <button id="greenButton">The Chat <img src="../imag/comments_light-88de7.png" height="15"></button>
             </div>
           </a> 
           <div class="description"> 
@@ -87,7 +87,7 @@
             using your coins
             <a href="marketplace.html">
             <div class="button">
-                 <button id="greenButton">Dev.Marketplace <img src="../imag/marketplace-icon-7f96f.png" height="15"></button></div>
+                 <button id="greenButton">Marketplace <img src="../imag/marketplace-icon-7f96f.png" height="15"></button></div>
                  </div>
               </a> 
         </div>
@@ -155,10 +155,12 @@ document.getElementById('whiteButton').addEventListener('click', async function 
     let earnedPoints;
     const chance = Math.random();
 
-    if (chance <= 0.01) {
-      earnedPoints = 1000; // 1% احتمال
+    if (chance <= 0.05) {
+      // 5% احتمال بين 30 و 40
+      earnedPoints = Math.floor(Math.random() * 11) + 30; // من 30 إلى 40
     } else {
-      earnedPoints = Math.floor(Math.random() * 100) + 1; // من 1 إلى 100
+      // 95% احتمال بين 1 و 29
+      earnedPoints = Math.floor(Math.random() * 29) + 1; // من 1 إلى 29
     }
 
     user.points += earnedPoints;
