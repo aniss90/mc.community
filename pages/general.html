@@ -65,13 +65,15 @@
 <body>
    <button class="back" id="backButton" type="button" onclick="goBack()"></button>
   <div class="header"> 
-   general <img src="../Emojis/Win_Computer.gif" height="30">  
-    <div class="description">
+   general <img src="../Emojis/Win_Computer.gif" height="25">  </div> 
+       <div class="content">
+    
       <h1 id="welcomeMessage"></h1>
       <div class="points">
-        <div class="title"> my coins : <span id="points">0</span><img src="../imag/MCoin.png" alt="عملة" height="15"></div> 
+        <div class="title"> your coine : <span id="points">0</span><img src="../imag/MCoin.png" alt="عملة" height="15"></div> 
         <div class="description"> 
-          <button id="whiteButton"> Get coins <img src="../Emojis/dollar.png" height="14"></button>
+        Get coins between 1000 coine and 1 coine.
+          <button id="whiteButton"> Get coine <img src="../Emojis/money_flying.gif" height="16"></button>
         </div> 
         <div class="description">
           <div class="title">taking chat</div>Chat for talking with other users.
@@ -122,7 +124,6 @@
       </div>
     </div>
   </div>
-
 <script type="module">
 import { db } from '../scripts/main.js'; 
 import { doc, getDoc, setDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; 
@@ -134,6 +135,14 @@ if (!activeUser) {
   window.location.href = 'login.html';
 }
 
+// دالة لتنسيق عدد النقاط
+function formatPoints(num) {
+  if (num >= 1_000_000_000_000) return (num / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 'T';
+  if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
+  if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+  return num.toString();
+}
+
 // إضافة النقاط للمستخدم
 document.getElementById('whiteButton').addEventListener('click', async function () {
   const userDocRef = doc(db, 'users', activeUser);
@@ -141,13 +150,24 @@ document.getElementById('whiteButton').addEventListener('click', async function 
 
   if (userDoc.exists()) {
     const user = userDoc.data();
-    user.points++;
+
+    // توليد عدد عشوائي بنسب مختلفة
+    let earnedPoints;
+    const chance = Math.random();
+
+    if (chance <= 0.01) {
+      earnedPoints = 1000; // 1% احتمال
+    } else {
+      earnedPoints = Math.floor(Math.random() * 100) + 1; // من 1 إلى 100
+    }
+
+    user.points += earnedPoints;
 
     await updateDoc(userDocRef, { points: user.points });
 
-    document.getElementById('points').innerText = user.points;
+    document.getElementById('points').innerText = formatPoints(user.points);
 
-    alert('تمت إضافة نقطة بنجاح!');
+    alert(`تمت إضافة ${earnedPoints} نقطة!`);
   } else {
     alert('المستخدم غير موجود!');
   }
@@ -161,16 +181,14 @@ async function getUserData() {
   if (userDoc.exists()) {
     const user = userDoc.data();
     document.getElementById('welcomeMessage').innerText = `Welcome ${activeUser}!`;
-    document.getElementById('points').innerText = user.points;
+    document.getElementById('points').innerText = formatPoints(user.points);
 
-    // تحقق من وجود إشعار غير مقروء
     if (user.notification && user.notification.read === false) {
       const from = user.notification.from;
       const amount = user.notification.amount;
 
       alert(`لقد استلمت ${amount} نقطة من ${from}!`);
 
-      // تعليم الإشعار كمقروء
       await updateDoc(userDocRef, {
         "notification.read": true
       });
@@ -199,7 +217,7 @@ document.getElementById('viewOthersPoints').addEventListener('click', async func
   const usersSnapshot = await getDocs(collection(db, 'users'));
   const othersPointsHtml = usersSnapshot.docs
     .filter(doc => doc.id !== activeUser)
-    .map(doc => `<p>${doc.id}: ${doc.data().points} coins</p>`)
+    .map(doc => `<p>${doc.id}: ${formatPoints(doc.data().points)} coins</p>`)
     .join('');
   
   document.getElementById('othersPoints').innerHTML = othersPointsHtml;
@@ -247,7 +265,6 @@ document.getElementById('redButton').addEventListener('click', async function ()
     return;
   }
 
-  // خصم وإضافة النقاط
   await updateDoc(senderDocRef, {
     points: senderData.points - points
   });
@@ -261,10 +278,9 @@ document.getElementById('redButton').addEventListener('click', async function ()
     }
   });
 
-  document.getElementById('points').innerText = senderData.points - points;
+  document.getElementById('points').innerText = formatPoints(senderData.points - points);
 
-  // تنبيه بالتفاصيل
-  alert(`تم إرسال ${points} نقطة بنجاح إلى ${receiver}!\n It has been deducted from your account.  .`);
+  alert(`تم إرسال ${points} نقطة بنجاح إلى ${receiver}!\n It has been deducted from your account.`);
 });
 </script>
 </body>

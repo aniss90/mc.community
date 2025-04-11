@@ -40,12 +40,12 @@
     }  
       
         button {
-            background: #007bff;
+            background: #8F8F8F;
             color: white;
             cursor: pointer;
         }
         button:hover {
-            background: #0056b3;
+            background: #4E4E4E;
         }
         #emailDisplay {
             font-weight: bold;
@@ -77,7 +77,8 @@
 </head>
 <body>
     <button class="back" id="backButton" type="button" onclick="goBack()"></button>
-  <div class="header">forget password <img src="../imag/gif_test-83efe.gif" height="30">
+  <div class="header">forget password <img src="../imag/gif_test-83efe.gif" height="30"></div>
+      <div class="content">
        <div class="description"> 
              <div class="note">  
         <note>  
@@ -101,7 +102,7 @@
    <p>   <input type="text" id="username" placeholder=" Enter your username  ">
    </p> 
         <br> 
-        <button id="fetchEmailBtn">Show the email  </button>
+        <button  id="fetchEmailBtn">Show the email  </button>
         <p id="emailDisplay"></p> 
         <button id="sendPasswordBtn">  send the password</button>
       </div>

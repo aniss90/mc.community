@@ -443,14 +443,23 @@ async function deleteMessage(docId, messageElement) {
     }  
 }  
 });  
-function showNotification(sender, message) {  
-    if (Notification.permission === "granted") {  
-        new Notification(`رسالة جديدة من ${sender}`, {  
-            body: message,  
-            icon: "../imag/player-head-128-052ba.png" // استبدله بأيقونة مناسبة  
-        });  
-    }  
-}  
+function showNotification(sender, message) {
+    if (Notification.permission === "granted") {
+        new Notification(`رسالة جديدة من ${sender}`, {
+            body: message,
+            icon: "../imag/player-head-128-052ba.png"
+        });
+    } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                new Notification(`رسالة جديدة من ${sender}`, {
+                    body: message,
+                    icon: "../imag/player-head-128-052ba.png"
+                });
+            }
+        });
+    }
+}
   
         sendButton.addEventListener("click", sendMessage);  
     </script>  

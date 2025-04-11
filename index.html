@@ -63,15 +63,19 @@
 </script>
     <div class="header">  Mc community 
     </div> 
-    <div class="content">
-      <progress id="fileProgress" value="0" max="100"></progress>
-           <a href="pages/login.html">
-       <button id="goldButton" >Login & Register <img  src="imag/add-player@0.5x.icon-2f437.png" height="15"></button></a> 
-        <div class="description">A site to communicate with other users, interact and have fun. <br>+
+    <div class="content"> 
+
+    <!--    <div class="description">A site to communicate with other users, interact and have fun. <br>+
           Creator: <a href="YOUTUBE CHANNEL" target="_blank" class="link">Aniss <img src="Emojis/trophy_gif.gif" height="15"></a> 
             <br>+
             Source Credits: <a href="https://www.youtube.com/@T1M0THYYT" target="_blank" class="link">TIМ0THY YT <img src="Emojis/medal_silver_gif.gif" height="15"></a>
-        </div>
+        </div> --> 
+        <div class="description"> 
+<div class="title"> login / create an account </div> 
+Click at gold button to Login or Create an account.
+           <a href="pages/login.html">
+       <button id="goldButton" >Login & Register <img  src="imag/add-player@0.5x.icon-2f437.png" height="15"></button></a> 
+</div>
         <div class="description">
             <div class="title"> <img src="Emojis/notepad_gif.gif" height="15">What is  mc community?
             </div>
@@ -80,7 +84,7 @@
          <div class="description">
             <div class="title">about the developers
             </div>Click to get more information .
-            <a href="pages/lay.html"> 
+            <a href="pages/Developers.html"> 
             <div class="button">
               <button id="purpleButton">About the Developers <img src="Emojis/article_gif.gif" height="15"></button></a> 
               </div> 
@@ -98,13 +102,23 @@
     </div>
 
       <script type="module">
-if (Notification.permission !== "granted") {
-    Notification.requestPermission().then(permission => {
-        if (permission !== "granted") {
-            alert("يرجى تفعيل الإشعارات لاستقبال التنبيهات!");
+// عند تحميل التطبيق
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof cordova !== 'undefined' && cordova.platformId === 'android') {
+        // تحقق من إصدار أندرويد
+        const androidVersion = window.device ? parseInt(window.device.version.split('.')[0]) : 0;
+        if (androidVersion >= 13) {
+            // طلب إذن الإشعارات عبر بلجن الـ Local Notifications
+            if (window.cordova.plugins && window.cordova.plugins.notification) {
+                cordova.plugins.notification.local.requestPermission(function(granted) {
+                    console.log('الإذن:', granted ? 'مُمنوح' : 'مرفوض');
+                });
+            } else {
+                console.error('بلجن الإشعارات غير مثبت!');
+            }
         }
-    });
-}
+    }
+});
 </script>
 
   <script type="module" src="scripts/main.js"></script>

@@ -17,38 +17,7 @@
       src: url('../font/Minecraft-Five.ttf');  
     }  
   
-    /* التنبيهات المخصصة */  
-    .custom-alert {  
-      display: none;  
-      position: fixed;  
-      top: 50%;  
-      left: 50%;  
-      transform: translate(-50%,-190%);  
-      padding: 20px;  
-      border-radius: 5px;  
-      color: white;  
-      text-align: center;  
-      z-index: 9999;  
-      min-width: 20px;  
-      backdrop-filter: blur(5px);  
-      background-color: rgba(0, 0, 0, 0.4);   
-    }  
-        .custom-alert.success {  
-      background-color: rgba(0, 255, 58, 0.54); /* الأخضر */  
-    }  
-    .custom-alert.error {  
-      background-color: rgba(255, 0, 24, 0.48); /* الأحمر */  
-    }  
-  
-    .custom-alert button {  
-      background-color: white;  
-      color: black;  
-      border: none;  
-      padding: 10px;  
-      cursor: pointer;  
-      border-radius: 5px;  
-      margin-top: 10px;  
-    }  
+
     .note {  
         background: #222;  
         border: 3px solid #FFBC13;  
@@ -78,44 +47,84 @@
         font-weight: bold;  
         height: 24px;   
     }  
-        .password-container {
-  position: relative;
-  margin: 10px 0;
-}
-
-.toggle-password {
-  position: fixed; 
-  top: 140px;
-  transform: translateY(-50%);
-  transform: translateX(-150%);
-  cursor: pointer;
-  user-select: none;
-  opacity: 0.7;
+        .password-container {  
+  position: relative;  
+  margin: 10px 0;  
+}  .toggle-password {
+position: absolute;
+margin-top: 11px;
+transform: translateY(-50%);
+transform: translateX(-150%);
+cursor: pointer;
+user-select: none;
+opacity: 0.7;
 }
 
 .toggle-password:hover {
-  opacity: 1;
+opacity: 1;
+}
+        .input-group {
+  position: relative;
+  
+}
+
+.input-group input {
+
+
+
+  outline: none;
+  font-size: 16px;
+}
+
+.input-group label {
+  position: absolute;
+  top: 12px;
+  left: 30%;
+  color: #484848;
+  font-family: minecraft;
+  transition: all 0.3s;
+  pointer-events: none;
+  background-color: transparent;
+  padding: 0 5px;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+  top: -10px;
+  border-radius: 10px;
+  left: 30%;
+  font-size: 14px;
+  background-color: rgba(38, 38, 38);
+  color: #999999;
 } 
-        
   </style> 
   </head>  
 <body>  
     <button class="back" id="backButton" type="button" onclick="goBack()"></button>
-  <div class="header"> register  <img src="../imag/gif_test-83efe.gif" height="30">  
+  <div class="header"> register  <img src="../imag/gif_test-83" height="30">  </div>
+      <div class="content">
   <div class="description">   
   <div class="login-box">  
     <form id="loginForm">  
       <br>  
-      <input type="text" id="username" placeholder="Username " required>  
-      </br>    
+    <div class="input-group">
+      <input type="text" id="username" placeholder=" " required>  
+        <label for="username">Username</label>
+    
         
       <div class="password-container">
-  <input type="password" id="password" placeholder="Password" required>
+        <div class="input-group password-container">
+  <input type="password" id="password" placeholder="" required>
+    <label for="password">password</label>
+  
   <span class="toggle-password">️🙉</span> 
+        </div>
+       <div class="input-email">
+      <input type="email" id="email" placeholder=" " required>  
+        <label for="email">Your email</label>
       </br>   
-       <br>  
-      <input type="email" id="email" placeholder="your email" required>  
-      </br>   
+      </div>
+    </div>
         <div class="description">  
           <div class="button">   
             <button type="button" id="whiteButton"> Register <img src="../imag/add-player@0.5x.icon-2f437.png" height="15"></button>  
