@@ -25,9 +25,18 @@
     <input type="text" id="receiverName" placeholder="اسم المستلم">
     <input type="number" id="pointsToSend" placeholder="عدد النقاط">
     <button onclick="sendPoints()">إرسال</button>
+<button onclick="openSendQR()">إنشاء QR للإرسال</button>
 
     <hr>
-
+<div class="qr-popup" id="sendQrPopup">
+  <div>
+    <h4>إنشاء QR لإرسال النقاط</h4>
+    <input type="number" id="sendQRAmount" placeholder="عدد النقاط">
+    <img id="sendQrImage" src="" style="margin-top: 10px; max-width: 150px;">
+    <p>شارك هذا الكود مع المستلم، عند مسحه سيتم استلام النقاط مباشرة.</p>
+    <button onclick="closeSendQR()">إغلاق</button>
+  </div>
+</div>
     <h3>استلام النقاط</h3>
     <input type="number" id="receiveAmount" placeholder="عدد النقاط المطلوبة">
     <button onclick="showQRCode()">إظهار QR كود</button>
@@ -148,8 +157,8 @@
         return;
       }
 
-      const data = `https://aniss90.github.io/mc.community/pages/confirm-send.html?receiver=${activeUser}&amount=${amount}`;
-
+      const data = `https://aniss90.github.io/mc.community/pages/confirm_send.html?receiver=${activeUser}&amount=${amount}`;
+      
       QRCode.toDataURL(data, (err, url) => {
         if (err) return console.error(err);
         document.getElementById("qrImage").src = url;
@@ -168,6 +177,26 @@
     function closeQR() {
       document.getElementById("qrPopup").style.display = "none";
     }
+    function openSendQR() {
+  document.getElementById("sendQrPopup").style.display = "flex";
+  document.getElementById("sendQRAmount").value = "";
+  document.getElementById("sendQrImage").src = "";
+}
+
+function closeSendQR() {
+  document.getElementById("sendQrPopup").style.display = "none";
+}
+
+document.getElementById("sendQRAmount").addEventListener("input", () => {
+  const amount = parseInt(document.getElementById("sendQRAmount").value);
+  if (!amount || amount <= 0) return;
+
+const data = `https://aniss90.github.io/mc.community/pages/general.html?action=receive&sender=${activeUser}&amount=${amount}`;
+  QRCode.toDataURL(data, (err, url) => {
+    if (err) return console.error(err);
+    document.getElementById("sendQrImage").src = url;
+  });
+});
   </script>
 
 </body>
