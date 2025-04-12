@@ -1,12 +1,12 @@
 
-📍add new gift boxs and new items in marketplace✅ 
-تم اضافة صناديق و ادوات جديدة للمتجر
-🔸new input footing animation ✅
- اضافة جديدة للحقول 
-🔹change system getting coins in get coine button ✅
-تم تغير كم تحصلمن النقاط عن ضغط على زرر get coine 
-🔹change the price of the items in marketplace ✅
-تم تغير ثمن الادوان في المتجر
+📍add QR code send and receive coins ✅ 
+تم اضافة  رمز الاستجابة السريعة لما ترسل او تستلم العملات
+🔸new header animation in general page✅
+ انميش جديد لرأس الصفحة الرأسية 
+🔹change system sending and receive voin  ✅
+تم تغير نظام ارسل و استلام  عملات
+🔹change the UI when you click at get coins button ✅
+تم تغير شكل شكل الواجهة لمل تضغط على زرر الحصول على عملات
   bug fixed...
   اصلاح لبعض الاخطاء...
   
