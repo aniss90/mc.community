@@ -404,6 +404,37 @@ function showCustomAlert(points) {
   }, 2000); // إغلاق بعد 3 ثواني
 }
 </script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const action = params.get("action");
+  const sender = params.get("sender");
+  const amount = parseInt(params.get("amount"));
+
+  const receiver = localStorage.getItem("activeUser");
+
+  if (action === "receive" && sender && receiver && amount > 0) {
+    const senderRef = db.collection("users").doc(sender);
+    const receiverRef = db.collection("users").doc(receiver);
+
+    Promise.all([senderRef.get(), receiverRef.get()]).then(async ([sSnap, rSnap]) => {
+      if (!sSnap.exists || !rSnap.exists) return alert("حدث خطأ: المستخدمين غير موجودين.");
+      const sPoints = sSnap.data().points ?? 0;
+      if (sPoints < amount) return alert("المرسل لا يملك نقاط كافية.");
+
+      await senderRef.update({ points: sPoints - amount });
+      await receiverRef.update({
+        points: (rSnap.data().points ?? 0) + amount,
+        notification: { from: sender, amount, read: false }
+      });
+
+      alert(`تم استلام ${amount} نقطة من ${sender}`);
+      window.location.href = "home.html"; // ارجع المستخدم لصفحة مناسبة
+    }).catch(e => {
+      console.error(e);
+      alert("فشل في العملية.");
+    });
+  }
+</script>
 <div id="customAlert" class="custom-alert-overlay">
   <div class="custom-alert-box" id="customAlertBox">
     <h2>  🎉Congratulations ,you get </h2>
