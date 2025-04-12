@@ -57,14 +57,78 @@
       color: #008000; /* أخضر لتحديد النجاح */
       font-weight: bold;
     }
+    @keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.header {
+  animation: slideDown 0.7s ease-out forwards;
+  opacity: 0; /* ضروري ليشتغل التحول من 0 إلى 1 */
+}
+/* تنبيه مخصص */
+.custom-alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.custom-alert-box {
+  background-color: white;
+  padding: 30px;
+  text-align: center;
+  border-radius: 20px;
+  font-family: minecraft;
+  font-size: 20px;
+  color: black;
+  animation: popUp 0.5s ease;
+  min-width: 250px;
+}
+
+.custom-alert-box h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.custom-alert-points {
+  font-size: 35px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+/* أنيميشن */
+@keyframes popUp {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
   </style>
   
   <script type="module" src="../scripts/main.js"></script>
   <title>generalpage </title>
 </head>
 <body>
-   <button class="back" id="backButton" type="button" onclick="goBack()"></button>
-  <div class="header"> 
+
+  <div class="header">    <button class="back" id="backButton" type="button" onclick="goBack()"></button>
    general <img src="../Emojis/Win_Computer.gif" height="25">  </div> 
        <div class="content">
     
@@ -169,7 +233,7 @@ document.getElementById('whiteButton').addEventListener('click', async function 
 
     document.getElementById('points').innerText = formatPoints(user.points);
 
-    alert(`تمت إضافة ${earnedPoints} نقطة!`);
+    showCustomAlert(earnedPoints);
   } else {
     alert('المستخدم غير موجود!');
   }
@@ -284,6 +348,42 @@ document.getElementById('redButton').addEventListener('click', async function ()
 
   alert(`تم إرسال ${points} نقطة بنجاح إلى ${receiver}!\n It has been deducted from your account.`);
 });
+window.addEventListener('load', () => {
+  document.querySelector('.header').style.opacity = '1'; // لضمان ظهورها
+});
+function showCustomAlert(points) {
+  const overlay = document.getElementById('customAlert');
+  const box = document.getElementById('customAlertBox');
+  const pointsDisplay = document.getElementById('customAlertPoints');
+
+  // غيّر اللون حسب النقاط
+  if (points <= 10) {
+  box.style.backgroundColor = 'silver'; // من 1 إلى 10
+  box.style.boxShadow = '0 0 15px rgba(123, 123, 123, 1)'
+  box.style.color = '#000';
+} else if (points <= 30) {
+  box.style.backgroundColor = '#FFD700'; // gold
+  box.style.boxShadow = '0 0 15px rgba(255, 205, 106, 1)'
+  box.style.color = '#000';
+} else if (points <= 50) {
+  box.style.backgroundColor = '#C50DD8'; // purple
+  box.style.boxShadow = '0 0 15px rgba(255, 106, 255, 1)'
+  box.style.color = '#fff';
+}
+
+  pointsDisplay.textContent = `${points} نقطة`;
+  overlay.style.display = 'flex';
+
+  setTimeout(() => {
+    overlay.style.display = 'none';
+  }, 2000); // إغلاق بعد 3 ثواني
+}
 </script>
+<div id="customAlert" class="custom-alert-overlay">
+  <div class="custom-alert-box" id="customAlertBox">
+    <h2>مبروووك لقد حصلت على</h2>
+    <div class="custom-alert-points" id="customAlertPoints">0</div>
+  </div>
+</div>
 </body>
 </html>

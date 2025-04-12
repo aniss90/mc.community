@@ -181,7 +181,7 @@
     </style>
 </head>
 <body>
-    <button class="back" id="backButton" type="button" onclick="goBack()"></button>
+
     <div class="header"> 
         Marketplace <img src="../imag/marketplace-icon-7f96f.png" height="20">
     </div> 
@@ -409,30 +409,48 @@
                     user.points -= boxPrice;
 
                     let randomChance;
-                    if (boxType === 'cheap') {
-                        randomChance = Math.random();
-                        if (randomChance <= 0.05) {
-                            randomPoints = Math.floor(Math.random() * (maxPoints - minPoints + 1) + minPoints);
-                        } else {
-                            randomPoints = Math.floor(Math.random() * (minPoints / 2) + 1);
-                        }
-                    } else if (boxType === 'medium') {
-                        randomChance = Math.random();
-                        if (randomChance >= 0.30 && randomChance <= 0.45) {
-                            randomPoints = Math.floor(Math.random() * (maxPoints - minPoints + 1) + minPoints);
-                        } else {
-                            randomPoints = Math.floor(Math.random() * (minPoints / 2) + 1);
-                        }
-                    } else if (boxType === 'expensive') {
-                        randomChance = Math.random();
-                        if (randomChance >= 0.75 && randomChance <= 0.95) {
-                            randomPoints = Math.floor(Math.random() * (maxPoints - minPoints + 1) + minPoints);
-                        } else {
-                            randomPoints = Math.floor(Math.random() * (minPoints / 2) + 1);
-                        }
-                    }
+             if (boxType === 'cheap') {
+    randomChance = Math.random();
+    if (randomChance <= 0.25) {
+        // 25%: بين 900 و 1500
+        randomPoints = Math.floor(Math.random() * (1500 - 900 + 1) + 900);
+    } else if (randomChance <= 0.55) {
+        // 30%: أقل من 99
+        randomPoints = Math.floor(Math.random() * 98) + 1; // من 1 إلى 98
+    } else {
+        // 45%: بين 99 و 900
+        randomPoints = Math.floor(Math.random() * (900 - 99 + 1) + 99);
+    }
 
+} else if (boxType === 'medium') {
+    randomChance = Math.random();
+    if (randomChance <= 0.20) {
+        // 20%: أقل من 250
+        randomPoints = Math.floor(Math.random() * 249) + 1; // من 1 إلى 249
+    } else if (randomChance <= 0.80) {
+        // 60%: بين 250 و 2500
+        randomPoints = Math.floor(Math.random() * (2500 - 250 + 1) + 250);
+    } else {
+        // 20%: بين 2500 و 4900
+        randomPoints = Math.floor(Math.random() * (4900 - 2500 + 1) + 2500);
+    }
+
+                    } else if (boxType === 'expensive') {
+    randomChance = Math.random();
+    if (randomChance <= 0.10) {
+        // 10%: أكثر من 8000
+        randomPoints = Math.floor(Math.random() * (maxPoints - 8000 + 1) + 8000);
+    } else if (randomChance <= 0.40) {
+        // 30%: أقل من 1000
+        randomPoints = Math.floor(Math.random() * 900) + 100; // من 100 إلى 999
+    } else {
+        // 60%: بين 1000 و 8000
+        randomPoints = Math.floor(Math.random() * (8000 - 1000 + 1) + 1000);
+    }
+} 
+                  
                     user.points += randomPoints;
+                    
                     await updateDoc(userDocRef, { points: user.points });
 
                     document.getElementById('points').innerText = formatNumber(user.points);

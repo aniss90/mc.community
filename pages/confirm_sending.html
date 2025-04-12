@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>تأكيد إرسال النقاط</title>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
+  <style>
+    body { font-family: Arial; direction: rtl; background: #f0f0f0; padding: 20px; text-align: center; }
+    .box { background: white; padding: 30px; border-radius: 10px; max-width: 400px; margin: auto; box-shadow: 0 0 10px #ccc; }
+    button { padding: 10px 20px; margin: 10px; border: none; border-radius: 6px; cursor: pointer; }
+    .confirm { background-color: #4caf50; color: white; }
+    .cancel { background-color: #f44336; color: white; }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h2>تأكيد الإرسال</h2>
+    <p>إرسال <strong id="amount">--</strong> نقطة إلى المستخدم <strong id="receiver">--</strong>؟</p>
+    <button class="confirm" onclick="confirmSend()">تأكيد</button>
+    <button class="cancel" onclick="cancelSend()">إلغاء</button>
+  </div>
+
+  <script>
+    // إعداد Firebase
+    const firebaseConfig = {
+  apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
+  authDomain: "minecraft-community-4fd3d.firebaseapp.com",
+  projectId: "minecraft-community-4fd3d",
+  storageBucket: "minecraft-community-4fd3d.firebasestorage.app",
+  messagingSenderId: "550140131027",
+  appId: "1:550140131027:web:a5186726cf5372e138c626",
+  measurementId: "G-F18SFG2LMZ"
+};
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // الحصول على المستخدم الحالي من localStorage
+    const activeUser = localStorage.getItem("activeUser");
+    if (!activeUser) {
+      alert("يجب تسجيل الدخول.");
+      window.location.href = "login.html";
+    }
+
+    // قراءة البيانات من الرابط
+    const urlParams = new URLSearchParams(window.location.search);
+    const receiver = urlParams.get("receiver");
+    const amount = parseInt(urlParams.get("amount"));
+
+    // عرض البيانات في الصفحة
+    document.getElementById("receiver").textContent = receiver;
+    document.getElementById("amount").textContent = amount;
+
+    async function confirmSend() {
+      if (!receiver || isNaN(amount) || amount <= 0) {
+        alert("بيانات غير صالحة.");
+        return;
+      }
+
+      const senderRef = db.collection("users").doc(activeUser);
+      const receiverRef = db.collection("users").doc(receiver);
+
+      const senderSnap = await senderRef.get();
+      const receiverSnap = await receiverRef.get();
+
+      if (!receiverSnap.exists) {
+        alert("المستلم غير موجود.");
+        return;
+      }
+
+      const senderPoints = senderSnap.data().points ?? 0;
+
+      if (senderPoints < amount) {
+        alert("ليس لديك نقاط كافية.");
+        return;
+      }
+
+      await senderRef.update({ points: senderPoints - amount });
+      await receiverRef.update({
+        points: (receiverSnap.data().points ?? 0) + amount,
+        notification: {
+          from: activeUser,
+          amount,
+          read: false
+        }
+      });
+
+      alert(`تم إرسال ${amount} نقطة إلى ${receiver}.`);
+      window.location.href = "index.html"; // رجوع للصفحة الرئيسية
+    }
+
+    function cancelSend() {
+      window.history.back();
+    }
+  </script>
+
+</body>
+</html>
