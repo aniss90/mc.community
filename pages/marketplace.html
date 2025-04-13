@@ -182,7 +182,8 @@
 </head>
 <body>
 
-    <div class="header"> 
+    <div class="header">     <button class="back" id="backButton" type="button" onclick="goBack()"></button>
+
         Marketplace <img src="../imag/marketplace-icon-7f96f.png" height="20">
     </div> 
         <div class="content"> 
@@ -438,14 +439,14 @@
                     } else if (boxType === 'expensive') {
     randomChance = Math.random();
     if (randomChance <= 0.10) {
-        // 10%: أكثر من 8000
-        randomPoints = Math.floor(Math.random() * (maxPoints - 8000 + 1) + 8000);
+        // 10%: أكثر من 13000
+        randomPoints = Math.floor(Math.random() * (90000 - 13000 + 1) + 13000);
     } else if (randomChance <= 0.40) {
         // 30%: أقل من 1000
-        randomPoints = Math.floor(Math.random() * 900) + 100; // من 100 إلى 999
+        randomPoints = Math.floor(Math.random() * 5000) + 100; // من 100 إلى 5000
     } else {
-        // 60%: بين 1000 و 8000
-        randomPoints = Math.floor(Math.random() * (8000 - 1000 + 1) + 1000);
+        // 60%: بين 7000 و 12000
+        randomPoints = Math.floor(Math.random() * (12000 - 7000 + 1) + 7000);
     }
 } 
                   

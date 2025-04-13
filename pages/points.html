@@ -2,22 +2,26 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Mod</title>
+    <link rel="stylesheet" href="../style/main.css">
+    <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
+  <title>تأكيد إرسال النقاط</title>
   <title>إرسال واستلام النقاط</title>
   <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
   <style>
-    body { font-family: Arial; background: #f5f5f5; padding: 20px; direction: rtl; }
-    .container { background: white; padding: 20px; max-width: 500px; margin: auto; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
-    input, button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 6px; border: 1px solid #ccc; }
+    
+  
+    button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 6px; border: 1px solid #ccc; }
     button { background: #2196f3; color: white; cursor: pointer; border: none; }
-    .qr-popup { display: none; position: fixed; top: 20px; left: 20px; background: white; border: 2px solid #2196f3; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #2196f3; flex-direction: row; align-items: center; z-index: 999; }
+    .qr-popup { display: none; position: fixed; top: 20px; left: 10%; background: white; border: 2px solid #2196f3; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #2196f3; flex-direction: row; align-items: center; z-index: 999; }
     .qr-popup img { max-width: 150px; margin-left: 20px; }
   </style>
 </head>
 <body>
-
-  <div class="container">
+        <div class="content"> 
     <h2 id="welcomeMessage">مرحبًا...</h2>
     <p>رصيدك: <span id="points">--</span> نقطة</p>
 
@@ -40,7 +44,7 @@
     <h3>استلام النقاط</h3>
     <input type="number" id="receiveAmount" placeholder="عدد النقاط المطلوبة">
     <button onclick="showQRCode()">إظهار QR كود</button>
-  </div>
+  
 
   <div class="qr-popup" id="qrPopup">
     <img id="qrImage" src="">
@@ -50,7 +54,7 @@
       <button onclick="closeQR()">إغلاق</button>
     </div>
   </div>
-
+  </div> 
   <script>
     // إعداد Firebase
   const firebaseConfig = {

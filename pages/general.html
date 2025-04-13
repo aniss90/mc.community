@@ -20,22 +20,18 @@
       src: url('../font/Minecraft-Five.ttf');
     } 
 
-      
-    
-.show {
+    .show {
       align-self: flex-start;
-  border: 2px solid #3D3D3D;
-  border: 2px solid #DCDCDC;
-  background-color: #FFFFFF;
-  box-shadow: 0px 2px 0px rgba(111, 111, 111, 1);
-  font-size: 1px;
-  color: white;
- padding: 5px; 
- 
-}
-    /* التنبيهات المخصصة */
+      border: 2px solid #3D3D3D;
+      border: 2px solid #DCDCDC;
+      background-color: #FFFFFF;
+      box-shadow: 0px 2px 0px rgba(111, 111, 111, 1);
+      font-size: 1px;
+      color: white;
+      padding: 5px; 
+    }
     
-
+    /* التنبيهات المخصصة */
     #points {
       color: #FFBC13; 
       font-size: 15px; 
@@ -47,80 +43,130 @@
       font-family: minecraft-five; 
     }
 
-    #othersPoints {
-      margin-top: 20px; 
-      color: #FFFFFF;
-    }
-
     #sendPointsResult {
       margin-top: 10px;
-      color: #008000; /* أخضر لتحديد النجاح */
+      color: #008000;
       font-weight: bold;
     }
+    
     @keyframes slideDown {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
 
-.header {
-  animation: slideDown 0.7s ease-out forwards;
-  opacity: 0; /* ضروري ليشتغل التحول من 0 إلى 1 */
-}
-/* تنبيه مخصص */
-.custom-alert-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(5px);
-  background: rgba(0, 0, 0, 0.4);
+    .header {
+      animation: slideDown 0.7s ease-out forwards;
+      opacity: 0;
+    }
+    
+    /* تنبيه مخصص */
+    .custom-alert-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.4);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .custom-alert-box {
+      background-color: white;
+      padding: 30px;
+      text-align: center;
+      border-radius: 20px;
+      font-family: minecraft;
+      font-size: 20px;
+      color: black;
+      animation: popUp 0.5s ease;
+      min-width: 250px;
+    }
+
+    .custom-alert-box h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .custom-alert-points {
+      font-size: 35px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    /* أنيميشن */
+    @keyframes popUp {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    
+    /* قائمة أسماء المستخدمين */
+.username-dropdown {
+  position: absolute;
+  transform: translate( 35%, 17%); /* تعديل المركز بدقة */
+  background-color: #333; /* خلفية داكنة */
+  max-height: 60%;
+  overflow-y: auto;
+  z-index: 1000;
+  max-width: 58%;
+  width: 60%;
   display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+  border-top: 2px solid #737373;
+        border-left: 2px solid #737373;
+        border-right: 2px solid #737373;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  bottom: 100%;
 }
 
-.custom-alert-box {
-  background-color: white;
-  padding: 30px;
-  text-align: center;
-  border-radius: 20px;
-  font-family: minecraft;
-  font-size: 20px;
-  color: black;
-  animation: popUp 0.5s ease;
-  min-width: 250px;
+.username-dropdown div {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: white; /* لون الخط أبيض */
+  border-bottom: 1px solid #444; /* خط فاصل بلون داكن */
 }
 
-.custom-alert-box h2 {
-  margin: 0;
-  font-size: 22px;
+.username-dropdown div:last-child {
+  border-bottom: none;
 }
 
-.custom-alert-points {
-  font-size: 35px;
-  font-weight: bold;
-  margin: 10px 0;
+.username-dropdown div:hover {
+  background-color: #555; /* لون خلفية عند التحويم */
+  color: white; 
+  background-color: #3d3d3d;
+  transition: background-color 0.2s ease; /* تأثير سلس */
+
+}
+    .Pay {
+      position: relative;
+    }
+    .username-dropdown div {
+  padding: 8px 12px;
+  cursor: pointer;
+  
 }
 
-/* أنيميشن */
-@keyframes popUp {
-  0% {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+.username-dropdown div:last-child {
+  border-bottom: none; /* إزالة الخط من آخر عنصر */
 }
+
+.username-dropdown div:hover {
+  background-color: #515151;
+} 
   </style>
   
   <script type="module" src="../scripts/main.js"></script>
@@ -128,32 +174,34 @@
 </head>
 <body>
 
-  <div class="header">    <button class="back" id="backButton" type="button" onclick="goBack()"></button>
-   general <img src="../Emojis/Win_Computer.gif" height="25">  </div> 
-       <div class="content">
-    
-      <h1 id="welcomeMessage"></h1>
-      <div class="points">
-        <div class="title"> your coine : <span id="points">0</span><img src="../imag/MCoin.png" alt="عملة" height="15"></div> 
-        <div class="description"> 
+  <div class="header">
+    <button class="back" id="backButton" type="button" onclick="goBack()"></button>
+    general <img src="../Emojis/Win_Computer.gif" height="25">  
+  </div> 
+  
+  <div class="content">
+    <h1 id="welcomeMessage"></h1>
+    <div class="points">
+      <div class="title"> your coine : <span id="points">0</span><img src="../imag/MCoin.png" alt="عملة" height="15"></div> 
+      <div class="description"> 
         Get coins between 1000 coine and 1 coine.
-          <button id="whiteButton"> Get random coins <img src="../Emojis/money_flying.gif" height="16"></button>
-        </div> 
-        <div class="description">
-          <div class="title">taking chat</div>Chat for talking with other users.
-          <a href="List_beta.html">
+        <button id="whiteButton"> Get random coins <img src="../Emojis/money_flying.gif" height="16"></button>
+      </div> 
+      <div class="description">
+        <div class="title">taking chat</div>Chat for talking with other users.
+        <a href="List_beta.html">
+          <div class="button">
+            <button id="greenButton">The Chat <img src="../imag/comments_light-88de7.png" height="15"></button>
+          </div>
+        </a> 
+        <div class="description"> 
+          <div class="title">marketplace</div> Buy features and things for your account 
+          using your coins
+          <a href="marketplace.html">
             <div class="button">
-              <button id="greenButton">The Chat <img src="../imag/comments_light-88de7.png" height="15"></button>
+              <button id="greenButton">Marketplace <img src="../imag/marketplace-icon-7f96f.png" height="15"></button>
             </div>
           </a> 
-          <div class="description"> 
-            <div class="title">marketplace</div> Buy features and things for your account 
-            using your coins
-            <a href="marketplace.html">
-            <div class="button">
-                 <button id="greenButton">Marketplace <img src="../imag/marketplace-icon-7f96f.png" height="15"></button></div>
-                 </div>
-              </a> 
         </div>
         <div class="description">  
           <div class="title"> Send coins 
@@ -162,38 +210,35 @@
           <div>
             <div class="Pay">
               <br>
-              <input type="text" id="receiverUsername" name="username" placeholder="username " required><br> 
+              <input type="text" id="receiverUsername" name="username" placeholder="username " required>
+              <div class="username-dropdown" id="usernameDropdown"></div>
+               </br> 
               <br>
               <input type="number" id="sendPointsAmount" name="points" placeholder="coins" required>
               </br>
               <br>
               <button id="redButton" style="width: 200px">Send <img src="../Emojis/gift_gif.gif" height="15"> </button>
             </div> 
-              </br>
-            </div> 
-            
-            <div id="sendPointsResult"></div> 
+            </br>
           </div> 
-          <div class="description">
-            <div class="title"> User coins
-            </div>Click on show to see how much have other users coins.
-            <div class="button"> 
-              <button id="viewOthersPoints">Show <img src="../Emojis/eyes.png" height="15"></button>
-            </div>
-            <div class="show"> 
-              <div id="othersPoints"></div>
-            </div> 
-          </div>
-        </div>
+          
+          <div id="sendPointsResult"></div> 
+        </div> 
       </div>
     </div>
   </div>
+
+  <div id="customAlert" class="custom-alert-overlay">
+    <div class="custom-alert-box" id="customAlertBox">
+      <h2>  🎉Congratulations ,you get </h2>
+      <div class="custom-alert-points" id="customAlertPoints">0</div>
+    </div>
+  </div>
+
 <script type="module">
 import { db } from '../scripts/main.js'; 
 import { doc, getDoc, setDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; 
-
 import { onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-
 
 const activeUser = localStorage.getItem('activeUser');
 
@@ -209,6 +254,7 @@ function formatPoints(num) {
   if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
   return num.toString();
 }
+
 function listenToNotifications() {
   const userDocRef = doc(db, 'users', activeUser);
 
@@ -230,7 +276,6 @@ function listenToNotifications() {
     }
   });
 }
-
 
 // إضافة النقاط للمستخدم
 document.getElementById('whiteButton').addEventListener('click', async function () {
@@ -303,17 +348,6 @@ document.getElementById('backButton').addEventListener('click', function () {
   }
 });
 
-// عرض نقاط المستخدمين الآخرين
-document.getElementById('viewOthersPoints').addEventListener('click', async function () {
-  const usersSnapshot = await getDocs(collection(db, 'users'));
-  const othersPointsHtml = usersSnapshot.docs
-    .filter(doc => doc.id !== activeUser)
-    .map(doc => `<p>${doc.id}: ${formatPoints(doc.data().points)} coins</p>`)
-    .join('');
-  
-  document.getElementById('othersPoints').innerHTML = othersPointsHtml;
-});
-
 // إرسال النقاط لمستخدم آخر
 document.getElementById('redButton').addEventListener('click', async function () {
   const sender = activeUser;
@@ -373,9 +407,11 @@ document.getElementById('redButton').addEventListener('click', async function ()
 
   alert(`تم إرسال ${points} نقطة بنجاح إلى ${receiver}!\n It has been deducted from your account.`);
 });
+
 window.addEventListener('load', () => {
-  document.querySelector('.header').style.opacity = '1'; // لضمان ظهورها
+  document.querySelector('.header').style.opacity = '1';
 });
+
 function showCustomAlert(points) {
   const overlay = document.getElementById('customAlert');
   const box = document.getElementById('customAlertBox');
@@ -383,72 +419,98 @@ function showCustomAlert(points) {
 
   // غيّر اللون حسب النقاط
   if (points <= 10) {
-  box.style.backgroundColor = 'silver'; // من 1 إلى 10
-  box.style.boxShadow = '0 0 15px rgba(123, 123, 123, 1)'
-  box.style.color = '#000';
-} else if (points <= 30) {
-  box.style.backgroundColor = '#FFD700'; // gold
-  box.style.boxShadow = '0 0 15px rgba(255, 205, 106, 1)'
-  box.style.color = '#000';
-} else if (points <= 50) {
-  box.style.backgroundColor = '#C50DD8'; // purple
-  box.style.boxShadow = '0 0 15px rgba(255, 106, 255, 1)'
-  box.style.color = '#fff';
-}
+    box.style.backgroundColor = 'silver';
+    box.style.boxShadow = '0 0 15px rgba(123, 123, 123, 1)';
+    box.style.color = '#000';
+  } else if (points <= 30) {
+    box.style.backgroundColor = '#FFD700';
+    box.style.boxShadow = '0 0 15px rgba(255, 205, 106, 1)';
+    box.style.color = '#000';
+  } else if (points <= 50) {
+    box.style.backgroundColor = '#C50DD8';
+    box.style.boxShadow = '0 0 15px rgba(255, 106, 255, 1)';
+    box.style.color = '#fff';
+  }
 
   pointsDisplay.textContent = `${points} coins.`;
   overlay.style.display = 'flex';
 
   setTimeout(() => {
     overlay.style.display = 'none';
-  }, 2000); // إغلاق بعد 3 ثواني
+  }, 2000);
 }
-</script>
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const action = params.get("action");
-  const sender = params.get("sender");
-  const amount = parseInt(params.get("amount"));
 
-  const receiver = localStorage.getItem("activeUser");
+// كود جديد لقائمة أسماء المستخدمين
+const receiverUsernameInput = document.getElementById('receiverUsername');
+const usernameDropdown = document.getElementById('usernameDropdown');
+let allUsernames = [];
 
-  if (action === "receive" && sender && receiver && amount > 0) {
-    const senderRef = db.collection("users").doc(sender);
-    const receiverRef = db.collection("users").doc(receiver);
+// جلب جميع أسماء المستخدمين
+async function fetchAllUsernames() {
+  const usersSnapshot = await getDocs(collection(db, 'users'));
+  allUsernames = usersSnapshot.docs
+    .map(doc => doc.id)
+    .filter(username => username !== activeUser);
+}
 
-    Promise.all([senderRef.get(), receiverRef.get()]).then(async ([sSnap, rSnap]) => {
-      if (!sSnap.exists || !rSnap.exists) return alert("حدث خطأ: المستخدمين غير موجودين.");
-      const sPoints = sSnap.data().points ?? 0;
-      if (sPoints < amount) return alert("المرسل لا يملك نقاط كافية.");
+fetchAllUsernames();
 
-      await senderRef.update({ points: sPoints - amount });
-      await receiverRef.update({
-        points: (rSnap.data().points ?? 0) + amount,
-        notification: { from: sender, amount, read: false }
-      });
-
-      alert(`تم استلام ${amount} نقطة من ${sender}`);
-      window.location.href = "home.html"; // ارجع المستخدم لصفحة مناسبة
-    }).catch(e => {
-      console.error(e);
-      alert("فشل في العملية.");
-    });
+// عند النقر على حقل اسم المستخدم
+receiverUsernameInput.addEventListener('focus', async function() {
+  if (allUsernames.length === 0) {
+    await fetchAllUsernames();
   }
+  
+  if (allUsernames.length > 0) {
+    usernameDropdown.innerHTML = '';
+    allUsernames.forEach(username => {
+      const userElement = document.createElement('div');
+      userElement.textContent = username;
+      userElement.addEventListener('click', function() {
+        receiverUsernameInput.value = username;
+        usernameDropdown.style.display = 'none';
+      });
+      usernameDropdown.appendChild(userElement);
+    });
+    usernameDropdown.style.display = 'block';
+  }
+});
+
+// عند الكتابة في حقل اسم المستخدم
+receiverUsernameInput.addEventListener('input', function() {
+  const searchTerm = this.value.toLowerCase();
+  const filteredUsernames = allUsernames.filter(username => 
+    username.toLowerCase().includes(searchTerm)
+  );
+  
+  updateDropdown(filteredUsernames);
+  
+  if (filteredUsernames.length > 0 && this.value) {
+    usernameDropdown.style.display = 'block';
+  } else {
+    usernameDropdown.style.display = 'none';
+  }
+});
+
+function updateDropdown(usernames) {
+  usernameDropdown.innerHTML = '';
+  usernames.forEach(username => {
+    const userElement = document.createElement('div');
+    userElement.textContent = username;
+    userElement.addEventListener('click', function() {
+      receiverUsernameInput.value = username;
+      usernameDropdown.style.display = 'none';
+    });
+    usernameDropdown.appendChild(userElement);
+  });
+}
+
+// إخفاء القائمة عند النقر خارجها
+document.addEventListener('click', function(event) {
+  if (!receiverUsernameInput.contains(event.target) && !usernameDropdown.contains(event.target)) {
+    usernameDropdown.style.display = 'none';
+  }
+});
 </script>
-<div id="customAlert" class="custom-alert-overlay">
-  <div class="custom-alert-box" id="customAlertBox">
-    <h2>  🎉Congratulations ,you get </h2>
-    <div class="custom-alert-points" id="customAlertPoints">0</div>
-  </div>
-</div>
-<!-- HTML للـ alert -->
-<div id="customAlert" style="display: none; position: fixed; top: 0; left: 0; 
-  width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); 
-  justify-content: center; align-items: center; z-index: 9999;">
-  <div id="customAlertBox" style="padding: 20px; border-radius: 10px; text-align: center;">
-    <h2 style="margin: 0;"></h2>
-    <p id="customAlertPoints" style="font-size: 24px; margin-top: 10px;"></p>
-  </div>
-</div>
 </body>
 </html>

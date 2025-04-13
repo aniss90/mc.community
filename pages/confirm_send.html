@@ -1,28 +1,65 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Mod</title>
+    <link rel="stylesheet" href="../style/main.css">
+    <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
   <title>تأكيد إرسال النقاط</title>
   <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
   <style>
-    body { font-family: Arial; direction: rtl; background: #f0f0f0; padding: 20px; text-align: center; }
-    .box { background: white; padding: 30px; border-radius: 10px; max-width: 400px; margin: auto; box-shadow: 0 0 10px #ccc; }
-    button { padding: 10px 20px; margin: 10px; border: none; border-radius: 6px; cursor: pointer; }
+          @font-face {
+            font-family: minecraft;
+            src: url('../font/Minecraft-Default.otf');
+        }
+        @font-face {
+            font-family: minecraft-ten;
+            src: url('../font/MinecraftTen.ttf');
+        }
+
+        @font-face {
+            font-family: minecraft-five;
+            src: url('../font/Minecraft-Five.ttf');
+        }
+
+    body {direction: rtl; }
+    .box { background: white; padding: 30px; border-radius: 10px;  margin: auto; box-shadow: 0 0 10px #ccc; }
+    button {    border-radius: 6px; cursor: pointer; }
     .confirm { background-color: #4caf50; color: white; }
     .cancel { background-color: #f44336; color: white; }
+    p {
+      color:white;
+    }
+    #amount {
+    color: #FFBC13
+    }
+    #receiver{
+      
+      color: skyblue;
+    }
   </style>
 </head>
 <body>
-
-  <div class="box">
-    <h2>تأكيد الإرسال</h2>
+   <div class="header">     <button class="back" id="backButton" type="button" onclick="goBack()"></button>
+ Confirm sending <img src="../imag/marketplace-icon-7f96f.png" height="20">
+    </div> 
+        <div class="content"> 
+         <div class="title"> تأكيد الإرسال </div> 
+   <div class="description"> 
+     
+    
     <p>إرسال <strong id="amount">--</strong> نقطة إلى المستخدم <strong id="receiver">--</strong>؟</p>
-    <button class="confirm" onclick="confirmSend()">تأكيد</button>
-    <button class="cancel" onclick="cancelSend()">إلغاء</button>
+    <button id="greenButton" class="confirm" onclick="confirmSend()">Confirm</button>
+   </div>
+  <div class="description"> 
+    <button id="redButton" onclick="cancelSend()"> Cancel</button>
+  </div>
   </div>
 
   <script>
+  
     // إعداد Firebase
     const firebaseConfig = {
   apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
@@ -42,6 +79,7 @@
       alert("يجب تسجيل الدخول.");
       window.location.href = "login.html";
     }
+
 
     // قراءة البيانات من الرابط
     const urlParams = new URLSearchParams(window.location.search);
