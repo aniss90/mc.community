@@ -440,13 +440,13 @@
     randomChance = Math.random();
     if (randomChance <= 0.10) {
         // 10%: أكثر من 13000
-        randomPoints = Math.floor(Math.random() * (90000 - 10000 + 1) + 13000);
+        randomPoints = Math.floor(Math.random() * (90000 - 9000 + 1) + 13000);
     } else if (randomChance <= 0.40) {
         // 30%: أقل من 1000
         randomPoints = Math.floor(Math.random() * 7000) + 100; // من 100 إلى 5000
     } else {
         // 60%: بين 7000 و 12000
-        randomPoints = Math.floor(Math.random() * (20000 - 7000 + 1) + 7000);
+        randomPoints = Math.floor(Math.random() * (13000 - 5000 + 1) + 7000);
     }
 } 
                   
