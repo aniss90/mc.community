@@ -33,7 +33,32 @@
 </head>
 
 <body>
+<script>
+  function isAndroid() {
+    return /Android/i.test(navigator.userAgent);
+  }
 
+  function hasDownloaded() {
+    return localStorage.getItem('app_downloaded') === 'true';
+  }
+
+  function markAsDownloaded() {
+    localStorage.setItem('app_downloaded', 'true');
+  }
+
+  window.onload = function () {
+    const btn = document.getElementById('downloadBtn');
+    if (isAndroid() && !hasDownloaded()) {
+      btn.style.display = 'block';
+    }
+  }
+
+  function downloadApp() {
+    markAsDownloaded();
+    window.location.href = 'mc_co.apk';
+    document.getElementById('downloadBtn').style.display = 'none';
+  }
+</script>
       <script>
   // دالة بسيطة لحساب تجزئة للنص (مثل البصمة)
   function hashString(str) {
@@ -65,8 +90,11 @@
 </script>
     <div class="header">  Mc community 
     </div> 
+    
     <div class="content"> 
-
+<button id="downloadBtn" style="display:none;" onclick="downloadApp()">
+  تحميل التطبيق للأندرويد
+</button>
     <!--    <div class="description">A site to communicate with other users, interact and have fun. <br>+
           Creator: <a href="YOUTUBE CHANNEL" target="_blank" class="link">Aniss <img src="Emojis/trophy_gif.gif" height="15"></a> 
             <br>+
