@@ -203,7 +203,7 @@
                 <div class="description"> 
             <div class="title"> gold box</div> 
                 You can get between 99 to 3000 coins.
-<button class="goldeButton" id="mediumBox" onclick="openLootBox('medium')">Gold Box (2900<img src="../imag/MCoin.png" alt="Coin" height="14">)</button>
+<button class="goldeButton" id="mediumBox" onclick="openLootBox('medium')">Gold Box (2000<img src="../imag/MCoin.png" alt="Coin" height="14">)</button>
             </div>
             
             <div class="description"> 
@@ -389,10 +389,10 @@
                     case 'cheap':
                         boxPrice = 199;
                         minPoints = 99;
-                        maxPoints = 1500;
+                        maxPoints = 800;
                         break;
                     case 'medium':
-                        boxPrice = 2900;
+                        boxPrice = 2000;
                         minPoints = 250;
                         maxPoints = 4200;
                         break;
@@ -414,13 +414,13 @@
     randomChance = Math.random();
     if (randomChance <= 0.25) {
         // 25%: بين 900 و 1500
-        randomPoints = Math.floor(Math.random() * (1500 - 900 + 1) + 900);
+        randomPoints = Math.floor(Math.random() * (800 - 500 + 1) + 900);
     } else if (randomChance <= 0.55) {
         // 30%: أقل من 99
         randomPoints = Math.floor(Math.random() * 98) + 1; // من 1 إلى 98
     } else {
         // 45%: بين 99 و 900
-        randomPoints = Math.floor(Math.random() * (900 - 99 + 1) + 99);
+        randomPoints = Math.floor(Math.random() * (500 - 99 + 1) + 99);
     }
 
 } else if (boxType === 'medium') {
@@ -433,7 +433,7 @@
         randomPoints = Math.floor(Math.random() * (2500 - 250 + 1) + 250);
     } else {
         // 20%: بين 2500 و 4900
-        randomPoints = Math.floor(Math.random() * (4900 - 2500 + 1) + 2500);
+        randomPoints = Math.floor(Math.random() * (5000 - 2500 + 1) + 2500);
     }
 
                     } else if (boxType === 'expensive') {

@@ -40,12 +40,18 @@
     }  
       
         button {
-            background: #8F8F8F;
-            color: white;
+            
+            color: black;
             cursor: pointer;
+            padding: 10px;
+            border: 2px solid #3D3D3D;
+  border: 2px solid #DCDCDC;
+  background-color: #FFFFFF;
+  box-shadow: 0px 3px 0px rgba(183, 183, 183, 1);
         }
         button:hover {
-            background: #4E4E4E;
+            background-color: ##6D6D6D;
+            top: 2px;
         }
         #emailDisplay {
             font-weight: bold;
@@ -101,14 +107,14 @@
  
    <p>   <input type="text" id="username" placeholder=" Enter your username  ">
    </p> 
-        <br> 
-        <button  id="fetchEmailBtn">Show the email  </button>
+        <br>  
+        <button  id="fetchEmailBtn">Show the email account </button>
         <p id="emailDisplay"></p> 
         <button id="sendPasswordBtn">  send the password</button>
       </div>
     </div>
   </div>
-
+      </div>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
