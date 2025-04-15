@@ -31,7 +31,7 @@ div.titlee {
 
 a.link,
 div.description,
-div.filename a,
+div.filename,
 div.title {
     user-select: text
     
@@ -85,7 +85,7 @@ div.header {
     top: 0;
     left: 0;
     width: 100%;
-    height: 30px;
+    height: auto;
     background-color: #dfdfdf;
     text-align: center;
     padding-top: 15px;
@@ -100,7 +100,7 @@ div.nane {
     top: 0;
     left: 0;
     width: 100%;
-    height: 30px;
+    height: auto;
     background-color: #CF0CC5;
     text-align: center;
     padding-top: 15px;
@@ -275,6 +275,7 @@ input {
             top: 20px;
             left: 10px;
             cursor: pointer;
+            
             padding: 10px;
             background: url(../imag/arrowBack-b77b1.png);
             background-size:  contain;
@@ -284,7 +285,7 @@ input {
         } 
 #whiteButton:hover {
     top: 2px;
-    height: 40px;
+    height: auto;
     width: 100%;
     position: relative;
     color: #262626;
@@ -292,7 +293,7 @@ input {
 }
 
 #whiteButton {
-  height: 40px;
+  height: auto;
   width: 100%; 
   border: 2px solid #3D3D3D;
   border: 2px solid #DCDCDC;
@@ -309,7 +310,7 @@ input {
 #greenButton:hover { 
     background-color: #14520D;
     top: 2px;
-    height: 40px;
+    height: auto;
     width: 100%;
     position: relative;
 }
@@ -318,7 +319,7 @@ input {
   text-shadow: 1px 1px 0.9px #000000;
   background-color: #2C8014;
   color: #FFFFFF;
-  height: 40px;
+  height: auto;
   width: 100%; 
   border: 2px solid #4f913c;
   box-shadow: 0px 3px 0px #2D6721;
@@ -333,7 +334,7 @@ input {
 
 #redButton:hover {
   top: 2px;
-  height: 40px;
+  height: auto;
   width: 100%;
   position: relative;
   background-color: #B60000;
@@ -341,7 +342,7 @@ input {
 
 #redButton {
   text-shadow: 1px 1px 0.9px #000000;
-  height: 40px;
+  height: auto;
   width: 100%;
   border: 2px solid #4B0000;
   border: 2px solid #8E2727;
@@ -358,7 +359,7 @@ input {
 
 #purpleButton:hover {
   top: 2px;
-  height: 40px;
+  height: auto;
   width: 100%;
   position: relative;
   background-color: #A40EB6;
@@ -366,7 +367,7 @@ input {
 
 #purpleButton {
   text-shadow: 1px 1px 0.9px #000000;
-  height: 40px;
+  height: auto;
   width: 100%;
   border: 2px solid #FE26FF;
   border: 2px solid #DD42E7;
@@ -382,7 +383,7 @@ input {
 }
 #goldButton:hover {
   top: 2px;
-  height: 40px;
+  height: auto;
   width: 100%;
   position: relative;
   background-color: #BEBB00;
@@ -390,7 +391,7 @@ input {
 
 #goldButton {
   
-  height: 40px;
+  height: auto;
   width: 100%;
   border: 2px solid #FFFFFF;
   border: 2px solid #FFFB8D;

@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../style/main.css">
   <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
-  
   <style>
     @font-face {
       font-family: minecraft;
@@ -20,16 +19,7 @@
       src: url('../font/Minecraft-Five.ttf');
     } 
 
-    .show {
-      align-self: flex-start;
-      border: 2px solid #3D3D3D;
-      border: 2px solid #DCDCDC;
-      background-color: #FFFFFF;
-      box-shadow: 0px 2px 0px rgba(111, 111, 111, 1);
-      font-size: 1px;
-      color: white;
-      padding: 5px; 
-    }
+    
     
     /* التنبيهات المخصصة */
     #points {
@@ -43,11 +33,6 @@
       font-family: minecraft-five; 
     }
 
-    #sendPointsResult {
-      margin-top: 10px;
-      color: #008000;
-      font-weight: bold;
-    }
     
     @keyframes slideDown {
       from {
@@ -217,7 +202,7 @@
               <input type="number" id="sendPointsAmount" name="points" placeholder="coins" required>
               </br>
               <br>
-              <button id="redButton" style="width: 200px">Send <img src="../Emojis/gift_gif.gif" height="15"> </button>
+              <button id="redButton" >Send <img src="../Emojis/gift_gif.gif" height="15"> </button>
             </div> 
             </br>
           </div> 
@@ -510,6 +495,32 @@ document.addEventListener('click', function(event) {
   if (!receiverUsernameInput.contains(event.target) && !usernameDropdown.contains(event.target)) {
     usernameDropdown.style.display = 'none';
   }
+});
+// تحديث حالة المستخدم عند الاتصال
+async function setUserStatusOnline() {
+  const userDocRef = doc(db, 'users', activeUser);
+  await updateDoc(userDocRef, {
+    status: 'online'
+  });
+}
+
+// تحديث حالة المستخدم عند الخروج أو إغلاق الصفحة
+async function setUserStatusOffline() {
+  const userDocRef = doc(db, 'users', activeUser);
+  await updateDoc(userDocRef, {
+    status: 'offline',
+    lastSeen: new Date().toISOString()
+  });
+}
+
+// حدث الحالة عند تحميل الصفحة
+window.addEventListener('load', () => {
+  setUserStatusOnline();
+});
+
+// حدث الحالة عند إغلاق الصفحة أو إعادة تحميلها
+window.addEventListener('beforeunload', () => {
+  setUserStatusOffline();
 });
 </script>
 </body>
