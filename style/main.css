@@ -265,8 +265,10 @@ input {
   transform: scale(1.05);
   }
   .points {
-      color: #FFBC13; 
-      font-size: 15px; 
+      font-size: auto; 
+      color: #FFD952;
+      text-shadow:0px 1px 0px #3A2700;
+          
     }
 
        .back {
@@ -283,6 +285,10 @@ input {
             background-repeat: no-repeat;
             z-index: 9999;
         } 
+        #welcomeMessage{
+          color: #58FF0A;
+          
+        }
 #whiteButton:hover {
     top: 2px;
     height: auto;

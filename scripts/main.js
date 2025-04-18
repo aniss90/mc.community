@@ -48,3 +48,12 @@ function showAlert(message, type) {
       alertBox.style.display = 'none';
       document.body.removeChild(alertBox);
     }
+import { doc, updateDoc, setDoc, increment } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+const visitorRef = doc(db, "stats", "visitors");
+
+updateDoc(visitorRef, {
+  count: increment(1)
+}).catch(async () => {
+  await setDoc(visitorRef, { count: 1 });
+});
