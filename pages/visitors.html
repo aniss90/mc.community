@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Visitors Counter | MC Community</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../icons/icon-192x192.png" type="image/png">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @font-face {
+      font-family: minecraft;
+      src: url('../font/Minecraft-Default.otf');
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #111, #1a1a1a);
+      color: #fff;
+      font-family: minecraft, Arial, sans-serif;
+      text-align: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .title {
+      font-size: 28px;
+      color: gold;
+      margin-bottom: 20px;
+      animation: fadeIn 2s ease;
+    }
+
+    .counter-container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin: 30px 0;
+    }
+
+    .counter-box {
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid #444;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 10px;
+      min-width: 200px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .counter-label {
+      font-size: 18px;
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+
+    .counter {
+      font-size: 42px;
+      font-weight: bold;
+      color: lime;
+      margin-bottom: 5px;
+    }
+
+    .sub {
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      background-color: #444;
+      border: 2px solid gold;
+      color: white;
+      font-size: 16px;
+      padding: 10px 25px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: minecraft;
+      transition: 0.3s;
+      margin: 5px;
+    }
+
+    .btn:hover {
+      background-color: gold;
+      color: #111;
+    }
+
+    .chart-container {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 30px 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    .stat-card {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
+      padding: 15px;
+      text-align: left;
+    }
+
+    .stat-title {
+      color: gold;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      color: #fff;
+    }
+
+    .online-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: lime;
+      border-radius: 50%;
+      margin-right: 5px;
+      animation: pulse 1.5s infinite;
+    }
+
+    .top-month-box {
+      background: rgba(255, 215, 0, 0.1);
+      border: 2px solid gold;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    @keyframes countUp {
+      from { opacity: 0; transform: scale(0.7); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    /* خلفية نجوم متحركة */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      ;
+      opacity: 0.04;
+      z-index: 0;
+    }
+
+    @media (max-width: 768px) {
+      .counter-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .counter-box {
+        width: 80%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">إحصائيات زوار موقع MC Community</div>
+    
+    <div class="counter-container">
+      <div class="counter-box">
+        <div class="counter-label">إجمالي الزوار</div>
+        <div class="counter" id="totalVisitors">0</div>
+        <div class="sub">منذ إنشاء الموقع</div>
+      </div>
+      
+      <div class="counter-box">
+        <div class="counter-label">الزوار اليوم</div>
+        <div class="counter" id="todayVisitors">0</div>
+        <div class="sub" id="todayDate"></div>
+      </div>
+      
+      <div class="counter-box">
+        <div class="counter-label">متواجدون الآن</div>
+        <div class="counter"><span class="online-dot"></span><span id="onlineNow">0</span></div>
+        <div class="sub">في آخر 5 دقائق</div>
+      </div>
+    </div>
+    
+    <div class="top-month-box">
+      <div class="counter-label">الشهر الأكثر زيارة</div>
+      <div class="counter" id="topMonth">جار التحميل...</div>
+      <div class="sub" id="topMonthVisitors"></div>
+    </div>
+    
+    <div class="chart-container">
+      <canvas id="visitorsChart"></canvas>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-title">أجهزة الزوار</div>
+        <div id="devicesStats">جار التحميل...</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">أنظمة التشغيل</div>
+        <div id="osStats">جار التحميل...</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">المتصفحات</div>
+        <div id="browserStats">جار التحميل...</div>
+      </div>
+    </div>
+    
+    <div class="sub">تم تسجيل آخر زيارة لك في: <span id="lastVisit"></span></div>
+    <div class="sub">هذه الزيارة رقم <span id="yourVisits">1</span> لك</div>
+    
+    <button class="btn" onclick="window.location.href='../index.html'">العودة للرئيسية</button>
+    <button class="btn" onclick="refreshCounters()">تحديث الإحصائيات</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, onSnapshot, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+    import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
+      authDomain: "minecraft-community-4fd3d.firebaseapp.com",
+      projectId: "minecraft-community-4fd3d",
+      storageBucket: "minecraft-community-4fd3d.firebasestorage.app",
+      messagingSenderId: "550140131027",
+      appId: "1:550140131027:web:a5186726cf5372e138c626",
+      measurementId: "G-F18SFG2LMZ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+
+    // إنشاء معرف فريد للزائر
+    const getVisitorId = () => {
+      let visitorId = localStorage.getItem('mc_visitor_id');
+      if (!visitorId) {
+        visitorId = 'visitor_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('mc_visitor_id', visitorId);
+      }
+      return visitorId;
+    };
+
+    // تحديث عدد الزيارات المحلية
+    const updateLocalVisits = () => {
+      let visits = localStorage.getItem('mc_visits_count') || 0;
+      visits = parseInt(visits) + 1;
+      localStorage.setItem('mc_visits_count', visits);
+      document.getElementById('yourVisits').textContent = visits;
+    };
+
+    // تسجيل بيانات الزائر
+    const logVisitorData = async () => {
+      const visitorId = getVisitorId();
+      const now = new Date();
+      const today = now.toISOString().split('T')[0];
+      
+      const userAgent = navigator.userAgent;
+      let deviceType = 'Other';
+      let os = 'Unknown';
+      let browser = 'Unknown';
+      
+      // كشف نوع الجهاز
+      if (userAgent.match(/Android/i)) {
+        deviceType = 'Mobile';
+        os = 'Android';
+      } else if (userAgent.match(/iPhone|iPad|iPod/i)) {
+        deviceType = 'Mobile';
+        os = 'iOS';
+      } else if (userAgent.match(/Windows/i)) {
+        deviceType = 'Desktop';
+        os = 'Windows';
+      } else if (userAgent.match(/Mac/i)) {
+        deviceType = 'Desktop';
+        os = 'Mac';
+      } else if (userAgent.match(/Linux/i)) {
+        deviceType = 'Desktop';
+        os = 'Linux';
+      }
+      
+      // كشف المتصفح
+      if (userAgent.match(/Chrome/i) && !userAgent.match(/Edg/i)) {
+        browser = 'Chrome';
+      } else if (userAgent.match(/Firefox/i)) {
+        browser = 'Firefox';
+      } else if (userAgent.match(/Safari/i) && !userAgent.match(/Chrome/i)) {
+        browser = 'Safari';
+      } else if (userAgent.match(/Edg/i)) {
+        browser = 'Edge';
+      } else if (userAgent.match(/Opera|OPR/i)) {
+        browser = 'Opera';
+      }
+      
+      // تسجيل بيانات الجلسة
+      const sessionData = {
+        visitorId,
+        timestamp: now,
+        deviceType,
+        os,
+        browser,
+        isActive: true
+      };
+      
+      try {
+        // هنا يمكنك إضافة كود لإرسال البيانات إلى Firebase
+        // مثلاً: await addDoc(collection(db, "sessions"), sessionData);
+        
+        // تسجيل حدث في Firebase Analytics
+        logEvent(analytics, 'page_view', {
+          page_title: 'Visitors Counter',
+          visitor_id: visitorId,
+          device_type: deviceType,
+          os: os,
+          browser: browser
+        });
+      } catch (err) {
+        console.error("Error logging visitor data:", err);
+      }
+    };
+
+    // تحميل العداد الرئيسي
+    const loadCounters = async () => {
+      const visitorRef = doc(db, "stats", "visitors");
+      const today = new Date().toISOString().split('T')[0];
+      
+      try {
+        // العدد الكلي للزوار
+        const docSnap = await getDoc(visitorRef);
+        if (docSnap.exists()) {
+          animateCounter('totalVisitors', docSnap.data().count);
+        }
+        
+        // الزوار اليوم
+        const todayQuery = query(collection(db, "daily_visits"), where("date", "==", today));
+        const todaySnap = await getDocs(todayQuery);
+        if (!todaySnap.empty) {
+          todaySnap.forEach(doc => {
+            animateCounter('todayVisitors', doc.data().count);
+          });
+        }
+        
+        // الزوار المتواجدون الآن (آخر 5 دقائق)
+        const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+        const onlineQuery = query(collection(db, "sessions"), where("timestamp", ">", fiveMinutesAgo));
+        const onlineSnap = await getDocs(onlineQuery);
+        document.getElementById('onlineNow').textContent = onlineSnap.size;
+        
+        // تحديث تاريخ اليوم
+        document.getElementById('todayDate').textContent = `اليوم: ${today}`;
+        
+        // آخر زيارة
+        const now = new Date();
+        document.getElementById("lastVisit").textContent = now.toLocaleString();
+        
+      } catch (err) {
+        console.error("Error loading counters:", err);
+      }
+    };
+
+    // تحميل الإحصائيات
+    const loadStats = async () => {
+      try {
+        // أجهزة الزوار
+        const devices = {
+          Mobile: 45,
+          Desktop: 52,
+          Tablet: 3
+        };
+        displayStats('devicesStats', devices);
+        
+        // أنظمة التشغيل
+        const os = {
+          Windows: 58,
+          Android: 22,
+          iOS: 12,
+          Mac: 6,
+          Linux: 2
+        };
+        displayStats('osStats', os);
+        
+        // المتصفحات
+        const browsers = {
+          Chrome: 65,
+          Firefox: 15,
+          Safari: 12,
+          Edge: 5,
+          Opera: 3
+        };
+        displayStats('browserStats', browsers);
+        
+      } catch (err) {
+        console.error("Error loading stats:", err);
+      }
+    };
+
+    // عرض الإحصائيات
+    const displayStats = (elementId, stats) => {
+      const element = document.getElementById(elementId);
+      let html = '';
+      
+      for (const [key, value] of Object.entries(stats)) {
+        html += `
+          <div style="margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between;">
+              <span>${key}</span>
+              <span>${value}%</span>
+            </div>
+            <div style="background: #333; height: 8px; border-radius: 4px; margin-top: 3px;">
+              <div style="background: gold; width: ${value}%; height: 100%; border-radius: 4px;"></div>
+            </div>
+          </div>
+        `;
+      }
+      
+      element.innerHTML = html;
+    };
+
+    // جلب البيانات الشهرية
+    const getMonthlyData = async () => {
+      try {
+        const monthlyQuery = query(collection(db, "monthly_visits"));
+        const querySnapshot = await getDocs(monthlyQuery);
+        
+        const months = [];
+        const visits = [];
+        let maxVisits = 0;
+        let topMonth = '';
+        
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          months.push(data.month);
+          visits.push(data.count);
+          
+          if (data.count > maxVisits) {
+            maxVisits = data.count;
+            topMonth = data.month;
+          }
+        });
+        
+        return {
+          labels: months,
+          data: visits,
+          topMonth,
+          maxVisits
+        };
+      } catch (err) {
+        console.error("Error getting monthly data:", err);
+        return null;
+      }
+    };
+
+    // رسم المخطط البياني
+    const renderChart = async () => {
+      const monthlyData = await getMonthlyData();
+      if (!monthlyData) {
+        console.log("No monthly data available");
+        return;
+      }
+      
+      // عرض الشهر الأكثر زيارة
+      document.getElementById('topMonth').textContent = monthlyData.topMonth || "لا توجد بيانات";
+      document.getElementById('topMonthVisitors').textContent = monthlyData.maxVisits 
+        ? `بعدد زوار: ${monthlyData.maxVisits.toLocaleString()}` 
+        : "";
+      
+      const ctx = document.getElementById('visitorsChart').getContext('2d');
+      
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: monthlyData.labels,
+          datasets: [{
+            label: 'الزوار الشهري',
+            data: monthlyData.data,
+            backgroundColor: 'rgba(255, 215, 0, 0.2)',
+            borderColor: 'gold',
+            borderWidth: 2,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                color: '#fff',
+                font: {
+                  family: 'minecraft'
+                }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `الزوار: ${context.raw.toLocaleString()}`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                color: '#fff',
+                callback: function(value) {
+                  return value.toLocaleString();
+                }
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              }
+            },
+            x: {
+              ticks: {
+                color: '#fff'
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              }
+            }
+          }
+        }
+      });
+    };
+
+    // تأثير العد المتدرج
+    function animateCounter(elementId, target) {
+      const counter = document.getElementById(elementId);
+      let count = 0;
+      const speed = Math.ceil(target / 50);
+      
+      const interval = setInterval(() => {
+        count += speed;
+        if (count >= target) {
+          count = target;
+          clearInterval(interval);
+        }
+        counter.textContent = count.toLocaleString();
+      }, 20);
+    }
+
+    // تحديث العدادات
+    const refreshCounters = () => {
+      loadCounters();
+      loadStats();
+      renderChart();
+    };
+
+    // الاستماع للتحديثات في الوقت الحقيقي
+    const setupRealtimeUpdates = () => {
+      const visitorRef = doc(db, "stats", "visitors");
+      
+      onSnapshot(visitorRef, (doc) => {
+        if (doc.exists()) {
+          document.getElementById('totalVisitors').textContent = doc.data().count.toLocaleString();
+        }
+      });
+    };
+
+    // تهيئة الصفحة
+    document.addEventListener('DOMContentLoaded', async () => {
+      updateLocalVisits();
+      logVisitorData();
+      loadCounters();
+      loadStats();
+      await renderChart();
+      setupRealtimeUpdates();
+    });
+  </script>
+</body>
+</html>
