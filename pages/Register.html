@@ -1,9 +1,12 @@
-<!DOCTYPE html>  <html>  <head>  
+<!DOCTYPE html>  
+<html>  
+<head>  
   <meta charset="UTF-8">  
   <meta name="viewport" content="width=device-width, initial-scale=1">  
   <title>Register page</title>  
   <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">  
-  <link rel="stylesheet" href="../style/main.css">    <style>  
+  <link rel="stylesheet" href="../style/main.css">    
+  <style>  
     @font-face {  
       font-family: minecraft;  
       src: url('../font/Minecraft-Default.otf');  
@@ -17,7 +20,6 @@
       src: url('../font/Minecraft-Five.ttf');  
     }  
   
-
     .note {  
         background: #222;  
         border: 3px solid #FFBC13;  
@@ -26,7 +28,6 @@
         color: white;  
         width: auto;  
         padding: 5px  
-        
     }  
     .note note {  
         background: #FFBC13;  
@@ -47,121 +48,173 @@
         font-weight: bold;  
         height: 24px;   
     }  
-        .password-container {  
-  position: relative;  
-  margin: 10px 0;  
-}  .toggle-password {
-position: absolute;
-margin-top: 11px;
-transform: translateY(-50%);
-transform: translateX(-150%);
-cursor: pointer;
-user-select: none;
-opacity: 0.7;
-}
-
-.toggle-password:hover {
-opacity: 1;
-}
-        .input-group {
-  position: relative;
-  
-}
-
-.input-group input {
-
-
-
-  outline: none;
-  font-size: 16px;
-}
-
-.input-group label {
-  position: absolute;
-  top: 12px;
-  left: 30%;
-  color: #484848;
-  font-family: minecraft;
-  transition: all 0.3s;
-  pointer-events: none;
-  background-color: transparent;
-  padding: 0 5px;
-}
-
-.input-group input:focus + label,
-.input-group input:not(:placeholder-shown) + label {
-  top: -10px;
-  border-radius: 10px;
-  left: 30%;
-  font-size: 14px;
-  background-color: rgba(38, 38, 38);
-  color: #999999;
-} 
-  </style> 
-  </head>  
-<body>  
-    <button class="back" id="backButton" type="button" onclick="goBack()"></button>
-  <div class="header"> register  <img src="../imag/gif_test-83efe.gif" height="30">  </div>
-      <div class="content">
-  <div class="description">   
-  <div class="login-box">  
-    <form id="loginForm">  
-      <br>  
-    <div class="input-group">
-      <input type="text" id="username" placeholder=" " required>  
-        <label for="username">Username</label>
+    .password-container {  
+      position: relative;  
+      margin: 10px 0;  
+    }
     
-        
-      <div class="password-container">
-        <div class="input-group password-container">
-  <input type="password" id="password" placeholder="" required>
-    <label for="password">password</label>
+    .toggle-password {
+      position: absolute;
+      margin-top: 11px;
+      transform: translateY(-50%);
+      transform: translateX(-150%);
+      cursor: pointer;
+      user-select: none;
+      opacity: 0.7;
+    }
+    
+    .toggle-password:hover {
+      opacity: 1;
+    }
+    
+    .input-group {
+      position: relative;
+    }
+    
+    .input-group input {
+      outline: none;
+      font-size: 16px;
+    }
+    
+    .input-group label {
+      position: absolute;
+      top: 12px;
+      left: 30%;
+      color: #484848;
+      font-family: minecraft;
+      transition: all 0.3s;
+      pointer-events: none;
+      background-color: transparent;
+      padding: 0 5px;
+    }
+    
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+      top: -10px;
+      border-radius: 10px;
+      left: 30%;
+      font-size: 14px;
+      background-color: rgba(38, 38, 38);
+      color: #999999;
+    }
+    
+    /* التنسيق الجديد للشاشات الكبيرة */
+    .register-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+      padding: 20px;
+    }
+    
+    .register-box {
+      flex: 1;
+      max-width: 400px;
+    }
+    
+    .register-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .register-image img {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    /* تنسيق الجوال */
+    @media (max-width: 768px) {
+      .register-container {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .register-image {
+        order: 2;
+        margin-top: 20px;
+      }
+      
+      .register-box {
+        order: 1;
+        width: 100%;
+      }
+    }
+  </style> 
+</head>  
+<body>  
+  <button class="back" id="backButton" type="button" onclick="goBack()"></button>
+  <div class="header"> register  <img src="../imag/gif_test-83efe.gif" height="30">  </div>
   
-  <span class="toggle-password">️🙉</span> 
+  <div class="content">
+    <div class="register-container">
+      <div class="register-box">  
+        <form id="loginForm">  
+          <div class="note">  
+            <note>  
+              IMPORTANT NOTE!!<img src="../imag/WarningGlyph.png" height="12" weight="auto">  
+            </note>  
+            <br>   
+            <p>   
+              🔹When you finish creating the account, return to login page To log in to your account.  
+            </p>   
+            <a href="login.html" class="link">CLICK HERE <img src="../imag/enter-icon-31b5a.png" height="12"></a> To back to the login page.  
+          </div>  
+          <br>  
+          <div class="input-group">
+            <input type="text" id="username" placeholder=" " required>  
+            <label for="username">Username</label>
+          </div>
+          
+          <div class="password-container">
+            <div class="input-group password-container">
+              <input type="password" id="password" placeholder="" required>
+              <label for="password">password</label>
+              <span class="toggle-password">️🙉</span> 
+            </div>
+          </div>
+            
+          <div class="input-group">
+            <input type="email" id="email" placeholder=" " required>  
+            <label for="email">Your email</label>
+          </div>
+          <br>   
+        <div> 
+          <div class="description">  
+            <div class="button">   
+              <button type="button" id="whiteButton"> Register <img src="../imag/add-player@0.5x.icon-2f437.png" height="15"></button>  
+            </div>  
+          </div>
         </div>
-       <div class="input-email">
-      <input type="email" id="email" placeholder=" " required>  
-        <label for="email">Your email</label>
-      </br>   
+       </form>
+      </div>
+      <div class="register-image">
+        <div class="description"> 
+      <img src="../imag/no-worlds-yet-art-446b1.png" alt="Register Image">
+      </div>
       </div>
     </div>
-        <div class="description">  
-          <div class="button">   
-            <button type="button" id="whiteButton"> Register <img src="../imag/add-player@0.5x.icon-2f437.png" height="15"></button>  
-          </div>  
-          <br>  <div class="button">  
-      <div class="note">  
-        <note>  
-          IMPORTANT NOTE!!<img src="../imag/WarningGlyph.png" height="12" weight="auto">  
-          </note>  
-        <br>   
-        <p>   
-  🔹When you finish creating the account, return to login page To log in to your account.  
-  </br>   
-  </p>   
-<a href="login.html" class="link">  CLICK HERE  <img src="../imag/enter-icon-31b5a.png" height="12" ></a> To back to the login page.  
-      </div>  
-    </div>  
-  </div>  
-  <img src="../imag/Feedback-f0949.png" height="90%" width="90%">
-
   </div>    
-  <script type="module">  
+  
+<script type="module">  
     import { db } from '../scripts/main.js'; // استيراد قاعدة البيانات من Firebase  
     import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";   
   
-  const togglePassword = document.querySelector('.toggle-password');
-const passwordInput = document.getElementById('password');
-
-togglePassword.addEventListener('click', function () {
-  // Toggle the type attribute
-  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-  passwordInput.setAttribute('type', type);
-  
-  // Toggle the eye icon
-  this.textContent = type === 'password' ? '️🙈' : '️🙉';
-});
-  document.getElementById('whiteButton').addEventListener('click', async function () {  
+    const togglePassword = document.querySelector('.toggle-password');
+    const passwordInput = document.getElementById('password');
+    
+    togglePassword.addEventListener('click', function () {
+      // Toggle the type attribute
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      
+      // Toggle the eye icon
+      this.textContent = type === 'password' ? '️🙈' : '️🙉';
+    });
+    
+    document.getElementById('whiteButton').addEventListener('click', async function () {  
       const username = document.getElementById('username').value.trim();  
       const password = document.getElementById('password').value.trim();  
       const email = document.getElementById('email').value.trim();  
@@ -172,41 +225,49 @@ togglePassword.addEventListener('click', function () {
       }  
   
       try {
-  // تحقق من إذا كان اسم المستخدم موجودًا
-  const userDocRef = doc(db, 'users', username);  
-  console.log('Checking if user exists:', username); // إضافة log هنا
-  const userDoc = await getDoc(userDocRef);  
+        // تحقق من إذا كان اسم المستخدم موجودًا
+        const userDocRef = doc(db, 'users', username);  
+        console.log('Checking if user exists:', username);
+        const userDoc = await getDoc(userDocRef);  
 
-  if (userDoc.exists()) {  
-    console.log('Username already exists '); // إضافة log هنا
-    alert('Username already exists ❌', 'error');  
-    return;  
-  }  
+        if (userDoc.exists()) {  
+          console.log('Username already exists');
+          alert('Username already exists ❌', 'error');  
+          return;  
+        }  
 
-  // إنشاء الحساب وإضافته إلى Firestore
-  console.log('Creating new account for:', username); // إضافة log هنا
-  await setDoc(userDocRef, { 
-    password, 
-    points: 0, 
-    email: email // إضافة البريد الإلكتروني
-  });  
-  alert(`The account has been created successfully ✅, welcome ${username}.✨`, 'success');  
-} catch (error) {  
-  console.error('Error while creating the account ❌:', error);  
-  alert('An error occurred while creating the account. Try again.', 'error');  
-}
+        // إنشاء الحساب وإضافته إلى Firestore
+        console.log('Creating new account for:', username);
+        await setDoc(userDocRef, { 
+          password, 
+          points: 0, 
+          email: email
+        });  
+        
+        // حفظ اسم المستخدم في localStorage لتسجيل الدخول التلقائي
+        localStorage.setItem('activeUser', username);
+        
+        alert(`The account has been created successfully ✅, welcome ${username}.✨`, 'success');  
+        
+        // توجيه المستخدم إلى الصفحة الرئيسية بعد تأخير قصير
+        setTimeout(() => {
+          window.location.href = 'general.html'; // يمكنك تغيير هذا إلى الصفحة التي تريد توجيه المستخدم إليها
+        }, 500);
+        
+      } catch (error) {  
+        console.error('Error while creating the account ❌:', error);  
+        alert('An error occurred while creating the account. Try again.', 'error');  
+      }
     });  
-  
-</script> 
-  <script src="scripts/main.js"></script> 
-    <script>
-  function goBack() {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
-    }
-  }
 </script>
-  </body>   
+  <script>
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
+      }
+    }
+  </script>
+</body>   
 </html>
