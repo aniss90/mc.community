@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../style/main.css">
-  <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
+  <link rel="icon" type="png" href="../web/ytlogo.png">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     @font-face {
       font-family: minecraft;
@@ -45,10 +46,7 @@
       }
     }
 
-    .header {
-      animation: slideDown 0.7s ease-out forwards;
-      opacity: 0;
-    }
+    
     
     /* تنبيه مخصص */
     .custom-alert-overlay {
@@ -144,7 +142,34 @@
   cursor: pointer;
   
 }
-
+  .menu {
+            position: absolute;
+            border: none;
+            top: 20px;
+            left: 10px;
+            cursor: pointer;
+            
+            padding: 10px;
+            background: url(../imag/menu@0.5x.icon-e2970.png);
+            background-size:  contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 9999;
+        } 
+          .Chat-btn {
+            position: fixed;
+            display: flex;
+            border: none;
+            right: 10px;
+            top: 20px;
+            cursor: pointer;
+            padding: 10px;
+            background: url(../imag/comment@0.5x.icon-2df01.png);
+            background-size:  contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 9999;
+        } 
 .username-dropdown div:last-child {
   border-bottom: none; /* إزالة الخط من آخر عنصر */
 }
@@ -152,39 +177,387 @@
 .username-dropdown div:hover {
   background-color: #515151;
 } 
-  </style>
+/* أنماط جديدة للقائمة المنسدلة تحت الزر */
+.logout-dropdown {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذا أردت */
+  backdrop-filter: blur(8px); /* هذه الخاصية تضيف تأثير البلور */
+  -webkit-backdrop-filter: blur(5px);
+  border-radius: 5px;
+  z-index: 10000;
+  display: none;
+  text-align: left;
+  border: 1px solid #555;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  min-width: 180px;
+  animation: slideDown 0.2s ease-out;
+}
+
+.logout-dropdown h3 {
+  color:#000000 ;
+  margin: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #555;
+  font-family: minecraft;
+  font-size: 14px;
+}
+
+.logout-options {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+}
+
+
+
+/* تعديل أنيميشن لتناسب القائمة المنسدلة */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* أنماط أزرار القائمة المنسدلة */
+.dropdown-button {
+  background: none;
+  border: none;
+  color: #FFFFFF;
+  text-shadow: 0px 2px 0px #000000;
+  padding: 8px 12px;
+  text-align: auto;
+  cursor: pointer;
+  font-family: minecraft-five;
+  font-size: 13px;
+  border-radius: 3px;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.dropdown-button:hover {
+  background-color: #444;
+  color: white;
+}
+
+#confirmLogout {
+  color: #ff6b6b;
+}
+
+#confirmLogout:hover {
+  background-color: #ff3b3b;
+  color: white;
+}
+#points{
+            text-shadow:0px 1px 0px #3A2700;
+            background: #916204;
+            border: 2px solid #A6730F;
+            color: #FFD952;
+            font-size: 17px;
+}
+
+/* إضافة أنميشن للعداد */
+@keyframes countUp {
+  from {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.counting {
+  animation: countUp 0.3s ease-out;
+}
+/* تأثيرات جديدة للعداد */
+@keyframes countDown {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    color: #FFD952;
+  }
+  50% {
+    transform: translateY(-10px) scale(1.1);
+    opacity: 0.8;
+    color: #ff6b6b;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    color: #FFD952;
+  }
+}
+
+.counting-down {
+  animation: countDown 0.5s ease-out;
+}
+#points-float{
+  padding-bottom: 20px;
+  z-index: 10000;
+}
+/* إضافة أنماط للإشعارات */
+.notification-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    max-width: 300px;
+}
+
+.notification {
+    background-color: #2C8014;
+    color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    
+    border: 2px solid #4f913c;
+    box-shadow: 0 3px 0px rgba(1, 97, 12, 1);
+    cursor: pointer;
+    transform: translateX(100%);
+    animation: slideIn 0.5s forwards;
+    display: flex;
+    align-items: center;
+}
+
+.notification img {
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+    
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-family: minecraft-five;
+    font-size: 14px;
+}
+
+.notification-message {
+    font-family: minecraft-five;
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+@keyframes slideIn {
+    to { transform: translateX(0); }
+}
+
+@keyframes slideOut {
+    to { transform: translateX(100%); }
+}
+.img2 img{
+  height: 12px;
+  width: auto;
+}
+span{
+  font-family: minecraft-five;
+}
+/* أنماط قسم الأكواد الترويجية */
+#blueButton {
+  font-family: minecraft-five;
+  transition: background-color 0.3s;
+}
+ .coin-particle {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background-image: url('../new_emojis/coinss_gif.gif');
+      background-size: cover;
+      pointer-events: none;
+      z-index: 1;
+      animation: float 1.5s ease-out forwards;
+      opacity: 1;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--move-x), var(--move-y)) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+#whiteButton{
+  text-shadow: 1px 1px 0.9px rgba(180, 125, 0, 1);
+            height: 40px;
+            width: 100%;
+            border: 2px solid #FFFFFF;
+            border: 2px solid #8C6A15;
+            background-color: #2E2100;
+            box-shadow: 0px 3px 0px rgba(43, 30, 0, 1);
+            font-size: 16px;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            padding: 10px;
+            color: #FFFFFF;
+            margin: auto;
+            transition: background-color,border,box-shadow 0.5s;
+}
+#whiteButton:hover{
+           top: 2px;
+            height: 40px;
+            color:#FFFFFF ;
+            width: 100%;
+            position: relative;
+            border: 2px solid #FFD15E;
+            background-color: #2E2100;
+            box-shadow: 5px 0 15px #BF9837;
+}
+/* تأثيرات الظهور التدريجي للصفحة */
+body {
+  opacity: 0;
+  animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+.content {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideDownFadeIn 0.7s ease-out 0.4s forwards;
+}
+ 
+
+.content {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideUpFadeIn 0.7s ease-out 0.4s forwards;
+}
+
+.title {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideUpFadeIn 0.9s ease-out 0.9s forwards;
+}
+
+.description {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideUpFadeIn 0.9s ease-out 0.8s forwards;
+}
+
+.button {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideUpFadeIn 0.9s ease-out 1s forwards;
+}
+
+@keyframes slideDownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+#welcomeMessage {
   
-  <script type="module" src="../scripts/main.js"></script>
-  <title>generalpage </title>
+  transform: translateY(10px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 1.2em;
+}
+
+.smooth-typing {
+  border-right: 2px solid rgba(0, 0, 0, 0.7);
+  animation: 
+    blinkCursor 0.8s infinite,
+    gentlePulse 0.5s ease-in-out infinite alternate;
+}
+
+.typing-complete {
+  border-right: none;
+  animation: gentleFadeIn 0.5s ease-out;
+}
+
+@keyframes blinkCursor {
+  0%, 100% { border-color: rgba(0, 0, 0, 0.2); }
+  50% { border-color: rgba(0, 0, 0, 0.7); }
+}
+
+@keyframes gentlePulse {
+  from { opacity: 0.95; }
+  to { opacity: 1; }
+}
+
+@keyframes gentleFadeIn {
+  from { transform: translateY(-2px); }
+  to { transform: translateY(0); }
+}
+
+  </style>
+  <title>general </title>
 </head>
+  <script type="module" src="../scripts/main.js"></script>
 <body>
+<!-- حاوية الإشعارات -->
+<div class="notification-container" id="notificationContainer"></div>
 
   <div class="header">
-    <button class="back" id="backButton" type="button" onclick="goBack()"></button>
-    general <img src="../Emojis/Win_Computer.gif" height="25">  
+    <button class="Chat-btn" id="Chat-btn" type="button"></button>
+    <button class="menu" id="menuButton" type="button"></button>
+  general
+  <img src="../Emojis/Win_Computer.gif" height="25">  
   </div> 
   
-  <div class="content">
+  <div class="content"> 
+
     <h1 id="welcomeMessage"></h1>
+    
+    
     <div class="points">
-      <div class="title"> your coine : <span id="points">0</span><img src="../imag/MCoin.png" alt="عملة" height="15"></div> 
+      <div class="title"> your coine : <span id="points">0</span><span id="points-float" style="display: inline-block; position: relative;"></span><img src="../new_emojis/coinss_gif.gif" height="15"></div> 
       <div class="description"> 
         Get coins between 1000 coine and 1 coine.
-        <button id="whiteButton"> Get random coins <img src="../Emojis/money_flying.gif" height="16"></button>
+        <button id="whiteButton">+ coins <img src="../new_emojis/Alot_of_coins.gif" height="16"></button>
       </div> 
-      <div class="description">
-        <div class="title">taking chat</div>Chat for talking with other users.
-        <a href="List_beta.html">
-          <div class="button">
-            <button id="greenButton">The Chat <img src="../imag/comments_light-88de7.png" height="15"></button>
-          </div>
-        </a> 
         <div class="description"> 
           <div class="title">marketplace</div> Buy features and things for your account 
           using your coins
           <a href="marketplace.html">
             <div class="button">
               <button id="greenButton">Marketplace <img src="../imag/marketplace-icon-7f96f.png" height="15"></button>
+            </div>
+          </a> 
+        </div>
+          <div class="description"> 
+          <div class="title">Trading </div>Trade your coins on the MC Co trading platform.
+          <a href="trading.html">
+            <div class="button">
+              <button id="blueButton">Dev.Trading dashboard <img src="../Emojis/chart_up.png" height="15"></button>
             </div>
           </a> 
         </div>
@@ -210,20 +583,86 @@
           <div id="sendPointsResult"></div> 
         </div> 
       </div>
+  
+    
     </div>
+  </div> 
+</div>
   </div>
-
+  <!-- يضاف داخل div.header بعد زر الرجوع -->
+<div class="logout-dropdown" id="logoutDropdown">
+  <h3>MENU</h3>
+  <div class="logout-options">
+    <button id="confirmLogout" class="dropdown-button">Sign out</button>
+    <button id="settingsButton" class="dropdown-button">Settings </button>
+    <button id="cancelLogout" class="dropdown-button">Close</button>
+  </div>
+</div>
   <div id="customAlert" class="custom-alert-overlay">
     <div class="custom-alert-box" id="customAlertBox">
       <h2>  🎉Congratulations ,you get </h2>
       <div class="custom-alert-points" id="customAlertPoints">0</div>
     </div>
   </div>
+<script>
+  document.getElementById("Chat-btn").addEventListener("click", function() {
+    window.location.href = "list_beta.html";
+  });
+</script>
+  <script>
+    document.getElementById('whiteButton').addEventListener('click', function () {
+      const coinCount = Math.floor(Math.random() * 8) + 5; // عدد العملات من 5 إلى 12
+      for (let i = 0; i < coinCount; i++) {
+        createCoinParticle();
+      }
+    });
+
+    function createCoinParticle() {
+      const button = document.getElementById('whiteButton');
+      const buttonRect = button.getBoundingClientRect();
+      const description = document.querySelector('.description');
+
+      const coin = document.createElement('div');
+      coin.className = 'coin-particle';
+
+      // مكان العملة: عشوائي حول الزر
+      const padding = 30; // المسافة حول الزر
+      const randomX = Math.random() * (buttonRect.width + padding * 2) - padding;
+      const randomY = Math.random() * (buttonRect.height + padding * 2) - padding;
+
+      coin.style.left = (button.offsetLeft + randomX) + 'px';
+      coin.style.top = (button.offsetTop + randomY) + 'px';
+
+      // حركة صغيرة لكل عملة
+      const moveX = (Math.random() - 0.5) * 60 + 'px';
+      const moveY = (Math.random() - 0.5) * 60 + 'px';
+
+      coin.style.setProperty('--move-x', moveX);
+      coin.style.setProperty('--move-y', moveY);
+
+      description.appendChild(coin);
+
+      // حذف العملة بعد انتهاء الأنميشن
+      setTimeout(() => {
+        coin.remove();
+      }, 1500);
+    }
+  </script>
 
 <script type="module">
 import { db } from '../scripts/main.js'; 
-import { doc, getDoc, setDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; 
-import { onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { 
+  doc, 
+  getDoc, 
+  setDoc, 
+  updateDoc, 
+  collection, 
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+  orderBy
+} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; 
 
 const activeUser = localStorage.getItem('activeUser');
 
@@ -232,108 +671,245 @@ if (!activeUser) {
   window.location.href = 'login.html';
 }
 
-// دالة لتنسيق عدد النقاط
-function formatPoints(num) {
-  if (num >= 1_000_000_000_000) return (num / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 'T';
-  if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
-  if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
-  return num.toString();
-}
+// متغير لتتبع آخر رسالة
+let lastMessageTimestamp = null;
 
-function listenToNotifications() {
-  const userDocRef = doc(db, 'users', activeUser);
+// دالة لتنسيق عدد النقاط مع تأثير العد
+function formatPoints(num, element) {
+  if (!element) element = document.getElementById('points');
+  
+  const currentText = element.textContent.replace(/[^\d.]/g, '');
+  const current = currentText ? parseFloat(currentText) : 0;
+  const target = num;
+  const duration = 800;
+  const startTime = performance.now();
 
-  onSnapshot(userDocRef, async (docSnap) => {
-    if (docSnap.exists()) {
-      const user = docSnap.data();
-      if (user.notification && user.notification.read === false) {
-        const from = user.notification.from;
-        const amount = user.notification.amount;
-
-        // عرض تنبيه مخصص بنفس ستايل customAlert
-        showCustomAlert(amount, from);
-
-        // تعليم التنبيه كمقروء
-        await updateDoc(userDocRef, {
-          "notification.read": true
-        });
-      }
-    }
-  });
-}
-
-// إضافة النقاط للمستخدم
-document.getElementById('whiteButton').addEventListener('click', async function () {
-  const userDocRef = doc(db, 'users', activeUser);
-  const userDoc = await getDoc(userDocRef);
-
-  if (userDoc.exists()) {
-    const user = userDoc.data();
-
-    // توليد عدد عشوائي بنسب مختلفة
-    let earnedPoints;
-    const chance = Math.random();
-
-    if (chance <= 0.05) {
-      // 5% احتمال بين 30 و 40
-      earnedPoints = Math.floor(Math.random() * 11) + 30; // من 30 إلى 40
-    } else {
-      // 95% احتمال بين 1 و 29
-      earnedPoints = Math.floor(Math.random() * 29) + 1; // من 1 إلى 29
-    }
-
-    user.points += earnedPoints;
-
-    await updateDoc(userDocRef, { points: user.points });
-
-    document.getElementById('points').innerText = formatPoints(user.points);
-
-    showCustomAlert(earnedPoints);
-  } else {
-    alert('المستخدم غير موجود!');
+  if (target < current) {
+    element.classList.add('counting-down');
+    setTimeout(() => {
+      element.classList.remove('counting-down');
+    }, 500);
   }
-});
 
-// جلب بيانات المستخدم من Firestore
+  function updateCounter(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    let value;
+    if (target > current) {
+      value = Math.floor(current + (target - current) * progress);
+    } else {
+      value = Math.floor(current - (current - target) * progress);
+    }
+    
+    let formattedValue;
+    if (value >= 1_000_000_000_000) {
+      formattedValue = (value / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 'T';
+    } else if (value >= 1_000_000_000) {
+      formattedValue = (value / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
+    } else if (value >= 1_000_000) {
+      formattedValue = (value / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+    } else {
+      formattedValue = value.toLocaleString();
+    }
+    
+    element.textContent = formattedValue;
+    
+    if (target > current) {
+      element.classList.add('counting');
+      setTimeout(() => {
+        element.classList.remove('counting');
+      }, 300);
+    }
+    
+    if (progress < 1) {
+      requestAnimationFrame(updateCounter);
+    }
+  }
+  
+  requestAnimationFrame(updateCounter);
+} 
+
+// دالة للاستماع للرسائل الجديدة
+async function setupMessageListener() {
+    const userDocRef = doc(db, 'users', activeUser);
+    const messagesRef = collection(db, "messages");
+    
+    // جلب آخر موعد قراءة للمستخدم
+    const userDoc = await getDoc(userDocRef);
+    const lastSeenData = userDoc.data().lastSeenMessages || {};
+    
+    const messagesQuery = query(
+        messagesRef,
+        where("receiver", "==", activeUser),
+        orderBy("timestamp", "desc")
+    );
+
+    const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+                const message = change.doc.data();
+                
+                // تجاهل الرسائل القديمة
+                const lastSeen = lastSeenData[message.sender];
+                if (lastSeen && message.timestamp.toDate() <= new Date(lastSeen)) {
+                    return;
+                }
+                
+                // تجاهل الرسائل المرسلة من المستخدم الحالي
+                if (message.sender === activeUser) return;
+                
+                // عرض الإشعار فقط إذا كانت الصفحة غير نشطة
+                if (document.visibilityState !== 'visible') {
+                    showBrowserNotification(message.sender, message.message);
+                }
+                
+                // عرض إشعار التطبيق
+                showMessageNotification(message.sender, message.message, message.type);
+            }
+        });
+    });
+
+    window.addEventListener('beforeunload', unsubscribe);
+}
+
+// دالة لعرض إشعارات المتصفح
+// دالة لعرض إشعارات المتصفح
+function showBrowserNotification(sender, message) {
+    if (!("Notification" in window)) return;
+
+    if (Notification.permission === "granted") {
+        new Notification(`رسالة جديدة من ${sender}`, {
+            body: message.length > 50 ? message.substring(0, 50) + "..." : message,
+            icon: "../imag/player-head-128-052ba.png"
+        });
+    } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                new Notification(`رسالة جديدة من ${sender}`, {
+                    body: message.length > 50 ? message.substring(0, 50) + "..." : message,
+                    icon: "../imag/player-head-128-052ba.png"
+                });
+            }
+        });
+    }
+}
+
+// دالة لعرض إشعار التطبيق
+function showMessageNotification(sender, message, type) {
+    const notificationContainer = document.getElementById('notificationContainer');
+    
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    
+    let displayMessage = type === "image" ? "صورة" : message;
+    if (displayMessage.length > 30) {
+        displayMessage = displayMessage.substring(0, 30) + "...";
+    }
+    
+    notification.innerHTML = `
+        <div class="notification-content">
+            <div class="notification-title">⚪|<r>New message from:</r> ${sender}</div>
+            <div style="width: 100%; height: 1px; background-color: white; margin: 10px 0;"></div>  
+            <div class="notification-message"><div class="img2"> <img src="../Emojis/arrow_right.png" > ${displayMessage}</div></div>
+            
+        </div>
+        <img src="../imag/player-head-128-052ba.png" alt="${sender}">
+    `;
+    
+    notification.addEventListener('click', () => {
+        window.location.href = `chat_beta.html?user=${sender}`;
+        notification.remove();
+    });
+    
+    notificationContainer.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.remove();
+    }, 5000);
+}
+
+// دالة لجلب بيانات المستخدم
 async function getUserData() {
   const userDocRef = doc(db, 'users', activeUser);
   const userDoc = await getDoc(userDocRef);
-
+  
   if (userDoc.exists()) {
     const user = userDoc.data();
-    document.getElementById('welcomeMessage').innerText = `Welcome ${activeUser}!`;
-    document.getElementById('points').innerText = formatPoints(user.points);
-
+    const welcomeElement = document.getElementById('welcomeMessage');
+    
+    // نضيف تأثير الظهور السلس أولاً
+    welcomeElement.style.opacity = '1';
+    welcomeElement.style.transform = 'translateY(0)';
+    
+    // نستدعي تأثير الكتابة بسرعة مناسبة
+    await smoothTypeWriter(`Welcome ${activeUser}!`, welcomeElement, 80);
+    
+    formatPoints(user.points, document.getElementById('points'));
+    
     if (user.notification && user.notification.read === false) {
       const from = user.notification.from;
       const amount = user.notification.amount;
-
-      alert(`لقد استلمت ${amount} نقطة من ${from}!`);
-
+      
+      showCustomAlert(amount, from);
+      
       await updateDoc(userDocRef, {
         "notification.read": true
       });
     }
-
   } else {
     alert('User does not exist in the database!');
     window.location.href = 'login.html';
   }
 }
 
-getUserData();
+// دالة الكتابة السلسة المعدلة
+async function smoothTypeWriter(text, element, speed = 80) {
+  element.innerHTML = "";
+  element.classList.add('smooth-typing');
+  
+  // نستخدم حلقة for-of مع await لتحقيق تأثير أكثر سلاسة
+  for (const char of text) {
+    element.innerHTML += char;
+    await new Promise(resolve => setTimeout(resolve, speed));
+    
+    // تأثير متغير للسرعة (أبطأ قليلاً عند المسافات)
+    if (char === ' ') {
+      await new Promise(resolve => setTimeout(resolve, speed * 1.5));
+    }
+  }
+  
+  element.classList.remove('smooth-typing');
+  element.classList.add('typing-complete');
+}
 
-// تسجيل الخروج
-document.getElementById('backButton').addEventListener('click', function () {
-  const confirmation = confirm('هل تريد تسجيل الخروج؟');
-  if (confirmation) {
-    alert('سيتم تسجيل الخروج الآن');
-    localStorage.removeItem('activeUser');
-    window.location.href = 'login.html';
+// دالة لإضافة النقاط
+document.getElementById('whiteButton').addEventListener('click', async function () {
+  const userDocRef = doc(db, 'users', activeUser);
+  const userDoc = await getDoc(userDocRef);
+
+  if (userDoc.exists()) {
+    const user = userDoc.data();
+    let earnedPoints;
+
+    const chance = Math.random();
+    if (chance <= 0.05) {
+      earnedPoints = Math.floor(Math.random() * 11) + 30;
+    } else {
+      earnedPoints = Math.floor(Math.random() * 29) + 1;
+    }
+
+    user.points += earnedPoints;
+
+    await updateDoc(userDocRef, { points: user.points });
+    formatPoints(user.points);
+    showCustomAlert(earnedPoints);
+  } else {
+    alert('المستخدم غير موجود!');
   }
 });
 
-// إرسال النقاط لمستخدم آخر
+// دالة لإرسال النقاط
 document.getElementById('redButton').addEventListener('click', async function () {
   const sender = activeUser;
   const receiver = document.getElementById('receiverUsername').value.trim();
@@ -359,8 +935,10 @@ document.getElementById('redButton').addEventListener('click', async function ()
   const senderDocRef = doc(db, 'users', sender);
   const receiverDocRef = doc(db, 'users', receiver);
 
-  const senderDocSnap = await getDoc(senderDocRef);
-  const receiverDocSnap = await getDoc(receiverDocRef);
+  const [senderDocSnap, receiverDocSnap] = await Promise.all([
+    getDoc(senderDocRef),
+    getDoc(receiverDocRef)
+  ]);
 
   if (!receiverDocSnap.exists()) {
     alert('اسم المستخدم المستقبل غير موجود!');
@@ -368,41 +946,67 @@ document.getElementById('redButton').addEventListener('click', async function ()
   }
 
   const senderData = senderDocSnap.data();
-  const receiverData = receiverDocSnap.data();
-
   if (senderData.points < points) {
     alert('ليس لديك نقاط كافية!');
     return;
   }
 
-  await updateDoc(senderDocRef, {
-    points: senderData.points - points
-  });
+  // تنفيذ عملية التحويل
+  await Promise.all([
+    updateDoc(senderDocRef, {
+      points: senderData.points - points
+    }),
+    updateDoc(receiverDocRef, {
+      points: (receiverDocSnap.data().points || 0) + points,
+      notification: {
+        from: sender,
+        amount: points,
+        read: false
+      }
+    })
+  ]);
 
-  await updateDoc(receiverDocRef, {
-    points: (receiverData.points || 0) + points,
-    notification: {
-      from: sender,
-      amount: points,
-      read: false
-    }
-  });
+  // عرض التأثيرات
+  const pointsElement = document.getElementById('points');
+  formatPoints(senderData.points - points, pointsElement);
 
-  document.getElementById('points').innerText = formatPoints(senderData.points - points);
+  const floatContainer = document.getElementById('points-float');
+  const floatPoints = document.createElement('div');
+  floatPoints.textContent = `-${points.toLocaleString()}`;
+  floatPoints.style.position = 'absolute';
+  floatPoints.style.color = 'red';
+  floatPoints.style.fontWeight = 'bold';
+  floatPoints.style.fontSize = '1.2em';
+  floatPoints.style.right = '0';
+  floatPoints.style.top = '0';
+  floatPoints.style.opacity = '1';
+  floatPoints.style.transition = 'all 1s ease-out';
+  floatPoints.style.pointerEvents = 'none';
 
-  alert(`تم إرسال ${points} نقطة بنجاح إلى ${receiver}!\n It has been deducted from your account.`);
+  floatContainer.appendChild(floatPoints);
+
+  setTimeout(() => {
+    floatPoints.style.top = '-20px';
+    floatPoints.style.opacity = '0';
+  }, 50);
+
+  setTimeout(() => {
+    floatPoints.remove();
+  }, 2500);
 });
 
-window.addEventListener('load', () => {
-  document.querySelector('.header').style.opacity = '1';
-});
-
-function showCustomAlert(points) {
+// دالة لعرض التنبيه المخصص
+function showCustomAlert(points, from = null) {
   const overlay = document.getElementById('customAlert');
   const box = document.getElementById('customAlertBox');
   const pointsDisplay = document.getElementById('customAlertPoints');
 
-  // غيّر اللون حسب النقاط
+  if (from) {
+    pointsDisplay.textContent = `${points} coins from ${from}`;
+  } else {
+    pointsDisplay.textContent = `${points} coins.`;
+  }
+
   if (points <= 10) {
     box.style.backgroundColor = 'silver';
     box.style.boxShadow = '0 0 15px rgba(123, 123, 123, 1)';
@@ -417,7 +1021,6 @@ function showCustomAlert(points) {
     box.style.color = '#fff';
   }
 
-  pointsDisplay.textContent = `${points} coins.`;
   overlay.style.display = 'flex';
 
   setTimeout(() => {
@@ -425,12 +1028,46 @@ function showCustomAlert(points) {
   }, 2000);
 }
 
-// كود جديد لقائمة أسماء المستخدمين
+// تهيئة الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+  getUserData();
+  setupMessageListener();
+  
+  if ("Notification" in window) {
+    Notification.requestPermission();
+  }
+  
+  window.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      lastMessageTimestamp = null;
+    }
+  });
+});
+
+// إدارة حالة المستخدم
+async function setUserStatus(status) {
+  const userDocRef = doc(db, 'users', activeUser);
+  await updateDoc(userDocRef, {
+    status: status,
+    ...(status === 'offline' && { lastSeen: new Date().toISOString() })
+  });
+}
+
+window.addEventListener('load', () => {
+  document.querySelector('.header').style.opacity = '1';
+  setUserStatus('online');
+});
+
+window.addEventListener('beforeunload', () => {
+  setUserStatus('offline');
+});
+
+// إدارة قائمة أسماء المستخدمين
+// إدارة قائمة أسماء المستخدمين
 const receiverUsernameInput = document.getElementById('receiverUsername');
 const usernameDropdown = document.getElementById('usernameDropdown');
 let allUsernames = [];
 
-// جلب جميع أسماء المستخدمين
 async function fetchAllUsernames() {
   const usersSnapshot = await getDocs(collection(db, 'users'));
   allUsernames = usersSnapshot.docs
@@ -438,51 +1075,12 @@ async function fetchAllUsernames() {
     .filter(username => username !== activeUser);
 }
 
-fetchAllUsernames();
-
-// عند النقر على حقل اسم المستخدم
-receiverUsernameInput.addEventListener('focus', async function() {
-  if (allUsernames.length === 0) {
-    await fetchAllUsernames();
-  }
-  
-  if (allUsernames.length > 0) {
-    usernameDropdown.innerHTML = '';
-    allUsernames.forEach(username => {
-      const userElement = document.createElement('div');
-      userElement.textContent = username;
-      userElement.addEventListener('click', function() {
-        receiverUsernameInput.value = username;
-        usernameDropdown.style.display = 'none';
-      });
-      usernameDropdown.appendChild(userElement);
-    });
-    usernameDropdown.style.display = 'block';
-  }
-});
-
-// عند الكتابة في حقل اسم المستخدم
-receiverUsernameInput.addEventListener('input', function() {
-  const searchTerm = this.value.toLowerCase();
-  const filteredUsernames = allUsernames.filter(username => 
-    username.toLowerCase().includes(searchTerm)
-  );
-  
-  updateDropdown(filteredUsernames);
-  
-  if (filteredUsernames.length > 0 && this.value) {
-    usernameDropdown.style.display = 'block';
-  } else {
-    usernameDropdown.style.display = 'none';
-  }
-});
-
 function updateDropdown(usernames) {
   usernameDropdown.innerHTML = '';
   usernames.forEach(username => {
     const userElement = document.createElement('div');
     userElement.textContent = username;
-    userElement.addEventListener('click', function() {
+    userElement.addEventListener('click', () => {
       receiverUsernameInput.value = username;
       usernameDropdown.style.display = 'none';
     });
@@ -490,38 +1088,78 @@ function updateDropdown(usernames) {
   });
 }
 
-// إخفاء القائمة عند النقر خارجها
-document.addEventListener('click', function(event) {
-  if (!receiverUsernameInput.contains(event.target) && !usernameDropdown.contains(event.target)) {
+receiverUsernameInput.addEventListener('focus', async () => {
+  if (allUsernames.length === 0) {
+    await fetchAllUsernames();
+  }
+  updateDropdown(allUsernames);
+  usernameDropdown.style.display = 'block';
+});
+
+receiverUsernameInput.addEventListener('input', () => {
+  const searchTerm = receiverUsernameInput.value.toLowerCase();
+  const filteredUsernames = allUsernames.filter(username => 
+    username.toLowerCase().includes(searchTerm)
+  );
+  updateDropdown(filteredUsernames);
+});
+
+document.addEventListener('click', (event) => {
+  if (!receiverUsernameInput.contains(event.target) && 
+      !usernameDropdown.contains(event.target)) {
     usernameDropdown.style.display = 'none';
   }
 });
-// تحديث حالة المستخدم عند الاتصال
-async function setUserStatusOnline() {
-  const userDocRef = doc(db, 'users', activeUser);
-  await updateDoc(userDocRef, {
-    status: 'online'
-  });
-}
 
-// تحديث حالة المستخدم عند الخروج أو إغلاق الصفحة
-async function setUserStatusOffline() {
-  const userDocRef = doc(db, 'users', activeUser);
-  await updateDoc(userDocRef, {
-    status: 'offline',
-    lastSeen: new Date().toISOString()
-  });
-}
 
-// حدث الحالة عند تحميل الصفحة
-window.addEventListener('load', () => {
-  setUserStatusOnline();
-});
 
-// حدث الحالة عند إغلاق الصفحة أو إعادة تحميلها
-window.addEventListener('beforeunload', () => {
-  setUserStatusOffline();
-});
+
+// استدعاء الدالة لعرض الأكواد المتاحة عند تحميل الصفحة
+
 </script>
+<script>
+  // تسجيل الخروج
+// استبدال الكود القديم بهذا الكود
+document.getElementById("menuButton").addEventListener('click', function(e) {
+  e.stopPropagation(); // منع انتشار الحدث
+  const dropdown = document.getElementById('logoutDropdown');
+  dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+});
+
+// إغلاق القائمة عند النقر خارجها
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.header')) {
+    document.getElementById('logoutDropdown').style.display = 'none';
+  }
+});
+
+// زر تسجيل الخروج
+document.getElementById('confirmLogout').addEventListener('click', function() {
+  localStorage.removeItem('activeUser');
+  window.location.href = 'login.html';
+});
+
+// زر الإعدادات (يمكنك إضافة وظيفته لاحقاً)
+document.getElementById('settingsButton').addEventListener('click', function() {
+  alert("Settings will be opened soon. \n سيتم فتح الاعداداتقريبا. ");
+  document.getElementById('logoutDropdown').style.display = 'none';
+});
+
+// زر الإلغاء
+document.getElementById('cancelLogout').addEventListener('click', function() {
+  document.getElementById('logoutDropdown').style.display = 'none';
+});
+
+</script>
+    <script>
+      window.addEventListener('scroll', function() {
+        const header = document.querySelector('.sticky-header');
+        if (window.scrollY > 0) {
+          header.classList.add('sticky');
+        } else {
+          header.classList.remove('sticky');
+        }
+      });
+    </script>
 </body>
 </html>

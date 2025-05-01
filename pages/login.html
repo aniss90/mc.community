@@ -1,187 +1,549 @@
-<!DOCTYPE html>  <html>  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1">  
-  <link rel="stylesheet" href="../style/main.css">  
-  <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">    <title>Login Page</title>  
-  <style>  
-    @font-face {  
-      font-family: minecraft;  
-      src: url('../font/Minecraft-Default.otf');  
+<!DOCTYPE html>  
+<html>    
+<head>    
+  <meta charset="UTF-8">    
+  <meta name="viewport" content="width=device-width, initial-scale=1">    
+  <link rel="stylesheet" href="../style/main.css">    
+  <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">    
+  <title>Login Page</title>    
+  <style>    
+    @font-face {    
+      font-family: minecraft;    
+      src: url('../font/Minecraft-Default.otf');    
+    }    
+    @font-face {    
+      font-family: minecraft-ten;    
+      src: url('../font/Minecraft-Ten.ttf');    
+    }    
+    @font-face {    
+      font-family: minecraft-five;    
+      src: url('../font/Minecraft-Five.ttf');    
+    }   
+    @font-face {    
+      font-family: MinecraftFive-Regular;    
+      src: url('../font/MinecraftFive-Regular.ttf');    
+    }    
+    #greenButton{
+      font-family: MinecraftFive-Regular;
+    }
+    .password-container {    
+      position: relative;    
+      margin: 10px 0;    
     }  
-    @font-face {  
-      font-family: minecraft-ten;  
-      src: url('../font/Minecraft-Ten.ttf');  
+    .toggle-password {  
+      position: absolute;  
+      margin-top: 11px;  
+      transform: translateY(-50%);  
+      transform: translateX(-150%);  
+      cursor: pointer;  
+      user-select: none;  
+      opacity: 0.7;  
     }  
-    @font-face {  
-      font-family: minecraft-five;  
-      src: url('../font/Minecraft-Five.ttf');  
-    }  
-    .password-container {  
-  position: relative;  
-  margin: 10px 0;  
-}  .toggle-password {
-position: absolute;
-margin-top: 11px;
-transform: translateY(-50%);
-transform: translateX(-150%);
-cursor: pointer;
-user-select: none;
-opacity: 0.7;
-}
-
-.toggle-password:hover {
-opacity: 1;
-}
-.input-group {
-  position: relative;
-  
-}
-
-.input-group input {
-
-
-
-  outline: none;
-  font-size: 16px;
-}
-
-.input-group label {
-  position: absolute;
-  top: 12px;
-  left: 30%;
-  color: #484848;
-  font-family: minecraft;
-  transition: all 0.3s;
-  pointer-events: none;
-  background-color: transparent;
-  padding: 0 5px;
-}
-
-.input-group input:focus + label,
-.input-group input:not(:placeholder-shown) + label {
-  top: -10px;
-  border-radius: 10px;
-  left: 30%;
-  font-size: 14px;
-  background-color: rgba(38, 38, 38);
-  color: #999999;
-}  
-</style>
-
-</head>  
-<body>  
+    .toggle-password:hover {
+      opacity: 1;
+    }
+    .input-group {
+      position: relative;
+    }
+    .input-group input {
+      outline: none;
+      font-size: 16px;
+    }
+    .input-group label {
+      position: absolute;
+      top: 12px;
+      left: 20%;
+      color: #484848;
+      font-family: minecraft;
+      transition: all 0.3s;
+      pointer-events: none;
+      background-color: transparent;
+      padding: 0 5px;
+    }
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+      top: -10px;
+      border-radius: 10px;
+      left: 20%;
+      font-size: 14px;
+      background-color: rgba(38, 38, 38);
+      color: #959595;
+    }
     
-  <div class="header">  <button class="back" id="backButton" type="button" onclick="goBack()"></button>   Login <img src="../imag/gif_test-83efe.gif" height="30">  </div>
-      <div class="content">
-  <div class="description">   
-  <div class="login-box">  
-    <form id="loginForm">  
+    .login-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+      padding: 20px;
+    }
+    
+    .login-box {
+      flex: 1;
+      max-width: 400px;
+    }
+    
+    .login-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .login-image img {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    /* Custom Alert Styles */
+    .custom-alert {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .custom-alert-content {
+      background-color: #262626;
+      border: 3px solid #E0BA31;
+      padding: 20px;
+      width: 80%;
+      border-radius: 2px;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0px 3px 0px rgba(224, 155, 0, 1);
+      animation: fadeIn 0.3s;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .custom-alert-title {
+      color: gold;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .custom-alert-message {
+      color: #e0e0e0;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .custom-alert-button {
+      transition: background-color 0.5s;
+      height: auto;
+      width: 100%;
+      border: 2px solid #FFFB8D;
+      background-color: #FFFB00;
+      text-shadow: 1px 1px 2px #B9B600;
+      box-shadow: 0px 3px 0px rgba(224, 155, 0, 1);
+      font-size: 16px;
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+      padding: 10px;
+      color: #000000;
+      margin: auto;
+      transition: all 0.3s;
+    }
+
+    .custom-alert-button:hover {
+      background-color: #9D5F00;
+      transform: scale(1.05);
+    }
+
+    .custom-alert-icon {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 15px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+      40% {transform: translateY(-15px);}
+      60% {transform: translateY(-7px);}
+    }
+    
+    /* Social Login Buttons - Small Version */
+    .social-login-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .social-login-title {
+      color: #959595;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      margin-bottom: 10px;
+    }
+    
+    .social-login-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 0%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid #C5C5C5;
+      box-shadow:0 2px 0 #9A9A9A; 
       
-<div class="input-group">
-  <input type="text" id="username" placeholder=" " required>
-  <label for="username">Username</label>
-</div>
-<br>
-<div class="input-group password-container">
-  <input type="password" id="password" placeholder=" " required>
-  <label for="password">Password</label>
-  <span class="toggle-password">🙈</span>
-</div>
-      </br>   
-     <br>  <a href="forget.html" class="link" >forget password ?</a>  
- </br>  
+    }
     
-  <div class="description">  
-    <div class="button">   
-      <button type="submit" id="greenButton"> Log in <img src="../imag/enter-icon-31b5a.png" height="15"></button>  
-    </div>   
-  </div>   
-  <div>   
-    <div class="description">  
-      🔸Don't have an account? <a href="Register.html" class="link">Register  <img  src="../imag/IconAddPlayerWhite-c25a0.png"  height="12px"></a>   
-    </div>  
+    .social-btn:hover {
+      transform: scale(1.1);
+    }
+    
+    .social-btn img {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .social-btn.google {
+      background-color: #FFFFFF;
+    }
+    
+    .guest-btn {
+      margin-top: 15px;
+      background-color: #2A9A2F;
+      border: 2px solid #47C24C;
+      box-shadow: 0 2px 0 #009F06;
+      color: white;
+    
+      padding: 8px 15px;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .guest-btn:hover {
+      background-color: #137517;
+    }
+    
+    @media (max-width: 768px) {
+      .login-container {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .login-image {
+        order: 2;
+        margin-top: 20px;
+      }
+      
+      .login-box {
+        order: 1;
+        width: 100%;
+      }
+      
+      .custom-alert-content {
+        width: 90%;
+      }
+    }
+  </style>
+</head>    
+<body>      
+  <div class="header">  
+    <button class="back" id="backButton" type="button" onclick="goBack()"></button>   
+    Login <img src="../imag/gif_test-83efe.gif" height="30">  
   </div>  
-  <img src="../imag/empty-592da.png" height="auto" width="70%">  
-</form>
+  
+  <div class="content">  
+    <div class="login-container">
+      <div class="login-box">    
+       <div class="title"> login box </div>
+        <form id="loginForm">    
+          <div class="input-group"> 
+            <input type="text" id="username" placeholder=" " required>  
+            <label for="username">Username</label>  
+          <br>  
+          <div class="input-group password-container">  
+            <input type="password" id="password" placeholder=" " required>  
+            <label for="password">Password</label>  
+            <span class="toggle-password">🙈</span>  
+          </div>  
+          <br>  
+          <a href="forget.html" class="link">forget password ?</a>  
+          <br>      
+          <div class="description">    
+            <div class="button">     
+              <button type="submit" id="greenButton"> Login <img src="../imag/enter-icon-31b5a.png" height="15"></button>    
+            </div>     
+          </div>
+          </div>
 
-  </div>    <!-- زر تسجيل الخروج (يظهر فقط إذا كان المستخدم مسجلاً) -->  <button id="logoutButton" style="display: none; margin-top: 20px;">Log out</button>
-
-  <script type="module">  
-    
-    import { db } from '../scripts/main.js'; // استيراد قاعدة البيانات من Firebase  
-    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";   
+          <div>     
+            <div class="description">    
+              🔸Don't have an account? <a href="Register.html" class="link">Register  <img src="../imag/IconAddPlayerWhite-c25a0.png" height="12px"></a>     
+            </div>    
+          </div>    
+        </form>
+        
+        <!-- Social Login Buttons - Small Version -->
+        <div class="social-login-container">
+          <div class="social-login-title">Or sign in with:</div>
+          <div class="social-login-buttons">
+            <button class="social-btn google" id="googleLogin">
+              <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google G Logo">
+            </button>
+          </div>
+          <button class="guest-btn" id="guestLogin">Dev.Guest</button>
+        </div>
+      </div>
       
-const togglePassword = document.querySelector('.toggle-password');  
-const passwordInput = document.getElementById('password');  
+      <div class="login-image">
+        <img src="../imag/tutorial_end-fbdd6.png" alt="Login Image">
+      </div>
+    </div>
+  </div>
   
-togglePassword.addEventListener('click', function () {  
-  // Toggle the type attribute  
-  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';  
-  passwordInput.setAttribute('type', type);  
+  <!-- Custom Alert -->
+  <div id="customAlert" class="custom-alert">
+    <div class="custom-alert-content">
+      <img src="../Emojis/donut.png" class="custom-alert-icon" alt="Success">
+      <div class="custom-alert-title" id="alertTitle">Welcome Back!</div>
+      <div class="custom-alert-message" id="alertMessage"></div>
+      <button class="custom-alert-button" id="alertButton">Continue</button>
+    </div>
+  </div>
+  
+  <!-- زر تسجيل الخروج (يظهر فقط إذا كان المستخدم مسجلاً) -->  
+  <button id="logoutButton" style="display: none; margin-top: 20px;">Log out</button>    
+  
+  <script type="module">    
+    import { db, auth } from '../scripts/main.js'; // تأكد من تصدير auth من main.js
+    import { 
+      doc, 
+      getDoc, 
+      setDoc,
+      deleteDoc,
+      collection,
+      query,
+      where,
+      getDocs,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
     
-  // Toggle the eye icon  
-  this.textContent = type === 'password' ? '️🙉' :'️️🙈';
-});  
-    const logoutButton = document.getElementById("logoutButton");  
+    import {
+      GoogleAuthProvider,
+      signInWithPopup,
+      signInAnonymously,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+      
+    const togglePassword = document.querySelector('.toggle-password');    
+    const passwordInput = document.getElementById('password');    
+    
+    togglePassword.addEventListener('click', function () {    
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';    
+      passwordInput.setAttribute('type', type);    
+      this.textContent = type === 'password' ? '️🙉' :'️️🙈';  
+    });    
+    
+    const logoutButton = document.getElementById("logoutButton");    
+    
+    // ✅ إذا كان المستخدم مسجلًا بالفعل، يتم نقله مباشرة إلى الصفحة الرئيسية    
+    window.onload = function () {    
+      let activeUser = localStorage.getItem("activeUser");    
+      if (activeUser) {    
+        window.location.href = "general.html"; // نقل المستخدم تلقائيًا    
+      }    
+    };    
+    
+    // Custom Alert Function
+    function showCustomAlert(title, message) {
+      const alertElement = document.getElementById('customAlert');
+      const alertTitle = document.getElementById('alertTitle');
+      const alertMessage = document.getElementById('alertMessage');
+      const alertButton = document.getElementById('alertButton');
+      
+      alertTitle.textContent = title;
+      alertMessage.textContent = message;
+      
+      alertElement.style.display = 'flex';
+      
+      alertButton.onclick = function() {
+        alertElement.style.display = 'none';
+        window.location.href = 'general.html';
+      };
+    }
+    
+    // إنشاء موفر جوجل
+    const googleProvider = new GoogleAuthProvider();
+    
+    // تسجيل الدخول بجوجل
+    document.getElementById('googleLogin').addEventListener('click', async () => {
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+        
+        // حفظ بيانات المستخدم في Firestore
+        const userDocRef = doc(db, 'users', user.uid);
+        await setDoc(userDocRef, {
+          uid: user.uid,
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          provider: 'google',
+          createdAt: serverTimestamp(),
+          isGuest: false,
+          lastLogin: serverTimestamp()
+        }, { merge: true });
+        
+        // حفظ في localStorage
+        localStorage.setItem('activeUser', user.uid);
+        
+        showCustomAlert(
+          `Welcome ${user.displayName || 'User'}!`, 
+          `You have successfully logged in with Google. Enjoy!`
+        );
+      } catch (error) {
+        console.error('Google login error:', error);
+        alert('Failed to login with Google. Please try again.');
+      }
+    });
+    
+    // تسجيل الدخول كضيف
+    document.getElementById('guestLogin').addEventListener('click', async () => {
+      try {
+        const result = await signInAnonymously(auth);
+        const user = result.user;
+        
+        // إنشاء اسم ضيف عشوائي
+        const guestName = "Guest_" + Math.random().toString(36).substring(2, 8);
+        
+        // حساب تاريخ انتهاء الصلاحية (30 يوم من الآن)
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + 30);
+        
+        // حفظ بيانات المستخدم في Firestore
+        const userDocRef = doc(db, 'users', user.uid);
+        await setDoc(userDocRef, {
+          uid: user.uid,
+          displayName: guestName,
+          provider: 'guest',
+          createdAt: serverTimestamp(),
+          isGuest: true,
+          expiryDate: expiryDate,
+          lastLogin: serverTimestamp()
+        }, { merge: true });
+        
+        // حفظ في localStorage
+        localStorage.setItem('activeUser', user.uid);
+        
+        showCustomAlert(
+          `Welcome ${guestName}!`, 
+          `You are playing as a guest. Your account will expire in 30 days.`
+        );
+        
+        // جدولة حذف الحساب بعد 30 يوم
+        setTimeout(async () => {
+          try {
+            await deleteDoc(userDocRef);
+            console.log(`Guest account ${guestName} deleted after 30 days`);
+          } catch (err) {
+            console.error('Error deleting guest account:', err);
+          }
+        }, 30 * 24 * 60 * 60 * 1000); // 30 يوم بالميلي ثانية
+        
+      } catch (error) {
+        console.error('Guest login error:', error);
+        alert('Failed to login as guest. Please try again.');
+      }
+    });
+    
+    // دالة لحذف الحسابات الضيفة المنتهية
+    async function deleteExpiredGuestAccounts() {
+      try {
+        const now = new Date();
+        const q = query(
+          collection(db, 'users'),
+          where('isGuest', '==', true),
+          where('expiryDate', '<=', now)
+        );
+        
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(async (doc) => {
+          await deleteDoc(doc.ref);
+          console.log(`Deleted expired guest account: ${doc.id}`);
+        });
+      } catch (error) {
+        console.error('Error deleting expired guest accounts:', error);
+      }
+    }
+    
+    // تشغيل دالة الحذف عند تحميل الصفحة
+    deleteExpiredGuestAccounts();
+    
+    // تسجيل الدخول العادي  
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {     
+      e.preventDefault();      
+      const username = document.getElementById('username').value.trim();      
+      const password = document.getElementById('password').value.trim();      
+      if (!username || !password) {      
+        alert('Please fill out all fields');      
+        return;      
+      }      
+      try {      
+        const userDocRef = doc(db, 'users', username);      
+        const userDoc = await getDoc(userDocRef);      
+        if (userDoc.exists() && userDoc.data().password === password) {      
+          localStorage.setItem('activeUser', username);      
+          showCustomAlert(  
+            `Welcome back ${username}!!`,   
+            `You have successfully logged in ✅. Enjoy !`  
+          );  
+        } else {      
+          alert('Invalid username or password!');      
+        }      
+      } catch (error) {      
+        console.error('Error during login:', error);      
+        alert('An error occurred while logging in, try again please.');      
+      }      
+    });      
+      
+    // تسجيل الخروج      
+    logoutButton.addEventListener("click", function () {      
+      signOut(auth).then(() => {
+        localStorage.removeItem("activeUser");      
+        alert("You have logged out successfully.");      
+        window.location.reload();
+      }).catch((error) => {
+        console.error('Logout error:', error);
+        alert("Logout failed. Please try again.");
+      });      
+    });    
+  </script>         
   
-    // ✅ إذا كان المستخدم مسجلًا بالفعل، يتم نقله مباشرة إلى الصفحة الرئيسية  
-    window.onload = function () {  
-      let activeUser = localStorage.getItem("activeUser");  
-      if (activeUser) {  
-        window.location.href = "general.html"; // نقل المستخدم تلقائيًا  
+  <script>    
+    function goBack() {  
+      if (window.history.length > 1) {  
+        window.history.back();  
+      } else {  
+        window.location.href = '/';
       }  
-    };  
-  
-    // تسجيل الدخول  
-    document.getElementById('loginForm').addEventListener('submit', async function (e) { 
-      e.preventDefault();  
-  
-      const username = document.getElementById('username').value.trim();  
-      const password = document.getElementById('password').value.trim();  
-  
-      if (!username || !password) {  
-        alert('Please fill out all fields');  
-        return;  
-      }  
-  
-      try {  
-        // جلب بيانات المستخدم من Firebase  
-        const userDocRef = doc(db, 'users', username);  
-        const userDoc = await getDoc(userDocRef);  
-  
-        if (userDoc.exists() && userDoc.data().password === password) {  
-          alert(`Welcome back ${username}!`);  
-  
-          // ✅ حفظ بيانات تسجيل الدخول في LocalStorage  
-          localStorage.setItem('activeUser', username);  
-  
-          window.location.href = 'general.html'; // الانتقال إلى الصفحة الرئيسية  
-        } else {  
-          alert('Invalid username or password!');  
-        }  
-      } catch (error) {  
-        console.error('Error during login:', error);  
-        alert('An error occurred while logging in, try again please.');  
-      }  
-    });  
-  
-    // ✅ تسجيل الخروج  
-    logoutButton.addEventListener("click", function () {  
-      localStorage.removeItem("activeUser"); // حذف بيانات المستخدم  
-      alert("You have logged out successfully.");  
-      window.location.reload(); // إعادة تحميل الصفحة للعودة إلى تسجيل الدخول  
-    });  
-  
-  
-  
-  </script>     <script>  
-  function goBack() {  
-    if (window.history.length > 1) {  
-      window.history.back();  
-    } else {  
-      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك  
     }  
-  }  
-</script>  </body>  
-</html>  
+  </script>    
+</body>  
+</html>

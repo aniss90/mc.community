@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملف الشخصي</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .profile-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .profile-header {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+        }
+        
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            position: absolute;
+            bottom: -75px;
+            right: 50px;
+            background-color: #ddd;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-picture-upload {
+            display: none;
+        }
+        
+        .profile-info {
+            padding: 90px 30px 30px;
+        }
+        
+        .profile-name {
+            font-size: 28px;
+            margin: 0;
+            color: #333;
+        }
+        
+        .profile-username {
+            font-size: 18px;
+            color: #777;
+            margin: 5px 0 20px;
+        }
+        
+        .profile-bio {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            margin: 20px 0;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6e8efb;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .profile-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #777;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            color: #6e8efb;
+            border-bottom: 3px solid #6e8efb;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .edit-profile-btn {
+            background-color: #6e8efb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            float: left;
+            transition: background-color 0.3s;
+        }
+        
+        .edit-profile-btn:hover {
+            background-color: #5a7df4;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-picture {
+                right: 50%;
+                transform: translateX(50%);
+            }
+            
+            .profile-info {
+                padding-top: 120px;
+                text-align: center;
+            }
+            
+            .profile-stats {
+                flex-direction: column;
+            }
+            
+            .stat {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-card">
+            <div class="profile-header"></div>
+            
+            <div class="profile-picture" id="profilePicture">
+                <img src="https://via.placeholder.com/150" alt="صورة الملف الشخصي" id="profileImage">
+                <input type="file" id="profilePictureUpload" class="profile-picture-upload" accept="image/*">
+            </div>
+            
+            <div class="profile-info">
+                <h1 class="profile-name" id="profileName">الاسم الكامل</h1>
+                <p class="profile-username" id="profileUsername">@اسم_المستخدم</p>
+                <p class="profile-bio" id="profileBio">هذه نبذة عن المستخدم يمكنه كتابة أي شيء يريد هنا لتعريف نفسه للآخرين.</p>
+                
+                <button class="edit-profile-btn" id="editProfileBtn">تعديل الملف الشخصي</button>
+                <div style="clear: both;"></div>
+                
+                <div class="profile-stats">
+                    <div class="stat">
+                        <div class="stat-value" id="postsCount">245</div>
+                        <div class="stat-label">منشور</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="followersCount">1.2K</div>
+                        <div class="stat-label">متابع</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="followingCount">356</div>
+                        <div class="stat-label">يتابع</div>
+                    </div>
+                </div>
+                
+                <div class="profile-tabs">
+                    <div class="tab active" data-tab="posts">المنشورات</div>
+                    <div class="tab" data-tab="photos">الصور</div>
+                    <div class="tab" data-tab="friends">الأصدقاء</div>
+                    <div class="tab" data-tab="about">حول</div>
+                </div>
+                
+                <div class="tab-content active" id="postsTab">
+                    <h3>آخر المنشورات</h3>
+                    <p>هنا تظهر آخر المنشورات التي شاركها المستخدم.</p>
+                </div>
+                
+                <div class="tab-content" id="photosTab">
+                    <h3>معرض الصور</h3>
+                    <p>هنا تظهر الصور التي شاركها المستخدم.</p>
+                </div>
+                
+                <div class="tab-content" id="friendsTab">
+                    <h3>الأصدقاء والمتابعون</h3>
+                    <p>هنا تظهر قائمة بأصدقاء المستخدم والمتابعين.</p>
+                </div>
+                
+                <div class="tab-content" id="aboutTab">
+                    <h3>معلومات عني</h3>
+                    <p>هنا يمكن عرض معلومات إضافية عن المستخدم.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // جلب بيانات المستخدم من localStorage
+            const activeUser = JSON.parse(localStorage.getItem('activeUser')) || {
+                username: 'مستخدم جديد',
+                fullName: 'الاسم الكامل',
+                bio: 'هذه نبذة عن المستخدم يمكنه كتابة أي شيء يريد هنا لتعريف نفسه للآخرين.',
+                profileImage: 'https://via.placeholder.com/150',
+                stats: {
+                    posts: 245,
+                    followers: 1200,
+                    following: 356
+                }
+            };
+
+            // تعبئة البيانات في الصفحة
+            document.getElementById('profileUsername').textContent = `@${activeUser.username}`;
+            document.getElementById('profileName').textContent = activeUser.fullName;
+            document.getElementById('profileBio').textContent = activeUser.bio;
+            document.getElementById('profileImage').src = activeUser.profileImage;
+            document.getElementById('postsCount').textContent = activeUser.stats.posts;
+            document.getElementById('followersCount').textContent = activeUser.stats.followers >= 1000 
+                ? `${(activeUser.stats.followers/1000).toFixed(1)}K` 
+                : activeUser.stats.followers;
+            document.getElementById('followingCount').textContent = activeUser.stats.following;
+
+            // تغيير صورة الملف الشخصي
+            const profilePicture = document.getElementById('profilePicture');
+            const profilePictureUpload = document.getElementById('profilePictureUpload');
+            
+            profilePicture.addEventListener('click', function() {
+                profilePictureUpload.click();
+            });
+            
+            profilePictureUpload.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        document.getElementById('profileImage').src = event.target.result;
+                        
+                        // حفظ الصورة في localStorage
+                        activeUser.profileImage = event.target.result;
+                        localStorage.setItem('activeUser', JSON.stringify(activeUser));
+                    };
+                    
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+
+            // تبديل بين تبويبات الصفحة
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // إزالة الفئة active من جميع التبويبات والمحتويات
+                    tabs.forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // إضافة الفئة active للتبويب والمحتوى المحدد
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab') + 'Tab';
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // زر تعديل الملف الشخصي
+            document.getElementById('editProfileBtn').addEventListener('click', function() {
+                const newName = prompt('الاسم الكامل:', activeUser.fullName);
+                const newBio = prompt('النبذة الشخصية:', activeUser.bio);
+                
+                if (newName !== null) {
+                    activeUser.fullName = newName;
+                    document.getElementById('profileName').textContent = newName;
+                }
+                
+                if (newBio !== null) {
+                    activeUser.bio = newBio;
+                    document.getElementById('profileBio').textContent = newBio;
+                }
+                
+                // حفظ التغييرات في localStorage
+                localStorage.setItem('activeUser', JSON.stringify(activeUser));
+            });
+        });
+    </script>
+</body>
+</html>

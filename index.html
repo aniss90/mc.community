@@ -1,21 +1,11 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>mc community</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mc co</title>
     <link rel="stylesheet" href="style/main.css">
     <link rel="icon" type="image/x-icon" href="web/ytlogo.png">
-    <link rel="manifest" href="/manifest.json">
-    
-    <!-- أيقونة الموقع الأساسية -->
-<link rel="icon" href="icons/icon-192x192.png" type="image/png">
-
-<!-- لأجهزة iOS -->
-<link rel="apple-touch-icon" href="icons/icon-180x180.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-<!-- لون شريط العنوان في Chrome -->
-<meta name="theme-color" content="#000000">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=F18SFG2LMZ"></script>
 <script>
@@ -37,6 +27,9 @@
         @font-face {
             font-family: minecraft-five;
             src: url('font/Minecraft-Five.ttf');
+        }
+        .description{
+          font-size: 12px;
         }
     </style>
 </head>
@@ -68,48 +61,55 @@
     document.getElementById('downloadBtn').style.display = 'none';
   }
 </script>
-      <script>
-  // دالة بسيطة لحساب تجزئة للنص (مثل البصمة)
-  function hashString(str) {
+    <script>
+  // دالة لتوليد بصمة (hash) للنص لتتبع التغييرات
+  function generateHash(str) {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       hash = (hash << 5) - hash + str.charCodeAt(i);
-      hash |= 0; // تحويل إلى 32bit
+      hash |= 0; // إجبار الرقم ليكون 32-بت
     }
-    return hash;
+    return hash.toString(); // إرجاع كـ string للمقارنة
   }
-
-  fetch("pages/update.txt")
-    .then(res => res.text())
-    .then(text => {
-      const currentHash = hashString(text);
-      const savedHash = localStorage.getItem("lastUpdateHash");
-
-      if (savedHash !== String(currentHash)) {
-        alert(" ✨ New updates   🔥🔥:\n" + text);
-        localStorage.setItem("lastUpdateHash", currentHash);
-      }
-    })
-    .catch(err => console.error("تعذر تحميل التحديث:", err));
-    if (localStorage.getItem(id)) {
-    // إذا كان الملف موجودًا في التخزين المحلي، حمله مباشرة
-    var cachedFile = localStorage.getItem(id);
-    sendMessage({ event: 'fileStart', id: id, size: cachedFile.size });
-}
-
+  
+  // دالة لتحميل التحديثات والتحقق منها
+  function checkForSiteUpdates() {
+    fetch("pages/update.txt")
+      .then(response => {
+        if (!response.ok) throw new Error("فشل تحميل ملف التحديث");
+        return response.text();
+      })
+      .then(updateText => {
+        const currentHash = generateHash(updateText);
+        const previousHash = localStorage.getItem("lastUpdateHash");
+        
+        if (previousHash !== currentHash) {
+          // عرض التحديث للمستخدم
+          alert("✨ new update :\n\n" + updateText);
+          // تحديث البصمة المخزنة
+          localStorage.setItem("lastUpdateHash", currentHash);
+        }
+      })
+      .catch(error => {
+        console.error("تعذر التحقق من التحديث:", error);
+      });
+  }
+  
+  // استدعاء الدالة عند تحميل الصفحة
+  checkForSiteUpdates();
 </script>
-    <div class="header">  Mc Co <img src="Emojis/panda.png" height="27">
+    <div class="header">  MC CO <img src="Emojis/panda.png" height="27">
     </div> 
     
     <div class="content"> 
 <button id="downloadBtn" style="display:none;" onclick="downloadApp()">
   تحميل التطبيق للأندرويد
 </button>
-    <!--    <div class="description">A site to communicate with other users, interact and have fun. <br>+
+    <!-- <div class="description">A site to communicate with other users, interact and have fun. <br>+
           Creator: <a href="YOUTUBE CHANNEL" target="_blank" class="link">Aniss <img src="Emojis/trophy_gif.gif" height="15"></a> 
             <br>+
             Source Credits: <a href="https://www.youtube.com/@T1M0THYYT" target="_blank" class="link">TIМ0THY YT <img src="Emojis/medal_silver_gif.gif" height="15"></a>
-        </div> --> 
+        </div>--> 
         <div class="description"> 
 <div class="title"> login / create an account </div> 
 Click at gold button to Login or Create an account.
@@ -121,7 +121,9 @@ Click at gold button to Login or Create an account.
         <div class="description">
             <div class="title"> <img src="Emojis/notepad_gif.gif" height="15">What is  mc co?
             </div>
+            
             Mc co a public site that includes all people. Its features include collecting coins and purchasing items from the store or sending them to others. It also provides a chat feature and allows you to communicate with other users and interact with them. 
+            
           </div>
          <div class="description">
             <div class="title">about the developers
@@ -134,7 +136,7 @@ Click at gold button to Login or Create an account.
       
         
         <div class="description">
-            <div class="title"> privacy policy </div>This going to change in later updates
+            <div class="title"> privacy policy </div>Please read this before using the website.
             <a href="pages/privacy.html"> 
             <div class="button">
               <button id="greenButton">Privacy policy 

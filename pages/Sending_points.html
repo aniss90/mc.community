@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Mod</title>
+    <link rel="stylesheet" href="../style/main.css">
+    <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
+  <title>تأكيد إرسال النقاط</title>
+  <title>إرسال واستلام النقاط</title>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+  <style>
+    
+  
+    button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 6px; border: 1px solid #ccc; }
+    button { background: #2196f3; color: white; cursor: pointer; border: none; }
+    .qr-popup { display: none; position: fixed; top: 20px; left: 10%; background: white; border: 2px solid #2196f3; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #2196f3; flex-direction: row; align-items: center; z-index: 999; }
+    .qr-popup img { max-width: 150px; margin-left: 20px; }
+    h3,h2,p {
+      color:#FFFFFF ;
+    }
+  </style>
+</head>
+<body>
+        <div class="content"> 
+    <h2 id="welcomeMessage">مرحبًا...</h2>
+    <p>رصيدك: <span id="points">--</span> نقطة</p>
+
+    <h3>إرسال النقاط</h3>
+    <input type="text" id="receiverName" placeholder="اسم المستلم">
+    <input type="number" id="pointsToSend" placeholder="عدد النقاط">
+    <button onclick="sendPoints()">إرسال</button>
+<button onclick="openSendQR()">إنشاء QR للإرسال</button>
+
+    <hr>
+<div class="qr-popup" id="sendQrPopup">
+  <div>
+    <h4>إنشاء QR لإرسال النقاط</h4>
+    <input type="number" id="sendQRAmount" placeholder="عدد النقاط">
+    <img id="sendQrImage" src="" style="margin-top: 10px; max-width: 150px;">
+    <p>شارك هذا الكود مع المستلم، عند مسحه سيتم استلام النقاط مباشرة.</p>
+    <button onclick="closeSendQR()">إغلاق</button>
+  </div>
+</div>
+    <h3>استلام النقاط</h3>
+    <input type="number" id="receiveAmount" placeholder="عدد النقاط المطلوبة">
+    <button onclick="showQRCode()">إظهار QR كود</button>
+  
+
+  <div class="qr-popup" id="qrPopup">
+    <img id="qrImage" src="">
+    <div>
+      <p>شارك الكود مع المرسل لمسحه.</p>
+      <button onclick="downloadQR()">تحميل</button>
+      <button onclick="closeQR()">إغلاق</button>
+    </div>
+  </div>
+  </div> 
+  <script>
+    // إعداد Firebase
+  const firebaseConfig = {
+  apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
+  authDomain: "minecraft-community-4fd3d.firebaseapp.com",
+  projectId: "minecraft-community-4fd3d",
+  storageBucket: "minecraft-community-4fd3d.firebasestorage.app",
+  messagingSenderId: "550140131027",
+  appId: "1:550140131027:web:a5186726cf5372e138c626",
+  measurementId: "G-F18SFG2LMZ"
+};
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // تحقق من تسجيل الدخول
+    const activeUser = localStorage.getItem('activeUser');
+    if (!activeUser) {
+      alert("يرجى تسجيل الدخول أولاً.");
+      window.location.href = 'login.html';
+    }
+
+    const welcomeEl = document.getElementById("welcomeMessage");
+    const pointsEl = document.getElementById("points");
+
+    // جلب بيانات المستخدم
+    async function getUserData() {
+      try {
+        const userRef = db.collection('users').doc(activeUser);
+        const docSnap = await userRef.get();
+
+        if (docSnap.exists) {
+          const data = docSnap.data();
+          welcomeEl.textContent = `مرحبًا ${activeUser}`;
+          pointsEl.textContent = formatPoints(data.points ?? 0);
+
+          if (data.notification && data.notification.read === false) {
+            const { from, amount } = data.notification;
+            alert(`لقد استلمت ${amount} نقطة من ${from}!`);
+            await userRef.update({ "notification.read": true });
+          }
+        } else {
+          alert("المستخدم غير موجود.");
+          window.location.href = 'login.html';
+        }
+      } catch (e) {
+        console.error("خطأ في جلب البيانات:", e);
+        alert("حدث خطأ، حاول لاحقًا.");
+      }
+    }
+
+    getUserData();
+
+    function formatPoints(p) {
+      return (p ?? 0).toLocaleString('ar-DZ');
+    }
+
+    // إرسال النقاط
+    async function sendPoints() {
+      const receiverName = document.getElementById("receiverName").value.trim();
+      const amount = parseInt(document.getElementById("pointsToSend").value);
+
+      if (!receiverName || isNaN(amount) || amount <= 0) {
+        alert("يرجى إدخال اسم وعدد نقاط صحيح.");
+        return;
+      }
+
+      const senderRef = db.collection("users").doc(activeUser);
+      const receiverRef = db.collection("users").doc(receiverName);
+
+      const senderSnap = await senderRef.get();
+      const receiverSnap = await receiverRef.get();
+
+      if (!receiverSnap.exists) {
+        alert("المستلم غير موجود!");
+        return;
+      }
+
+      const senderPoints = senderSnap.data().points ?? 0;
+
+      if (senderPoints < amount) {
+        alert("لا تملك نقاط كافية!");
+        return;
+      }
+
+      await senderRef.update({ points: senderPoints - amount });
+      await receiverRef.update({
+        points: (receiverSnap.data().points ?? 0) + amount,
+        notification: {
+          from: activeUser,
+          amount,
+          read: false
+        }
+      });
+
+      alert(`تم إرسال ${amount} نقطة إلى ${receiverName}`);
+      getUserData();
+    }
+
+    // إظهار QR
+    function showQRCode() {
+      const amount = parseInt(document.getElementById("receiveAmount").value);
+      if (!amount || amount <= 0) {
+        alert("يرجى إدخال عدد نقاط صحيح.");
+        return;
+      }
+
+      const data = `https://aniss90.github.io/mc.community/pages/confirm_send.html?receiver=${activeUser}&amount=${amount}`;
+      
+      QRCode.toDataURL(data, (err, url) => {
+        if (err) return console.error(err);
+        document.getElementById("qrImage").src = url;
+        document.getElementById("qrPopup").style.display = "flex";
+        window.qrUrl = url;
+      });
+    }
+
+    function downloadQR() {
+      const a = document.createElement("a");
+      a.href = window.qrUrl;
+      a.download = "qr_code.png";
+      a.click();
+    }
+
+    function closeQR() {
+      document.getElementById("qrPopup").style.display = "none";
+    }
+    function openSendQR() {
+  document.getElementById("sendQrPopup").style.display = "flex";
+  document.getElementById("sendQRAmount").value = "";
+  document.getElementById("sendQrImage").src = "";
+}
+
+function closeSendQR() {
+  document.getElementById("sendQrPopup").style.display = "none";
+}
+
+document.getElementById("sendQRAmount").addEventListener("input", () => {
+  const amount = parseInt(document.getElementById("sendQRAmount").value);
+  if (!amount || amount <= 0) return;
+
+const data = `https://aniss90.github.io/mc.community/pages/general.html?action=receive&sender=${activeUser}&amount=${amount}`;
+  QRCode.toDataURL(data, (err, url) => {
+    if (err) return console.error(err);
+    document.getElementById("sendQrImage").src = url;
+  });
+});
+  </script>
+
+</body>
+</html>
