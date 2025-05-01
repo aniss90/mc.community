@@ -98,7 +98,7 @@
         }
       .blur-background .message:not(.selected-message) {  
     filter: blur(4px);  
-    transition: filter 0.6s;
+    
 }  
   
 /* قائمة الخيارات */  
@@ -115,7 +115,9 @@
     transform: translateX(-50%);  
     display: none;  
     z-index: 100;  
-    transition: filter 0.5s;
+    backdrop-filter: blur(8px); 
+            -webkit-backdrop-filter: blur(90px);
+    
 }  
 /* تنسيق الأزرار */  
 .option-btn {  
@@ -124,8 +126,7 @@
     cursor: pointer;  
     border-radius: 5px;  
     font-size: 14px;  
-        backdrop-filter: blur(8px); 
-            -webkit-backdrop-filter: blur(90px);
+        
 }  
   
 .option-btn.copy {  
@@ -305,14 +306,14 @@
                 let messageText = messageInput.value.trim();
 
                 if (messageText === "") {
-                    alert("لا يمكن إرسال رسالة فارغة!");
+
                     return;
                 }
 
                 const maxChars = 200;
                 if (messageText.length > maxChars) {
                     messageText = messageText.substring(0, maxChars);
-                    alert("لا يمكنك إرسال رسالة تحتوي على أكثر من 200 حرفًا!");
+                    alert("  You cannot send more than 200 characters. !\n ما تقدر ترسل اكثر من 200 حرف! ");
                 }
 
                 try {
@@ -390,7 +391,7 @@
             function handleLongPress(event) {
                 if (!event.target.classList.contains("message")) return;
 
-                let messageElement = event.target.closest(".message");
+                let messageElement = event.target.closest(".message,.mymessage,.othermessage");
                 let messageText = messageElement.innerText;
 
                 isHolding = true;
@@ -399,7 +400,7 @@
                     if (isHolding) {
                         showOptions(messageElement, messageText);
                     }
-                }, 700);
+                }, 600);
             }
 
             function cancelHold() {
@@ -427,20 +428,20 @@
                 optionsContainer.classList.add("message-options");
 
                 let copyBtn = document.createElement("button");
-                copyBtn.innerText = "نسخ";
+                copyBtn.innerText = "copy";
                 copyBtn.classList.add("option-btn", "copy");
                 copyBtn.addEventListener("click", () => {
                     navigator.clipboard.writeText(messageText);
-                    alert("تم نسخ الرسالة!");
+                    alert("copied ✅\n تم نسخ ✅");
                     closeOptions();
                 });
 
                 let deleteBtn = document.createElement("button");
-                deleteBtn.innerText = "حذف";
+                deleteBtn.innerText = "Delete";
                 deleteBtn.classList.add("option-btn", "delete");
                 deleteBtn.style.display = messageElement.classList.contains("myMessage") ? "block" : "none";
                 deleteBtn.addEventListener("click", async () => {
-                    if (confirm("هل تريد حذف هذه الرسالة؟")) {
+                    if (confirm("   Are you sure or are you kidding?\n هل انت متاكد او تمزح? ")) {
                         const docId = messageElement.getAttribute("data-id");
                         await deleteMessage(docId, messageElement);
                         closeOptions();

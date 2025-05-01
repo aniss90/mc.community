@@ -779,14 +779,14 @@ function showBrowserNotification(sender, message) {
     if (!("Notification" in window)) return;
 
     if (Notification.permission === "granted") {
-        new Notification(`رسالة جديدة من ${sender}`, {
+        new Notification(`  new message from ${sender}`, {
             body: message.length > 50 ? message.substring(0, 50) + "..." : message,
             icon: "../imag/player-head-128-052ba.png"
         });
     } else if (Notification.permission !== "denied") {
         Notification.requestPermission().then(permission => {
             if (permission === "granted") {
-                new Notification(`رسالة جديدة من ${sender}`, {
+                new Notification(`  new message from ${sender}`, {
                     body: message.length > 50 ? message.substring(0, 50) + "..." : message,
                     icon: "../imag/player-head-128-052ba.png"
                 });
@@ -797,38 +797,44 @@ function showBrowserNotification(sender, message) {
 
 // دالة لعرض إشعار التطبيق
 function showMessageNotification(sender, message, type) {
-    const notificationContainer = document.getElementById('notificationContainer');
-    
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    
-    let displayMessage = type === "image" ? "صورة" : message;
+  const notificationContainer = document.getElementById('notificationContainer');
+  
+  const notification = document.createElement('div');
+  notification.className = 'notification';
+  
+  let displayContent;
+  if (type === "image") {
+    // إذا كانت الصورة بصيغة Base64
+    displayContent = `<img src="${message}" style="max-width: 100px; max-height: 100px; border-radius: 4px;">`;
+  } else {
+    // إذا كانت رسالة نصية
+    let displayMessage = message;
     if (displayMessage.length > 30) {
-        displayMessage = displayMessage.substring(0, 30) + "...";
+      displayMessage = displayMessage.substring(0, 30) + "...";
     }
-    
-    notification.innerHTML = `
+    displayContent = `<div class="notification-message"><div class="img2"><img src="../Emojis/arrow_right.png">${displayMessage}</div></div>`;
+  }
+  
+  notification.innerHTML = `
         <div class="notification-content">
             <div class="notification-title">⚪|<r>New message from:</r> ${sender}</div>
             <div style="width: 100%; height: 1px; background-color: white; margin: 10px 0;"></div>  
-            <div class="notification-message"><div class="img2"> <img src="../Emojis/arrow_right.png" > ${displayMessage}</div></div>
-            
+            ${displayContent}
         </div>
         <img src="../imag/player-head-128-052ba.png" alt="${sender}">
     `;
-    
-    notification.addEventListener('click', () => {
-        window.location.href = `chat_beta.html?user=${sender}`;
-        notification.remove();
-    });
-    
-    notificationContainer.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.remove();
-    }, 5000);
+  
+  notification.addEventListener('click', () => {
+    window.location.href = `chat_beta.html?user=${sender}`;
+    notification.remove();
+  });
+  
+  notificationContainer.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.remove();
+  }, 4000);
 }
-
 // دالة لجلب بيانات المستخدم
 async function getUserData() {
   const userDocRef = doc(db, 'users', activeUser);
