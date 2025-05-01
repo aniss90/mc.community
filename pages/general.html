@@ -169,7 +169,23 @@
             background-position: center;
             background-repeat: no-repeat;
             z-index: 9999;
+            gap: 5px;
         } 
+        .rate {
+            position: fixed;
+            display: flex;
+            border: none;
+            right: 45px;
+            top: 20px;
+            cursor: pointer;
+            padding: 10px;
+            background: url(../Emojis/star.png);
+            background-size:  contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 9999;
+            gap: 5px;
+        }  
 .username-dropdown div:last-child {
   border-bottom: none; /* إزالة الخط من آخر عنصر */
 }
@@ -517,6 +533,98 @@ body {
   from { transform: translateY(-2px); }
   to { transform: translateY(0); }
 }
+/* أنماط نافذة التقييم */
+/* أنماط نافذة التقييم المعدلة لتكون مثل قائمة menu */
+/* أنماط نافذة التقييم - مطابقة لشكل قائمة menu */
+.rating-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 10000;
+  padding-top: 60px;
+}
+
+.rating-box {
+background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذا أردت */
+  backdrop-filter: blur(8px); /* هذه الخاصية تضيف تأثير البلور */
+  -webkit-backdrop-filter: blur(5px);  border-radius: 5px;
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #555;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  min-width: 250px;
+  max-width: 300px;
+  animation: slideDown 0.2s ease-out;
+  position: absolute;
+  right: 10px;
+  top: 50px;
+}
+
+.rating-title {
+  color: #000000;
+  margin: 0 0 10px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #555;
+  font-family: minecraft;
+  font-size: 14px;
+  text-align: left;
+}
+
+.stars-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 15px 0;
+}
+
+.star {
+  font-size: 24px;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-shadow: 0px 2px 9px #000000;
+}
+
+.star.active {
+  color: #FFD700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
+}
+
+#confirmRating {
+  background: none;
+  border: none;
+  color: #36E23A;
+  text-shadow: 0px 2px 0px #000000;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-family: minecraft-five;
+  font-size: 13px;
+  border-radius: 3px;
+  width: 100%;
+  transition: background 0.2s;
+  text-align: center;
+}
+
+#confirmRating:hover {
+  background-color: #31AF34;
+  color: white;
+}
+
+.rated-message {
+  color: #FFFFFF;
+  font-family: minecraft-five;
+  font-size: 13px;
+  margin-top: 10px;
+  display: none;
+  text-align: left;
+}
+
+
 
   </style>
   <title>general </title>
@@ -529,6 +637,7 @@ body {
   <div class="header">
     <button class="Chat-btn" id="Chat-btn" type="button"></button>
     <button class="menu" id="menuButton" type="button"></button>
+    <button class="rate" id="rateButton" type="button"></button>
   general
   <img src="../Emojis/Win_Computer.gif" height="25">  
   </div> 
@@ -604,6 +713,22 @@ body {
       <div class="custom-alert-points" id="customAlertPoints">0</div>
     </div>
   </div>
+  <!-- نافذة التقييم -->
+<!-- نافذة التقييم -->
+<div class="rating-overlay" id="ratingOverlay">
+  <div class="rating-box">
+    <h3 class="rating-title">Rate Our Website</h3>
+    <div class="stars-container">
+      <div class="star" data-rating="1">★</div>
+      <div class="star" data-rating="2">★</div>
+      <div class="star" data-rating="3">★</div>
+      <div class="star" data-rating="4">★</div>
+      <div class="star" data-rating="5">★</div>
+    </div>
+    <button id="confirmRating">Confirm Rating</button>
+    <div class="rated-message" id="ratedMessage">Thank you for your feedback!</div>
+  </div>
+</div>
 <script>
   document.getElementById("Chat-btn").addEventListener("click", function() {
     window.location.href = "List_beta.html";
@@ -651,18 +776,20 @@ body {
 
 <script type="module">
 import { db } from '../scripts/main.js'; 
-import { 
-  doc, 
-  getDoc, 
-  setDoc, 
-  updateDoc, 
-  collection, 
+import {
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  collection,
   getDocs,
   onSnapshot,
   query,
   where,
-  orderBy
-} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; 
+  orderBy,
+  addDoc,
+  increment // أضف هذه الدالة
+} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
 const activeUser = localStorage.getItem('activeUser');
 
@@ -1118,8 +1245,149 @@ document.addEventListener('click', (event) => {
 });
 
 
+// نظام التقييم// نظام التقييم الكامل
+document.getElementById('rateButton').addEventListener('click', function(e) {
+  e.stopPropagation();
+  const ratingOverlay = document.getElementById('ratingOverlay');
+  ratingOverlay.style.display = 'flex';
+  checkUserRating();
+});
 
+// النجوم التفاعلية
+const stars = document.querySelectorAll('.star');
+stars.forEach(star => {
+  star.addEventListener('click', function() {
+    const rating = parseInt(this.getAttribute('data-rating'));
+    
+    stars.forEach((s, index) => {
+      if (index < rating) {
+        s.classList.add('active');
+      } else {
+        s.classList.remove('active');
+      }
+    });
+    
+    document.querySelector('.stars-container').setAttribute('data-selected', rating);
+  });
+  
+  star.addEventListener('mouseover', function() {
+    const rating = parseInt(this.getAttribute('data-rating'));
+    
+    stars.forEach((s, index) => {
+      if (index < rating) {
+        s.style.color = '#FFD700';
+      }
+    });
+  });
+  
+  star.addEventListener('mouseout', function() {
+    const selectedRating = document.querySelector('.stars-container').getAttribute('data-selected') || 0;
+    
+    stars.forEach((s, index) => {
+      if (index >= selectedRating) {
+        s.style.color = '#555';
+      }
+    });
+  });
+});
 
+// تأكيد التقييم
+document.getElementById('confirmRating').addEventListener('click', async function() {
+  const selectedRating = document.querySelector('.stars-container').getAttribute('data-selected');
+  
+  if (!selectedRating || selectedRating === '0') {
+    alert('Please select a rating first!');
+    return;
+  }
+  
+  await saveRating(parseInt(selectedRating));
+  
+  document.getElementById('ratedMessage').style.display = 'block';
+  document.getElementById('confirmRating').style.display = 'none';
+  
+  setTimeout(() => {
+    document.getElementById('ratingOverlay').style.display = 'none';
+    document.getElementById('ratedMessage').style.display = 'none';
+    document.getElementById('confirmRating').style.display = 'block';
+    
+    stars.forEach(star => {
+      star.classList.remove('active');
+    });
+    document.querySelector('.stars-container').setAttribute('data-selected', '0');
+  }, 2000);
+});
+
+// دالة لحفظ التقييم
+async function saveRating(rating) {
+  const userDocRef = doc(db, 'users', activeUser);
+  const ratingsRef = collection(db, 'ratings');
+  
+  const userDoc = await getDoc(userDocRef);
+  if (userDoc.data().hasRated) {
+    const ratingQuery = query(ratingsRef, where("username", "==", activeUser));
+    const querySnapshot = await getDocs(ratingQuery);
+    
+    querySnapshot.forEach(async (doc) => {
+      await updateDoc(doc.ref, {
+        rating: rating,
+        timestamp: new Date().toISOString()
+      });
+    });
+  } else {
+    await addDoc(ratingsRef, {
+      username: activeUser,
+      rating: rating,
+      timestamp: new Date().toISOString()
+    });
+    
+    await updateDoc(userDocRef, {
+      hasRated: true
+    });
+  }
+  
+  if (rating >= 4) {
+    const pointsEarned = rating === 5 ? 15 : 10;
+    
+    await updateDoc(userDocRef, {
+      points: increment(pointsEarned)
+    });
+    
+    showCustomAlert(pointsEarned, "Rating Reward");
+  }
+}
+
+// التحقق من التقييم السابق
+async function checkUserRating() {
+  const userDocRef = doc(db, 'users', activeUser);
+  const userDoc = await getDoc(userDocRef);
+  
+  if (userDoc.exists() && userDoc.data().hasRated) {
+    const ratingsRef = collection(db, 'ratings');
+    const ratingQuery = query(ratingsRef, where("username", "==", activeUser));
+    const querySnapshot = await getDocs(ratingQuery);
+    
+    querySnapshot.forEach((doc) => {
+      const rating = doc.data().rating;
+      
+      stars.forEach((star, index) => {
+        if (index < rating) {
+          star.classList.add('active');
+        }
+      });
+      
+      document.querySelector('.stars-container').setAttribute('data-selected', rating);
+      document.getElementById('ratedMessage').style.display = 'block';
+      document.getElementById('confirmRating').style.display = 'none';
+    });
+  }
+}
+
+// إغلاق النافذة عند النقر خارجها
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.rating-box') && !e.target.closest('#rateButton')) {
+    document.getElementById('ratingOverlay').style.display = 'none';
+  }
+});
 // استدعاء الدالة لعرض الأكواد المتاحة عند تحميل الصفحة
 
 </script>
