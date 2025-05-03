@@ -800,7 +800,15 @@ import {
   addDoc,
   increment // أضف هذه الدالة
 } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-
+    
+    import {
+      GoogleAuthProvider,
+      signInWithPopup,
+      signInAnonymously,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+      
 const activeUser = localStorage.getItem('activeUser');
 
 if (!activeUser) {
