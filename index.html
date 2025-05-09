@@ -45,7 +45,22 @@
     function isAndroid() {
       return /Android/i.test(navigator.userAgent);
     }
-
+// تحقق إن المستخدم داخل متصفح أندرويد
+if (isAndroid() && localStorage.getItem("in_app") !== "true") {
+  // حاول فتح التطبيق إذا كان مثبتًا
+  setTimeout(function() {
+    window.location.href = "intent://main#Intent;scheme=mc.co.community.webapp;package=mc.co.community.webapp;end";
+  }, 500);
+  
+  // بعد ثواني، إذا ما فتح التطبيق، نعرض رسالة تحميل
+  setTimeout(function() {
+    document.body.classList.add("locked");
+    document.body.innerHTML = `
+      <h2>يرجى تحميل التطبيق لاستخدام هذا الموقع</h2>
+      <button class="download-btn" onclick="downloadApp()">تحميل التطبيق</button>
+    `;
+  }, 2000);
+}
     function isInApp() {
       return typeof cordova !== 'undefined'; // متغير متاح فقط داخل التطبيق
     }
