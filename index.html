@@ -1,174 +1,97 @@
 <!DOCTYPE html>
 <html lang="ar">
-  <head>
-    <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mc co</title>
-    <link rel="stylesheet" href="style/main.css">
-    <link rel="icon" type="image/x-icon" href="web/ytlogo.png">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=F18SFG2LMZ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MC CO</title>
+  <link rel="stylesheet" href="style/main.css" />
+  <link rel="icon" type="image/x-icon" href="web/ytlogo.png" />
+  <style>
+    body.locked {
+      background-color: #121212;
+      color: #fff;
+      font-family: minecraft-five;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      flex-direction: column;
+      padding: 20px;
+    }
 
-  gtag('config', 'F18SFG2LMZ');
-</script>
-    <style>
-        @font-face {
-            font-family: minecraft;
-            src: url('font/Minecraft-Default.otf');
-        }
-        @font-face {
-            font-family: minecraft-ten;
-            src: url('font/Minecraft-Ten.ttf');
-        }
-        @font-face {
-            font-family: minecraft-five;
-            src: url('font/Minecraft-Five.ttf');
-        }
-        .description{
-          font-size: 12px;
-        }
-    </style>
+    .download-btn {
+      margin-top: 20px;
+      padding: 10px 25px;
+      font-size: 16px;
+      background-color: #FFD952;
+      border: none;
+      border-radius: 5px;
+      color: #000;
+      font-family: minecraft;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
-<script>
-  function isAndroid() {
-    return /Android/i.test(navigator.userAgent);
-  }
+  <div id="mainContent" style="display: none;">
+    <!-- محتوى موقعك هنا -->
+    <h1>أهلاً بك في MC CO</h1>
+    <p>هذا المحتوى يظهر فقط داخل التطبيق</p>
+  </div>
 
-  function hasDownloaded() {
-    return localStorage.getItem('app_downloaded') === 'true';
-  }
-
-  function markAsDownloaded() {
-    localStorage.setItem('app_downloaded', 'true');
-  }
-
-  window.onload = function () {
-    const btn = document.getElementById('downloadBtn');
-    if (isAndroid() && !hasDownloaded()) {
-      btn.style.display = 'block';
+  <script>
+    function isAndroid() {
+      return /Android/i.test(navigator.userAgent);
     }
-  }
 
-  function downloadApp() {
-    markAsDownloaded();
-    window.location.href = 'mc_co.apk';
-    document.getElementById('downloadBtn').style.display = 'none';
-  }
-</script>
-    <script>
-  // دالة لتوليد بصمة (hash) للنص لتتبع التغييرات
-  function generateHash(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = (hash << 5) - hash + str.charCodeAt(i);
-      hash |= 0; // إجبار الرقم ليكون 32-بت
+    function isInApp() {
+      return typeof cordova !== 'undefined'; // متغير متاح فقط داخل التطبيق
     }
-    return hash.toString(); // إرجاع كـ string للمقارنة
-  }
-  
-  // دالة لتحميل التحديثات والتحقق منها
-  function checkForSiteUpdates() {
-    fetch("pages/update.txt")
-      .then(response => {
-        if (!response.ok) throw new Error("فشل تحميل ملف التحديث");
-        return response.text();
-      })
-      .then(updateText => {
-        const currentHash = generateHash(updateText);
-        const previousHash = localStorage.getItem("lastUpdateHash");
-        
-        if (previousHash !== currentHash) {
-          // عرض التحديث للمستخدم
-          alert("✨ new update :\n\n" + updateText);
-          // تحديث البصمة المخزنة
-          localStorage.setItem("lastUpdateHash", currentHash);
-        }
-      })
-      .catch(error => {
-        console.error("تعذر التحقق من التحديث:", error);
-      });
-  }
-  
-  // استدعاء الدالة عند تحميل الصفحة
-  checkForSiteUpdates();
-</script>
-    <div class="header">  MC CO <img src="Emojis/panda.png" height="27">
-    </div> 
-    
-    <div class="content"> 
-<button id="downloadBtn" style="display:none;" onclick="downloadApp()">
-  تحميل التطبيق للأندرويد
-</button>
-    <!-- <div class="description">A site to communicate with other users, interact and have fun. <br>+
-          Creator: <a href="YOUTUBE CHANNEL" target="_blank" class="link">Aniss <img src="Emojis/trophy_gif.gif" height="15"></a> 
-            <br>+
-            Source Credits: <a href="https://www.youtube.com/@T1M0THYYT" target="_blank" class="link">TIМ0THY YT <img src="Emojis/medal_silver_gif.gif" height="15"></a>
-        </div>--> 
-        <div class="description"> 
-<div class="title"> login / create an account </div> 
-Click at gold button to Login or Create an account.
-           <a href="pages/login.html">
-             <div class="button">  
-       <button id="goldButton" >Login & Register <img  src="imag/add-player@0.5x.icon-2f437.png" height="15"></button></div></a> 
-       
-</div>
-        <div class="description">
-            <div class="title"> <img src="Emojis/notepad_gif.gif" height="15">what's mc co ? <img src="imag/icon_panda.png" height="14">
-            </div>
-            
-            Mc co a public site that includes all people. Its features include collecting coins and purchasing items from the store or sending them to others. It also provides a chat feature and allows you to communicate with other users and interact with them. 
-            
-          </div>
-         <div class="description">
-            <div class="title">about the developers
-            </div>Click to get more information .
-            <a href="Developers.html"> 
-            <div class="button">
-              <button id="purpleButton">About the Developers <img src="Emojis/article_gif.gif" height="15"></button></a> 
-              </div> 
-        </div>
-      
-        
-        <div class="description">
-            <div class="title"> privacy policy </div>Please read this before using the website.
-            <a href="privacy.html"> 
-            <div class="button">
-              <button id="greenButton">Privacy policy 
-              <img src="Emojis/gavel_gif.gif" height="15">
-              </button></a> 
-              </div> 
-           </div>
-        </div>
-    </div>
 
-      <script type="module">
-// عند تحميل التطبيق
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof cordova !== 'undefined' && cordova.platformId === 'android') {
-        // تحقق من إصدار أندرويد
+    function markAsInApp() {
+      localStorage.setItem('in_app', 'true');
+    }
+
+    function downloadApp() {
+      window.location.href = 'mc_co.apk';
+    }
+
+    window.onload = function () {
+      if (isInApp()) {
+        markAsInApp(); // إذا كان في التطبيق
+        document.getElementById("mainContent").style.display = "block";
+      } else if (isAndroid() && localStorage.getItem("in_app") !== "true") {
+        // إذا كان من المتصفح ولم يثبت التطبيق
+        document.body.classList.add("locked");
+        document.body.innerHTML = `
+          <h2>يرجى تحميل التطبيق لاستخدام هذا الموقع</h2>
+          <button class="download-btn" onclick="downloadApp()">تحميل التطبيق</button>
+        `;
+      } else {
+        // تم فتح الموقع من داخل التطبيق مسبقًا
+        document.getElementById("mainContent").style.display = "block";
+      }
+    };
+  </script>
+
+  <!-- سكريبتات Cordova فقط داخل التطبيق -->
+  <script type="module">
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof cordova !== 'undefined' && cordova.platformId === 'android') {
         const androidVersion = window.device ? parseInt(window.device.version.split('.')[0]) : 0;
         if (androidVersion >= 13) {
-            // طلب إذن الإشعارات عبر بلجن الـ Local Notifications
-            if (window.cordova.plugins && window.cordova.plugins.notification) {
-                cordova.plugins.notification.local.requestPermission(function(granted) {
-                    console.log('الإذن:', granted ? 'مُمنوح' : 'مرفوض');
-                });
-            } else {
-                console.error('بلجن الإشعارات غير مثبت!');
-            }
+          if (window.cordova.plugins && window.cordova.plugins.notification) {
+            cordova.plugins.notification.local.requestPermission(function (granted) {
+              console.log('الإذن:', granted ? 'مُمنوح' : 'مرفوض');
+            });
+          } else {
+            console.error('بلجن الإشعارات غير مثبت!');
+          }
         }
-    }
-});
-</script>
-
-  <script type="module" src="scripts/main.js"></script>
-
-
+      }
+    });
+  </script>
 </body>
 </html>
