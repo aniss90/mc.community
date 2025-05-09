@@ -397,6 +397,7 @@ span{
       z-index: 1;
       animation: float 1.5s ease-out forwards;
       opacity: 1;
+    
     }
 
     @keyframes float {
@@ -641,7 +642,7 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
     <button class="menu" id="menuButton" type="button"></button>
     <button class="rate" id="rateButton" type="button"></button>
   general
-  <img src="../Emojis/Win_Computer.gif" height="25">  
+  <img src="../Emojis/Win_Computer.gif" loading="lazy" height="25">  
   </div> 
   
   <div class="content"> 
@@ -650,17 +651,17 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
     
     
     <div class="points">
-      <div class="title"> your coine : <span id="points">0</span><span id="points-float" style="display: inline-block; position: relative;"></span><img src="../new_emojis/coinss_gif.gif" height="15"></div> 
+      <div class="title"> your coine : <span id="points">0</span><span id="points-float" style="display: inline-block; position: relative;"></span><img src="../new_emojis/coinss_gif.gif"loading="lazy" height="15"></div> 
       <div class="description"> 
         Get coins between 1000 coine and 1 coine.
-        <button id="whiteButton">+ coins <img src="../new_emojis/Alot_of_coins.gif" height="16"></button>
+        <button id="whiteButton">+ coins <img src="../new_emojis/Alot_of_coins.gif" loading="lazy"height="16"></button>
       </div> 
         <div class="description"> 
           <div class="title">marketplace</div> Buy features and things for your account 
           using your coins
           <a href="marketplace.html">
             <div class="button">
-              <button id="greenButton">Marketplace <img src="../imag/marketplace-icon-7f96f.png" height="15"></button>
+              <button id="greenButton">Marketplace <img src="../imag/marketplace-icon-7f96f.png"loading="lazy" height="15"></button>
             </div>
           </a> 
         </div>
@@ -668,7 +669,7 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
           <div class="title">Trading </div>Trade your coins on the MC Co trading platform.
           <a href="trading.html">
             <div class="button">
-              <button id="blueButton">Dev.Trading dashboard <img src="../Emojis/chart_up.png" height="15"></button>
+              <button id="blueButton">Dev.Trading dashboard <img src="../Emojis/chart_up.png"loading="lazy" height="15"></button>
             </div>
           </a> 
         </div>
@@ -686,7 +687,7 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
               <input type="number" id="sendPointsAmount" name="points" placeholder="coins" required>
               </br>
               <br>
-              <button id="redButton" >Send <img src="../Emojis/gift_gif.gif" height="15"> </button>
+              <button id="redButton" >Send <img src="../Emojis/gift_gif.gif"loading="lazy" height="15"> </button>
             </div> 
             </br>
           </div> 
@@ -705,7 +706,8 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
   <h3>MENU</h3>
   <div class="logout-options">
     <button id="confirmLogout" class="dropdown-button">Sign out</button>
-    <button id="settingsButton" class="dropdown-button">Settings </button>
+    <button id="settingsButton" class="dropdown-button">Dev.Settings </button>
+    
     <button id="cancelLogout" class="dropdown-button">Close</button>
   </div>
 </div>
@@ -728,7 +730,7 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
       <div class="star" data-rating="5">★</div>
     </div>
     <button id="confirmRating">Confirm Rating</button>
-    <div class="rated-message" id="ratedMessage">Thank you for your feedback!</div>
+    <div class="rated-message" id="ratedMessage">Thank you ❤️!</div>
   </div>
 </div>
 <script>
@@ -774,6 +776,7 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
         coin.remove();
       }, 1500);
     }
+    
   </script>
 
 <script type="module">
@@ -807,6 +810,153 @@ if (!activeUser) {
   alert('Please log in first!');
   window.location.href = 'login.html';
 }
+
+
+// نظام التقييم// نظام التقييم الكامل
+document.getElementById('rateButton').addEventListener('click', function(e) {
+  e.stopPropagation();
+  const ratingOverlay = document.getElementById('ratingOverlay');
+  ratingOverlay.style.display = 'flex';
+  checkUserRating();
+});
+
+// النجوم التفاعلية
+const stars = document.querySelectorAll('.star');
+stars.forEach(star => {
+  star.addEventListener('click', function() {
+    const rating = parseInt(this.getAttribute('data-rating'));
+    
+    stars.forEach((s, index) => {
+      if (index < rating) {
+        s.classList.add('active');
+      } else {
+        s.classList.remove('active');
+      }
+    });
+    
+    document.querySelector('.stars-container').setAttribute('data-selected', rating);
+  });
+  
+  star.addEventListener('mouseover', function() {
+    const rating = parseInt(this.getAttribute('data-rating'));
+    
+    stars.forEach((s, index) => {
+      if (index < rating) {
+        s.style.color = '#FFD700';
+      }
+    });
+  });
+  
+  star.addEventListener('mouseout', function() {
+    const selectedRating = document.querySelector('.stars-container').getAttribute('data-selected') || 0;
+    
+    stars.forEach((s, index) => {
+      if (index >= selectedRating) {
+        s.style.color = '#555';
+      }
+    });
+  });
+});
+
+// تأكيد التقييم
+document.getElementById('confirmRating').addEventListener('click', async function() {
+  const selectedRating = document.querySelector('.stars-container').getAttribute('data-selected');
+  
+  if (!selectedRating || selectedRating === '0') {
+    alert('Please select a rating first!');
+    return;
+  }
+  
+  await saveRating(parseInt(selectedRating));
+  
+  document.getElementById('ratedMessage').style.display = 'block';
+  document.getElementById('confirmRating').style.display = 'none';
+  
+  setTimeout(() => {
+    document.getElementById('ratingOverlay').style.display = 'none';
+    document.getElementById('ratedMessage').style.display = 'none';
+    document.getElementById('confirmRating').style.display = 'block';
+    
+    stars.forEach(star => {
+      star.classList.remove('active');
+    });
+    document.querySelector('.stars-container').setAttribute('data-selected', '0');
+  }, 2000);
+});
+
+// دالة لحفظ التقييم
+async function saveRating(rating) {
+  const userDocRef = doc(db, 'users', activeUser);
+  const ratingsRef = collection(db, 'ratings');
+  
+  const userDoc = await getDoc(userDocRef);
+  if (userDoc.data().hasRated) {
+    const ratingQuery = query(ratingsRef, where("username", "==", activeUser));
+    const querySnapshot = await getDocs(ratingQuery);
+    
+    querySnapshot.forEach(async (doc) => {
+      await updateDoc(doc.ref, {
+        rating: rating,
+        timestamp: new Date().toISOString()
+      });
+    });
+  } else {
+    await addDoc(ratingsRef, {
+      username: activeUser,
+      rating: rating,
+      timestamp: new Date().toISOString()
+    });
+    
+    await updateDoc(userDocRef, {
+      hasRated: true
+    });
+  }
+  
+  if (rating >= 4) {
+    const pointsEarned = rating === 5 ? 6000 : 10000;
+    
+    await updateDoc(userDocRef, {
+      points: increment(pointsEarned)
+    });
+    
+    showCustomAlert(pointsEarned, "Rating Reward");
+  }
+}
+
+// التحقق من التقييم السابق
+async function checkUserRating() {
+  const userDocRef = doc(db, 'users', activeUser);
+  const userDoc = await getDoc(userDocRef);
+  
+  if (userDoc.exists() && userDoc.data().hasRated) {
+    const ratingsRef = collection(db, 'ratings');
+    const ratingQuery = query(ratingsRef, where("username", "==", activeUser));
+    const querySnapshot = await getDocs(ratingQuery);
+    
+    querySnapshot.forEach((doc) => {
+      const rating = doc.data().rating;
+      
+      stars.forEach((star, index) => {
+        if (index < rating) {
+          star.classList.add('active');
+        }
+      });
+      
+      document.querySelector('.stars-container').setAttribute('data-selected', rating);
+      document.getElementById('ratedMessage').style.display = 'block';
+      document.getElementById('confirmRating').style.display = 'none';
+    });
+  }
+}
+
+// إغلاق النافذة عند النقر خارجها
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.rating-box') && !e.target.closest('#rateButton')) {
+    document.getElementById('ratingOverlay').style.display = 'none';
+  }
+});
+// استدعاء الدالة لعرض الأكواد المتاحة عند تحميل الصفحة
+
 
 // متغير لتتبع آخر رسالة
 let lastMessageTimestamp = null;
@@ -949,7 +1099,7 @@ function showMessageNotification(sender, message, type) {
     if (displayMessage.length > 30) {
       displayMessage = displayMessage.substring(0, 30) + "...";
     }
-    displayContent = `<div class="notification-message"><div class="img2"><img src="../Emojis/arrow_right.png">${displayMessage}</div></div>`;
+    displayContent = `<div class="notification-message"><div class="img2"><img src="../Emojis/arrow_right.png"loading="lazy">${displayMessage}</div></div>`;
   }
   
   notification.innerHTML = `
@@ -958,7 +1108,7 @@ function showMessageNotification(sender, message, type) {
             <div style="width: 100%; height: 1px; background-color: white; margin: 10px 0;"></div>  
             ${displayContent}
         </div>
-        <img src="../imag/player-head-128-052ba.png" alt="${sender}">
+        <img src="../imag/player-head-128-052ba.png"loading="lazy" alt="${sender}">
     `;
   
   notification.addEventListener('click', () => {
@@ -1254,152 +1404,6 @@ document.addEventListener('click', (event) => {
   }
 });
 
-
-// نظام التقييم// نظام التقييم الكامل
-document.getElementById('rateButton').addEventListener('click', function(e) {
-  e.stopPropagation();
-  const ratingOverlay = document.getElementById('ratingOverlay');
-  ratingOverlay.style.display = 'flex';
-  checkUserRating();
-});
-
-// النجوم التفاعلية
-const stars = document.querySelectorAll('.star');
-stars.forEach(star => {
-  star.addEventListener('click', function() {
-    const rating = parseInt(this.getAttribute('data-rating'));
-    
-    stars.forEach((s, index) => {
-      if (index < rating) {
-        s.classList.add('active');
-      } else {
-        s.classList.remove('active');
-      }
-    });
-    
-    document.querySelector('.stars-container').setAttribute('data-selected', rating);
-  });
-  
-  star.addEventListener('mouseover', function() {
-    const rating = parseInt(this.getAttribute('data-rating'));
-    
-    stars.forEach((s, index) => {
-      if (index < rating) {
-        s.style.color = '#FFD700';
-      }
-    });
-  });
-  
-  star.addEventListener('mouseout', function() {
-    const selectedRating = document.querySelector('.stars-container').getAttribute('data-selected') || 0;
-    
-    stars.forEach((s, index) => {
-      if (index >= selectedRating) {
-        s.style.color = '#555';
-      }
-    });
-  });
-});
-
-// تأكيد التقييم
-document.getElementById('confirmRating').addEventListener('click', async function() {
-  const selectedRating = document.querySelector('.stars-container').getAttribute('data-selected');
-  
-  if (!selectedRating || selectedRating === '0') {
-    alert('Please select a rating first!');
-    return;
-  }
-  
-  await saveRating(parseInt(selectedRating));
-  
-  document.getElementById('ratedMessage').style.display = 'block';
-  document.getElementById('confirmRating').style.display = 'none';
-  
-  setTimeout(() => {
-    document.getElementById('ratingOverlay').style.display = 'none';
-    document.getElementById('ratedMessage').style.display = 'none';
-    document.getElementById('confirmRating').style.display = 'block';
-    
-    stars.forEach(star => {
-      star.classList.remove('active');
-    });
-    document.querySelector('.stars-container').setAttribute('data-selected', '0');
-  }, 2000);
-});
-
-// دالة لحفظ التقييم
-async function saveRating(rating) {
-  const userDocRef = doc(db, 'users', activeUser);
-  const ratingsRef = collection(db, 'ratings');
-  
-  const userDoc = await getDoc(userDocRef);
-  if (userDoc.data().hasRated) {
-    const ratingQuery = query(ratingsRef, where("username", "==", activeUser));
-    const querySnapshot = await getDocs(ratingQuery);
-    
-    querySnapshot.forEach(async (doc) => {
-      await updateDoc(doc.ref, {
-        rating: rating,
-        timestamp: new Date().toISOString()
-      });
-    });
-  } else {
-    await addDoc(ratingsRef, {
-      username: activeUser,
-      rating: rating,
-      timestamp: new Date().toISOString()
-    });
-    
-    await updateDoc(userDocRef, {
-      hasRated: true
-    });
-  }
-  
-  if (rating >= 4) {
-    const pointsEarned = rating === 5 ? 15 : 10;
-    
-    await updateDoc(userDocRef, {
-      points: increment(pointsEarned)
-    });
-    
-    showCustomAlert(pointsEarned, "Rating Reward");
-  }
-}
-
-// التحقق من التقييم السابق
-async function checkUserRating() {
-  const userDocRef = doc(db, 'users', activeUser);
-  const userDoc = await getDoc(userDocRef);
-  
-  if (userDoc.exists() && userDoc.data().hasRated) {
-    const ratingsRef = collection(db, 'ratings');
-    const ratingQuery = query(ratingsRef, where("username", "==", activeUser));
-    const querySnapshot = await getDocs(ratingQuery);
-    
-    querySnapshot.forEach((doc) => {
-      const rating = doc.data().rating;
-      
-      stars.forEach((star, index) => {
-        if (index < rating) {
-          star.classList.add('active');
-        }
-      });
-      
-      document.querySelector('.stars-container').setAttribute('data-selected', rating);
-      document.getElementById('ratedMessage').style.display = 'block';
-      document.getElementById('confirmRating').style.display = 'none';
-    });
-  }
-}
-
-// إغلاق النافذة عند النقر خارجها
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.rating-box') && !e.target.closest('#rateButton')) {
-    document.getElementById('ratingOverlay').style.display = 'none';
-  }
-});
-// استدعاء الدالة لعرض الأكواد المتاحة عند تحميل الصفحة
-
 </script>
 <script>
   // تسجيل الخروج
@@ -1425,7 +1429,7 @@ document.getElementById('confirmLogout').addEventListener('click', function() {
 
 // زر الإعدادات (يمكنك إضافة وظيفته لاحقاً)
 document.getElementById('settingsButton').addEventListener('click', function() {
-  alert("Settings will be opened soon. \n سيتم فتح الاعداداتقريبا. ");
+  window.location.href = 'Settings.html';
   document.getElementById('logoutDropdown').style.display = 'none';
 });
 

@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/main.css">
+  <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
+  <title>User Settings</title>
+  <style>
+    @font-face {
+      font-family: minecraft;
+      src: url('../font/Minecraft-Default.otf');
+    }
+    @font-face {
+      font-family: minecraft-ten;
+      src: url('../font/Minecraft-Ten.ttf');
+    }
+    @font-face {
+      font-family: minecraft-five;
+      src: url('../font/Minecraft-Five.ttf');
+    }
+    @font-face {
+      font-family: MinecraftFive-Regular;
+      src: url('../font/MinecraftFive-Regular.ttf');
+    }
+    
+  
+    
+    
+    .settings-container {
+      display: flex;
+      flex-direction: column;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      gap: 20px;
+    }
+    
+    .profile-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      background-color: #262626;
+      padding: 20px;
+      border-radius: 5px;
+      border: 2px solid #4a4a4a;
+    }
+    
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 20px;
+      object-fit: cover;
+      border: 2px solid #C8C8C891;
+      cursor: pointer;
+  
+    }
+  
+    .profile-info {
+      text-align: center;
+    }
+    
+    .username {
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      font-size: 24px;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+    
+    .user-bio {
+      font-family: 'minecraft', sans-serif;
+      color: #959595;
+      font-size: 14px;
+      max-width: 300px;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    
+    .stat-label {
+      font-family: 'minecraft', sans-serif;
+      color: #959595;
+      font-size: 12px;
+    }
+    
+    .edit-profile-btn {
+      background-color: #2A9A2F;
+      border: 2px solid #47C24C;
+      box-shadow: 0 2px 0 #009F06;
+      color: white;
+      padding: 8px 15px;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+    
+    .edit-profile-btn:hover {
+      background-color: #137517;
+    }
+    
+    .settings-sections {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .settings-card {
+      background-color: #262626;
+      padding: 15px;
+      border-radius: 5px;
+      border: 2px solid #4a4a4a;
+    }
+    
+    .card-header {
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      color: #E0BA31;
+      font-size: 18px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .card-content {
+      font-family: 'minecraft', sans-serif;
+      color: #e0e0e0;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #4a4a4a;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: #2A9A2F;
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #3a3a3a;
+    }
+    
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+    
+    .setting-label {
+      font-family: 'minecraft', sans-serif;
+      color: #e0e0e0;
+    }
+    
+    .purchased-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .item-card {
+      background-color: #3a3a3a;
+      padding: 10px;
+      border-radius: 5px;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    
+    .item-icon {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+    
+    .item-name {
+      font-family: 'minecraft', sans-serif;
+      font-size: 10px;
+      color: #e0e0e0;
+      text-align: center;
+    }
+    
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      background-color: #262626;
+      border: 3px solid #E0BA31;
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 2px;
+      box-shadow: 0px 3px 0px rgba(224, 155, 0, 1);
+      animation: fadeIn 0.3s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .modal-title {
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      color: #E0BA31;
+      font-size: 20px;
+    }
+    
+    .close-modal {
+      background: none;
+      border: none;
+      color: #e0e0e0;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-label {
+      display: block;
+      font-family: 'minecraft', sans-serif;
+      color: #e0e0e0;
+      margin-bottom: 5px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 8px;
+      background-color: #3a3a3a;
+      border: 1px solid #4a4a4a;
+      color: #e0e0e0;
+      font-family: 'minecraft', sans-serif;
+    }
+    
+    .form-textarea {
+      width: 100%;
+      height: 100px;
+      padding: 8px;
+      background-color: #3a3a3a;
+      border: 1px solid #4a4a4a;
+      color: #e0e0e0;
+      font-family: 'minecraft', sans-serif;
+      resize: none;
+    }
+    
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .modal-btn {
+      padding: 8px 15px;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .modal-btn.cancel {
+      background-color: #4a4a4a;
+      color: #e0e0e0;
+      border: 2px solid #5a5a5a;
+    }
+    
+    .modal-btn.save {
+      background-color: #2A9A2F;
+      border: 2px solid #47C24C;
+      box-shadow: 0 2px 0 #009F06;
+      color: white;
+    }
+    
+    .file-input-container {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+    
+    .file-input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    
+    .file-input-label {
+      display: block;
+      padding: 8px;
+      background-color: #3a3a3a;
+      border: 1px solid #4a4a4a;
+      color: #e0e0e0;
+      font-family: 'minecraft', sans-serif;
+      text-align: center;
+      cursor: pointer;
+    }
+    
+    .password-container {
+      position: relative;
+    }
+    
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      user-select: none;
+      opacity: 0.7;
+    }
+    
+    .toggle-password:hover {
+      opacity: 1;
+    }
+    
+    @media (max-width: 600px) {
+      .profile-section {
+        padding: 15px;
+      }
+      
+      .profile-pic {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .username {
+        font-size: 20px;
+      }
+      
+      .stats {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+    #userPoints{
+      text-shadow:0px 1px 0px #3A2700;
+background: #916204;
+border: 2px solid #A6730F;
+color: #FFD952;
+font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+    #userItems{
+      text-shadow:0px 1px 0px #000F3A;
+background: #160491;
+border: 2px solid #220FA6;
+      color:#5282FF;
+      font-size:17px;
+      font-family: MinecraftFive-Regular;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <button class="back" id="backButton" type="button" onclick="goBack()"></button>
+    Settings <img src="../imag/gif_test-83efe.gif" height="30">
+  </div>
+  
+  <div class="content">
+    <div class="settings-container">
+      <!-- Profile Section -->
+      <div class="profile-section">
+        <img src="../imag/default_profile.png" class="profile-pic" id="profilePic">
+        <div class="profile-info">
+          <div class="username" id="usernameDisplay">Username</div>
+          <div class="user-bio" id="userBio">This is my awesome bio!</div>
+        </div>
+        <div class="stats">
+          <div class="stat-item">
+            <div class="stat-value" id="userPoints">0</div>
+            <div class="stat-label">Coins</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="userItems">0</div>
+            <div class="stat-label">Items</div>
+          </div>
+        </div>
+        <button class="edit-profile-btn" id="editProfileBtn">Edit Profile</button>
+      </div>
+      
+      <!-- Settings Sections -->
+      <div class="settings-sections">
+        <!-- Account Settings -->
+        <div class="settings-card">
+          <div class="card-header">⚙️ Dev.Account Settings</div>
+          <div class="card-content">
+            <div class="setting-item">
+              <span class="setting-label">Dark Mode</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="darkModeToggle" checked>
+                <span class="slider"></span>
+                
+              </label>
+            </div>
+            <div class="setting-item">
+              <span class="setting-label">Notifications</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="notificationsToggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+                   <div class="setting-item">
+         <span class="setting-label">Change Password</span>
+         <button class="modal-btn" id="changePasswordBtn" style="padding: 4px 8px;">Change</button>
+       </div>
+       <div class="setting-item">
+         <span class="setting-label">Change Email</span>
+         <button class="modal-btn" id="changeEmailBtn" style="padding: 4px 8px;">Change</button>
+       </div>
+          </div>
+        </div>
+        
+        <!-- Purchased Items -->
+        <div class="settings-card">
+          <div class="card-header">🛒 Dev.Purchased Items</div>
+          <div class="card-content">
+            <div id="noItemsMessage" style="display: none;">You haven't purchased any items yet.</div>
+            <div class="purchased-items" id="purchasedItemsContainer">
+              <!-- Items will be added here dynamically -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Account Actions -->
+        <div class="settings-card">
+          <div class="card-header">⚠️ Dev.Account Actions</div>
+          <div class="card-content">
+     
+            <div class="setting-item">
+              <span class="setting-label">Delete Account</span>
+              <button class="modal-btn" style="background-color: #d32f2f; border: 2px solid #f44336; padding: 4px 8px;" id="deleteAccountBtn">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Edit Profile Modal -->
+  <div class="modal" id="editProfileModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Edit Profile</div>
+        <button class="close-modal" id="closeEditModal">&times;</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Profile Picture</label>
+        <div class="file-input-container">
+          <input type="file" id="profilePicInput" class="file-input" accept="image/*">
+          <label for="profilePicInput" class="file-input-label">Choose Image</label>
+        </div>
+        <div id="selectedFileName" style="font-family: 'minecraft'; color: #959595; font-size: 12px; margin-top: 5px;"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" id="editUsername" class="form-input" maxlength="20">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bio</label>
+        <textarea id="editBio" class="form-textarea" maxlength="150"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" id="cancelEditBtn">Cancel</button>
+        <button class="modal-btn save" id="saveProfileBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Change Password Modal -->
+  <div class="modal" id="changePasswordModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Change Password</div>
+        <button class="close-modal" id="closePasswordModal">&times;</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Current Password</label>
+        <div class="password-container">
+          <input type="password" id="currentPassword" class="form-input">
+          <span class="toggle-password" onclick="togglePasswordVisibility('currentPassword')">👁️</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">New Password</label>
+        <div class="password-container">
+          <input type="password" id="newPassword" class="form-input">
+          <span class="toggle-password" onclick="togglePasswordVisibility('newPassword')">👁️</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirm New Password</label>
+        <div class="password-container">
+          <input type="password" id="confirmPassword" class="form-input">
+          <span class="toggle-password" onclick="togglePasswordVisibility('confirmPassword')">👁️</span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" id="cancelPasswordBtn">Cancel</button>
+        <button class="modal-btn save" id="savePasswordBtn">Change Password</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Change Email Modal -->
+  <div class="modal" id="changeEmailModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Change Email</div>
+        <button class="close-modal" id="closeEmailModal">&times;</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Current Email</label>
+        <input type="email" id="currentEmail" class="form-input" disabled>
+      </div>
+      <div class="form-group">
+        <label class="form-label">New Email</label>
+        <input type="email" id="newEmail" class="form-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirm New Email</label>
+        <input type="email" id="confirmEmail" class="form-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Current Password</label>
+        <div class="password-container">
+          <input type="password" id="emailCurrentPassword" class="form-input">
+          <span class="toggle-password" onclick="togglePasswordVisibility('emailCurrentPassword')">👁️</span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" id="cancelEmailBtn">Cancel</button>
+        <button class="modal-btn save" id="saveEmailBtn">Change Email</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Delete Account Modal -->
+  <div class="modal" id="deleteAccountModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">⚠️ Delete Account</div>
+        <button class="close-modal" id="closeDeleteModal">&times;</button>
+      </div>
+      <div class="card-content">
+        <p style="font-family: 'minecraft'; color: #e0e0e0; margin-bottom: 15px;">
+          Are you sure you want to delete your account? This action cannot be undone. All your data will be permanently removed.
+        </p>
+        <div class="form-group">
+          <label class="form-label">Enter your password to confirm</label>
+          <div class="password-container">
+            <input type="password" id="deleteAccountPassword" class="form-input">
+            <span class="toggle-password" onclick="togglePasswordVisibility('deleteAccountPassword')">👁️</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" id="cancelDeleteBtn">Cancel</button>
+        <button class="modal-btn" style="background-color: #d32f2f; border: 2px solid #f44336;" id="confirmDeleteBtn">Delete Account</button>
+      </div>
+    </div>
+  </div>
+  
+  <script type="module">
+    import { db, auth } from '../scripts/main.js';
+    import { 
+      doc, 
+      getDoc, 
+      setDoc,
+      updateDoc,
+      deleteDoc,
+      collection,
+      query,
+      where,
+      getDocs,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+    
+    import {
+      GoogleAuthProvider,
+      signInWithPopup,
+      signInAnonymously,
+      onAuthStateChanged,
+      signOut,
+      updatePassword,
+      updateEmail,
+      reauthenticateWithCredential,
+      EmailAuthProvider,
+      deleteUser
+    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+    
+    // Get current user data
+    const user = auth.currentUser;
+    let currentUserData = {};
+    
+    // Load user data from localStorage or Firestore
+    async function loadUserData() {
+      const userId = localStorage.getItem("activeUser");
+      if (!userId) {
+        window.location.href = "login.html";
+        return;
+      }
+      
+      try {
+        const userDocRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userDocRef);
+        
+        if (userDoc.exists()) {
+          currentUserData = userDoc.data();
+          displayUserData(currentUserData);
+          
+          // Load purchased items if they exist
+          if (currentUserData.purchasedItems && currentUserData.purchasedItems.length > 0) {
+            displayPurchasedItems(currentUserData.purchasedItems);
+          } else {
+            document.getElementById('noItemsMessage').style.display = 'block';
+          }
+        }
+      } catch (error) {
+        console.error("Error loading user data:", error);
+      }
+    }
+    
+    // Display user data in the UI
+    function displayUserData(userData) {
+      document.getElementById('usernameDisplay').textContent = userData.displayName || userData.username || "User";
+      document.getElementById('userBio').textContent = userData.bio || "No bio yet";
+      document.getElementById('userPoints').textContent = userData.points || 0 ;
+      
+      // Set profile picture if available
+      if (userData.photoURL) {
+        document.getElementById('profilePic').src = userData.photoURL;
+      }
+      
+      // Set member since year
+      if (userData.createdAt) {
+        const date = userData.createdAt.toDate();
+        document.getElementById('userSince').textContent = date.getFullYear();
+      }
+      
+      // Set purchased items count
+      if (userData.purchasedItems) {
+        document.getElementById('userItems').textContent = userData.purchasedItems.length;
+      }
+      
+      // Set current email if available
+      if (userData.email) {
+        document.getElementById('currentEmail').value = userData.email;
+      }
+    }
+    
+    // Display purchased items
+    function displayPurchasedItems(items) {
+      const container = document.getElementById('purchasedItemsContainer');
+      container.innerHTML = '';
+      
+      items.forEach(item => {
+        const itemCard = document.createElement('div');
+        itemCard.className = 'item-card';
+        itemCard.innerHTML = `
+          <img src="${item.icon || '../imag/default_item.png'}" class="item-icon" alt="${item.name}">
+          <div class="item-name">${item.name}</div>
+        `;
+        container.appendChild(itemCard);
+      });
+    }
+    
+    // Modal toggle functions
+    function toggleModal(modalId, show) {
+      const modal = document.getElementById(modalId);
+      modal.style.display = show ? 'flex' : 'none';
+    }
+    
+    // Toggle password visibility
+    function togglePasswordVisibility(inputId) {
+      const input = document.getElementById(inputId);
+      const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+      input.setAttribute('type', type);
+    }
+    
+    // Event listeners for modals
+    document.getElementById('editProfileBtn').addEventListener('click', () => {
+      // Fill modal with current data
+      document.getElementById('editUsername').value = currentUserData.displayName || currentUserData.username || "";
+      document.getElementById('editBio').value = currentUserData.bio || "";
+      toggleModal('editProfileModal', true);
+    });
+    
+    document.getElementById('changePasswordBtn').addEventListener('click', () => {
+      toggleModal('changePasswordModal', true);
+    });
+    
+    document.getElementById('changeEmailBtn').addEventListener('click', () => {
+      toggleModal('changeEmailModal', true);
+    });
+    
+    document.getElementById('deleteAccountBtn').addEventListener('click', () => {
+      toggleModal('deleteAccountModal', true);
+    });
+    
+    // Close modals
+    document.getElementById('closeEditModal').addEventListener('click', () => toggleModal('editProfileModal', false));
+    document.getElementById('closePasswordModal').addEventListener('click', () => toggleModal('changePasswordModal', false));
+    document.getElementById('closeEmailModal').addEventListener('click', () => toggleModal('changeEmailModal', false));
+    document.getElementById('closeDeleteModal').addEventListener('click', () => toggleModal('deleteAccountModal', false));
+    document.getElementById('cancelEditBtn').addEventListener('click', () => toggleModal('editProfileModal', false));
+    document.getElementById('cancelPasswordBtn').addEventListener('click', () => toggleModal('changePasswordModal', false));
+    document.getElementById('cancelEmailBtn').addEventListener('click', () => toggleModal('changeEmailModal', false));
+    document.getElementById('cancelDeleteBtn').addEventListener('click', () => toggleModal('deleteAccountModal', false));
+    
+    // Profile picture upload
+    document.getElementById('profilePicInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById('selectedFileName').textContent = `Selected: ${file.name}`;
+        
+        // Preview the image
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          document.getElementById('profilePic').src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+    
+    // Save profile changes
+    document.getElementById('saveProfileBtn').addEventListener('click', async () => {
+      const newUsername = document.getElementById('editUsername').value.trim();
+      const newBio = document.getElementById('editBio').value.trim();
+      const fileInput = document.getElementById('profilePicInput');
+      
+      if (!newUsername) {
+        alert('Username cannot be empty');
+        return;
+      }
+      
+      try {
+        const userId = localStorage.getItem("activeUser");
+        const userDocRef = doc(db, 'users', userId);
+        
+        const updateData = {
+          displayName: newUsername,
+          bio: newBio,
+          updatedAt: serverTimestamp()
+        };
+        
+        // Handle profile picture upload
+        if (fileInput.files.length > 0) {
+          const file = fileInput.files[0];
+          // In a real app, you would upload this to Firebase Storage
+          // For this example, we'll just store as data URL
+          const reader = new FileReader();
+          reader.onload = async function(event) {
+            updateData.photoURL = event.target.result;
+            await updateDoc(userDocRef, updateData);
+            currentUserData = { ...currentUserData, ...updateData };
+            displayUserData(currentUserData);
+            toggleModal('editProfileModal', false);
+          };
+          reader.readAsDataURL(file);
+        } else {
+          await updateDoc(userDocRef, updateData);
+          currentUserData = { ...currentUserData, ...updateData };
+          displayUserData(currentUserData);
+          toggleModal('editProfileModal', false);
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        alert("Failed to update profile. Please try again.");
+      }
+    });
+    
+    // Change password
+    document.getElementById('savePasswordBtn').addEventListener('click', async () => {
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        alert('Please fill all fields');
+        return;
+      }
+      
+      if (newPassword !== confirmPassword) {
+        alert('New passwords do not match');
+        return;
+      }
+      
+      if (newPassword.length < 6) {
+        alert('Password must be at least 6 characters');
+        return;
+      }
+      
+      try {
+        const user = auth.currentUser;
+        const credential = EmailAuthProvider.credential(user.email, currentPassword);
+        
+        // Reauthenticate user
+        await reauthenticateWithCredential(user, credential);
+        
+        // Update password
+        await updatePassword(user, newPassword);
+        
+        // Update password in Firestore
+        const userId = localStorage.getItem("activeUser");
+        const userDocRef = doc(db, 'users', userId);
+        await updateDoc(userDocRef, {
+          password: newPassword,
+          updatedAt: serverTimestamp()
+        });
+        
+        alert('Password changed successfully!');
+        toggleModal('changePasswordModal', false);
+      } catch (error) {
+        console.error("Error changing password:", error);
+        alert("Failed to change password. Please check your current password and try again.");
+      }
+    });
+    
+    // Change email
+    document.getElementById('saveEmailBtn').addEventListener('click', async () => {
+      const newEmail = document.getElementById('newEmail').value.trim();
+      const confirmEmail = document.getElementById('confirmEmail').value.trim();
+      const currentPassword = document.getElementById('emailCurrentPassword').value;
+      
+      if (!newEmail || !confirmEmail || !currentPassword) {
+        alert('Please fill all fields');
+        return;
+      }
+      
+      if (newEmail !== confirmEmail) {
+        alert('Emails do not match');
+        return;
+      }
+      
+      try {
+        const user = auth.currentUser;
+        const credential = EmailAuthProvider.credential(user.email, currentPassword);
+        
+        // Reauthenticate user
+        await reauthenticateWithCredential(user, credential);
+        
+        // Update email
+        await updateEmail(user, newEmail);
+        
+        // Update email in Firestore
+        const userId = localStorage.getItem("activeUser");
+        const userDocRef = doc(db, 'users', userId);
+        await updateDoc(userDocRef, {
+          email: newEmail,
+          updatedAt: serverTimestamp()
+        });
+        
+        alert('Email changed successfully!');
+        toggleModal('changeEmailModal', false);
+        document.getElementById('currentEmail').value = newEmail;
+      } catch (error) {
+        console.error("Error changing email:", error);
+        alert("Failed to change email. Please check your current password and try again.");
+      }
+    });
+    
+    // Delete account
+    document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
+      const password = document.getElementById('deleteAccountPassword').value;
+      
+      if (!password) {
+        alert('Please enter your password');
+        return;
+      }
+      
+      if (!confirm('Are you absolutely sure you want to delete your account? This cannot be undone.')) {
+        return;
+      }
+      
+      try {
+        const user = auth.currentUser;
+        const credential = EmailAuthProvider.credential(user.email, password);
+        
+        // Reauthenticate user
+        await reauthenticateWithCredential(user, credential);
+
+        // Delete from Firestore
+        const userId = localStorage.getItem("activeUser");
+        const userDocRef = doc(db, 'users', userId);
+        await deleteDoc(userDocRef);
+        
+        // Delete user from auth
+        await deleteUser(user);
+        
+        // Clear localStorage
+        localStorage.removeItem("activeUser");
+        
+        alert('Account deleted successfully. You will be redirected to the home page.');
+        window.location.href = "index.html";
+      } catch (error) {
+        console.error("Error deleting account:", error);
+        alert("Failed to delete account. Please check your password and try again.");
+      }
+    });
+    
+    // Dark mode toggle
+    document.getElementById('darkModeToggle').addEventListener('change', function() {
+      document.body.classList.toggle('dark-mode', this.checked);
+      localStorage.setItem('darkMode', this.checked);
+    });
+    
+    // Check for saved dark mode preference
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.getElementById('darkModeToggle').checked = true;
+      document.body.classList.add('dark-mode');
+    }
+    
+    // Back button function
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
+    
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+      loadUserData();
+    });
+  </script>
+      <script>  
+        function goBack() {  
+            if (window.history.length > 1) {  
+                window.history.back();  
+            } else {  
+                window.location.href = '/';
+            }  
+        }  
+    </script>
+</body>
+</html>
