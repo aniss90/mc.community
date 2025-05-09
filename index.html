@@ -1,288 +1,473 @@
-<!DOCTYPE html>
-<html lang="ar">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mc co</title>
-    <link rel="stylesheet" href="style/main.css">
-    <link rel="icon" type="image/x-icon" href="web/ytlogo.png">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=F18SFG2LMZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'F18SFG2LMZ');
-    </script>
-    <style>
-        @font-face {
-            font-family: minecraft;
-            src: url('font/Minecraft-Default.otf');
-        }
-        @font-face {
-            font-family: minecraft-ten;
-            src: url('font/Minecraft-Ten.ttf');
-        }
-        @font-face {
-            font-family: minecraft-five;
-            src: url('font/Minecraft-Five.ttf');
-        }
-        .description{
-          font-size: 12px;
-        }
-        
-        /* أنماط تقييم الموقع */
-        .header-rating {
-          background-color: #2E2100;
-          border: 2px solid #8C6A15;
-          padding: 8px 15px;
-          text-align: center;
+<!DOCTYPE html>  
+<html lang="ar">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>mc co</title>  
+    <link rel="stylesheet" href="style/main.css">  
+    <link rel="icon" type="image/x-icon" href="web/ytlogo.png">  
+    <!-- Google tag (gtag.js) -->  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=F18SFG2LMZ"></script>  
+    <script>  
+      window.dataLayer = window.dataLayer || [];  
+      function gtag(){dataLayer.push(arguments);}  
+      gtag('js', new Date());  
+      gtag('config', 'F18SFG2LMZ');  
+    </script>  
+    <style>  
+        @font-face {  
+            font-family: minecraft;  
+            src: url('font/Minecraft-Default.otf');  
+        }  
+        @font-face {  
+            font-family: minecraft-ten;  
+            src: url('font/Minecraft-Ten.ttf');  
+        }  
+        @font-face {  
+            font-family: minecraft-five;  
+            src: url('font/Minecraft-Five.ttf');  
+        }  
+        .description{  
+          font-size: 12px;  
+        }  
+          
+        /* أنماط تقييم الموقع */  
+        .header-rating {  
+          background-color: #2E2100;  
+          border: 2px solid #8C6A15;  
+          padding: 8px 15px;  
+          text-align: center;  
+          font-family: minecraft-five;  
+          color: #FFD952;  
+          border-radius: 5px;  
+          margin: 10px auto;  
+          max-width: 300px;  
+          box-shadow: 0px 3px 0px rgba(43, 30, 0, 1);  
+        }  
+          
+        .site-rating {  
+          display: flex;  
+          align-items: center;  
+          justify-content: center;  
+          gap: 5px;  
+          flex-wrap: wrap;  
+        }  
+          
+        .stars {  
+          display: inline-flex;  
+          font-size: 18px;  
+        }  
+          
+        .stars span {  
+          color: #555;  
+          text-shadow: 0px 1px 0px #000;  
+        }  
+          
+        .stars span.active {  
+          color: #FFD700;  
+          text-shadow: 0 0 5px rgba(255, 215, 0, 0.7);  
+        }  
+          
+        #ratingAverage {  
+          font-weight: bold;  
+          color: #FFD952;  
+        }  
+          
+        #ratingCount {  
+          color: #FFFFFF;  
+        }  
+          
+        .news {  
+          position: absolute;  
+          border: none;  
+          top: 20px;  
+          left: 10px;  
+          cursor: pointer;  
+          padding: 10px;  
+          background: url(imag/News.png);  
+          background-size: contain;  
+          background-position: center;  
+          background-repeat: no-repeat;  
+          z-index: 9999;  
+        }  
+          
+        /* تصميم زر التحميل الأسطوري */
+        .epic-download-btn {
+          position: relative;
+          display: block;
+          margin: 20px auto;
+          padding: 0;
+          width: 280px;
+          height: 80px;
+          border: none;
+          border-radius: 12px;
+          background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+          color: #2E2100;
           font-family: minecraft-five;
-          color: #FFD952;
-          border-radius: 5px;
-          margin: 10px auto;
-          max-width: 300px;
-          box-shadow: 0px 3px 0px rgba(43, 30, 0, 1);
+          font-size: 18px;
+          font-weight: bold;
+          text-shadow: 0 1px 1px rgba(255,255,255,0.3);
+          cursor: pointer;
+          overflow: hidden;
+          box-shadow: 0 6px 0 #8C6A15, 
+                      0 10px 20px rgba(0,0,0,0.3),
+                      inset 0 1px 1px rgba(255,255,255,0.2);
+          transition: all 0.3s ease;
+          z-index: 1;
         }
-        
-        .site-rating {
+
+        .epic-download-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 0 #8C6A15, 
+                      0 12px 24px rgba(0,0,0,0.4),
+                      inset 0 1px 1px rgba(255,255,255,0.2);
+        }
+
+        .epic-download-btn:active {
+          transform: translateY(4px);
+          box-shadow: 0 2px 0 #8C6A15, 
+                      0 5px 10px rgba(0,0,0,0.3),
+                      inset 0 1px 1px rgba(255,255,255,0.2);
+        }
+
+        .btn-content {
+          position: relative;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 5px;
-          flex-wrap: wrap;
+          width: 100%;
+          height: 100%;
+          padding: 0 20px;
+          z-index: 2;
+          transition: all 0.5s ease;
         }
-        
-        .stars {
-          display: inline-flex;
+
+        .btn-icon {
+          margin-right: 12px;
+          animation: bounce 2s infinite;
+          transition: all 0.5s ease;
+        }
+
+        .btn-text {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          transition: all 0.5s ease;
+        }
+
+        .main-text {
           font-size: 18px;
+          line-height: 1.2;
         }
-        
-        .stars span {
-          color: #555;
-          text-shadow: 0px 1px 0px #000;
+
+        .sub-text {
+          font-size: 12px;
+          opacity: 0.8;
         }
-        
-        .stars span.active {
-          color: #FFD700;
-          text-shadow: 0 0 5px rgba(255, 215, 0, 0.7);
+
+        .btn-glow {
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+          opacity: 0;
+          transition: opacity 0.5s ease;
+          z-index: 1;
         }
-        
-        #ratingAverage {
-          font-weight: bold;
-          color: #FFD952;
+
+        .epic-download-btn:hover .btn-glow {
+          opacity: 0.3;
         }
-        
-        #ratingCount {
-          color: #FFFFFF;
+
+        .btn-pulse {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border-radius: 12px;
+          background: rgba(255, 215, 0, 0.4);
+          animation: pulse 2s infinite;
+          opacity: 0;
+          z-index: 0;
         }
-          .news {
-    position: absolute;
-    border: none;
-    top: 20px;
-    left: 10px;
-    cursor: pointer;
-    padding: 10px;
-    background: url(imag/News.png);
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: 9999;
-  }
-  
-  /* أنماط نافذة التطبيق */
-  .app-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.8);
-    z-index: 10000;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .app-modal-content {
-    background-color: #2E2100;
-    border: 3px solid #8C6A15;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 90%;
-    text-align: center;
-    color: white;
-    font-family: minecraft-five;
-  }
-  
-  .app-modal-buttons {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .app-modal-button {
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: minecraft-five;
-    border: none;
-  }
-  
-  .download-button {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .later-button {
-    background-color: #f44336;
-    color: white;
-  }
-    </style>
-</head>
 
-<body>
-<!-- نافذة التطبيق -->
-<div id="appModal" class="app-modal">
-  <div class="app-modal-content">
-    <h2>تحميل تطبيق MC CO</h2>
-    <p>للاستمرار في التفاعل مع موقع MC CO، يرجى تحميل التطبيق الرسمي.</p>
-    <p>التطبيق يوفر تجربة أفضل وميزات إضافية!</p>
-    <div class="app-modal-buttons">
-      <button id="downloadAppBtn" class="app-modal-button download-button">تحميل التطبيق الآن</button>
-      <button id="laterBtn" class="app-modal-button later-button">لاحقاً</button>
-    </div>
-  </div>
-</div>
+        /* تأثيرات ماينكرافت الجديدة */
+        @keyframes minecraftShrink {
+          0% { transform: scale(1); }
+          50% { transform: scale(0.8); opacity: 0.8; }
+          100% { transform: scale(1); opacity: 1; }
+        }
 
-<script>
-  // دالة للتحقق مما إذا كان المستخدم على أندرويد
-  function isAndroid() {
-    return /Android/i.test(navigator.userAgent);
-  }
+        @keyframes minecraftPop {
+          0% { transform: scale(0.5); }
+          70% { transform: scale(1.2); }
+          100% { transform: scale(1); }
+        }
 
-  // دالة للتحقق مما إذا كان التطبيق مثبتاً
-  function isAppInstalled() {
-    // هذه الدالة تحاول فتح التطبيق عبر intent
-    // إذا نجحت فسيتم توجيه المستخدم للتطبيق
-    // إذا فشلت فسيعود للموقع
-    window.location.href = 'intent://mc.co.community.webapp#Intent;scheme=app;package=mc.co.community.webapp;end';
-    return false;
-  }
+        @keyframes minecraftBreak {
+          0% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.1); opacity: 0.8; }
+          100% { transform: scale(0); opacity: 0; }
+        }
 
-  // دالة لعرض نافذة التطبيق
-  function showAppModal() {
-    const modal = document.getElementById('appModal');
-    modal.style.display = 'flex';
-    
-    // إضافة أحداث للأزرار
-    document.getElementById('downloadAppBtn').addEventListener('click', function() {
-      // تحميل التطبيق
-      window.location.href = 'mc_co.apk';
-      modal.style.display = 'none';
-      localStorage.setItem('app_prompted', 'true');
-    });
-    
-    document.getElementById('laterBtn').addEventListener('click', function() {
-      modal.style.display = 'none';
-      // تخزين أن المستخدم اختار لاحقاً
-      localStorage.setItem('app_prompted', 'true');
-    });
-  }
+        @keyframes minecraftParticles {
+          0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+          100% { transform: translate(var(--tx), var(--ty)) rotate(360deg); opacity: 0; }
+        }
 
-  // عند تحميل الصفحة
-  window.onload = function() {
-    // إذا كان المستخدم على أندرويد ولم يتم تحميل التطبيق بعد
-    if (isAndroid()) {
-      // حاول فتح التطبيق أولاً
-      setTimeout(function() {
-        if (!isAppInstalled()) {
-          // إذا لم يكن التطبيق مثبتاً ولم يسبق عرض النافذة
-          if (!localStorage.getItem('app_prompted')) {
-            setTimeout(showAppModal, 2000); // عرض النافذة بعد ثانيتين
+        .minecraft-loading-text {
+          font-family: minecraft-five;
+          color: #2E2100;
+          font-size: 16px;
+          text-align: center;
+          margin-top: 10px;
+          animation: minecraftShrink 0.5s infinite alternate;
+        }
+
+        .minecraft-dots::after {
+          content: '';
+          animation: minecraftDotAnimation 1.5s infinite;
+        }
+
+        @keyframes minecraftDotAnimation {
+          0% { content: '.'; }
+          33% { content: '..'; }
+          66% { content: '...'; }
+          100% { content: '.'; }
+        }
+
+        @keyframes pulse {
+          0% {
+            transform: scale(0.95);
+            opacity: 0;
+          }
+          50% {
+            opacity: 0.4;
+          }
+          100% {
+            transform: scale(1.1);
+            opacity: 0;
           }
         }
-      }, 100);
-    }
-    
-    // إظهار زر التحميل إذا كان المستخدم على أندرويد ولم يحمل التطبيق بعد
-    const btn = document.getElementById('downloadBtn');
-    if (isAndroid() && !localStorage.getItem('app_downloaded')) {
-      btn.style.display = 'block';
-    }
-  }
+
+        @keyframes bounce {
+          0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+          }
+          40% {
+            transform: translateY(-10px);
+          }
+          60% {
+            transform: translateY(-5px);
+          }
+        }
+    </style>  
+</head>  
+
+<body>  
+<script>  
+  function isAndroid() {  
+    return /Android/i.test(navigator.userAgent);  
+  }  
+  
+  function hasDownloaded() {  
+    return localStorage.getItem('app_downloaded') === 'true';  
+  }  
+  
+  function markAsDownloaded() {  
+    localStorage.setItem('app_downloaded', 'true');  
+  }  
+  
+  window.onload = function () {  
+    const btn = document.getElementById('downloadBtn');  
+    if (isAndroid() && !hasDownloaded()) {  
+      btn.style.display = 'block';  
+    }  
+  }  
 
   function downloadApp() {
-    localStorage.setItem('app_downloaded', 'true');
-    window.location.href = 'mc_co.apk';
-    document.getElementById('downloadBtn').style.display = 'none';
-  }
-</script>
-
-    <script>
-  // دالة لتوليد بصمة (hash) للنص لتتبع التغييرات
-  function generateHash(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = (hash << 5) - hash + str.charCodeAt(i);
-      hash |= 0; // إجبار الرقم ليكون 32-بت
-    }
-    return hash.toString(); // إرجاع كـ string للمقارنة
-  }
-  
-  // دالة لتحميل التحديثات والتحقق منها
-  function checkForSiteUpdates() {
-    fetch("pages/update.txt")
-      .then(response => {
-        if (!response.ok) throw new Error("فشل تحميل ملف التحديث");
-        return response.text();
-      })
-      .then(updateText => {
-        const currentHash = generateHash(updateText);
-        const previousHash = localStorage.getItem("lastUpdateHash");
+    const btn = document.getElementById('downloadBtn');
+    const btnContent = btn.querySelector('.btn-content');
+    
+    // 1. تأثير انكماش ماينكرافت
+    btnContent.style.animation = "minecraftShrink 0.5s forwards";
+    btnContent.querySelector('.btn-text').style.opacity = '0';
+    
+    // 2. تحويل الزر إلى أيقونة التطبيق مع تأثير POP
+    setTimeout(() => {
+      const icon = btnContent.querySelector('.btn-icon');
+      icon.innerHTML = '<img src="imag/icon_panda.png" height="50" style="animation: minecraftPop 0.5s forwards">';
+      icon.style.margin = '0 auto';
+      icon.style.width = '100%';
+      icon.style.textAlign = 'center';
+      
+      // 3. إضافة نص التحميل مع نقاط متحركة
+      setTimeout(() => {
+        const loadingText = document.createElement('div');
+        loadingText.className = 'minecraft-loading-text';
+        loadingText.innerHTML = 'Downloading<span class="minecraft-dots"></span>';
+        btnContent.appendChild(loadingText);
         
-        if (previousHash !== currentHash) {
-          // عرض التحديث للمستخدم
-          alert("✨ new update :\n\n" + updateText);
-          // تحديث البصمة المخزنة
-          localStorage.setItem("lastUpdateHash", currentHash);
-        }
-      })
-      .catch(error => {
-        console.error("تعذر التحقق من التحديث:", error);
-      });
+        // 4. تأثير تفتيت ماينكرافت قبل التحميل
+        setTimeout(() => {
+          // إنشاء جزيئات التفتيت
+          for (let i = 0; i < 8; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'minecraft-particle';
+            particle.style.position = 'absolute';
+            particle.style.width = '10px';
+            particle.style.height = '10px';
+            particle.style.background = 'url(imag/icon_panda.png) center/contain no-repeat';
+            particle.style.opacity = '0';
+            particle.style.setProperty('--tx', `${Math.random() * 100 - 50}px`);
+            particle.style.setProperty('--ty', `${Math.random() * 100 - 50}px`);
+            btn.appendChild(particle);
+            
+            setTimeout(() => {
+              particle.style.animation = 'minecraftParticles 1s forwards';
+            }, i * 100);
+          }
+          
+          // تأثير اختفاء الزر
+          setTimeout(() => {
+            btn.style.animation = 'minecraftBreak 0.5s forwards';
+            
+            // بدء التحميل الفعلي بعد التأثيرات
+            setTimeout(() => {
+              markAsDownloaded();
+              window.location.href = 'mc_co.apk';
+              localStorage.setItem('download_message', 'تم تحميل التطبيق بنجاح!');
+            }, 500);
+          }, 800);
+        }, 1500);
+      }, 500);
+    }, 300);
   }
-  
-  // استدعاء الدالة عند تحميل الصفحة
+</script>  
+
+<script>  
+  // دالة لتوليد بصمة (hash) للنص لتتبع التغييرات  
+  function generateHash(str) {  
+    let hash = 0;  
+    for (let i = 0; i < str.length; i++) {  
+      hash = (hash << 5) - hash + str.charCodeAt(i);  
+      hash |= 0; // إجبار الرقم ليكون 32-بت  
+    }  
+    return hash.toString(); // إرجاع كـ string للمقارنة  
+  }  
+    
+  // دالة لتحميل التحديثات والتحقق منها  
+  let updateText = "";
+
+  async function checkForSiteUpdates() {
+    try {
+      const response = await fetch("pages/update.txt");
+      if (!response.ok) throw new Error("فشل تحميل ملف التحديث");
+      const text = await response.text();
+      updateText = text;
+      
+      const currentHash = generateHash(text);
+      const previousHash = localStorage.getItem("lastUpdateHash");
+      
+      if (previousHash !== currentHash) {
+        alert("✨ new update :\n\n" + text);
+        localStorage.setItem("lastUpdateHash", currentHash);
+      }
+    } catch (error) {
+      console.error("تعذر التحقق من التحديث:", error);
+    }
+  }
+
+  function showUpdates() {
+    if (updateText) {
+      alert("✨ news :\n\n" + updateText);
+    } else {
+      checkForSiteUpdates();
+    }
+  }
+
   checkForSiteUpdates();
-</script>
-<script>
-    let updateText = ""; 
-    
-    function checkForSiteUpdates() { 
-        fetch("pages/update.txt") 
-        .then(response => { 
-            if (!response.ok) throw new Error("فشل تحميل ملف التحديث"); 
-            return response.text(); 
-        }) 
-        .then(text => { 
-            updateText = text; 
-        }) 
-        .catch(error => { 
-            console.error("تعذر التحقق من التحديث:", error); 
-        }); 
-    } 
-    
-    function showUpdates() { 
-        if (updateText) { 
-            alert("✨ new update :\n\n" + updateText); 
-        } else { 
-            checkForSiteUpdates().then(() => { 
-                alert("✨ new update :\n\n" + updateText); 
-            }); 
-        } 
-    } 
-    
-    checkForSiteUpdates(); 
-</script>
+</script>  
+
+<div class="header">MC CO   
+  <img src="Emojis/panda.png" height="27">  
+  <button class="news" id="newsButton" type="button" onclick="showUpdates()"></button>  
+</div>   
+  
+<div class="content">   
+  <button id="downloadBtn" style="display:none;" onclick="downloadApp()" class="epic-download-btn">
+    <span class="btn-content">
+      <span class="btn-icon">
+        <img src="imag/icon_panda.png" height="24" alt="MC CO Icon">
+      </span>
+      <span class="btn-text">
+        <span class="main-text">Download MC CO App</span>
+        <span class="sub-text">For Android - FREE</span>
+      </span>
+      <span class="btn-glow"></span>
+    </span>
+    <span class="btn-pulse"></span>
+  </button>
+  
+  <div class="description">   
+    <div class="title"> login / create an account </div>   
+    Click at gold button to Login or Create an account.  
+    <a href="pages/login.html">  
+      <div class="button">    
+        <button id="goldButton" title="gegege2g">Login & Register <img src="imag/add-player@0.5x.icon-2f437.png" height="15"></button>
+      </div>
+    </a>   
+  </div>  
+  
+  <div class="description">  
+    <div class="title"> <img src="Emojis/notepad_gif.gif" height="15">what's mc co ? <img src="imag/icon_panda.png" height="14"></div>  
+    Mc co a public site that includes all people. Its features include collecting coins and purchasing items from the store or sending them to others. It also provides a chat feature and allows you to communicate with other users and interact with them.   
+  </div>  
+         
+  <div class="description">  
+    <div class="title">about the developers</div>
+    Click to get more information .  
+    <a href="Developers.html">   
+      <div class="button">  
+        <button id="purpleButton">About the Developers <img src="Emojis/article_gif.gif" height="15"></button>
+      </div>
+    </a>   
+  </div>  
+        
+  <div class="description">  
+    <div class="title"> privacy policy </div>Please read this before using the website.  
+    <a href="privacy.html">   
+      <div class="button">  
+        <button id="greenButton">Privacy policy <img src="Emojis/gavel_gif.gif" height="15"></button>
+      </div>
+    </a>   
+  </div>  
+</div>  
+
+<script type="module">  
+  // عند تحميل التطبيق  
+  document.addEventListener('DOMContentLoaded', function() {  
+    if (typeof cordova !== 'undefined' && cordova.platformId === 'android') {  
+      // تحقق من إصدار أندرويد  
+      const androidVersion = window.device ? parseInt(window.device.version.split('.')[0]) : 0;  
+      if (androidVersion >= 13) {  
+        // طلب إذن الإشعارات عبر بلجن الـ Local Notifications  
+        if (window.cordova.plugins && window.cordova.plugins.notification) {  
+          cordova.plugins.notification.local.requestPermission(function(granted) {  
+            console.log('الإذن:', granted ? 'مُمنوح' : 'مرفوض');  
+          });  
+        } else {  
+          console.error('بلجن الإشعارات غير مثبت!');  
+        }  
+      }  
+    }  
+  });  
+</script>  
+
+<script type="module" src="scripts/main.js"></script>  
+
+</body>  
+</html>
