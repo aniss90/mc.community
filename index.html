@@ -1,112 +1,288 @@
 <!DOCTYPE html>
 <html lang="ar">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MC CO</title>
-  <link rel="stylesheet" href="style/main.css" />
-  <link rel="icon" type="image/x-icon" href="web/ytlogo.png" />
-  <style>
-    body.locked {
-      background-color: #121212;
-      color: #fff;
-      font-family: minecraft-five;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-      flex-direction: column;
-      padding: 20px;
-    }
-
-    .download-btn {
-      margin-top: 20px;
-      padding: 10px 25px;
-      font-size: 16px;
-      background-color: #FFD952;
-      border: none;
-      border-radius: 5px;
-      color: #000;
-      font-family: minecraft;
-      cursor: pointer;
-    }
-  </style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mc co</title>
+    <link rel="stylesheet" href="style/main.css">
+    <link rel="icon" type="image/x-icon" href="web/ytlogo.png">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=F18SFG2LMZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'F18SFG2LMZ');
+    </script>
+    <style>
+        @font-face {
+            font-family: minecraft;
+            src: url('font/Minecraft-Default.otf');
+        }
+        @font-face {
+            font-family: minecraft-ten;
+            src: url('font/Minecraft-Ten.ttf');
+        }
+        @font-face {
+            font-family: minecraft-five;
+            src: url('font/Minecraft-Five.ttf');
+        }
+        .description{
+          font-size: 12px;
+        }
+        
+        /* أنماط تقييم الموقع */
+        .header-rating {
+          background-color: #2E2100;
+          border: 2px solid #8C6A15;
+          padding: 8px 15px;
+          text-align: center;
+          font-family: minecraft-five;
+          color: #FFD952;
+          border-radius: 5px;
+          margin: 10px auto;
+          max-width: 300px;
+          box-shadow: 0px 3px 0px rgba(43, 30, 0, 1);
+        }
+        
+        .site-rating {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 5px;
+          flex-wrap: wrap;
+        }
+        
+        .stars {
+          display: inline-flex;
+          font-size: 18px;
+        }
+        
+        .stars span {
+          color: #555;
+          text-shadow: 0px 1px 0px #000;
+        }
+        
+        .stars span.active {
+          color: #FFD700;
+          text-shadow: 0 0 5px rgba(255, 215, 0, 0.7);
+        }
+        
+        #ratingAverage {
+          font-weight: bold;
+          color: #FFD952;
+        }
+        
+        #ratingCount {
+          color: #FFFFFF;
+        }
+          .news {
+    position: absolute;
+    border: none;
+    top: 20px;
+    left: 10px;
+    cursor: pointer;
+    padding: 10px;
+    background: url(imag/News.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 9999;
+  }
+  
+  /* أنماط نافذة التطبيق */
+  .app-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .app-modal-content {
+    background-color: #2E2100;
+    border: 3px solid #8C6A15;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 90%;
+    text-align: center;
+    color: white;
+    font-family: minecraft-five;
+  }
+  
+  .app-modal-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .app-modal-button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: minecraft-five;
+    border: none;
+  }
+  
+  .download-button {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .later-button {
+    background-color: #f44336;
+    color: white;
+  }
+    </style>
 </head>
 
 <body>
-  <div id="mainContent" style="display: none;">
-    <!-- محتوى موقعك هنا -->
-    <h1>أهلاً بك في MC CO</h1>
-    <p>هذا المحتوى يظهر فقط داخل التطبيق</p>
+<!-- نافذة التطبيق -->
+<div id="appModal" class="app-modal">
+  <div class="app-modal-content">
+    <h2>تحميل تطبيق MC CO</h2>
+    <p>للاستمرار في التفاعل مع موقع MC CO، يرجى تحميل التطبيق الرسمي.</p>
+    <p>التطبيق يوفر تجربة أفضل وميزات إضافية!</p>
+    <div class="app-modal-buttons">
+      <button id="downloadAppBtn" class="app-modal-button download-button">تحميل التطبيق الآن</button>
+      <button id="laterBtn" class="app-modal-button later-button">لاحقاً</button>
+    </div>
   </div>
+</div>
 
-  <script>
-    function isAndroid() {
-      return /Android/i.test(navigator.userAgent);
-    }
-// تحقق إن المستخدم داخل متصفح أندرويد
-if (isAndroid() && localStorage.getItem("in_app") !== "true") {
-  // حاول فتح التطبيق إذا كان مثبتًا
-  setTimeout(function() {
-    window.location.href = "intent://main#Intent;scheme=mc.co.community.webapp;package=mc.co.community.webapp;end";
-  }, 500);
-  
-  // بعد ثواني، إذا ما فتح التطبيق، نعرض رسالة تحميل
-  setTimeout(function() {
-    document.body.classList.add("locked");
-    document.body.innerHTML = `
-      <h2>يرجى تحميل التطبيق لاستخدام هذا الموقع</h2>
-      <button class="download-btn" onclick="downloadApp()">تحميل التطبيق</button>
-    `;
-  }, 2000);
-}
-    function isInApp() {
-      return typeof cordova !== 'undefined'; // متغير متاح فقط داخل التطبيق
-    }
+<script>
+  // دالة للتحقق مما إذا كان المستخدم على أندرويد
+  function isAndroid() {
+    return /Android/i.test(navigator.userAgent);
+  }
 
-    function markAsInApp() {
-      localStorage.setItem('in_app', 'true');
-    }
+  // دالة للتحقق مما إذا كان التطبيق مثبتاً
+  function isAppInstalled() {
+    // هذه الدالة تحاول فتح التطبيق عبر intent
+    // إذا نجحت فسيتم توجيه المستخدم للتطبيق
+    // إذا فشلت فسيعود للموقع
+    window.location.href = 'intent://mc.co.community.webapp#Intent;scheme=app;package=mc.co.community.webapp;end';
+    return false;
+  }
 
-    function downloadApp() {
+  // دالة لعرض نافذة التطبيق
+  function showAppModal() {
+    const modal = document.getElementById('appModal');
+    modal.style.display = 'flex';
+    
+    // إضافة أحداث للأزرار
+    document.getElementById('downloadAppBtn').addEventListener('click', function() {
+      // تحميل التطبيق
       window.location.href = 'mc_co.apk';
-    }
+      modal.style.display = 'none';
+      localStorage.setItem('app_prompted', 'true');
+    });
+    
+    document.getElementById('laterBtn').addEventListener('click', function() {
+      modal.style.display = 'none';
+      // تخزين أن المستخدم اختار لاحقاً
+      localStorage.setItem('app_prompted', 'true');
+    });
+  }
 
-    window.onload = function () {
-      if (isInApp()) {
-        markAsInApp(); // إذا كان في التطبيق
-        document.getElementById("mainContent").style.display = "block";
-      } else if (isAndroid() && localStorage.getItem("in_app") !== "true") {
-        // إذا كان من المتصفح ولم يثبت التطبيق
-        document.body.classList.add("locked");
-        document.body.innerHTML = `
-          <h2>يرجى تحميل التطبيق لاستخدام هذا الموقع</h2>
-          <button class="download-btn" onclick="downloadApp()">تحميل التطبيق</button>
-        `;
-      } else {
-        // تم فتح الموقع من داخل التطبيق مسبقًا
-        document.getElementById("mainContent").style.display = "block";
-      }
-    };
-  </script>
-
-  <!-- سكريبتات Cordova فقط داخل التطبيق -->
-  <script type="module">
-    document.addEventListener('DOMContentLoaded', function () {
-      if (typeof cordova !== 'undefined' && cordova.platformId === 'android') {
-        const androidVersion = window.device ? parseInt(window.device.version.split('.')[0]) : 0;
-        if (androidVersion >= 13) {
-          if (window.cordova.plugins && window.cordova.plugins.notification) {
-            cordova.plugins.notification.local.requestPermission(function (granted) {
-              console.log('الإذن:', granted ? 'مُمنوح' : 'مرفوض');
-            });
-          } else {
-            console.error('بلجن الإشعارات غير مثبت!');
+  // عند تحميل الصفحة
+  window.onload = function() {
+    // إذا كان المستخدم على أندرويد ولم يتم تحميل التطبيق بعد
+    if (isAndroid()) {
+      // حاول فتح التطبيق أولاً
+      setTimeout(function() {
+        if (!isAppInstalled()) {
+          // إذا لم يكن التطبيق مثبتاً ولم يسبق عرض النافذة
+          if (!localStorage.getItem('app_prompted')) {
+            setTimeout(showAppModal, 2000); // عرض النافذة بعد ثانيتين
           }
         }
-      }
-    });
-  </script>
-</body>
-</html>
+      }, 100);
+    }
+    
+    // إظهار زر التحميل إذا كان المستخدم على أندرويد ولم يحمل التطبيق بعد
+    const btn = document.getElementById('downloadBtn');
+    if (isAndroid() && !localStorage.getItem('app_downloaded')) {
+      btn.style.display = 'block';
+    }
+  }
+
+  function downloadApp() {
+    localStorage.setItem('app_downloaded', 'true');
+    window.location.href = 'mc_co.apk';
+    document.getElementById('downloadBtn').style.display = 'none';
+  }
+</script>
+
+    <script>
+  // دالة لتوليد بصمة (hash) للنص لتتبع التغييرات
+  function generateHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash << 5) - hash + str.charCodeAt(i);
+      hash |= 0; // إجبار الرقم ليكون 32-بت
+    }
+    return hash.toString(); // إرجاع كـ string للمقارنة
+  }
+  
+  // دالة لتحميل التحديثات والتحقق منها
+  function checkForSiteUpdates() {
+    fetch("pages/update.txt")
+      .then(response => {
+        if (!response.ok) throw new Error("فشل تحميل ملف التحديث");
+        return response.text();
+      })
+      .then(updateText => {
+        const currentHash = generateHash(updateText);
+        const previousHash = localStorage.getItem("lastUpdateHash");
+        
+        if (previousHash !== currentHash) {
+          // عرض التحديث للمستخدم
+          alert("✨ new update :\n\n" + updateText);
+          // تحديث البصمة المخزنة
+          localStorage.setItem("lastUpdateHash", currentHash);
+        }
+      })
+      .catch(error => {
+        console.error("تعذر التحقق من التحديث:", error);
+      });
+  }
+  
+  // استدعاء الدالة عند تحميل الصفحة
+  checkForSiteUpdates();
+</script>
+<script>
+    let updateText = ""; 
+    
+    function checkForSiteUpdates() { 
+        fetch("pages/update.txt") 
+        .then(response => { 
+            if (!response.ok) throw new Error("فشل تحميل ملف التحديث"); 
+            return response.text(); 
+        }) 
+        .then(text => { 
+            updateText = text; 
+        }) 
+        .catch(error => { 
+            console.error("تعذر التحقق من التحديث:", error); 
+        }); 
+    } 
+    
+    function showUpdates() { 
+        if (updateText) { 
+            alert("✨ new update :\n\n" + updateText); 
+        } else { 
+            checkForSiteUpdates().then(() => { 
+                alert("✨ new update :\n\n" + updateText); 
+            }); 
+        } 
+    } 
+    
+    checkForSiteUpdates(); 
+</script>
