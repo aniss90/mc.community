@@ -389,21 +389,26 @@
       if (previousHash !== currentHash) {
         updateText = text;
         
-        // توليد رقم الإصدار فقط إذا كان هناك تغيير حقيقي
+        // توليد رقم الإصدار
         const currentVersion = localStorage.getItem("siteVersion") || "1.0.0";
         const newVersion = getNextVersion(currentVersion);
+        
+        // تخزين البيانات الجديدة
         localStorage.setItem("siteVersion", newVersion);
         localStorage.setItem("lastUpdateHash", currentHash);
-
-        // إرسال إشعار إلى ديسكورد فقط عند التغيير
-        await sendDiscordNotification(newVersion, text);
+        localStorage.setItem("updateNotificationSent", "false"); // علامة أن الإشعار لم يُرسل بعد
         
-        // عرض التنبيه للمستخدمين الجدد فقط
-        const lastNotifiedVersion = localStorage.getItem("lastNotifiedVersion");
-        if (!lastNotifiedVersion || lastNotifiedVersion !== newVersion) {
-          alert("✨  new update (" + newVersion + "):\n\n" + text);
-          localStorage.setItem("lastNotifiedVersion", newVersion);
-        }
+        // عرض التنبيه للمستخدم
+        alert("✨  new update (" + newVersion + "):\n\n" + text);
+      }
+      
+      // التحقق إذا كان يجب إرسال إشعار ديسكورد
+      if (localStorage.getItem("updateNotificationSent") === "false") {
+        await sendDiscordNotification(
+          localStorage.getItem("siteVersion") || "1.0.0",
+          text
+        );
+        localStorage.setItem("updateNotificationSent", "true");
       }
     } catch (error) {
       console.error("تعذر التحقق من التحديث:", error);
@@ -438,8 +443,9 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
+      console.log("تم إرسال إشعار التحديث إلى ديسكورد بنجاح");
     } catch (error) {
-      console.error("Failed to send Discord notification:", error);
+      console.error("فشل إرسال إشعار ديسكورد:", error);
     }
   }
 
