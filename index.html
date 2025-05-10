@@ -377,54 +377,69 @@
 
   async function checkForSiteUpdates() {
     try {
-      const response = await fetch("pages/update.txt");
+      // إضافة طابع زمني لمنع التخزين المؤقت
+      const response = await fetch("pages/update.txt?t=" + new Date().getTime());
       if (!response.ok) throw new Error("error loading update");
       const text = await response.text();
-      updateText = text;
-
+      
       const currentHash = generateHash(text);
       const previousHash = localStorage.getItem("lastUpdateHash");
 
+      // إذا كان هناك تغيير في المحتوى
       if (previousHash !== currentHash) {
-        // توليد رقم الإصدار
+        updateText = text;
+        
+        // توليد رقم الإصدار فقط إذا كان هناك تغيير حقيقي
         const currentVersion = localStorage.getItem("siteVersion") || "1.0.0";
         const newVersion = getNextVersion(currentVersion);
         localStorage.setItem("siteVersion", newVersion);
-
-        // تنبيه المستخدم
-        alert("✨  new update (" + newVersion + "):\n\n" + text);
         localStorage.setItem("lastUpdateHash", currentHash);
 
-        // إرسال Embed إلى ديسكورد
-        const webhookURL = "https://discord.com/api/webhooks/1370772948545310861/C_oXocTh7VWKsQ-JRElug8eXtHDAwTM8FO4NR1HLxkFlEKsPmcCOU21xr8xrXfy3MZD7";
-
-        const payload = {
-          content: "@everyone \nNew update 📣 :",
-          embeds: [
-            {
-              title: "✨ New update on the site — version " + newVersion,
-              description: text,
-              color: 0xFFD700,
-              timestamp: new Date().toISOString(),
-              footer: {
-                text: "MC CO",
-                icon_url: "https://aniss90.github.io/mc.community/imag/icon_panda.png"
-              },
-              thumbnail: {
-                url: "https://aniss90.github.io/mc.community/Emojis/panda.png"
-              }
-            }
-          ]
-        };
-
-        await fetch(webhookURL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
+        // إرسال إشعار إلى ديسكورد فقط عند التغيير
+        await sendDiscordNotification(newVersion, text);
+        
+        // عرض التنبيه للمستخدمين الجدد فقط
+        const lastNotifiedVersion = localStorage.getItem("lastNotifiedVersion");
+        if (!lastNotifiedVersion || lastNotifiedVersion !== newVersion) {
+          alert("✨  new update (" + newVersion + "):\n\n" + text);
+          localStorage.setItem("lastNotifiedVersion", newVersion);
+        }
       }
     } catch (error) {
       console.error("تعذر التحقق من التحديث:", error);
+    }
+  }
+
+  async function sendDiscordNotification(version, text) {
+    try {
+      const webhookURL = "https://discord.com/api/webhooks/1370772948545310861/C_oXocTh7VWKsQ-JRElug8eXtHDAwTM8FO4NR1HLxkFlEKsPmcCOU21xr8xrXfy3MZD7";
+
+      const payload = {
+        content: "@everyone \nNew update 📣 :",
+        embeds: [
+          {
+            title: "✨ New update on the site — version " + version,
+            description: text,
+            color: 0xFFD700,
+            timestamp: new Date().toISOString(),
+            footer: {
+              text: "MC CO",
+              icon_url: "https://aniss90.github.io/mc.community/imag/icon_panda.png"
+            },
+            thumbnail: {
+              url: "https://aniss90.github.io/mc.community/Emojis/panda.png"
+            }
+          }
+        ]
+      };
+
+      await fetch(webhookURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+    } catch (error) {
+      console.error("Failed to send Discord notification:", error);
     }
   }
 
@@ -437,6 +452,7 @@
     }
   }
 
+  // التحقق من التحديثات عند تحميل الصفحة
   checkForSiteUpdates();
 </script>
 
