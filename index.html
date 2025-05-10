@@ -348,33 +348,80 @@
   }
 </script>  
 
-<script>  
-  // دالة لتوليد بصمة (hash) للنص لتتبع التغييرات  
-  function generateHash(str) {  
-    let hash = 0;  
-    for (let i = 0; i < str.length; i++) {  
-      hash = (hash << 5) - hash + str.charCodeAt(i);  
-      hash |= 0; // إجبار الرقم ليكون 32-بت  
-    }  
-    return hash.toString(); // إرجاع كـ string للمقارنة  
-  }  
-    
-  // دالة لتحميل التحديثات والتحقق منها  
+<script>
+  function generateHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash << 5) - hash + str.charCodeAt(i);
+      hash |= 0;
+    }
+    return hash.toString();
+  }
+
+  function getNextVersion(currentVersion) {
+    if (!currentVersion) return "1.0.0";
+    const parts = currentVersion.split(".").map(Number);
+    parts[2]++;
+    if (parts[2] > 9) {
+      parts[2] = 0;
+      parts[1]++;
+    }
+    if (parts[1] > 9) {
+      parts[1] = 0;
+      parts[0]++;
+    }
+    return parts.join(".");
+  }
+
   let updateText = "";
 
   async function checkForSiteUpdates() {
     try {
       const response = await fetch("pages/update.txt");
-      if (!response.ok) throw new Error("فشل تحميل ملف التحديث");
+      if (!response.ok) throw new Error("error loading update");
       const text = await response.text();
       updateText = text;
-      
+
       const currentHash = generateHash(text);
       const previousHash = localStorage.getItem("lastUpdateHash");
-      
+
       if (previousHash !== currentHash) {
-        alert("✨ new update :\n\n" + text);
+        // توليد رقم الإصدار
+        const currentVersion = localStorage.getItem("siteVersion") || "1.0.0";
+        const newVersion = getNextVersion(currentVersion);
+        localStorage.setItem("siteVersion", newVersion);
+
+        // تنبيه المستخدم
+        alert("✨  new update (" + newVersion + "):\n\n" + text);
         localStorage.setItem("lastUpdateHash", currentHash);
+
+        // إرسال Embed إلى ديسكورد
+        const webhookURL = "https://discord.com/api/webhooks/1370772948545310861/C_oXocTh7VWKsQ-JRElug8eXtHDAwTM8FO4NR1HLxkFlEKsPmcCOU21xr8xrXfy3MZD7";
+
+        const payload = {
+          content: "@everyone \nNew update 📣 :",
+          embeds: [
+            {
+              title: "✨ New update on the site — version " + newVersion,
+              description: text,
+              color: 0xFFD700,
+              timestamp: new Date().toISOString(),
+              footer: {
+                text: "MC CO",
+                icon_url: "https://aniss90.github.io/mc.community/imag/icon_panda.png"
+              },
+              thumbnail: {
+                url: "https://aniss90.github.io/mc.community/Emojis/panda.png"
+              }
+            }
+          ]
+        };
+
+        await fetch(webhookURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
       }
     } catch (error) {
       console.error("تعذر التحقق من التحديث:", error);
@@ -383,14 +430,15 @@
 
   function showUpdates() {
     if (updateText) {
-      alert("✨ news :\n\n" + updateText);
+      const currentVersion = localStorage.getItem("siteVersion") || "1.0.0";
+      alert("✨ news : " + currentVersion + "\n\n" + updateText);
     } else {
       checkForSiteUpdates();
     }
   }
 
   checkForSiteUpdates();
-</script>  
+</script>
 
 <div class="header">MC CO   
   <img src="Emojis/panda.png" height="27">  
