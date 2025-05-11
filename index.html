@@ -347,7 +347,6 @@
     }, 300);
   }
 </script>  
-
 <script>
   function generateHash(str) {
     let hash = 0;
@@ -357,7 +356,7 @@
     }
     return hash.toString();
   }
-
+  
   function getNextVersion(currentVersion) {
     if (!currentVersion) return "1.0.0";
     const parts = currentVersion.split(".").map(Number);
@@ -372,95 +371,46 @@
     }
     return parts.join(".");
   }
-
-  let updateText = "";
-
+  
   async function checkForSiteUpdates() {
     try {
-      // إضافة طابع زمني لمنع التخزين المؤقت
       const response = await fetch("pages/update.txt?t=" + new Date().getTime());
       if (!response.ok) throw new Error("error loading update");
       const text = await response.text();
       
       const currentHash = generateHash(text);
       const previousHash = localStorage.getItem("lastUpdateHash");
-
-      // إذا كان هناك تغيير في المحتوى
+      
+      localStorage.setItem("lastUpdateText", text); // نحفظ النص دائمًا
+      
       if (previousHash !== currentHash) {
-        updateText = text;
-        
-        // توليد رقم الإصدار
         const currentVersion = localStorage.getItem("siteVersion") || "1.0.0";
         const newVersion = getNextVersion(currentVersion);
         
-        // تخزين البيانات الجديدة
         localStorage.setItem("siteVersion", newVersion);
         localStorage.setItem("lastUpdateHash", currentHash);
-        localStorage.setItem("updateNotificationSent", "false"); // علامة أن الإشعار لم يُرسل بعد
+        localStorage.setItem("updateNotificationSent", "false");
         
-        // عرض التنبيه للمستخدم
-        alert("✨  new update (" + newVersion + "):\n\n" + text);
-      }
-      
-      // التحقق إذا كان يجب إرسال إشعار ديسكورد
-      if (localStorage.getItem("updateNotificationSent") === "false") {
-        await sendDiscordNotification(
-          localStorage.getItem("siteVersion") || "1.0.0",
-          text
-        );
-        localStorage.setItem("updateNotificationSent", "true");
+        alert("✨ new update:\n\n" + text);
       }
     } catch (error) {
       console.error("تعذر التحقق من التحديث:", error);
     }
   }
-
-  async function sendDiscordNotification(version, text) {
-    try {
-      const webhookURL = "https://discord.com/api/webhooks/1370772948545310861/C_oXocTh7VWKsQ-JRElug8eXtHDAwTM8FO4NR1HLxkFlEKsPmcCOU21xr8xrXfy3MZD7";
-
-      const payload = {
-        content: "@everyone \nNew update 📣 :",
-        embeds: [
-          {
-            title: "✨ New update on the site — version " + version,
-            description: text,
-            color: 0xFFD700,
-            timestamp: new Date().toISOString(),
-            footer: {
-              text: "MC CO",
-              icon_url: "https://aniss90.github.io/mc.community/imag/icon_panda.png"
-            },
-            thumbnail: {
-              url: "https://aniss90.github.io/mc.community/Emojis/panda.png"
-            }
-          }
-        ]
-      };
-
-      await fetch(webhookURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      console.log("تم إرسال إشعار التحديث إلى ديسكورد بنجاح");
-    } catch (error) {
-      console.error("فشل إرسال إشعار ديسكورد:", error);
-    }
-  }
-
+  
   function showUpdates() {
-    if (updateText) {
-      const currentVersion = localStorage.getItem("siteVersion") || "1.0.0";
-      alert("✨ news : " + currentVersion + "\n\n" + updateText);
+    const text = localStorage.getItem("lastUpdateText");
+    if (text) {
+      alert("✨ news:\n\n" + text);
     } else {
-      checkForSiteUpdates();
+      alert("لا يوجد أخبار حالياً.\n no updates");
     }
   }
-
-  // التحقق من التحديثات عند تحميل الصفحة
+  
   checkForSiteUpdates();
 </script>
+
+
 
 <div class="header">MC CO   
   <img src="Emojis/panda.png" height="27">  
