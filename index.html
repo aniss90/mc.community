@@ -586,17 +586,7 @@ box-shadow: 0 2px 0 0 #373AC4;
 
 <script>
   // تحديد مسار Service Worker ديناميكيًا
-  const repoName = location.pathname.split('/')[1];
-const swPath = `/${repoName}/firebase-messaging-sw.js`;
-
-navigator.serviceWorker.register(swPath)
-  .then((registration) => {
-    console.log("Service Worker مسجل بنجاح:", registration);
-  })
-  .catch((error) => {
-    console.error("فشل تسجيل Service Worker:", error);
-  });
-
+const swPath = '/firebase-messaging-sw.js'; // مسار ثابت
   // تسجيل الـ Service Worker
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register(swPath)
@@ -655,10 +645,10 @@ window.addEventListener('scroll', function() {
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       });
       console.log("Token saved to Firestore.");
-      alert("تم حفظ التوكن بنجاح!");
+
     } catch (error) {
       console.error("Error saving token:", error.message);
-      alert("حدث خطأ أثناء حفظ التوكن: " + error.message);
+    
     }
   }
 
@@ -666,7 +656,7 @@ window.addEventListener('scroll', function() {
   Notification.requestPermission().then((permission) => {
     if (permission === "granted") {
       // إظهار alert ثابت
-      alert("تم السماح بالإشعارات. جارٍ حفظ التوكن...");
+
 
       messaging.getToken({
         vapidKey: "BKr9_yZic3lEvoZSAzx64GCELceKgqA6AWsnaZvsSAPplWo99IONeYgMoipVV8TMELaDc4GE_MabtqLnkBFwiPM"
@@ -675,16 +665,16 @@ window.addEventListener('scroll', function() {
           console.log("Token:", token);
           await saveTokenToFirestore(token);
         } else {
-          alert("لم يتم استرجاع التوكن.");
+          
           console.warn("No token retrieved.");
         }
       }).catch((err) => {
         console.error("Error getting token:", err);
-        alert("فشل في الحصول على التوكن: " + err.message);
+        
       });
 
     } else {
-      alert("لم يتم السماح بالإشعارات.");
+    
       console.warn("Notification permission not granted.");
     }
   });
