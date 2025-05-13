@@ -626,11 +626,12 @@ window.addEventListener('scroll', function() {
     measurementId: "G-F18SFG2LMZ"
   };
   
+  
   // تهيئة Firebase
   firebase.initializeApp(firebaseConfig);
   const messaging = firebase.messaging();
   const db = firebase.firestore();
-  
+
   // دالة لحفظ التوكن
   async function saveTokenToFirestore(token) {
     try {
@@ -643,14 +644,19 @@ window.addEventListener('scroll', function() {
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       });
       console.log("Token saved to Firestore.");
+      alert("تم حفظ التوكن بنجاح!");
     } catch (error) {
       console.error("Error saving token:", error.message);
+      alert("حدث خطأ أثناء حفظ التوكن: " + error.message);
     }
   }
-  
+
   // طلب الإذن للإشعارات
   Notification.requestPermission().then((permission) => {
     if (permission === "granted") {
+      // إظهار alert ثابت
+      alert("تم السماح بالإشعارات. جارٍ حفظ التوكن...");
+
       messaging.getToken({
         vapidKey: "BKr9_yZic3lEvoZSAzx64GCELceKgqA6AWsnaZvsSAPplWo99IONeYgMoipVV8TMELaDc4GE_MabtqLnkBFwiPM"
       }).then(async (token) => {
@@ -658,16 +664,20 @@ window.addEventListener('scroll', function() {
           console.log("Token:", token);
           await saveTokenToFirestore(token);
         } else {
+          alert("لم يتم استرجاع التوكن.");
           console.warn("No token retrieved.");
         }
       }).catch((err) => {
         console.error("Error getting token:", err);
+        alert("فشل في الحصول على التوكن: " + err.message);
       });
+
     } else {
+      alert("لم يتم السماح بالإشعارات.");
       console.warn("Notification permission not granted.");
     }
   });
-  
+
   // استقبال الإشعارات أثناء استخدام الموقع
   messaging.onMessage((payload) => {
     console.log("Message received: ", payload);
