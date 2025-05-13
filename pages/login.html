@@ -6,6 +6,13 @@
   <link rel="stylesheet" href="../style/main.css">    
   <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">    
   <title>Login Page</title>    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=F18SFG2LMZ"></script>  
+    <script>  
+      window.dataLayer = window.dataLayer || [];  
+      function gtag(){dataLayer.push(arguments);}  
+      gtag('js', new Date());  
+      gtag('config', 'F18SFG2LMZ');  
+    </script>  
   <style>    
     @font-face {    
       font-family: minecraft;    
@@ -260,14 +267,39 @@
         width: 90%;
       }
     }
+    .sticky-header.sticky {
+  position: fixed;
+  top: 0;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0.9; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+} 
+.header {
+  background-color: #222222;
+  padding: 10px 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  
+  /* احتفظ بباقي خصائص التصميم الحالية */
+}
+     .sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  
+}
   </style>
 </head>    
-<body>      
+<body> 
+<div class="sticky-header"> 
   <div class="header">  
     <button class="back" id="backButton" type="button" onclick="goBack()"></button>   
     Login <img src="../imag/gif_test-83efe.gif" height="30">  
   </div>  
-  
+</div>
   <div class="content">  
     <div class="login-container">
       <div class="login-box">    
@@ -537,7 +569,16 @@
       });      
     });    
   </script>         
-  
+      <script>
+window.addEventListener('scroll', function() {
+  const header = document.querySelector('.sticky-header');
+  if (window.scrollY > 0) {
+    header.classList.add('sticky');
+  } else {
+    header.classList.remove('sticky');
+  }
+});
+</script>
   <script>    
     function goBack() {  
       if (window.history.length > 1) {  

@@ -325,7 +325,7 @@
     position: fixed;
     top: 10px;
     right: 10px;
-    z-index: 1000;
+    z-index: 10000;
     max-width: 300px;
 }
 
@@ -334,7 +334,7 @@
     color: white;
     padding: 15px;
     margin-bottom: 10px;
-    
+    z-index: 10000;
     border: 2px solid #4f913c;
     box-shadow: 0 3px 0px rgba(1, 97, 12, 1);
     cursor: pointer;
@@ -439,10 +439,7 @@ span{
             box-shadow: 5px 0 15px #BF9837;
 }
 /* تأثيرات الظهور التدريجي للصفحة */
-body {
-  opacity: 0;
-  animation: fadeIn 0.8s ease-in-out forwards;
-}
+
 
 @keyframes fadeIn {
   to {
@@ -627,7 +624,30 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
   text-align: left;
 }
 
+.sticky-header.sticky {
+  position: fixed;
+  top: 0;
+  animation: fadeIn 0.3s ease-in-out;
+}
 
+@keyframes fadeIn {
+  from { opacity: 0.9; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+} 
+.header {
+  background-color: #222222;
+  padding: 10px 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  
+  /* احتفظ بباقي خصائص التصميم الحالية */
+}
+     .sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  
+}
 
   </style>
   <title>general </title>
@@ -636,7 +656,7 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
 <body>
 <!-- حاوية الإشعارات -->
 <div class="notification-container" id="notificationContainer"></div>
-
+<div class="sticky-header"> 
   <div class="header">
     <button class="Chat-btn" id="Chat-btn" type="button"></button>
     <button class="menu" id="menuButton" type="button"></button>
@@ -644,17 +664,26 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
   general
   <img src="../Emojis/Win_Computer.gif" loading="lazy" height="25">  
   </div> 
-  
+</div>
   <div class="content"> 
-
-    <h1 id="welcomeMessage"></h1>
-    
+<div class="description">
+    <h1 id="welcomeMessage"><img class="lodinimg" src="../imag/loading_spinner.gif" height="15" /></h1>
     
     <div class="points">
-      <div class="title"> your coine : <span id="points">0</span><span id="points-float" style="display: inline-block; position: relative;"></span><img src="../new_emojis/coinss_gif.gif"loading="lazy" height="15"></div> 
+      <div class="title"> your coine : <span id="points">
+        <img class="lodinimg" src="../imag/loading_spinner.gif" height="13" />
+        </span>
+        <span id="points-float" style="display: inline-block; position: relative;"></span>
+        <img src="../new_emojis/coinss_gif.gif"loading="lazy" height="15">
+        </div> 
+    </div>
+</div>
       <div class="description"> 
         Get coins between 1000 coine and 1 coine.
-        <button id="whiteButton">+ coins <img src="../new_emojis/Alot_of_coins.gif" loading="lazy"height="16"></button>
+        <button id="whiteButton">+ coins <img src="../new_emojis/Alot_of_coins.gif" loading="lazy"height="16">
+        <audio id="coinSound" src="../sounds/coin_fill_up.ogg"></audio>
+        </button>
+        
       </div> 
         <div class="description"> 
           <div class="title">marketplace</div> Buy features and things for your account 
@@ -665,14 +694,16 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
             </div>
           </a> 
         </div>
-          <div class="description"> 
-          <div class="title">Trading </div>Trade your coins on the MC Co trading platform.
-          <a href="trading.html">
-            <div class="button">
-              <button id="blueButton">Dev.Trading dashboard <img src="../Emojis/chart_up.png"loading="lazy" height="15"></button>
-            </div>
-          </a> 
+<!--
+         <div class="description"> 
+           <div class="title">Trading </div>Trade your coins on the MC Co trading platform.
+             <a href="trading.html">
+               <div class="button">
+                <button id="blueButton">Dev.Trading dashboard <img src="../Emojis/chart_up.png"loading="lazy" height="15"></button>
+                 </div>
+               </a> 
         </div>
+        -->
         <div class="description">  
           <div class="title"> Send coins 
           </div> 
@@ -735,7 +766,7 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
 </div>
 <script>
   document.getElementById("Chat-btn").addEventListener("click", function() {
-    window.location.href = "List_beta.html";
+    window.location.href = "List_users.html";
   });
 </script>
   <script>
@@ -776,7 +807,11 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
         coin.remove();
       }, 1500);
     }
-    
+
+  document.getElementById("whiteButton").addEventListener("click", function () {
+    const sound = new Audio("../sounds/coin_fill_up.ogg");
+    sound.play();
+  });
   </script>
 
 <script type="module">
@@ -1120,7 +1155,7 @@ function showMessageNotification(sender, message, type) {
   
   setTimeout(() => {
     notification.remove();
-  }, 4000);
+  }, 9000);
 }
 // دالة لجلب بيانات المستخدم
 async function getUserData() {
@@ -1440,14 +1475,14 @@ document.getElementById('cancelLogout').addEventListener('click', function() {
 
 </script>
     <script>
-      window.addEventListener('scroll', function() {
-        const header = document.querySelector('.sticky-header');
-        if (window.scrollY > 0) {
-          header.classList.add('sticky');
-        } else {
-          header.classList.remove('sticky');
-        }
-      });
-    </script>
+window.addEventListener('scroll', function() {
+  const header = document.querySelector('.sticky-header');
+  if (window.scrollY > 0) {
+    header.classList.add('sticky');
+  } else {
+    header.classList.remove('sticky');
+  }
+});
+</script>
 </body>
 </html>

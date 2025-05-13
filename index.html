@@ -264,6 +264,97 @@
             transform: translateY(-5px);
           }
         }
+
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  
+}
+
+.social-icon img {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1);
+}
+
+/* ألوان الأزرار حسب المنصة */
+.discord {
+background-color: #5865F2;
+border: 2px solid #8C96FF;
+box-shadow: 0 2px 0 0 #373AC4;
+}
+.youtube { 
+  background-color: #FF0000;
+  border: 2px solid  #FF8C8C ;
+  box-shadow: 0 2px 0 0 #C43737;
+  }
+.facebook {
+  background-color: #1877F2;
+  border: 2px solid #8C95FF;
+  box-shadow: 0 2px 0 0 #3763C4;
+  
+}
+.telegram {
+  background-color: #26A5E4;
+  border: 2px solid #8CDEFF;
+  box-shadow: 0 2px 0 0 #3798C4;
+  }
+
+/* تأثيرات الهافر */
+.social-icon:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* تصميم متجاوب للشاشات الصغيرة */
+@media (max-width: 768px) {
+  .social-icons {
+    gap: 10px;
+  }
+  
+  .social-icon {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .social-icon img {
+    width: 20px;
+    height: 20px;
+  }
+}
+.sticky-header.sticky {
+  position: fixed;
+  top: 0;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0.9; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+} 
+.header {
+  background-color: #222222;
+  padding: 10px 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  
+  /* احتفظ بباقي خصائص التصميم الحالية */
+}
+     .sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  
+}
     </style>  
 </head>  
 
@@ -410,13 +501,12 @@
   checkForSiteUpdates();
 </script>
 
-
-
+<div class="sticky-header"> 
 <div class="header">MC CO   
   <img src="Emojis/panda.png" height="27">  
   <button class="news" id="newsButton" type="button" onclick="showUpdates()"></button>  
 </div>   
-  
+</div>
 <div class="content">   
   <button id="downloadBtn" style="display:none;" onclick="downloadApp()" class="epic-download-btn">
     <span class="btn-content">
@@ -465,28 +555,130 @@
       </div>
     </a>   
   </div>  
-</div>  
+  <div class="description">
+      <div class="title"> Our accounts</div> Follow us on our account to get all the latest news.
+      <div class="social-icons">
+        <!-- ديسكورد -->
+        <a href="https://discord.gg/DJRY3mTa" class="social-icon discord" target="_blank" title="Discord">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/discord.svg" alt="Discord">
+        </a>
+        
+        <!-- يوتيوب -->
+        <a href="https://www.youtube.com/@mc-_-co-96" class="social-icon youtube" target="_blank" title="YouTube">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/youtube.svg" alt="YouTube">
+        </a>
+        
+        <!-- فيسبوك -->
+        <a href="https://www.facebook.com/share/1CAawr3XAj/" class="social-icon facebook" target="_blank" title="Facebook">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/facebook.svg" alt="Facebook">
+        </a>
+        
+        <!-- تلجرام -->
+        <a href="https://t.me/mccocommunity" class="social-icon telegram" target="_blank" title="Telegram">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/telegram.svg" alt="Telegram">
+        </a>
+        
+      
+      </div>
+    </div>
+  </div>
+
+
 
 <script type="module">  
   // عند تحميل التطبيق  
   document.addEventListener('DOMContentLoaded', function() {  
-    if (typeof cordova !== 'undefined' && cordova.platformId === 'android') {  
-      // تحقق من إصدار أندرويد  
-      const androidVersion = window.device ? parseInt(window.device.version.split('.')[0]) : 0;  
-      if (androidVersion >= 13) {  
-        // طلب إذن الإشعارات عبر بلجن الـ Local Notifications  
-        if (window.cordova.plugins && window.cordova.plugins.notification) {  
-          cordova.plugins.notification.local.requestPermission(function(granted) {  
-            console.log('الإذن:', granted ? 'مُمنوح' : 'مرفوض');  
-          });  
-        } else {  
-          console.error('بلجن الإشعارات غير مثبت!');  
-        }  
-      }  
-    }  
-  });  
+  });
+  if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    .then((registration) => {
+      console.log("Service Worker Registered", registration);
+    }).catch((err) => {
+      console.error("Service Worker registration failed", err);
+    });
+}
 </script>  
+    <script>
+window.addEventListener('scroll', function() {
+  const header = document.querySelector('.sticky-header');
+  if (window.scrollY > 0) {
+    header.classList.add('sticky');
+  } else {
+    header.classList.remove('sticky');
+  }
+});
+</script>
+<!-- Firebase مكتبات -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 
+<!-- كود الإشعارات والحفظ في Firestore -->
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
+    authDomain: "minecraft-community-4fd3d.firebaseapp.com",
+    projectId: "minecraft-community-4fd3d",
+    storageBucket: "minecraft-community-4fd3d.appspot.com",
+    messagingSenderId: "550140131027",
+    appId: "1:550140131027:web:a5186726cf5372e138c626",
+    measurementId: "G-F18SFG2LMZ"
+  };
+  
+  // تهيئة Firebase
+  firebase.initializeApp(firebaseConfig);
+  const messaging = firebase.messaging();
+  const db = firebase.firestore();
+  
+  // دالة لحفظ التوكن
+  async function saveTokenToFirestore(token) {
+    try {
+      const userId = firebase.auth().currentUser?.uid || "anonymous";
+      await db.collection('tokens').doc(token).set({
+        token: token,
+        userId: userId,
+        platform: 'web',
+        userAgent: navigator.userAgent,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      console.log("Token saved to Firestore.");
+    } catch (error) {
+      console.error("Error saving token:", error.message);
+    }
+  }
+  
+  // طلب الإذن للإشعارات
+  Notification.requestPermission().then((permission) => {
+    if (permission === "granted") {
+      messaging.getToken({
+        vapidKey: "BKr9_yZic3lEvoZSAzx64GCELceKgqA6AWsnaZvsSAPplWo99IONeYgMoipVV8TMELaDc4GE_MabtqLnkBFwiPM"
+      }).then(async (token) => {
+        if (token) {
+          console.log("Token:", token);
+          await saveTokenToFirestore(token);
+        } else {
+          console.warn("No token retrieved.");
+        }
+      }).catch((err) => {
+        console.error("Error getting token:", err);
+      });
+    } else {
+      console.warn("Notification permission not granted.");
+    }
+  });
+  
+  // استقبال الإشعارات أثناء استخدام الموقع
+  messaging.onMessage((payload) => {
+    console.log("Message received: ", payload);
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+      body: payload.notification.body,
+      icon: "/icon.png"
+    };
+    new Notification(notificationTitle, notificationOptions);
+  });
+</script>
 <script type="module" src="scripts/main.js"></script>  
 
 </body>  

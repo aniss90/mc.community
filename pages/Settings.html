@@ -6,6 +6,13 @@
   <link rel="stylesheet" href="../style/main.css">
   <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
   <title>User Settings</title>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=F18SFG2LMZ"></script>  
+    <script>  
+      window.dataLayer = window.dataLayer || [];  
+      function gtag(){dataLayer.push(arguments);}  
+      gtag('js', new Date());  
+      gtag('config', 'F18SFG2LMZ');  
+    </script>  
   <style>
     @font-face {
       font-family: minecraft;
@@ -424,19 +431,112 @@ border: 2px solid #220FA6;
       font-size:17px;
       font-family: MinecraftFive-Regular;
     }
+/* التصميم الجديد حسب طلبك */
+#purchasedItemsContainer {
+    display: flex;
+flex-wrap: wrap;
+gap: 7px;
+justify-content: center;
+padding: 1px;
+margin-top: 30px;
+}
+
+.item-card {
+    width: auto; /* حجم متوسط */
+    background: #4B4B4B00; /* رمادي غامق */
+    border-radius: 2px;
+    border: 2px solid #C1C1C1; /* رمادي فاتح */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+
+.item-image {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.item-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.
+
+.item-name {
+    color: white; /* أبيض */
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-price {
+    color: #FFD952;
+text-shadow:0px 1px 0px #3A2700;
+font-size: auto;
+}
+
+.item-warning {
+    color: #e74c3c;
+    font-size: 12px;
+}
+.back {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  z-index: 1001;
+}
+.sticky-header.sticky {
+  position: fixed;
+  top: 0;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0.9; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+} 
+.header {
+  background-color: #222222;
+  padding: 10px 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  
+  /* احتفظ بباقي خصائص التصميم الحالية */
+}
+     .sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  
+}
   </style>
 </head>
 <body>
+  <div class="sticky-header"> 
   <div class="header">
     <button class="back" id="backButton" type="button" onclick="goBack()"></button>
     Settings <img src="../imag/gif_test-83efe.gif" height="30">
   </div>
-  
+  </div>
   <div class="content">
     <div class="settings-container">
       <!-- Profile Section -->
       <div class="profile-section">
-        <img src="../imag/default_profile.png" class="profile-pic" id="profilePic">
+        <img src="../imag/player-head-128-052ba.png" class="profile-pic" id="profilePic">
         <div class="profile-info">
           <div class="username" id="usernameDisplay">Username</div>
           <div class="user-bio" id="userBio">This is my awesome bio!</div>
@@ -650,7 +750,7 @@ border: 2px solid #220FA6;
       getDocs,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-    
+    import { shopItems } from './items.js';
     import {
       GoogleAuthProvider,
       signInWithPopup,
@@ -667,34 +767,58 @@ border: 2px solid #220FA6;
     // Get current user data
     const user = auth.currentUser;
     let currentUserData = {};
-    
+    // أضف هذه الدالة قبل أي استعمال لها
+function formatNumber(num) {
+    if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
+    if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+    if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+    if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+    return num.toString();
+}
     // Load user data from localStorage or Firestore
-    async function loadUserData() {
-      const userId = localStorage.getItem("activeUser");
-      if (!userId) {
-        window.location.href = "login.html";
-        return;
-      }
-      
-      try {
-        const userDocRef = doc(db, 'users', userId);
-        const userDoc = await getDoc(userDocRef);
-        
-        if (userDoc.exists()) {
-          currentUserData = userDoc.data();
-          displayUserData(currentUserData);
-          
-          // Load purchased items if they exist
-          if (currentUserData.purchasedItems && currentUserData.purchasedItems.length > 0) {
-            displayPurchasedItems(currentUserData.purchasedItems);
-          } else {
-            document.getElementById('noItemsMessage').style.display = 'block';
-          }
-        }
-      } catch (error) {
-        console.error("Error loading user data:", error);
-      }
+async function loadUserData() {
+  try {
+    
+    
+    const userId = localStorage.getItem("activeUser");
+    if (!userId) {
+      console.warn("لا يوجد مستخدم مسجل");
+      window.location.href = "login.html";
+      return;
     }
+    
+    
+    const userDocRef = doc(db, 'users', userId);
+    const userDoc = await getDoc(userDocRef);
+    
+    if (!userDoc.exists()) {
+      throw new Error("مستند المستخدم غير موجود");
+    }
+    
+    currentUserData = userDoc.data();
+    
+    
+    displayUserData(currentUserData);
+    
+    // عرض الأدوات المشتراة
+    const purchasedItems = currentUserData.purchasedItems || [];
+    
+    
+    if (purchasedItems.length > 0) {
+      displayPurchasedItems(purchasedItems);
+    } else {
+      document.getElementById('noItemsMessage').style.display = 'block';
+    }
+    
+  } catch (error) {
+    console.error("تفاصيل الخطأ:", {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+    alert("حدث خطأ في تحميل البيانات. الرجاء المحاولة لاحقًا.");
+  }
+}
     
     // Display user data in the UI
     function displayUserData(userData) {
@@ -725,20 +849,49 @@ border: 2px solid #220FA6;
     }
     
     // Display purchased items
-    function displayPurchasedItems(items) {
-      const container = document.getElementById('purchasedItemsContainer');
-      container.innerHTML = '';
-      
-      items.forEach(item => {
-        const itemCard = document.createElement('div');
-        itemCard.className = 'item-card';
-        itemCard.innerHTML = `
-          <img src="${item.icon || '../imag/default_item.png'}" class="item-icon" alt="${item.name}">
-          <div class="item-name">${item.name}</div>
-        `;
-        container.appendChild(itemCard);
-      });
+function displayPurchasedItems(purchasedItemNames) {
+  const container = document.getElementById('purchasedItemsContainer');
+  container.innerHTML = '';
+  
+  if (!purchasedItemNames || purchasedItemNames.length === 0) {
+    document.getElementById('noItemsMessage').style.display = 'block';
+    return;
+  }
+  
+  purchasedItemNames.forEach(itemName => {
+    const itemData = shopItems.find(item =>
+      item.name.trim().toLowerCase() === itemName.trim().toLowerCase()
+    );
+    
+    const itemCard = document.createElement('div');
+    itemCard.className = 'item-card';
+    
+    if (itemData) {
+      itemCard.innerHTML = `
+                <div class="item-image">
+                    <img src="${itemData.imageUrl}" alt="${itemData.name}"
+                         onerror="this.src='../imag/default_item.png'">
+                </div>
+                <div class="item-info">
+                    <div class="item-name">${itemData.name}</div>
+                    <div class="item-price">${formatNumber(itemData.price)}<img src="../new_emojis/coinss_gif.gif"loading="lazy" height="15"></div>
+                </div>
+            `;
+    } else {
+      itemCard.innerHTML = `
+                <div class="item-image">
+                    <img src="../imag/default_item.png" alt="${itemName}">
+                </div>
+                <div class="item-info">
+                    <div class="item-name">${itemName}</div>
+                    <div class="item-warning"> Not available</div>
+                </div>
+            `;
     }
+    
+    container.appendChild(itemCard);
+  });
+}
     
     // Modal toggle functions
     function toggleModal(modalId, show) {
@@ -846,133 +999,137 @@ border: 2px solid #220FA6;
     });
     
     // Change password
-    document.getElementById('savePasswordBtn').addEventListener('click', async () => {
-      const currentPassword = document.getElementById('currentPassword').value;
-      const newPassword = document.getElementById('newPassword').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-      
-      if (!currentPassword || !newPassword || !confirmPassword) {
-        alert('Please fill all fields');
-        return;
-      }
-      
-      if (newPassword !== confirmPassword) {
-        alert('New passwords do not match');
-        return;
-      }
-      
-      if (newPassword.length < 6) {
-        alert('Password must be at least 6 characters');
-        return;
-      }
-      
-      try {
-        const user = auth.currentUser;
-        const credential = EmailAuthProvider.credential(user.email, currentPassword);
-        
-        // Reauthenticate user
-        await reauthenticateWithCredential(user, credential);
-        
-        // Update password
-        await updatePassword(user, newPassword);
-        
-        // Update password in Firestore
-        const userId = localStorage.getItem("activeUser");
-        const userDocRef = doc(db, 'users', userId);
-        await updateDoc(userDocRef, {
-          password: newPassword,
-          updatedAt: serverTimestamp()
-        });
-        
-        alert('Password changed successfully!');
-        toggleModal('changePasswordModal', false);
-      } catch (error) {
-        console.error("Error changing password:", error);
-        alert("Failed to change password. Please check your current password and try again.");
-      }
-    });
+// Change password
+document.getElementById('savePasswordBtn').addEventListener('click', async () => {
+  const currentPassword = document.getElementById('currentPassword').value;
+  const newPassword = document.getElementById('newPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    alert('Please fill all fields');
+    return;
+  }
+  
+  if (newPassword !== confirmPassword) {
+    alert('New passwords do not match');
+    return;
+  }
+  
+  if (newPassword.length < 6) {
+    alert('Password must be at least 6 characters');
+    return;
+  }
+  
+  try {
+    const userId = localStorage.getItem("activeUser");
+    const userDocRef = doc(db, 'users', userId);
+    const userDoc = await getDoc(userDocRef);
+    
+    if (!userDoc.exists()) {
+      alert('User not found');
+      return;
+    }
+    
+    const userData = userDoc.data();
+    if (userData.password !== currentPassword) {
+      alert('Current password is incorrect');
+      return;
+    }
+    
+    await updateDoc(userDocRef, { password: newPassword });
+    
+    alert('Password changed successfully!');
+    toggleModal('changePasswordModal', false);
+  } catch (error) {
+    console.error("Error changing password:", error);
+    alert("Failed to change password. Please try again.");
+  }
+});
     
     // Change email
-    document.getElementById('saveEmailBtn').addEventListener('click', async () => {
-      const newEmail = document.getElementById('newEmail').value.trim();
-      const confirmEmail = document.getElementById('confirmEmail').value.trim();
-      const currentPassword = document.getElementById('emailCurrentPassword').value;
-      
-      if (!newEmail || !confirmEmail || !currentPassword) {
-        alert('Please fill all fields');
-        return;
-      }
-      
-      if (newEmail !== confirmEmail) {
-        alert('Emails do not match');
-        return;
-      }
-      
-      try {
-        const user = auth.currentUser;
-        const credential = EmailAuthProvider.credential(user.email, currentPassword);
-        
-        // Reauthenticate user
-        await reauthenticateWithCredential(user, credential);
-        
-        // Update email
-        await updateEmail(user, newEmail);
-        
-        // Update email in Firestore
-        const userId = localStorage.getItem("activeUser");
-        const userDocRef = doc(db, 'users', userId);
-        await updateDoc(userDocRef, {
-          email: newEmail,
-          updatedAt: serverTimestamp()
-        });
-        
-        alert('Email changed successfully!');
-        toggleModal('changeEmailModal', false);
-        document.getElementById('currentEmail').value = newEmail;
-      } catch (error) {
-        console.error("Error changing email:", error);
-        alert("Failed to change email. Please check your current password and try again.");
-      }
-    });
+// Change email
+document.getElementById('saveEmailBtn').addEventListener('click', async () => {
+  const newEmail = document.getElementById('newEmail').value.trim();
+  const confirmEmail = document.getElementById('confirmEmail').value.trim();
+  const currentPassword = document.getElementById('emailCurrentPassword').value;
+  
+  if (!newEmail || !confirmEmail || !currentPassword) {
+    alert('Please fill all fields');
+    return;
+  }
+  
+  if (newEmail !== confirmEmail) {
+    alert('Emails do not match');
+    return;
+  }
+  
+  try {
+    const userId = localStorage.getItem("activeUser");
+    const userDocRef = doc(db, 'users', userId);
+    const userDoc = await getDoc(userDocRef);
     
-    // Delete account
-    document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
-      const password = document.getElementById('deleteAccountPassword').value;
-      
-      if (!password) {
-        alert('Please enter your password');
-        return;
-      }
-      
-      if (!confirm('Are you absolutely sure you want to delete your account? This cannot be undone.')) {
-        return;
-      }
-      
-      try {
-        const user = auth.currentUser;
-        const credential = EmailAuthProvider.credential(user.email, password);
-        
-        // Reauthenticate user
-        await reauthenticateWithCredential(user, credential);
-
-        // Delete from Firestore
-        const userId = localStorage.getItem("activeUser");
-        const userDocRef = doc(db, 'users', userId);
-        await deleteDoc(userDocRef);
-        
-        // Delete user from auth
-        await deleteUser(user);
-        
-        // Clear localStorage
-        localStorage.removeItem("activeUser");
-        
-        alert('Account deleted successfully. You will be redirected to the home page.');
-        window.location.href = "index.html";
-      } catch (error) {
-        console.error("Error deleting account:", error);
-        alert("Failed to delete account. Please check your password and try again.");
-      }
-    });
+    if (!userDoc.exists()) {
+      alert('User not found');
+      return;
+    }
+    
+    const userData = userDoc.data();
+    if (userData.password !== currentPassword) {
+      alert('Current password is incorrect');
+      return;
+    }
+    
+    await updateDoc(userDocRef, { email: newEmail });
+    
+    alert('Email changed successfully!');
+    toggleModal('changeEmailModal', false);
+    document.getElementById('currentEmail').value = newEmail;
+  } catch (error) {
+    console.error("Error changing email:", error);
+    alert("Failed to change email. Please try again.");
+  }
+});
+    
+// Delete account
+document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
+  const password = document.getElementById('deleteAccountPassword').value;
+  
+  if (!password) {
+    alert('Please enter your password');
+    return;
+  }
+  
+  if (!confirm('Are you absolutely sure you want to delete your account? This cannot be undone.')) {
+    return;
+  }
+  
+  try {
+    const userId = localStorage.getItem("activeUser");
+    const userDocRef = doc(db, 'users', userId);
+    const userDoc = await getDoc(userDocRef);
+    
+    if (!userDoc.exists()) {
+      alert('User not found');
+      return;
+    }
+    
+    const userData = userDoc.data();
+    if (userData.password !== password) {
+      alert('Password is incorrect');
+      return;
+    }
+    
+    await deleteDoc(userDocRef);
+    
+    localStorage.removeItem("activeUser");
+    
+    alert('Account deleted successfully. You will be redirected to the home page.');
+    window.location.href = "index.html";
+  } catch (error) {
+    console.error("Error deleting account:", error);
+    alert("Failed to delete account. Please try again.");
+  }
+});
     
     // Dark mode toggle
     document.getElementById('darkModeToggle').addEventListener('change', function() {
@@ -986,20 +1143,50 @@ border: 2px solid #220FA6;
       document.body.classList.add('dark-mode');
     }
     
-    // Back button function
-    function goBack() {
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        window.location.href = 'index.html';
-      }
-    }
+    // Add this to your script (near the top, with your other functions)
+window.togglePasswordVisibility = function(inputId) {
+  const input = document.getElementById(inputId);
+  const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+  input.setAttribute('type', type);
+  
+  // Optional: Toggle eye icon
+  const eyeIcon = input.nextElementSibling.querySelector('i');
+  if (eyeIcon) {
+    eyeIcon.classList.toggle('fa-eye');
+    eyeIcon.classList.toggle('fa-eye-slash');
+  }
+};
+    // Add this to your DOMContentLoaded event listener or initialization code
+document.querySelectorAll('.toggle-password').forEach(button => {
+  button.addEventListener('click', function() {
+    const inputId = this.getAttribute('data-target');
+    const input = document.getElementById(inputId);
+    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+    input.setAttribute('type', type);
     
+    // Toggle eye icon if present
+    const eyeIcon = this.querySelector('i');
+    if (eyeIcon) {
+      eyeIcon.classList.toggle('fa-eye');
+      eyeIcon.classList.toggle('fa-eye-slash');
+    }
+  });
+});
     // Initialize the page
     document.addEventListener('DOMContentLoaded', () => {
       loadUserData();
     });
   </script>
+      <script>
+window.addEventListener('scroll', function() {
+  const header = document.querySelector('.sticky-header');
+  if (window.scrollY > 0) {
+    header.classList.add('sticky');
+  } else {
+    header.classList.remove('sticky');
+  }
+});
+</script>
       <script>  
         function goBack() {  
             if (window.history.length > 1) {  
