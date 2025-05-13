@@ -584,20 +584,28 @@ box-shadow: 0 2px 0 0 #373AC4;
   </div>
 
 
+<script>
+  // تحديد مسار Service Worker ديناميكيًا
+  let swPath = '/firebase-messaging-sw.js';
+  const isLocalhost = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 
-<script type="module">  
-  // عند تحميل التطبيق  
-  document.addEventListener('DOMContentLoaded', function() {  
-  });
+  if (!isLocalhost) {
+    const repoName = location.pathname.split('/')[1]; // يعطي "mc.community"
+    swPath = `/${repoName}/firebase-messaging-sw.js`;
+  }
+
+  // تسجيل الـ Service Worker
   if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('https://aniss90.github.io/mc.community/firebase-messaging-sw.js')
-    .then((registration) => {
-      console.log("Service Worker Registered", registration);
-    }).catch((err) => {
-      console.error("Service Worker registration failed", err);
-    });
-}
-</script>  
+    navigator.serviceWorker.register(swPath)
+      .then(function(registration) {
+        console.log('Service Worker مسجل بنجاح:', registration);
+      })
+      .catch(function(error) {
+        console.error('فشل تسجيل Service Worker:', error);
+      });
+  }
+</script>
+
     <script>
 window.addEventListener('scroll', function() {
   const header = document.querySelector('.sticky-header');
