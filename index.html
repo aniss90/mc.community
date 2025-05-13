@@ -586,13 +586,16 @@ box-shadow: 0 2px 0 0 #373AC4;
 
 <script>
   // تحديد مسار Service Worker ديناميكيًا
-  let swPath = '/firebase-messaging-sw.js';
-  const isLocalhost = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  const repoName = location.pathname.split('/')[1];
+const swPath = `/${repoName}/firebase-messaging-sw.js`;
 
-  if (!isLocalhost) {
-    const repoName = location.pathname.split('/')[1]; // يعطي "mc.community"
-    swPath = `/${repoName}/firebase-messaging-sw.js`;
-  }
+navigator.serviceWorker.register(swPath)
+  .then((registration) => {
+    console.log("Service Worker مسجل بنجاح:", registration);
+  })
+  .catch((error) => {
+    console.error("فشل تسجيل Service Worker:", error);
+  });
 
   // تسجيل الـ Service Worker
   if ('serviceWorker' in navigator) {
