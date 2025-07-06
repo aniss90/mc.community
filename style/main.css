@@ -6,7 +6,10 @@ div {
 * {
     user-select: none
 }
-
+::selection{
+  background-color: #848484;
+  color: #FFFFFF;
+}
 .header {
   opacity: 0;
   transform: translateY(-20px);
@@ -135,15 +138,18 @@ div.header {
     left: 0;
     width: 100%;
     height: auto;
-    background-color: #dfdfdf;
+    background-color: #4B4B4BC2;
+    backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(5px);
     text-align: center;
     padding-top: 15px;
     padding-bottom: 15px;
     z-index: 100;
     font-size: 35px;
     position: static;
-    border-bottom: 4px solid #a4a4a4;
-    
+    border-bottom: 4px solid #282828;
+    color: #B9B9B9;
+    text-shadow: 0 4px 4px  #3F3F3F;
 }
 
 div.nane {
@@ -195,12 +201,14 @@ div.title {
 }
 
 a.link {
-    color: #0088FF;
+    color: #C2C2C2;
      font-family: minecraft-five;
+    text-decoration-line: none;
 }
 
 a.link:hover {
-    color: #10f
+    color: #757575
+    
 }
 
 .content-modal {
@@ -315,7 +323,7 @@ input {
             left: 10px;
             cursor: pointer;
             padding: 10px;
-            background: url(../imag/arrowBack-b77b1.png);
+            background: url(../icons/arrowBack-b77b1.png);
             background-size:  contain;
             background-position: center;
             background-repeat: no-repeat;
@@ -329,10 +337,11 @@ input {
     position: relative;
     color: #262626;
     background-color: #A0A0A0;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 #whiteButton {
-  transition: background-color 0.5s;
+  transition: all 0.5s;
   height: auto;
   width: 100%; 
   text-shadow: 1px 1px 2px #9F9F9F;
@@ -355,11 +364,11 @@ input {
     height: auto;
     width: 100%;
     position: relative;
-    
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 #greenButton  {
-  transition: background-color 0.5s;
+  transition: all 0.5s;
   text-shadow: 1px 1px 2px #000000;
   background-color: #2C8014;
   color: #FFFFFF;
@@ -382,10 +391,11 @@ input {
   width: 100%;
   position: relative;
   background-color: #B60000;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 #redButton {
-  transition: background-color 0.5s;
+  transition: all 0.5s;
   text-shadow: 1px 1px 0.9px #000000;
   height: auto;
   width: 100%;
@@ -408,10 +418,11 @@ input {
   width: 100%;
   position: relative;
   background-color: #A40EB6;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 #purpleButton {
-  transition: background-color 0.5s;
+  transition: all 0.5s;
   text-shadow: 1px 1px 0.9px #000000;
   height: auto;
   width: 100%;
@@ -433,10 +444,11 @@ input {
   width: 100%;
   position: relative;
   background-color: #BEBB00;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 #goldButton {
-  transition: background-color 0.5s;
+  transition: all 0.5s;
   height: auto;
   width: 100%;
   border: 2px solid #FFFFFF;
@@ -460,9 +472,11 @@ input {
     height: auto;
     width: 100%;
     position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 #blueButton  {
+  transition: all 0.5s;
   text-shadow: 1px 1px 0.9px #000000;
   background-color: #2F16D9;
   color: #FFFFFF;

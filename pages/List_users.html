@@ -25,54 +25,27 @@
         color: #0088FF;  
         font-family: minecraft-five;  
     }  
-    .note {    
-        background: #222222;    
-        border: 3px solid #FFBC13;    
-        box-shadow: 0px 3px 0px rgba(139, 92, 0, 1);     
-        text-align: center;    
-        color: white;    
-        width: auto;    
-        padding: 5px    
-    }    
-    .note note {    
-        background: #FFBC13;    
-        color: black;    
-        border: 1px solid goldenrod;    
-        padding: 5px;    
-        font-weight: bold;    
-        height: 24px;     
-    }    
-    p {    
-        color: #FFFFFF    
-    }    
-    .note button {    
-        background: #FFBC13;    
-        color: black;    
-        border: 1px solid goldenrod;    
-        padding: 5px;    
-        font-weight: bold;    
-        height: 24px;     
-    }    
+  
     table {  
-        width: 99%;  
-        max-width: 97%;  
+        width: 100%;  
+        max-width: 100%;  
         height: auto;  
-        background-color: #222222;  
+        background-color: #22222200;  
         color: white;  
         border-radius: 10px;  
         margin: 20px auto;  
-        border-collapse: collapse;  
-        border-bottom: 3px solid #737373;  
-        border-left: 3px solid #737373;  
-        border-right: 3px solid #737373;  
+        border: none;  
+  
     }   th {  
-    background-color: #FFFFFF;  
-    color: black;  
+    background-color: #6A6A6A00;  
+    color: #C1C1C1;  
+    text-shadow: 0 2px 4px #484848;
     padding: 10px;  
+    
 }  
 
 td {  
-    background-color: #4D4D4D;  
+    background-color: #4D4D4D00;  
     color: white;  
     padding: 10px;  
     border: 1px solid #ddd;  
@@ -84,45 +57,59 @@ td a {
 }  
 
 td a:hover {  
-    color: #3EB038;  
+    color: #BBBBBB;  
     text-decoration: underline;  
 }  
 
 td strong {  
-    color: #00FF00;  
+    color: #FFFFFF;  
 }  
 
 th, td {  
     border: none;
     text-align: left;
 }  
-  
+.user-row {
+  cursor: pointer;
+ transition:  all 0.5s;
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+}
+
+.user-row:hover {
+  background-color: rgba(255, 188, 19, 0.1) !important;
+  border: 1px solid #FFA90D;
+    box-shadow: 2px 1px 5px 1px rgba(255, 194, 8, 0.92);
+-webkit-box-shadow: 2px 1px 13px 1px rgba(255, 194, 8, 0.92);
+-moz-box-shadow: 2px 1px 5px 1px rgba(255, 194, 8, 0.92);
+}
 /* Search box styles */  
 .search-container {  
     margin: 20px auto;  
-    width: 50%;  
+    width: 100%;  
 }  
   
 #searchInput {  
     width: 100%;  
     padding: 12px 20px;  
-    margin: 8px 0;  
     box-sizing: border-box;  
-    box-shadow: 0px 3px 0px rgba(139, 92, 0, 1);    
-    border: 2px solid #FFBC13;  
-    
+    box-shadow: 0px 3px 0px rgba(105, 105, 105, 1);    
+    border: 2px solid #C7C7C7;  
     background-color: #222222;  
+    border-radius: 24px;
     color: white;  
     font-size: 13px;  
-    background-image: url('../imag/Search-c8b13.png');  
+    background-image: url('../icons/Search-c8b13.png');  
 background-repeat: no-repeat;  
 background-position: 10px center;  
-background-size: 15px;  
+background-size: 15px; 
+transition: all 0.5s;
 }  
   
 #searchInput:focus {  
     outline: none;  
-    border-color: #FFD700;  
+    border-color: #FFFFFF;  
+    box-shadow: 4px 0px 15px  #FFFFFF69;
 }  
   
 .no-results {  
@@ -301,300 +288,327 @@ to { opacity: 1; transform: translateY(0); }
   
 }
 span.username{
-  color: #1CC535;
+  color: #FFFFFF;
 }
 .unread-badge {
   margin-left: 5px;
 }
+/* تنسيق عمود Fall Tokens */
+.fall-tokens {
+  color: #E29A2B;
+  font-weight: bold;
+}
 
+/* تنسيق عرض Fall Tokens لأفضل المستخدمين */
+.top-user-falltokens {
+  color: #000000;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+/* تعديل عرض الجدول */
+table {
+  width: 100%;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+.current-user {
+  cursor: default !important;
+}
+
+.current-user:hover {
+  background-color: transparent !important;
+}
 </style>
 
 </head>  
 <body>  
-  <div class="sticky-header">     <div class="header">  <button class="back" id="backButton" type="button" onclick="goBack()"></button> User list <img src="../imag/friends-9e435.png" height="20"></div>  
+  <div class="sticky-header">  
+  <div class="header">
+    <button class="back" id="backButton" type="button" onclick="goBack()"></button> 
+    User list 
+    <img src="../icons/friends-9e435.png" height="20"></div>  
   </div>  
   <div class="content">  
     <div class="content-wrapper">  
       <div class="left-content">  
         <div class="description">  
-          <div class="button">  
-            <div class="note">  
-              <note>What's new?! <img src="../imag/WarningGlyph.png" height="12" /></note>  
-              <br />  
-              <p>If you want to chating with a user, click on his name and it will take you to the chanting page.</p>  
-              إذا كنت تريد التواصل مع مستخدم ما، انقر على اسمه وسوف يأخذك إلى صفحة التواصل.  
-            </div>  
-          </div>  <div class="search-container">  
+             <div class="search-container">  
         <input type="text" id="searchInput" placeholder="Search for users..." onkeyup="searchUsers()" />  
       </div>  
-
+</div>  
       <table>  
-        <thead>  
-          <tr>  
-            <th>Username <img src="../imag/player-head-128-052ba.png" height="12" /></th>  
-            <th>Coins <img src="../new_emojis/Alot_of_coins.gif" alt="Coin" height="12" /></th>  
-          </tr>  
-        </thead>  
-        <tbody id="userList">  
-          <tr><td colspan="2"><img src="../imag/loading_spinner.gif" height="20" /></td></tr>  
-        </tbody>  
-      </table>  
-    </div>  
+  <thead>  
+    <tr>  
+      <th>Username <img src="../icons/player-head-128-052ba.png" height="12" /></th>  
+      <th>Coins <img src="../icons/Alot_of_coins.gif" alt="Coin" height="12" /></th>
+      <th>Fall Tokens <img src="../icons/fall_token.png" alt="Fall Token" height="12" /></th>
+    </tr>  
+  </thead>  
+  <tbody id="userList">  
+    <tr><td colspan="3"><img src="../icons/loading_spinner.gif" height="20" /></td></tr>  
+  </tbody>  
+</table>
+    
   </div>  
   <div class="description">   
   <div class="right-image">  
-    <div id="topUsersContainer" class="top-users-container" style="display: none;">        <div class="description">   
-      <div class="top-users-title">Top Users <img src="../new_emojis/Top1.gif" height="16"></div>  
+    <div id="topUsersContainer" class="top-users-container" style="display: none;">    
+    <div class="description">   
+      <div class="top-users-title">Top Users <img src="../icons/Top1.gif" height="16"></div>  
       <div id="topUsersList"></div>  
     </div>  
     </div>  
-    <img src="../imag/Sign-in_Prompts_Launch Animated-fdbda.gif" width="40%" />  
+    <img src="../icons/Sign-in_Prompts_Launch Animated-fdbda.gif" width="40%" />  
   </div>  
   </div>  
 </div>
 
   </div>  
-    <script type="module">  
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";  
-      import { getFirestore, collection, onSnapshot, doc, query, where } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";  const firebaseConfig = {  
-    apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",  
-    authDomain: "minecraft-community-4fd3d.firebaseapp.com",  
-    projectId: "minecraft-community-4fd3d",  
-    storageBucket: "minecraft-community-4fd3d.appspot.com",  
-    messagingSenderId: "550140131027",  
-    appId: "1:550140131027:web:a5186726cf5372e138c626",  
-    measurementId: "G-F18SFG2LMZ"  
-  };  
-
-  const app = initializeApp(firebaseConfig);  
-  const db = getFirestore(app);  
-
-  function formatPoints(num) {  
-    if (num >= 1_000_000_000_000) return (num / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 'T';  
-    if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';  
-    if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';  
-    if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';  
-    return num.toString();  
-  }  
-
-  const userList = document.getElementById("userList");  
-  const topUsersContainer = document.getElementById("topUsersContainer");  
-  const topUsersList = document.getElementById("topUsersList");  
-  let allUsers = [];  
-
-  function displayTopUsers(users) {  
-    // استبعاد المستخدم "Anis" إذا كان موجوداً  
-    let filteredUsers = users.filter(user => user.username !== "Anis");  
+  <script>
+  // دالة مبسطة لحفظ واسترجاع الصور باستخدام الرابط كمفتاح
+  function cacheImages() {
+    // تحديد جميع الصور في الصفحة
+    const images = document.querySelectorAll('img, [style*="background-image"]');
+    
+    images.forEach(element => {
+      let imageUrl;
       
-    // إذا كان "Anis" هو الأول، نأخذ الثلاثة الأوائل بعد استبعاده  
-    // وإلا نأخذ الثلاثة الأوائل بعد الاستبعاد  
-    let topUsers = filteredUsers.slice(0, 3);  
+      // الحصول على رابط الصورة سواء من src أو من background-image
+      if (element.tagName === 'IMG') {
+        imageUrl = element.src;
+      } else {
+        const style = window.getComputedStyle(element);
+        imageUrl = style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+      }
       
-    // إذا كان "Anis" كان الأول، نضيف الرابع ليحل محله  
-    if (users.length > 3 && users[0].username === "Anis") {  
-      topUsers = [filteredUsers[0], filteredUsers[1], filteredUsers[2]];  
-    }  
+      // تخطي الروابط الفارغة أو روابط البيانات (data URLs)
+      if (!imageUrl || imageUrl.startsWith('data:')) return;
       
-    topUsersList.innerHTML = '';  
+      // التحقق مما إذا كانت الصورة مخزنة مسبقاً
+      const cachedImage = localStorage.getItem(imageUrl);
       
-    topUsers.forEach((user, index) => {  
-      const rankClass = `rank-${index + 1}`;  
-      const formattedPoints = formatPoints(user.points);  
-        
-      const userElement = document.createElement('div');  
-      userElement.className = `top-user ${rankClass}`;  
-      userElement.innerHTML = `  
-        <span class="top-user-rank">#${index + 1}</span>  
-        <span class="top-user-name">${user.username}</span>  
-        <span class="top-user-points">${formattedPoints} <img src="../new_emojis/Alot_of_coins.gif" alt="Coin" height="12"></span>  
-      `;  
-        
-      topUsersList.appendChild(userElement);  
-    });  
-      
-    // عرض العنصر فقط إذا كان لدينا مستخدمين  
-    if (topUsers.length > 0) {  
-      topUsersContainer.style.display = 'block';  
-    }  
-  }  
-
-  onSnapshot(collection(db, "users"), (snapshot) => {  
-    userList.innerHTML = '';  
-
-    const activeUser = localStorage.getItem("activeUser");  
-    if (!activeUser) {  
-      alert("You must log in first!");  
-      window.location.href = "login.html";  
-      return;  
-    }  
-
-    if (snapshot.empty) {  
-      userList.innerHTML += "<tr><td colspan='2'>No users found</td></tr>";  
-    } else {  
-      allUsers = [];  
-      snapshot.forEach((doc) => {  
-        const username = doc.id;  
-        const points = doc.data().points || 0;  
-        allUsers.push({ username, points });  
-      });  
-
-      // فرز المستخدمين حسب عدد النقاط من الأكبر إلى الأصغر  
-      allUsers.sort((a, b) => b.points - a.points);  
-
-      // عرض المتصدرين في الشريط الجانبي للشاشات العريضة  
-      if (window.matchMedia("(min-width: 768px)").matches) {  
-        displayTopUsers(allUsers);  
-      }  
-
-      // عرض المستخدمين بالترتيب  
-      allUsers.forEach((user) => {  
-        displayUser(user.username, user.points, activeUser);  
-      });  
-    }  
-  });  
-
-function displayUser(username, points, activeUser, photoURL) {
-  const formatted = formatPoints(points);
-  const unreadCount = unreadMessages[username] || 0;
-  
-  let unreadBadge = '';
-  if (unreadCount > 0) {
-    const displayCount = unreadCount > 9 ? '9+' : unreadCount;
-    unreadBadge = `<span class="new-message-indicator unread-badge">${displayCount}</span>`;
+      if (cachedImage) {
+        // إذا كانت الصورة مخزنة، نستخدمها مباشرة
+        if (element.tagName === 'IMG') {
+          element.src = cachedImage;
+        } else {
+          element.style.backgroundImage = `url(${cachedImage})`;
+        }
+      } else {
+        // إذا لم تكن مخزنة، نحملها ونخزنها
+        fetch(imageUrl)
+          .then(response => response.blob())
+          .then(blob => {
+            const reader = new FileReader();
+            reader.onload = function() {
+              localStorage.setItem(imageUrl, this.result);
+              if (element.tagName === 'IMG') {
+                element.src = this.result;
+              } else {
+                element.style.backgroundImage = `url(${this.result})`;
+              }
+            };
+            reader.readAsDataURL(blob);
+          })
+          .catch(error => {
+            console.error('Error caching image:', error);
+          });
+      }
+    });
   }
   
-  const userImage = photoURL || '../imag/player-head-128-052ba.png';
+  // تشغيل الدالة عند تحميل الصفحة
+  window.addEventListener('DOMContentLoaded', cacheImages);
+</script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
+      authDomain: "minecraft-community-4fd3d.firebaseapp.com",
+      projectId: "minecraft-community-4fd3d",
+      storageBucket: "minecraft-community-4fd3d.appspot.com",
+      messagingSenderId: "550140131027",
+      appId: "1:550140131027:web:a5186726cf5372e138c626",
+      measurementId: "G-F18SFG2LMZ"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    function formatPoints(num) {
+      if (num >= 1_000_000_000_000) return (num / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 'T';
+      if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
+      if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+      if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
+      return num.toString();
+    }
+    
+    const userList = document.getElementById("userList");
+    const topUsersContainer = document.getElementById("topUsersContainer");
+    const topUsersList = document.getElementById("topUsersList");
+    let allUsers = [];
+   function displayTopUsers(users) {
+  let filteredUsers = users.filter(user => user.username !== "Anis");
+  let topUsers = filteredUsers.slice(0, 3);
   
-  const row = (username === activeUser) ?
-    `<tr class="user-row">
-        <td class="user-cell">
-          <img src="${userImage}" alt="${username}" class="user-avatar">
-          <div class="user-info">
-            <span class="username">${username}</span>
-          </div>
-          ${unreadBadge}
-        </td>
-        <td class="points"><img src="../new_emojis/coinss_gif.gif" alt="Coin" height="12"> ${formatted}</td>
-      </tr>` :
-    `<tr class="user-row">
-        <td class="user-cell">
-          <img src="${userImage}" alt="${username}" class="user-avatar">
-          <div class="user-info">
-            <a href="chat_beta.html?user=${encodeURIComponent(username)}" class="username">${username}</a>
-          </div>
-          ${unreadBadge}
-        </td>
-        <td class="points"><img src="../new_emojis/coinss_gif.gif" alt="Coin" height="12"> ${formatted}</td>
-      </tr>`;
+  if (users.length > 3 && users[0].username === "Anis") {
+    topUsers = [filteredUsers[0], filteredUsers[1], filteredUsers[2]];
+  }
+  
+  topUsersList.innerHTML = '';
+  
+  topUsers.forEach((user, index) => {
+    const rankClass = `rank-${index + 1}`;
+    const formattedPoints = formatPoints(user.points);
+    const formattedFallTokens = formatPoints(user.fallTokens || 0);
+    
+    const userElement = document.createElement('div');
+    userElement.className = `top-user ${rankClass}`;
+    userElement.innerHTML = `
+      <span class="top-user-rank">#${index + 1}</span>
+      <span class="top-user-name">${user.username}</span>
+      <span class="top-user-points">${formattedPoints} <img src="../icons/Alot_of_coins.gif" alt="Coin" height="12"></span>
+      <span class="top-user-falltokens">${formattedFallTokens} <img src="../icons/fall_token.png" alt="Fall Token" height="12"></span>
+    `;
+    
+    topUsersList.appendChild(userElement);
+  });
+  
+  if (topUsers.length > 0) {
+    topUsersContainer.style.display = 'block';
+  }
+}
+    
+function displayUser(username, points, fallTokens, activeUser, photoURL) {
+  const formattedPoints = formatPoints(points);
+  const formattedFallTokens = formatPoints(fallTokens || 0);
+  const userImage = photoURL || '../icons/player-head-128-052ba.png';
+  
+  const isActiveUser = username === activeUser;
+  const rowClass = isActiveUser ? 'user-row current-user' : 'user-row';
+  
+  const row = `<tr class="${rowClass}" ${!isActiveUser ? `onclick="window.location.href='profile.html?user=${encodeURIComponent(username)}'"` : ''}>
+      <td class="user-cell">
+        <img src="${userImage}" alt="${username}" class="user-avatar">
+        <div class="user-info">
+          <span class="username">${username}</span>
+        </div>
+      </td>
+      <td class="points"><img src="../icons/coinss_gif.gif" alt="Coin" height="12"> ${formattedPoints}</td>
+      <td class="fall-tokens"><img src="../icons/fall_token.png" alt="Fall Token" height="12"> ${formattedFallTokens}</td>
+    </tr>`;
   
   userList.innerHTML += row;
 }
-
-  let unreadMessages = {};  
-  const activeUser = localStorage.getItem("activeUser");  
-    
-  if (activeUser) {  
-onSnapshot(collection(db, "users"), (snapshot) => {
-  userList.innerHTML = '';
   
-  const activeUser = localStorage.getItem("activeUser");
-  if (!activeUser) {
-    alert("You must log in first!");
-    window.location.href = "login.html";
-    return;
-  }
-  
-  if (snapshot.empty) {
-    userList.innerHTML += "<tr><td colspan='2'>No users found</td></tr>";
-  } else {
-    allUsers = [];
-    snapshot.forEach((doc) => {
-      const username = doc.id;
-      const points = doc.data().points || 0;
-      const photoURL = doc.data().photoURL; // جلب صورة المستخدم
-      allUsers.push({ username, points, photoURL });
-    });
+  onSnapshot(collection(db, "users"), (snapshot) => {
+    userList.innerHTML = '';
     
-    // فرز المستخدمين حسب عدد النقاط من الأكبر إلى الأصغر
-    allUsers.sort((a, b) => b.points - a.points);
-    
-    // عرض المتصدرين في الشريط الجانبي للشاشات العريضة
-    if (window.matchMedia("(min-width: 768px)").matches) {
-      displayTopUsers(allUsers);
+    const activeUser = localStorage.getItem("activeUser");
+    if (!activeUser) {
+      alert("يجب تسجيل الدخول أولاً!");
+      window.location.href = "login.html";
+      return;
     }
     
-    // عرض المستخدمين بالترتيب
-    allUsers.forEach((user) => {
-      displayUser(user.username, user.points, activeUser, user.photoURL);
-    });
-  }
-});
-  }  
+    if (snapshot.empty) {
+      userList.innerHTML += "<tr><td colspan='3'>لا يوجد مستخدمين</td></tr>";
+    } else {
+      allUsers = [];
+      snapshot.forEach((doc) => {
+        const username = doc.id;
+        const points = doc.data().points || 0;
+        const fallTokens = doc.data().fallTokens || 0;
+        const photoURL = doc.data().photoURL;
+        allUsers.push({ username, points, fallTokens, photoURL });
+      });
+      
+      allUsers.sort((a, b) => b.points - a.points);
+      
+      if (window.matchMedia("(min-width: 768px)").matches) {
+        displayTopUsers(allUsers);
+      }
+      
+      allUsers.forEach((user) => {
+        displayUser(user.username, user.points, user.fallTokens, activeUser, user.photoURL);
+      });
+    }
+  });
+  
+  
     
-  // تحديث عرض المتصدرين عند تغيير حجم الشاشة  
-  window.addEventListener('resize', function() {  
-    if (window.matchMedia("(min-width: 768px)").matches && allUsers.length > 0) {  
-      displayTopUsers(allUsers);  
-    } else {  
-      topUsersContainer.style.display = 'none';  
-    }  
-  });  
-</script>  
-
-<script>  
-  function goBack() {  
-    if (window.history.length > 1) {  
-      window.history.back();  
-    } else {  
-      window.location.href = '/';  
-    }  
-  }  
-
-  function searchUsers() {  
-    const input = document.getElementById("searchInput");  
-    const filter = input.value.toUpperCase();  
-    const rows = document.getElementsByClassName("user-row");  
-    let found = false;  
-
-    for (let i = 0; i < rows.length; i++) {  
-      const username = rows[i].getElementsByTagName("td")[0].textContent ||  
-        rows[i].getElementsByTagName("td")[0].innerText;  
-
-      if (username.toUpperCase().indexOf(filter) > -1) {  
-        rows[i].style.display = "";  
-        found = true;  
-      } else {  
-        rows[i].style.display = "none";  
-      }  
-    }  
-
-    const noResults = document.querySelector(".no-results");  
-    if (!found) {  
-      if (!noResults) {  
-        const msg = document.createElement("div");  
-        msg.className = "no-results";  
-        msg.textContent = "No users found matching your search.";  
-        userList.appendChild(msg);  
-      }  
-    } else if (noResults) {  
-      noResults.remove();  
-    }  
-  }  
-  let scrollTimeout;
-
-window.addEventListener('scroll', function() {
-clearTimeout(scrollTimeout);
-scrollTimeout = setTimeout(function() {
-const header = document.querySelector('.sticky-header');
-if (window.scrollY > 10) { // تغيير من 0 إلى 10 لتحسين الأداء
-header.classList.add('sticky');
-} else {
-header.classList.remove('sticky');
-}
-}, 15); // تأخير 15 مللي ثانية لتحسين الأداء
-});
-
-</script>
+    window.addEventListener('resize', function() {
+      if (window.matchMedia("(min-width: 768px)").matches && allUsers.length > 0) {
+        displayTopUsers(allUsers);
+      } else {
+        topUsersContainer.style.display = 'none';
+      }
+    });
+  </script>
+  
+  <script>
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '/';
+      }
+    }
+    
+    function searchUsers() {
+      const input = document.getElementById("searchInput");
+      const filter = input.value.toUpperCase();
+      const rows = document.getElementsByClassName("user-row");
+      let found = false;
+      
+      for (let i = 0; i < rows.length; i++) {
+        const username = rows[i].getElementsByTagName("td")[0].textContent ||
+          rows[i].getElementsByTagName("td")[0].innerText;
+        
+        if (username.toUpperCase().indexOf(filter) > -1) {
+          rows[i].style.display = "";
+          found = true;
+        } else {
+          rows[i].style.display = "none";
+        }
+        
+      }
+      rows[i].onclick = function() {
+  const username = this.querySelector('.username').textContent;
+  window.location.href = `profile.html?user=${encodeURIComponent(username)}`;
+};
+      const noResults = document.querySelector(".no-results");
+      if (!found) {
+        if (!noResults) {
+          const msg = document.createElement("div");
+          msg.className = "no-results";
+          msg.textContent = "لا توجد نتائج مطابقة للبحث";
+          userList.appendChild(msg);
+        }
+      } else if (noResults) {
+        noResults.remove();
+      }
+    }
+    
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(function() {
+        const header = document.querySelector('.sticky-header');
+        if (window.scrollY > 10) {
+          header.classList.add('sticky');
+        } else {
+          header.classList.remove('sticky');
+        }
+      }, 15);
+    });
+  </script>
 
   <script>  
 window.addEventListener('scroll', function() {  

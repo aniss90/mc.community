@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحديثات الموقع - MC CO</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Segoe UI', sans-serif;
+      background: #2c2f33;
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+      padding: 30px;
+      border-radius: 10px;
+      background-color: #23272a;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      font-size: 24px;
+      font-weight: bold;
+      color: #FFD700;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background-color: #2f353b;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: left;
+      border-left: 4px solid #5865F2;
+    }
+
+    .card .bot-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .bot-info img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-left: 10px;
+    }
+
+    .bot-info .name {
+      font-weight: bold;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .bot-info .bot-tag {
+      background: #5865F2;
+      color: white;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 5px;
+    }
+
+    .card .title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #FFD700;
+      margin-bottom: 15px;
+    }
+
+    .card .desc {
+      white-space: pre-wrap;
+      line-height: 1.6;
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    .message {
+      background-color: #36393f;
+      color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-size: 14px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .message .username {
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .message .timestamp {
+      font-size: 12px;
+      color: #99aab5;
+      margin-left: 10px;
+    }
+
+    .message .content {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .message .footer {
+      font-size: 12px;
+      color: #99aab5;
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      background-color: #5865F2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #4752c4;
+    }
+
+    #msg {
+      margin-top: 20px;
+      color: #00ff99;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #bbb;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">✨ تحديثات الموقع - MC CO</div>
+
+    <div class="card">
+      <div class="bot-info">
+        <img src="https://aniss90.github.io/mc.community/icons/icon_panda.png" alt="Bot Icon">
+        <span class="name">MC CO Updates</span>
+        <span class="bot-tag">بوت</span>
+      </div>
+      <div class="title">✨ تحديث جديد على الموقع — النسخة <span id="version">...</span></div>
+      <div class="desc" id="updateText">جاري تحميل التحديث...</div>
+    </div>
+
+    <button onclick="sendToDiscord()">إرسال التحديث إلى Discord</button>
+    <button onclick="sendToTelegram()">إرسال التحديث إلى Telegram</button>
+    <button onclick="sendToBoth()">إرسال التحديث إلى كليهما</button>
+
+    <div id="msg" class="hidden">تم إرسال التحديث إلى Discord بنجاح!</div>
+
+    <div class="message" id="discordMessage" style="display: none;">
+      <div class="username">MC CO Updates</div>
+      <div class="timestamp" id="timestamp">وقت الإرسال: ...</div>
+      <div class="content" id="contentText">... محتوى التحديث ...</div>
+      <div class="footer">MC CO</div>
+    </div>
+
+    <div class="footer">
+      <p>تم توفير التحديث بواسطة <strong>MC CO</strong></p>
+    </div>
+  </div>
+
+  <script>
+    async function loadUpdate() {
+      try {
+        const res = await fetch("update.txt?t=" + Date.now());
+        const text = await res.text();
+        const oldVersion = localStorage.getItem("siteVersion") || "1.0.0";
+        const newVersion = getNextVersion(oldVersion);
+        document.getElementById("version").textContent = newVersion;
+        document.getElementById("updateText").textContent = text;
+        localStorage.setItem("siteVersion", newVersion);
+      } catch (e) {
+        document.getElementById("updateText").textContent = "تعذر تحميل التحديث...";
+        document.getElementById("version").textContent = "؟";
+      }
+    }
+
+    async function sendToDiscord() {
+      const text = document.getElementById("updateText").textContent;
+      const version = document.getElementById("version").textContent;
+
+      const payload = {
+        content: "@everyone \nNew update 📣 : \n تحديث جديد 📣: ",
+        username: "MC CO Updates",
+        avatar_url: "https://aniss90.github.io/mc.community/icons/icon_panda.png",
+        embeds: [{
+          title: "✨ New update on the site  " ,
+          description: text,
+          color: 0xFFD700,
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: "MC CO",
+            icon_url: "https://aniss90.github.io/mc.community/icons/icon_panda.png"
+          },
+          thumbnail: {
+            url: "https://aniss90.github.io/mc.community/icons/panda.png"
+          }
+        }]
+      };
+
+      const webhook = "https://discord.com/api/webhooks/1370772948545310861/C_oXocTh7VWKsQ-JRElug8eXtHDAwTM8FO4NR1HLxkFlEKsPmcCOU21xr8xrXfy3MZD7";
+
+      try {
+        await fetch(webhook, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const timestamp = new Date().toLocaleString();
+        document.getElementById("timestamp").textContent = `وقت الإرسال: ${timestamp}`;
+        document.getElementById("contentText").textContent = text;
+        document.getElementById("discordMessage").style.display = 'block';
+        document.getElementById("msg").classList.remove("hidden");
+      } catch (e) {
+        alert("فشل في الإرسال إلى Discord.");
+      }
+    }
+
+    async function sendToTelegram() {
+  const text = document.getElementById("updateText").textContent;
+  const version = document.getElementById("version").textContent;
+  
+  const token = "7932950331:AAGkYxQOlV04JBjXuvDW3_8qjvaE8TTnXNc";
+  const chat_id = "@mccocommunity";
+  const message = `✨ تحديث جديد على الموقع \n\n${text}`;
+  
+  
+  try {
+    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: `chat_id=${chat_id}&text=${encodeURIComponent(message)}&reply_markup=${encodeURIComponent(JSON.stringify({
+        
+      }))}`
+    });
+    
+    alert("تم إرسال التحديث إلى Telegram بنجاح!");
+  } catch (e) {
+    alert("فشل في إرسال التحديث إلى Telegram");
+  }
+}
+    async function sendToBoth() {
+      await sendToDiscord();
+      await sendToTelegram();
+    }
+
+    function getNextVersion(currentVersion) {
+      const parts = currentVersion.split(".").map(Number);
+      parts[2]++;
+      if (parts[2] > 9) {
+        parts[2] = 0;
+        parts[1]++;
+      }
+      if (parts[1] > 9) {
+        parts[1] = 0;
+        parts[0]++;
+      }
+      return parts.join(".");
+    }
+
+    loadUpdate();
+  </script>
+</body>
+</html>

@@ -1,23 +1,17 @@
 
-📣Now you can add a profile picture to your account. .✅
-الآن يمكنك إضافة صورة شخصية إلى حسابك.
-📍Our social media accounts have been added. ✅ 
-تم اضافة حساباتنا على مواقع التواصل الاجتماعي.
-📍Added the display of profile pictures in the user list. ✅
-تمت إضافة عرض صور الملف الشخصي في قائمة المستخدم.
-تمت إضافة إشعار إلى الصفحة العامة عند تلقي رسالة جديدة.
-🔸The look and feel of the chat page has changed. ✅
- تم وغير شكل و نظام صفحة الدردشة 
-🔸The site evaluation feature has been added to general page. ✅
-تمت إضافة ميزة تقييم الموقع إلى الصفحة العامة. 
-🔹The shape of the icons and some text styles have been changed. ✅
-تم تغير شكل الايقونات و بعض ستيلات النصوص
-🔹Features have been added to the site and to those with wide screens.✅
-تمت إضافة مميزات للموقع و اصحاب ذات الشاشات العريضة.
-🔹New items have been added to the store, the prices of some items have been changed, and you can now sell items to buy them before. ✅
-تمت إضافة عناصر جديدة إلى المتجر، وتم تغيير أسعار بعض العناصر، ويمكنك الآن بيع العناصر التي شريتها من قبل.
-🔹A menu button has been added to the general page, which contains the logout and settings buttons. ✅
-تمت إضافة زر القائمة (menu) إلى الصفحة العامة(general)، والتي تحتوي على أزرار تسجيل الخروج والإعدادات.
+📣You can like user accounts.
+يمكنك وضع لايك على حسابات المستخدمين 
+📍New items have been add to the marketplace. 
+تم اضافة عناصر جديدة للمتجر
+📍A new currency called fall token. 
+تم اضافة عملة جديدة fall token
+📍User list format has been defined. 
+تم تحديث قائمة المستخدمين 
+📍You can, what users own. 
+يمكنك قراءة مايمتلك المستخدمين من عناصر
+  
+  
+  
   
   
 bug fixed....

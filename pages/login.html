@@ -11,7 +11,7 @@
       window.dataLayer = window.dataLayer || [];  
       function gtag(){dataLayer.push(arguments);}  
       gtag('js', new Date());  
-      gtag('config', 'F18SFG2LMZ');  
+      gtag('config', 'F18SFG2LMZ');           
     </script>  
   <style>    
     @font-face {    
@@ -297,7 +297,7 @@
 <div class="sticky-header"> 
   <div class="header">  
     <button class="back" id="backButton" type="button" onclick="goBack()"></button>   
-    Login <img src="../imag/gif_test-83efe.gif" height="30">  
+    Login <img src="../icons/gif_test-83efe.gif" height="30">  
   </div>  
 </div>
   <div class="content">  
@@ -319,14 +319,14 @@
           <br>      
           <div class="description">    
             <div class="button">     
-              <button type="submit" id="greenButton"> Login <img src="../imag/enter-icon-31b5a.png" height="15"></button>    
+              <button type="submit" id="greenButton"> Login <img src="../icons/enter-icon-31b5a.png" height="15"></button>    
             </div>     
           </div>
           </div>
 
           <div>     
             <div class="description">    
-              🔸Don't have an account? <a href="Register.html" class="link">Register  <img src="../Emojis/butterfly_gif.gif" height="12px"></a>     
+              🔸Don't have an account? <a href="Register.html" class="link">Register  <img src="../icons/butterfly_gif.gif" height="12px"></a>     
             </div>    
           </div>    
         </form>
@@ -345,7 +345,7 @@
      
       <div class="login-image"> 
       <div class="description">
-        <img src="../imag/tutorial_end-fbdd6.png" alt="Login Image">
+        <img src="../icons/tutorial_end-fbdd6.png" alt="Login Image">
       </div>
       </div>
     </div>
@@ -354,7 +354,7 @@
   <!-- Custom Alert -->
   <div id="customAlert" class="custom-alert">
     <div class="custom-alert-content">
-      <img src="../Emojis/donut.png" class="custom-alert-icon" alt="Success">
+      <img src="../icons/donut.png" class="custom-alert-icon" alt="Success">
       <div class="custom-alert-title" id="alertTitle">Welcome Back!</div>
       <div class="custom-alert-message" id="alertMessage"></div>
       <button class="custom-alert-button" id="alertButton">Continue</button>
@@ -363,7 +363,62 @@
   
   <!-- زر تسجيل الخروج (يظهر فقط إذا كان المستخدم مسجلاً) -->  
   <button id="logoutButton" style="display: none; margin-top: 20px;">Log out</button>    
+  <script>
+  // دالة مبسطة لحفظ واسترجاع الصور باستخدام الرابط كمفتاح
+  function cacheImages() {
+    // تحديد جميع الصور في الصفحة
+    const images = document.querySelectorAll('img, [style*="background-image"]');
+    
+    images.forEach(element => {
+      let imageUrl;
+      
+      // الحصول على رابط الصورة سواء من src أو من background-image
+      if (element.tagName === 'IMG') {
+        imageUrl = element.src;
+      } else {
+        const style = window.getComputedStyle(element);
+        imageUrl = style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+      }
+      
+      // تخطي الروابط الفارغة أو روابط البيانات (data URLs)
+      if (!imageUrl || imageUrl.startsWith('data:')) return;
+      
+      // التحقق مما إذا كانت الصورة مخزنة مسبقاً
+      const cachedImage = localStorage.getItem(imageUrl);
+      
+      if (cachedImage) {
+        // إذا كانت الصورة مخزنة، نستخدمها مباشرة
+        if (element.tagName === 'IMG') {
+          element.src = cachedImage;
+        } else {
+          element.style.backgroundImage = `url(${cachedImage})`;
+        }
+      } else {
+        // إذا لم تكن مخزنة، نحملها ونخزنها
+        fetch(imageUrl)
+          .then(response => response.blob())
+          .then(blob => {
+            const reader = new FileReader();
+            reader.onload = function() {
+              localStorage.setItem(imageUrl, this.result);
+              if (element.tagName === 'IMG') {
+                element.src = this.result;
+              } else {
+                element.style.backgroundImage = `url(${this.result})`;
+              }
+            };
+            reader.readAsDataURL(blob);
+          })
+          .catch(error => {
+            console.error('Error caching image:', error);
+          });
+      }
+    });
+  }
   
+  // تشغيل الدالة عند تحميل الصفحة
+  window.addEventListener('DOMContentLoaded', cacheImages);
+</script>
   <script type="module">    
     import { db, auth } from '../scripts/main.js'; // تأكد من تصدير auth من main.js
     import { 

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <title>Marketplace</title>  
     <link rel="stylesheet" href="../style/main.css">  
-    <link rel="icon" type="png" href="../imag/marketplace-icon-7f96f.png">  
+    <link rel="icon" type="png" href="../icons/marketplace-icon-7f96f.png">  
         <script async src="https://www.googletagmanager.com/gtag/js?id=F18SFG2LMZ"></script>  
     <script>  
       window.dataLayer = window.dataLayer || [];  
@@ -108,15 +108,18 @@
             font-size: auto;  
             text-shadow:0px 1px 0px #000000;  
         }  
+.itemPrice {
+    color: #FFD952;
+    text-shadow: 0px 1px 0px #3A2700;
+    font-size: auto;
+    animation: colorCycle 2s ease-in-out infinite;
+}
 
-        .itemPrice {  
-            color: #FFD952;  
-            text-shadow:0px 1px 0px #3A2700;  
-            background: #916204;  
-            border: 2px solid #A6730F;  
-            font-size: auto;  
-        }  
-
+@keyframes colorCycle {
+    0%   { color: #FFD952; }
+    50%  { color: #FFD18A; }
+    100% { color: #FFD952; }
+} 
         .price-label {  
             color: #FFFFFF;  
         }  
@@ -149,7 +152,7 @@
             display: inline-block;
             padding: 10px;
             margin:auto;
-            transition: background-color,border,box-shadow 0.5s;
+            transition: all 0.5s;
         }
 
         .purpleButton:hover {
@@ -176,7 +179,7 @@
             padding: 10px;
             color: #FFFFFF;
             margin: auto;
-            transition: background-color,border,box-shadow 0.5s;
+            transition: all 0.5s;
         }
         
         .goldeButton:hover {
@@ -203,7 +206,7 @@
             padding: 10px;
             color: #FFFFFF;
             margin: auto;
-            transition: background-color,border,box-shadow 0.5s;
+            transition: all 0.5s;
         }
 
         /* Tooltip styles */
@@ -248,8 +251,9 @@
             float: left;
             margin-right: 10px;
             margin-bottom: 5px;
-            width: 40px;
+            width: auto;
             height: 40px;
+            border-radius: 5px;
         }
 
         .shop-item:hover .tooltip {
@@ -436,54 +440,179 @@ h3{
     color: #1DFF00;
     font-family: minecraft-five;
 }
+#pointsToConvert{
+    outline: none;
+    background-color: #ECECEC00;
+    transform: none;
+    width: auto;
+    box-shadow: none;
+    transition: all 0.5s;
+}
+#pointsToConvert:hover{
+    border: 2px solid #5F5F5F;
+    box-shadow: 0 2px 10px #5F5F5F;
+}
+#convertBtn{
+    border: 2px solid #FFBF68;
+    background-color: #FFA200;
+    color: #FFFFFF;
+    box-shadow: 0 2px 0 #B76E0B;
+    width: 100%;
+    height: auto;
+    font-size: 16px;
+    padding: 10px;
+    text-shadow: 1px 1px 0.9px #9D5B00;
+    transition: background-color 0.5s;
+}
+#convertBtn:hover{
+    background-color: #9D5B00;
+    box-shadow: none;
+    padding: 11px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.new-badge {
+    position: absolute;
+    top:-10px;
+    right:-13px;
+    width: 18px;
+    height: 18px;
+                background: url(../icons/icon_new_item.png);
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+    color: white;
+    font-size: 9px;
+    padding: 2px 5px;
+    border-radius: 3px;
+
+    z-index: 1;
+}
+
+.shop-item {
+    position: relative;
+}
+.particle {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background-color: #FFC208;
+  
+  animation: riseUp 3s ease-out forwards;
+  pointer-events: none;
+  box-shadow: 2px 1px 13px 2px rgba(255, 194, 8, 0.92);
+-webkit-box-shadow: 2px 1px 13px 2px rgba(255, 194, 8, 0.92);
+-moz-box-shadow: 2px 1px 13px 2px rgba(255, 194, 8, 0.92);
+  z-index: 1;
+}
+
+@keyframes riseUp {
+  0% {
+    transform: translateY(0) scale(1.3);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-60px) scale(0.5);
+    opacity: 0;
+  }
+}
+#header {
+width: 100%;
+  background-color: #FFFEBDBF;
+  backdrop-filter: blur(8px); 
+  border: 2px solid #FFC208;
+  box-shadow: 0 4px 0 #6D511F;
+  transition: all 0.5s;
+  color: goldenrod;
+  text-shadow: none; 
+ text-shadow: 0 2px 0 #946F1A; 
+}
     </style>  
 </head>  
 
 <body>  
 <div class="sticky-header"> 
-    <div class="header">    
+            <div class="marketplace-container ">
+    <div class="header" id="header">    
         <button class="back" id="backButton" type="button" onclick="goBack()"></button>  
-        Marketplace <img src="../imag/marketplace-icon-7f96f.png" height="20">  
+        Marketplace
+        <img src="../icons/marketplace_new_logo.png"loading="lazy" height="20">
     </div>   
+            </div>
 </div> 
     <div class="content">   
-        <h1 id="welcomeMessage"></h1>  
-        <div class="points">  
-            <div class="title">My coins: <span id="points">0</span> <img src="../new_emojis/coinss_gif.gif" alt="Coin" height="15"></div>  
+        <span id="welcomeMessage"></span>  
+<div class="points">
+  <div class="title">
+    your wallet : <span id="points">
+      <img class="lodinimg" src="../icons/loading_spinner.gif" height="13" /></span>
+    <span id="points-float" style="display: inline-block; position: relative;"></span><img src="../icons/coinss_gif.gif" loading="lazy" height="15">|
+    <span id="fallTokens">
+      <img class="lodinimg" src="../icons/loading_spinner.gif" height="13" /></span>
+    <img src="../icons/fall_token.png" alt="Fall Token" height="15">
+  </div>
+</div>
+
+<div class="description"> 
+                <div class="title">Currency Exchange
+                </div>
+                <img src="../icons/coinss_gif.gif" alt="Coin" height="15">➡️<img src="../icons/fall_token.png" alt="Fall Token" height="15">
+            
+                    
+                    <div class="input-group">
+                        <label for="pointsToConvert" style="color: white;">Coins to Convert:</label>
+                        <input type="number" id="pointsToConvert" min="1" step="1" placeholder="Enter coins 1×××">
+                        <span class="coin-icon"><img src="../icons/coinss_gif.gif" height="15"></span>
+                    </div>
+                    
+                    <div class="conversion-rate">
+                    </div>
+                    <br> 
+                    <div class="result-group">
+                        <label style="color: wheat;">You will receive:</label>
+                        <span  id="tokensResult" style="color: orange;">0</span> <img src="../icons/fall_token.png" alt="Fall Token" height="15">
+                    </div>
+                    </br> 
+                    <div class="button"> 
+                    <button id="convertBtn" class="convert-button">Convert</button>
+</div>
+</div>
+<div class="title"> boxes</div>
+<div class="description"> 
+buy any box here.
             <div class="loot-boxes">  
                 <!-- صناديق loot buttons -->  
                 <div class="description">   
-                    <div class="title"> silver box <img src="../Emojis/crate_mythical.png" height="13"></div>   
+                    <div class="title"> silver box <img src="../icons/crate_mythical.png" height="13"></div>   
                     You can get between 1 to 1000 coins.  
-                    <button class="silverButton" id="cheapBox" onclick="openLootBox('cheap')">Silver Box (199<img src="../new_emojis/coinss_gif.gif" alt="Coin" height="14">)</button>  
+                    <button class="silverButton" id="cheapBox" onclick="openLootBox('cheap')">Silver Box (199<img src="../icons/coinss_gif.gif" alt="Coin" height="14">)</button>  
                 </div>  
                 <div class="description">   
-                    <div class="title"> gold box <img src="../Emojis/crate_rare.png" height="13"></div>   
+                    <div class="title"> gold box <img src="../icons/crate_rare.png" height="13"></div>   
                     You can get between 99 to 3000 coins.
-                    <button class="goldeButton" id="mediumBox" onclick="openLootBox('medium')">Gold Box (2000<img src="../new_emojis/coinss_gif.gif" alt="Coin" height="14">)</button>
+                    <button class="goldeButton" id="mediumBox" onclick="openLootBox('medium')">Gold Box (2000<img src="../icons/coinss_gif.gif" alt="Coin" height="14">)</button>
                 </div>
 
                 <div class="description">   
-                    <div class="title">Epic box <img src="../Emojis/crate_epic.png" height="15"></div>   
+                    <div class="title">Epic box <img src="../icons/crate_epic.png" height="15"></div>   
                     You can get between 1 to 90k coins.
-                    <button class="purpleButton" id="expensiveBox" onclick="openLootBox('expensive')">Epic Box (10.1K <img src="../new_emojis/Alot_of_coins.gif" alt="Coin" height="14">)</button>
+                    <button class="purpleButton" id="expensiveBox" onclick="openLootBox('expensive')">Epic Box (10.1K <img src="../icons/Alot_of_coins.gif" alt="Coin" height="14">)</button>
                 </div>
             </div>
+</div>
             <div class="features-section">
-                <div class="title">Account Features <img src="../imag/experimental-features-icon-dca93.png" height="15"></div>
+                <div class="title">Account Features <img src="../icons/experimental-features-icon-dca93.png" height="15"></div>
                 <div class="description">
          Unlock special features for your account!
-    <h3>
-        soon.
-    </h3>
+         <p style="color: lawngreen;">soon.</p>
+         <p style="color: lawngreen;">قريبا.</p>
                         <div class="features-list">
-                            
+                        
                     <!-- سيتم إضافة الميزات هنا بشكل ديناميكي -->
                 </div>
                 </div>
             </div>
                         
-            <div class="title"> items shop <img src="../Emojis/sparkles_gif.gif" height="15" ></div>
+            <div class="title"> items shop <img src="../icons/sparkles_gif.gif" height="15" ></div>
             
 
                 <div class="shop">
@@ -496,7 +625,33 @@ h3{
             
         </div>
     </div>
-
+<script>
+  const button = document.getElementById('header');
+  const container = document.querySelector('.marketplace-container');
+  
+  function createParticle() {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    
+    // توليد موقع عشوائي حول الزر
+    const padding = 10;
+    const randomX = Math.random() * (button.offsetWidth + padding * 2) - padding;
+    const randomY = Math.random() * (button.offsetHeight + padding * 2) - padding;
+    
+    particle.style.left = `${randomX}px`;
+    particle.style.top = `${randomY}px`;
+    
+    container.appendChild(particle);
+    
+    // حذف بعد انتهاء الأنميشن
+    setTimeout(() => {
+      particle.remove();
+    }, 3000);
+  }
+  
+  // توليد جزيئات بشكل مستمر
+  setInterval(createParticle, 300);
+</script>
     <script type="module">  
         import { db } from '../scripts/main.js';   
         import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";   
@@ -512,7 +667,7 @@ h3{
 
         const accountFeatures = [
         
-        
+
         ];
 
         function formatNumber(num) {  
@@ -523,23 +678,29 @@ h3{
             return num;  
         }  
 
-        async function getUserData() {  
-            const welcomeMsg = document.getElementById('welcomeMessage');  
-            const pointsElem = document.getElementById('points');  
-
-            if (!welcomeMsg || !pointsElem) {  
-                console.error("Elements not found!");  
-                return;  
-            }  
-
-            const userDocRef = doc(db, 'users', activeUser);  
-            const userDoc = await getDoc(userDocRef);  
-
-            if (userDoc.exists()) {  
-                const user = userDoc.data();  
-                welcomeMsg.innerText = `Welcome ${activeUser}!`;  
-                pointsElem.innerText = formatNumber(user.points);    
-
+    async function getUserData() {
+    const welcomeMsg = document.getElementById('welcomeMessage');
+    const pointsElem = document.getElementById('points');
+    const fallTokensElem = document.getElementById('fallTokens');
+    
+    if (!welcomeMsg || !pointsElem || !fallTokensElem) {
+        console.error("Elements not found!");
+        return;
+    }
+    
+    const userDocRef = doc(db, 'users', activeUser);
+    const userDoc = await getDoc(userDocRef);
+    
+    if (userDoc.exists()) {
+        const user = userDoc.data();
+        welcomeMsg.innerText = `Welcome ${activeUser}!`;
+        pointsElem.innerText = formatNumber(user.points);
+        
+        // تحديث عرض Fall Tokens
+        fallTokensElem.innerText = user.fallTokens ? formatNumber(user.fallTokens) : '0';
+        
+        
+            
                 // تحديث حالة العناصر المشتراة
                 const purchasedItems = user.purchasedItems || [];  
                 document.querySelectorAll('.shop-item').forEach(item => {  
@@ -550,9 +711,10 @@ h3{
                     if (purchasedItems.includes(itemName)) {  
                         buyButton.innerText = "Purchased ";  
                         let img = document.createElement("img");  
-                        img.src = "../Emojis/check.png";  
+                        img.src = "../icons/check.png";  
                         img.width = 10;  
                         img.height = 10;  
+                        img.loading = "lazy";
                         buyButton.appendChild(img);  
                         buyButton.disabled = true;  
                         
@@ -562,7 +724,7 @@ h3{
                             const sellPrice = Math.floor(fullPrice / 2);
                             sellButton.dataset.sellPrice = sellPrice;
                             sellButton.dataset.itemName = itemName;
-                            sellButton.innerHTML = `Sell ${formatNumber(sellPrice)}<img src="../new_emojis/coinss_gif.gif" height="12">`;
+                            sellButton.innerHTML = `Sell ${formatNumber(sellPrice)}<img src="../icons/coinss_gif.gif" height="12">`;
                         }
                     } else if (sellButton) {
                         sellButton.style.display = 'none';
@@ -578,7 +740,7 @@ h3{
                     if (unlockedFeatures.includes(featureId)) {
                         featureItem.classList.add('unlocked');
                         featureButton.classList.add('unlocked');
-                        featureButton.innerHTML = "Purchased <img src='../Emojis/check.png' width='10' height='10'>";
+                        featureButton.innerHTML = "Purchased <img src='../icons/check.png' width='10' height='10'loading=>";
                     }
                 });
             } else {  
@@ -592,245 +754,273 @@ h3{
             createFeatureItems();
             getUserData();  
         });  
-
-        function createShopItems() {  
-            const shopContainer = document.querySelector('.shop');  
-            shopItems.sort((a, b) => b.price - a.price);  
-
-            shopItems.forEach(item => {  
-                const shopItem = document.createElement('div');  
-                shopItem.classList.add('shop-item');  
-
-                // إنشاء tooltip للوصف
-                const tooltip = document.createElement('div');
-                tooltip.classList.add('tooltip');
-                
-                const tooltipImg = document.createElement('img');
-                tooltipImg.src = item.imageUrl;
-                tooltipImg.alt = item.name;
-                tooltip.appendChild(tooltipImg);
-                
-                const tooltipText = document.createElement('span');
-                tooltipText.textContent = item.description || "No description available";
-                tooltip.appendChild(tooltipText);
-                
-                shopItem.appendChild(tooltip);
-
-                const imgShop = document.createElement('div');  
-                imgShop.classList.add('img-shop');  
-                const img = document.createElement('img');  
-                img.src = item.imageUrl;  
-                img.alt = item.name;  
-                img.height = 50;  
-                imgShop.appendChild(img);  
-
-                const itemName = document.createElement('p');  
-                itemName.classList.add('item-name');  
-                itemName.innerText = item.name;  
-
-                const priceLabel = document.createElement('p');  
-                priceLabel.classList.add('price-label');  
-                priceLabel.innerHTML = `Price: <span class="itemPrice" data-full-price="${item.price}">${formatNumber(item.price)}</span><img src="../new_emojis/coinss_gif.gif" alt="Coin" height="12">`;  
-
-                const buyButton = document.createElement('button');  
-                buyButton.classList.add('buyButton');  
-                buyButton.innerText = "Buy";  
-
-                const sellButton = document.createElement('button');
-                sellButton.classList.add('sellButton');
-                sellButton.style.display = 'none';
-                sellButton.innerHTML = `Sell ${formatNumber(Math.floor(item.price / 2))}<img src="../new_emojis/coinss_gif.gif" height="12">`;
-                sellButton.dataset.sellPrice = Math.floor(item.price / 2);
-                sellButton.dataset.itemName = item.name;
-
-                buyButton.addEventListener('click', async function () {  
-                    const itemPrice = item.price;  
-                    const userDocRef = doc(db, 'users', activeUser);  
-                    const userDoc = await getDoc(userDocRef);  
-
-                    if (userDoc.exists()) {  
-                        let user = userDoc.data();  
-                        let purchasedItems = user.purchasedItems || [];  
-
-                        if (purchasedItems.includes(item.name)) {  
-                            alert("You already purchased this item!");  
-                            return;  
-                        }  
-
-                        if (user.points >= itemPrice) {
-    user.points -= itemPrice;
-    purchasedItems.push(item.name);
-    await updateDoc(userDocRef, {
-        points: user.points,
-        purchasedItems: purchasedItems
-    });
+function createShopItems() {
+    const shopContainer = document.querySelector('.shop');
+    shopItems.sort((a, b) => b.price - a.price);
     
-    // تشغيل الصوت عند الشراء
-    const purchaseSound = new Audio("../sounds/purchase_confirmation.ogg");
-    purchaseSound.play();
+    // Get items the user has already viewed from localStorage
+    const viewedItems = JSON.parse(localStorage.getItem('viewedShopItems')) || [];
     
-    document.getElementById('points').innerText = formatNumber(user.points);
-    this.innerText = "Purchased ";
-    let img = document.createElement("img");
-    img.src = "../Emojis/check.png";
-    img.width = 10;
-    img.height = 10;
-    this.appendChild(img);
-    this.disabled = true;
-    
-    sellButton.style.display = 'inline-block';
-    
-    alert(`Purchase Successful!\nYou bought ${item.name} for ${formatNumber(item.price)} coins!`);
-}else {  
-                            alert(`Not Enough Coins!\nYou need ${formatNumber(item.price - user.points)} more coins to buy this item.`);
-                        }  
-                    }  
-                });  
-                
-                sellButton.addEventListener('click', async function() {
-                    const sellPrice = parseInt(this.dataset.sellPrice);
-                    const itemName = this.dataset.itemName;
-                    
-                    const userDocRef = doc(db, 'users', activeUser);
-                    const userDoc = await getDoc(userDocRef);
-                    
-                    if (userDoc.exists()) {
-                        let user = userDoc.data();
-                        let purchasedItems = user.purchasedItems || [];
-                        
-                        const itemIndex = purchasedItems.indexOf(itemName);
-                        if (itemIndex > -1) {
-                            purchasedItems.splice(itemIndex, 1);
-                            user.points += sellPrice;
-                            
-                            await updateDoc(userDocRef, { 
-                                points: user.points, 
-                                purchasedItems: purchasedItems 
-                            });
-                            
-                            document.getElementById('points').innerText = formatNumber(user.points);
-                            buyButton.disabled = false;
-                            buyButton.innerText = "Buy";
-                            buyButton.innerHTML = "Buy";
-                            this.style.display = 'none';
-                            
-                            alert(`Item Sold!\nYou sold ${itemName} for ${formatNumber(sellPrice)} coins!`);
-                        }
-                    }
-                });
-
-                shopItem.appendChild(imgShop);  
-                shopItem.appendChild(itemName);  
-                shopItem.appendChild(priceLabel);  
-                shopItem.appendChild(buyButton);  
-                shopItem.appendChild(sellButton);
-                shopContainer.appendChild(shopItem);  
-            });  
-        }  
-
-        function createFeatureItems() {
-            const featuresContainer = document.querySelector('.features-list');
+    shopItems.forEach(item => {
+        const shopItem = document.createElement('div');
+        shopItem.classList.add('shop-item');
+        
+        // Create tooltip for description
+        const tooltip = document.createElement('div');
+        tooltip.classList.add('tooltip');
+        
+        const tooltipImg = document.createElement('img');
+        tooltipImg.src = item.imageUrl;
+        tooltipImg.alt = item.name;
+        tooltip.appendChild(tooltipImg);
+        
+        const tooltipText = document.createElement('span');
+        tooltipText.textContent = item.description || "No description available";
+        tooltip.appendChild(tooltipText);
+        
+        shopItem.appendChild(tooltip);
+        
+        // Add "New" badge if item hasn't been viewed
+        const isNewItem = !viewedItems.includes(item.name);
+        if (isNewItem) {
+            const newBadge = document.createElement('span');
+            newBadge.classList.add('new-badge');
+            newBadge.textContent = ' ';
+            shopItem.appendChild(newBadge);
             
-            accountFeatures.forEach(feature => {
-                const featureItem = document.createElement('div');
-                featureItem.classList.add('feature-item');
-                featureItem.dataset.featureId = feature.id;
-                
-                const featureBadge = document.createElement('div');
-                featureBadge.classList.add('feature-badge');
-                featureBadge.textContent = "OWNED";
-                featureItem.appendChild(featureBadge);
-                
-                // إنشاء tooltip للوصف
-                const tooltip = document.createElement('div');
-                tooltip.classList.add('tooltip');
-                
-                const tooltipImg = document.createElement('img');
-                tooltipImg.src = feature.imageUrl;
-                tooltipImg.alt = feature.name;
-                tooltip.appendChild(tooltipImg);
-                
-                const tooltipText = document.createElement('span');
-                tooltipText.textContent = feature.description || "No description available";
-                tooltip.appendChild(tooltipText);
-                
-                featureItem.appendChild(tooltip);
-
-                const imgFeature = document.createElement('div');
-                imgFeature.classList.add('feature-img');
-                const img = document.createElement('img');
-                img.src = feature.imageUrl;
-                img.alt = feature.name;
-                img.height = 50;
-                imgFeature.appendChild(img);
-                featureItem.appendChild(imgFeature);
-
-                const featureName = document.createElement('p');
-                featureName.classList.add('feature-name');
-                featureName.innerText = feature.name;
-                featureItem.appendChild(featureName);
-
-                const priceLabel = document.createElement('p');
-                priceLabel.classList.add('price-label');
-                priceLabel.innerHTML = `Price: <span class="feature-price" data-full-price="${feature.price}">${formatNumber(feature.price)}</span><img src="../new_emojis/coinss_gif.gif" alt="Coin" height="12">`;
-                featureItem.appendChild(priceLabel);
-
-                const featureButton = document.createElement('button');
-                featureButton.classList.add('feature-button');
-                featureButton.innerText = "Buy";
-                featureButton.dataset.featureId = feature.id;
-                featureButton.dataset.price = feature.price;
-
-                featureButton.addEventListener('click', async function() {
-                    const featureId = this.dataset.featureId;
-                    const featurePrice = parseInt(this.dataset.price);
-                    
-                    const userDocRef = doc(db, 'users', activeUser);
-                    const userDoc = await getDoc(userDocRef);
-                    
-                    if (userDoc.exists()) {
-                        const user = userDoc.data();
-                        const unlockedFeatures = user.unlockedFeatures || [];
-                        
-                        if (unlockedFeatures.includes(featureId)) {
-                            alert("You already have this feature unlocked!");
-                            return;
-                        }
-                        
-                        if (user.points >= itemPrice) {
-    user.points -= itemPrice;
-    purchasedItems.push(item.name);
-    await updateDoc(userDocRef, {
-        points: user.points,
-        purchasedItems: purchasedItems
-    });
-    
-    // تشغيل الصوت عند الشراء
-    const purchaseSound = new Audio("../sounds/purchase_confirmation.ogg");
-    purchaseSound.play();
-    
-    document.getElementById('points').innerText = formatNumber(user.points);
-    this.innerText = "Purchased ";
-    let img = document.createElement("img");
-    img.src = "../Emojis/check.png";
-    img.width = 10;
-    img.height = 10;
-    this.appendChild(img);
-    this.disabled = true;
-    
-    sellButton.style.display = 'inline-block';
-    
-    alert(`Purchase Successful!\nYou bought ${item.name} for ${formatNumber(item.price)} coins!`);
-}else {
-                            alert(`Not Enough Coins!\nYou need ${formatNumber(featurePrice - user.points)} more coins to unlock this feature.`);
-                        }
-                    }
-                });
-                
-                featureItem.appendChild(featureButton);
-                featuresContainer.appendChild(featureItem);
+            // When item is clicked, add to viewed items
+            shopItem.addEventListener('click', function() {
+                if (!viewedItems.includes(item.name)) {
+                    viewedItems.push(item.name);
+                    localStorage.setItem('viewedShopItems', JSON.stringify(viewedItems));
+                    newBadge.style.display = 'none';
+                }
             });
         }
+        
+        const imgShop = document.createElement('div');
+        imgShop.classList.add('img-shop');
+        const img = document.createElement('img');
+        img.src = item.imageUrl;
+        img.alt = item.name;
+        img.height = 50;
+        img.loading = "lazy";
+        imgShop.appendChild(img);
+        
+        const itemName = document.createElement('p');
+        itemName.classList.add('item-name');
+        itemName.innerText = item.name;
+        
+        const priceLabel = document.createElement('p');
+        priceLabel.classList.add('price-label');
+        priceLabel.innerHTML = `Price: <span class="itemPrice" data-full-price="${item.price}">${formatNumber(item.price)}</span><img src="../icons/coinss_gif.gif" alt="Coin" height="12">`;
+        
+        const buyButton = document.createElement('button');
+        buyButton.classList.add('buyButton');
+        buyButton.innerText = "Buy";
+        
+        const sellButton = document.createElement('button');
+        sellButton.classList.add('sellButton');
+        sellButton.style.display = 'none';
+        sellButton.innerHTML = `Sell ${formatNumber(Math.floor(item.price / 2))}<img src="../icons/coinss_gif.gif" height="12">`;
+        sellButton.dataset.sellPrice = Math.floor(item.price / 2);
+        sellButton.dataset.itemName = item.name;
+        
+        buyButton.addEventListener('click', async function() {
+            const itemPrice = item.price;
+            const userDocRef = doc(db, 'users', activeUser);
+            const userDoc = await getDoc(userDocRef);
+            
+            if (userDoc.exists()) {
+                let user = userDoc.data();
+                let purchasedItems = user.purchasedItems || [];
+                
+                if (purchasedItems.includes(item.name)) {
+                    alert("You already purchased this item!");
+                    return;
+                }
+                
+                if (user.points >= itemPrice) {
+                    user.points -= itemPrice;
+                    purchasedItems.push(item.name);
+                    await updateDoc(userDocRef, {
+                        points: user.points,
+                        purchasedItems: purchasedItems
+                    });
+                    
+                    // Play purchase sound
+                    const purchaseSound = new Audio("../sounds/purchase_confirmation.ogg");
+                    purchaseSound.play();
+                    
+                    document.getElementById('points').innerText = formatNumber(user.points);
+                    this.innerText = "Purchased ";
+                    let img = document.createElement("img");
+                    img.src = "../icons/check.png";
+                    img.width = 10;
+                    img.height = 10;
+                    this.appendChild(img);
+                    this.disabled = true;
+                    
+                    sellButton.style.display = 'inline-block';
+                    
+                    alert(`Purchase Successful!\nYou bought ${item.name} for ${formatNumber(item.price)} coins!`);
+                } else {
+                    alert(`Not Enough Coins!\nYou need ${formatNumber(item.price - user.points)} more coins to buy this item.`);
+                }
+            }
+        });
+        
+        sellButton.addEventListener('click', async function() {
+            const sellPrice = parseInt(this.dataset.sellPrice);
+            const itemName = this.dataset.itemName;
+            
+            const userDocRef = doc(db, 'users', activeUser);
+            const userDoc = await getDoc(userDocRef);
+            
+            if (userDoc.exists()) {
+                let user = userDoc.data();
+                let purchasedItems = user.purchasedItems || [];
+                
+                const itemIndex = purchasedItems.indexOf(itemName);
+                if (itemIndex > -1) {
+                    purchasedItems.splice(itemIndex, 1);
+                    user.points += sellPrice;
+                    
+                    await updateDoc(userDocRef, {
+                        points: user.points,
+                        purchasedItems: purchasedItems
+                    });
+                    
+                    document.getElementById('points').innerText = formatNumber(user.points);
+                    buyButton.disabled = false;
+                    buyButton.innerText = "Buy";
+                    buyButton.innerHTML = "Buy";
+                    this.style.display = 'none';
+                    
+                    alert(`Item Sold!\nYou sold ${itemName} for ${formatNumber(sellPrice)} coins!`);
+                }
+            }
+        });
+        
+        shopItem.appendChild(imgShop);
+        shopItem.appendChild(itemName);
+        shopItem.appendChild(priceLabel);
+        shopItem.appendChild(buyButton);
+        shopItem.appendChild(sellButton);
+        shopContainer.appendChild(shopItem);
+    });
+}
+  function createFeatureItems() {
+    const featuresContainer = document.querySelector('.features-list');
+    
+    accountFeatures.forEach(feature => {
+        const featureItem = document.createElement('div');
+        featureItem.classList.add('feature-item');
+        featureItem.dataset.featureId = feature.id;
+        
+        const featureBadge = document.createElement('div');
+        featureBadge.classList.add('feature-badge');
+        featureBadge.textContent = "OWNED";
+        featureItem.appendChild(featureBadge);
+        
+        // إنشاء tooltip للوصف
+        const tooltip = document.createElement('div');
+        tooltip.classList.add('tooltip');
+        
+        const tooltipImg = document.createElement('img');
+        tooltipImg.src = feature.imageUrl;
+        tooltipImg.alt = feature.name;
+        tooltip.appendChild(tooltipImg);
+        
+        const tooltipText = document.createElement('span');
+        tooltipText.textContent = feature.description || "No description available";
+        tooltip.appendChild(tooltipText);
+        
+        featureItem.appendChild(tooltip);
+        
+        const imgFeature = document.createElement('div');
+        imgFeature.classList.add('feature-img');
+        const img = document.createElement('img');
+        img.src = feature.imageUrl;
+        img.alt = feature.name;
+        img.height = 50;
+        imgFeature.appendChild(img);
+        featureItem.appendChild(imgFeature);
+        
+        const featureName = document.createElement('p');
+        featureName.classList.add('feature-name');
+        featureName.innerText = feature.name;
+        featureItem.appendChild(featureName);
+        
+        const priceLabel = document.createElement('p');
+        priceLabel.classList.add('price-label');
+        priceLabel.innerHTML = `Price: <span class="feature-price" data-full-price="${feature.itemPrice}">${formatNumber(feature.itemPrice)}</span><img src="../icons/coinss_gif.gif" alt="Coin" height="12">`;
+        featureItem.appendChild(priceLabel);
+        
+        const featureButton = document.createElement('button');
+        featureButton.classList.add('feature-button');
+        featureButton.innerText = "Buy";
+        featureButton.dataset.featureId = feature.id;
+        featureButton.dataset.price = feature.itemPrice;
+        
+        featureButton.addEventListener('click', async function() {
+            const featureId = this.dataset.featureId;
+            const featurePrice = parseInt(this.dataset.price);
+            
+            const userDocRef = doc(db, 'users', activeUser);
+            const userDoc = await getDoc(userDocRef);
+            
+if (userDoc.exists()) {
+    const user = userDoc.data();
+    const unlockedFeatures = user.unlockedFeatures || [];
+    const purchasedItems = user.purchasedItems || []; // ✅ تعريف المصفوفة هنا
+    
+    if (unlockedFeatures.includes(featureId)) {
+        alert("You already have this feature unlocked!");
+        return;
+    }
+    
+    if (user.points >= featurePrice) {
+        user.points -= featurePrice;
+        purchasedItems.push(feature.name);
+        
+        await updateDoc(userDocRef, {
+            points: user.points,
+            purchasedItems: purchasedItems
+        });
+        
+        
+                    // تشغيل الصوت عند الشراء
+                    const purchaseSound = new Audio("../sounds/purchase_confirmation.ogg");
+                    purchaseSound.play();
+                    
+                    document.getElementById('points').innerText = formatNumber(user.points);
+                    this.innerText = "Purchased ";
+                    
+                    let img = document.createElement("img");
+                    img.src = "../icons/check.png";
+                    img.width = 10;
+                    img.height = 10;
+                    this.appendChild(img);
+                    this.disabled = true;
+                    
+                    // تحقق من وجود sellButton قبل استخدامه
+                    const sellButton = document.querySelector('.sell-button');
+                    if (sellButton) {
+                        sellButton.style.display = 'inline-block';
+                    }
+                    
+                    alert(`Purchase Successful!\nYou bought ${feature.name} for ${formatNumber(feature.itemPrice)} coins!`);
+                } else {
+                    alert(`Not Enough Coins!\nYou need ${formatNumber(featurePrice - user.points)} more coins to unlock this feature.`);
+                }
+            }
+        });
+        
+        featureItem.appendChild(featureButton);
+        featuresContainer.appendChild(featureItem);
+    });
+}
 
         // بقية الدوال كما هي ...
         window.openLootBox = function (boxType) {  
@@ -914,6 +1104,66 @@ h3{
                 console.error("Error getting document: ", error);  
             });  
         };  
+        
+        // متغيرات التحويل
+const CONVERSION_RATE = 100000; // 100,000 points = 1 Fall Token
+
+// عناصر DOM
+const pointsInput = document.getElementById('pointsToConvert');
+const tokensResult = document.getElementById('tokensResult');
+const convertBtn = document.getElementById('convertBtn');
+
+// تحديث النتيجة عند تغيير القيمة
+pointsInput.addEventListener('input', updateConversionResult);
+
+// زر التحويل
+convertBtn.addEventListener('click', convertPointsToTokens);
+
+function updateConversionResult() {
+    const points = parseFloat(pointsInput.value) || 0;
+    const tokens = points / CONVERSION_RATE;
+tokensResult.textContent = parseFloat(tokens.toFixed(5)).toString();
+}
+
+async function convertPointsToTokens() {
+    const pointsToConvert = parseInt(pointsInput.value);
+    
+    if (!pointsToConvert || pointsToConvert < 1) {
+        alert("يجب إدخال عدد صحيح من النقاط (1 كحد أدنى)");
+        return;
+    }
+    
+    const userDocRef = doc(db, 'users', activeUser);
+    const userDoc = await getDoc(userDocRef);
+    
+    if (userDoc.exists()) {
+        const user = userDoc.data();
+        
+        if (user.points < pointsToConvert) {
+            alert(`نقاطك غير كافية! تحتاج إلى ${pointsToConvert - user.points} نقطة إضافية`);
+            return;
+        }
+        
+        // حساب Tokens مع تقريب صحيح
+        const tokensToAdd = parseFloat((pointsToConvert / CONVERSION_RATE).toFixed(5));
+        const currentTokens = parseFloat(user.fallTokens || 0);
+        const newTokens = parseFloat((currentTokens + tokensToAdd).toFixed(5));
+        
+        // تحديث قاعدة البيانات
+        await updateDoc(userDocRef, {
+            points: user.points - pointsToConvert,
+            fallTokens: newTokens
+        });
+        
+        // تحديث الواجهة فوراً
+        document.getElementById('points').innerText = formatNumber(user.points - pointsToConvert);
+        document.getElementById('fallTokens').innerText = formatNumber(newTokens);
+        pointsInput.value = '';
+        tokensResult.textContent = '0';
+        
+        alert(`تم التحويل بنجاح!\n${formatNumber(pointsToConvert)} نقطة → ${tokensToAdd} Fall Tokens`);
+    }
+}
     </script>  
     <script>
 window.addEventListener('scroll', function() {

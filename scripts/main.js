@@ -56,3 +56,7 @@ export function closeAlert(button) {
 }
 
 export { db, auth, storage, collection, addDoc, onSnapshot, doc, updateDoc, setDoc };
+// أضف هذا إذا لم يكن موجودًا في ملف main.js
+export const generateUserProfileLink = (userId) => {
+  return `${window.location.origin}/profile.html?user=${userId}`;
+};

@@ -84,187 +84,48 @@
           left: 10px;  
           cursor: pointer;  
           padding: 10px;  
-          background: url(imag/News.png);  
+          background: url(icons/News.png);  
           background-size: contain;  
           background-position: center;  
           background-repeat: no-repeat;  
           z-index: 9999;  
         }  
           
-        /* تصميم زر التحميل الأسطوري */
-        .epic-download-btn {
-          position: relative;
+        /* تصميم زر التحميل البسيط */
+        .download-btn {
           display: block;
           margin: 20px auto;
-          padding: 0;
-          width: 280px;
-          height: 80px;
+          padding: 12px 20px;
+          width: 220px;
           border: none;
-          border-radius: 12px;
-          background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+          border-radius: 8px;
+          background: linear-gradient(to bottom, #FFD700, #FFA500);
           color: #2E2100;
           font-family: minecraft-five;
-          font-size: 18px;
-          font-weight: bold;
-          text-shadow: 0 1px 1px rgba(255,255,255,0.3);
-          cursor: pointer;
-          overflow: hidden;
-          box-shadow: 0 6px 0 #8C6A15, 
-                      0 10px 20px rgba(0,0,0,0.3),
-                      inset 0 1px 1px rgba(255,255,255,0.2);
-          transition: all 0.3s ease;
-          z-index: 1;
-        }
-
-        .epic-download-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 0 #8C6A15, 
-                      0 12px 24px rgba(0,0,0,0.4),
-                      inset 0 1px 1px rgba(255,255,255,0.2);
-        }
-
-        .epic-download-btn:active {
-          transform: translateY(4px);
-          box-shadow: 0 2px 0 #8C6A15, 
-                      0 5px 10px rgba(0,0,0,0.3),
-                      inset 0 1px 1px rgba(255,255,255,0.2);
-        }
-
-        .btn-content {
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
-          padding: 0 20px;
-          z-index: 2;
-          transition: all 0.5s ease;
-        }
-
-        .btn-icon {
-          margin-right: 12px;
-          animation: bounce 2s infinite;
-          transition: all 0.5s ease;
-        }
-
-        .btn-text {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          transition: all 0.5s ease;
-        }
-
-        .main-text {
-          font-size: 18px;
-          line-height: 1.2;
-        }
-
-        .sub-text {
-          font-size: 12px;
-          opacity: 0.8;
-        }
-
-        .btn-glow {
-          position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
-          opacity: 0;
-          transition: opacity 0.5s ease;
-          z-index: 1;
-        }
-
-        .epic-download-btn:hover .btn-glow {
-          opacity: 0.3;
-        }
-
-        .btn-pulse {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          border-radius: 12px;
-          background: rgba(255, 215, 0, 0.4);
-          animation: pulse 2s infinite;
-          opacity: 0;
-          z-index: 0;
-        }
-
-        /* تأثيرات ماينكرافت الجديدة */
-        @keyframes minecraftShrink {
-          0% { transform: scale(1); }
-          50% { transform: scale(0.8); opacity: 0.8; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes minecraftPop {
-          0% { transform: scale(0.5); }
-          70% { transform: scale(1.2); }
-          100% { transform: scale(1); }
-        }
-
-        @keyframes minecraftBreak {
-          0% { transform: scale(1); opacity: 1; }
-          50% { transform: scale(1.1); opacity: 0.8; }
-          100% { transform: scale(0); opacity: 0; }
-        }
-
-        @keyframes minecraftParticles {
-          0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
-          100% { transform: translate(var(--tx), var(--ty)) rotate(360deg); opacity: 0; }
-        }
-
-        .minecraft-loading-text {
-          font-family: minecraft-five;
-          color: #2E2100;
           font-size: 16px;
+          font-weight: bold;
           text-align: center;
-          margin-top: 10px;
-          animation: minecraftShrink 0.5s infinite alternate;
+          text-decoration: none;
+          cursor: pointer;
+          box-shadow: 0 4px 0 #8C6A15;
+          transition: all 0.2s ease;
         }
-
-        .minecraft-dots::after {
-          content: '';
-          animation: minecraftDotAnimation 1.5s infinite;
+        
+        .download-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 0 #8C6A15;
         }
-
-        @keyframes minecraftDotAnimation {
-          0% { content: '.'; }
-          33% { content: '..'; }
-          66% { content: '...'; }
-          100% { content: '.'; }
+        
+        .download-btn:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 0 #8C6A15;
         }
-
-        @keyframes pulse {
-          0% {
-            transform: scale(0.95);
-            opacity: 0;
-          }
-          50% {
-            opacity: 0.4;
-          }
-          100% {
-            transform: scale(1.1);
-            opacity: 0;
-          }
+        
+        .download-btn img {
+          vertical-align: middle;
+          margin-right: 8px;
+          height: 24px;
         }
-
-        @keyframes bounce {
-          0%, 20%, 50%, 80%, 100% {
-            transform: translateY(0);
-          }
-          40% {
-            transform: translateY(-10px);
-          }
-          60% {
-            transform: translateY(-5px);
-          }
-        }
-
 
 .social-icons {
   display: flex;
@@ -312,7 +173,7 @@ box-shadow: 0 2px 0 0 #373AC4;
 
 /* تأثيرات الهافر */
 .social-icon:hover {
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* تصميم متجاوب للشاشات الصغيرة */
@@ -322,13 +183,13 @@ box-shadow: 0 2px 0 0 #373AC4;
   }
   
   .social-icon {
-    width: 45px;
-    height: 45px;
+    width: 35px;
+    height: 35px;
   }
   
   .social-icon img {
-    width: 20px;
-    height: 20px;
+    width: 17px;
+    height: 17px;
   }
 }
 .sticky-header.sticky {
@@ -380,169 +241,182 @@ box-shadow: 0 2px 0 0 #373AC4;
   }  
 
   function downloadApp() {
-    const btn = document.getElementById('downloadBtn');
-    const btnContent = btn.querySelector('.btn-content');
-    
-    // 1. تأثير انكماش ماينكرافت
-    btnContent.style.animation = "minecraftShrink 0.5s forwards";
-    btnContent.querySelector('.btn-text').style.opacity = '0';
-    
-    // 2. تحويل الزر إلى أيقونة التطبيق مع تأثير POP
-    setTimeout(() => {
-      const icon = btnContent.querySelector('.btn-icon');
-      icon.innerHTML = '<img src="imag/icon_panda.png" height="50" style="animation: minecraftPop 0.5s forwards">';
-      icon.style.margin = '0 auto';
-      icon.style.width = '100%';
-      icon.style.textAlign = 'center';
-      
-      // 3. إضافة نص التحميل مع نقاط متحركة
-      setTimeout(() => {
-        const loadingText = document.createElement('div');
-        loadingText.className = 'minecraft-loading-text';
-        loadingText.innerHTML = 'Downloading<span class="minecraft-dots"></span>';
-        btnContent.appendChild(loadingText);
-        
-        // 4. تأثير تفتيت ماينكرافت قبل التحميل
-        setTimeout(() => {
-          // إنشاء جزيئات التفتيت
-          for (let i = 0; i < 8; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'minecraft-particle';
-            particle.style.position = 'absolute';
-            particle.style.width = '10px';
-            particle.style.height = '10px';
-            particle.style.background = 'url(imag/icon_panda.png) center/contain no-repeat';
-            particle.style.opacity = '0';
-            particle.style.setProperty('--tx', `${Math.random() * 100 - 50}px`);
-            particle.style.setProperty('--ty', `${Math.random() * 100 - 50}px`);
-            btn.appendChild(particle);
-            
-            setTimeout(() => {
-              particle.style.animation = 'minecraftParticles 1s forwards';
-            }, i * 100);
-          }
-          
-          // تأثير اختفاء الزر
-          setTimeout(() => {
-            btn.style.animation = 'minecraftBreak 0.5s forwards';
-            
-            // بدء التحميل الفعلي بعد التأثيرات
-            setTimeout(() => {
-              markAsDownloaded();
-              window.location.href = 'mc_co.apk';
-              localStorage.setItem('download_message', 'تم تحميل التطبيق بنجاح!');
-            }, 500);
-          }, 800);
-        }, 1500);
-      }, 500);
-    }, 300);
+    markAsDownloaded();
+    window.location.href = 'mc_co.apk';
   }
 </script>  
 <script>
+  // دالة إنشاء بصمة فريدة للنص
   function generateHash(str) {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
-      hash = (hash << 5) - hash + str.charCodeAt(i);
+      const char = str.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
       hash |= 0;
     }
     return hash.toString();
   }
   
-  function getNextVersion(currentVersion) {
-    if (!currentVersion) return "1.0.0";
-    const parts = currentVersion.split(".").map(Number);
-    parts[2]++;
-    if (parts[2] > 9) {
-      parts[2] = 0;
-      parts[1]++;
-    }
-    if (parts[1] > 9) {
-      parts[1] = 0;
-      parts[0]++;
-    }
-    return parts.join(".");
-  }
-  
-  async function checkForSiteUpdates() {
+  // نظام التتبع الذكي للتحديثات
+  async function checkUpdates() {
     try {
-      const response = await fetch("pages/update.txt?t=" + new Date().getTime());
-      if (!response.ok) throw new Error("error loading update");
-      const text = await response.text();
       
-      const currentHash = generateHash(text);
-      const previousHash = localStorage.getItem("lastUpdateHash");
+      // 1. التحقق من تحديثات النص
+      const updateResponse = await fetch("pages/update.txt?t=" + Date.now());
+      if (!updateResponse.ok) return;
       
-      localStorage.setItem("lastUpdateText", text); // نحفظ النص دائمًا
+      const updateText = await updateResponse.text();
+      const updateHash = generateHash(updateText);
+      const lastUpdateHash = localStorage.getItem("updateHash");
       
-      if (previousHash !== currentHash) {
-        const currentVersion = localStorage.getItem("siteVersion") || "1.0.0";
-        const newVersion = getNextVersion(currentVersion);
+      // 2. التحقق من تحديثات الأدوات
+      const itemsResponse = await fetch("pages/items.js?t=" + Date.now());
+      if (!itemsResponse.ok) return;
+      
+      const itemsText = await itemsResponse.text();
+      const itemsHash = generateHash(itemsText);
+      const lastItemsHash = localStorage.getItem("itemsHash");
+      
+      // إذا كان هناك أي تغيير
+      if (updateHash !== lastUpdateHash || itemsHash !== lastItemsHash) {
+        // 3. معالجة تحديثات النص
+        let message = "🔄    news!\n\n";
+        let hasChanges = false;
         
-        localStorage.setItem("siteVersion", newVersion);
-        localStorage.setItem("lastUpdateHash", currentHash);
-        localStorage.setItem("updateNotificationSent", "false");
+        if (updateHash !== lastUpdateHash) {
+          message += `📝 the update:\n${updateText}\n\n`;
+          hasChanges = true;
+          localStorage.setItem("updateHash", updateHash);
+          localStorage.setItem("updateText", updateText);
+        }
         
-        alert("✨ new update:\n\n" + text);
+        // 4. معالجة تغييرات الأسعار
+        if (itemsHash !== lastItemsHash) {
+          const oldItems = JSON.parse(localStorage.getItem("shopItems")) || [];
+          const newItems = extractItemsFromText(itemsText);
+          
+          if (newItems) {
+            const priceChanges = comparePrices(oldItems, newItems);
+if (priceChanges.length > 0) {
+  message += "💰  Price change:\n";
+  priceChanges.forEach(change => {
+    const dir = change.change > 0 ? "↑" : "↓";
+    message += `• ${change.name}: ${change.oldPrice} → ${change.newPrice} ${dir}\n`;
+  });
+  
+  // هذا السطر مهم لتخزين التغييرات
+  localStorage.setItem("lastPriceChanges", JSON.stringify(priceChanges));
+  
+  hasChanges = true;
+}
+            localStorage.setItem("shopItems", JSON.stringify(newItems));
+            localStorage.setItem("itemsHash", itemsHash);
+          }
+        }
+        
+        // 5. عرض التنبيه إذا كان هناك تغييرات
+        if (hasChanges) {
+          
+            alert(message);
+          
+        }
       }
     } catch (error) {
-      console.error("تعذر التحقق من التحديث:", error);
+      console.error("خطأ في نظام التحديثات:", error);
     }
   }
   
-  function showUpdates() {
-    const text = localStorage.getItem("lastUpdateText");
-    if (text) {
-      alert("✨ news:\n\n" + text);
-    } else {
-      alert("لا يوجد أخبار حالياً.\n no updates");
+  // دالة مساعدة لاستخراج الأدوات من النص
+  function extractItemsFromText(text) {
+    try {
+      const match = text.match(/export const shopItems = (\[.*?\])/s);
+      return match ? eval(match[1]) : null;
+    } catch {
+      return null;
     }
   }
   
-  checkForSiteUpdates();
+  // دالة مقارنة الأسعار
+  function comparePrices(oldItems, newItems) {
+    return newItems.filter(newItem => {
+      const oldItem = oldItems.find(item => item.name === newItem.name);
+      return oldItem && oldItem.price !== newItem.price;
+    }).map(changedItem => {
+      const oldItem = oldItems.find(item => item.name === changedItem.name);
+      return {
+        name: changedItem.name,
+        oldPrice: oldItem.price,
+        newPrice: changedItem.price,
+        change: changedItem.price - oldItem.price
+      };
+    });
+  }
+  
+// تشغيل النظام عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+  checkUpdates();
+});
 </script>
-
+<script>
+  function showUpdates() {
+    const text = localStorage.getItem("updateText");
+    const priceChanges = localStorage.getItem("lastPriceChanges");
+    
+    let message = "";
+    
+    if (text) {
+      message += "✨ news:\n\n" + text + "\n\n";
+    } else {
+      message += "لا يوجد أخبار حالياً.\nno updates\n\n";
+    }
+    
+    if (priceChanges) {
+      const changes = JSON.parse(priceChanges);
+      if (changes.length > 0) {
+        message += "💰 Price changes:\n";
+        changes.forEach(change => {
+          const dir = change.change > 0 ? "↑" : "↓";
+          message += `• ${change.name}: ${change.oldPrice} → ${change.newPrice} ${dir}\n`;
+        });
+      }
+    }
+    
+    alert(message);
+  }
+</script>
 <div class="sticky-header"> 
 <div class="header">MC CO   
-  <img src="Emojis/panda.png" height="27">  
+  <img src="icons/panda.png" height="27">  
   <button class="news" id="newsButton" type="button" onclick="showUpdates()"></button>  
 </div>   
 </div>
 <div class="content">   
-  <button id="downloadBtn" style="display:none;" onclick="downloadApp()" class="epic-download-btn">
-    <span class="btn-content">
-      <span class="btn-icon">
-        <img src="imag/icon_panda.png" height="24" alt="MC CO Icon">
-      </span>
-      <span class="btn-text">
-        <span class="main-text">Download MC CO App</span>
-        <span class="sub-text">For Android - FREE</span>
-      </span>
-      <span class="btn-glow"></span>
-    </span>
-    <span class="btn-pulse"></span>
-  </button>
-  
+  <a id="downloadBtn" style="display:none;" onclick="downloadApp()" class="download-btn">
+    <img src="icons/icon_panda.png" alt="App Icon"> Download App
+  </a>
+    <div class="description">
+    <div class="title"> <img src="icons/notepad_gif.gif" height="15">what's mc co ? <img src="icons/icon_panda.png" height="14"></div>
+    Mc co a public site that includes all people. Its features include collecting coins and purchasing items from the store or sending them to others. It also provides a chat feature and allows you to communicate with other users and interact with them.
+
+  </div>
   <div class="description">   
     <div class="title"> login / create an account </div>   
     Click at gold button to Login or Create an account.  
     <a href="pages/login.html">  
       <div class="button">    
-        <button id="goldButton" title="gegege2g">Login & Register <img src="imag/add-player@0.5x.icon-2f437.png" height="15"></button>
+        <button id="goldButton" title="gegege2g">Login & Register <img src="icons/add-player@0.5x.icon-2f437.png" height="15"></button>
       </div>
     </a>   
   </div>  
   
-  <div class="description">  
-    <div class="title"> <img src="Emojis/notepad_gif.gif" height="15">what's mc co ? <img src="imag/icon_panda.png" height="14"></div>  
-    Mc co a public site that includes all people. Its features include collecting coins and purchasing items from the store or sending them to others. It also provides a chat feature and allows you to communicate with other users and interact with them.   
-  </div>  
+
          
   <div class="description">  
     <div class="title">about the developers</div>
     Click to get more information .  
     <a href="Developers.html">   
       <div class="button">  
-        <button id="purpleButton">About the Developers <img src="Emojis/article_gif.gif" height="15"></button>
+        <button id="purpleButton">About the Developers <img src="icons/article_gif.gif" height="15"></button>
       </div>
     </a>   
   </div>  
@@ -551,39 +425,94 @@ box-shadow: 0 2px 0 0 #373AC4;
     <div class="title"> privacy policy </div>Please read this before using the website.  
     <a href="privacy.html">   
       <div class="button">  
-        <button id="greenButton">Privacy policy <img src="Emojis/gavel_gif.gif" height="15"></button>
+        <button id="greenButton">Privacy policy <img src="icons/gavel_gif.gif" height="15"></button>
       </div>
     </a>   
   </div>  
-  <div class="description">
-      <div class="title"> Our accounts</div> Follow us on our account to get all the latest news.
-      <div class="social-icons">
-        <!-- ديسكورد -->
-        <a href="https://discord.gg/DJRY3mTa" class="social-icon discord" target="_blank" title="Discord">
-          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/discord.svg" alt="Discord">
-        </a>
-        
-        <!-- يوتيوب -->
-        <a href="https://www.youtube.com/@mc-_-co-96" class="social-icon youtube" target="_blank" title="YouTube">
-          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/youtube.svg" alt="YouTube">
-        </a>
-        
-        <!-- فيسبوك -->
-        <a href="https://www.facebook.com/share/1CAawr3XAj/" class="social-icon facebook" target="_blank" title="Facebook">
-          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/facebook.svg" alt="Facebook">
-        </a>
-        
-        <!-- تلجرام -->
-        <a href="https://t.me/mccocommunity" class="social-icon telegram" target="_blank" title="Telegram">
-          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/telegram.svg" alt="Telegram">
-        </a>
-        
-      
+      <div class="description">
+        <div class="title"> Our accounts</div> Follow us on our account to get all the latest news.
+        <div class="social-icons">
+          <!-- ديسكورد -->
+          <a href="https://discord.gg/5ARmq9kH" class="social-icon discord" target="_blank" title="Discord">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/discord.svg" alt="Discord">
+          </a>
+          
+          <!-- يوتيوب -->
+          <a href="https://www.youtube.com/@mc-_-co-96" class="social-icon youtube" target="_blank" title="YouTube">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/youtube.svg" alt="YouTube">
+          </a>
+          
+          <!-- فيسبوك -->
+          <a href="https://www.facebook.com/share/1CAawr3XAj/" class="social-icon facebook" target="_blank" title="Facebook">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/facebook.svg" alt="Facebook">
+          </a>
+          
+          <!-- تلجرام -->
+          <a href="https://t.me/mccocommunity" class="social-icon telegram" target="_blank" title="Telegram">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/telegram.svg" alt="Telegram">
+          </a>
+          
+          
+        </div>
       </div>
-    </div>
   </div>
 
-
+<script>
+  // دالة مبسطة لحفظ واسترجاع الصور باستخدام الرابط كمفتاح
+  function cacheImages() {
+    // تحديد جميع الصور في الصفحة
+    const images = document.querySelectorAll('img, [style*="background-image"]');
+    
+    images.forEach(element => {
+      let imageUrl;
+      
+      // الحصول على رابط الصورة سواء من src أو من background-image
+      if (element.tagName === 'IMG') {
+        imageUrl = element.src;
+      } else {
+        const style = window.getComputedStyle(element);
+        imageUrl = style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+      }
+      
+      // تخطي الروابط الفارغة أو روابط البيانات (data URLs)
+      if (!imageUrl || imageUrl.startsWith('data:')) return;
+      
+      // التحقق مما إذا كانت الصورة مخزنة مسبقاً
+      const cachedImage = localStorage.getItem(imageUrl);
+      
+      if (cachedImage) {
+        // إذا كانت الصورة مخزنة، نستخدمها مباشرة
+        if (element.tagName === 'IMG') {
+          element.src = cachedImage;
+        } else {
+          element.style.backgroundImage = `url(${cachedImage})`;
+        }
+      } else {
+        // إذا لم تكن مخزنة، نحملها ونخزنها
+        fetch(imageUrl)
+          .then(response => response.blob())
+          .then(blob => {
+            const reader = new FileReader();
+            reader.onload = function() {
+              localStorage.setItem(imageUrl, this.result);
+              if (element.tagName === 'IMG') {
+                element.src = this.result;
+              } else {
+                element.style.backgroundImage = `url(${this.result})`;
+              }
+            };
+            reader.readAsDataURL(blob);
+          })
+          .catch(error => {
+            console.error('Error caching image:', error);
+          });
+      }
+    });
+  }
+  
+  // تشغيل الدالة عند تحميل الصفحة
+  window.addEventListener('DOMContentLoaded', cacheImages);
+</script>
 <script>
   // تحديد مسار Service Worker ديناميكيًا
 const swPath = '/firebase-messaging-sw.js'; // مسار ثابت

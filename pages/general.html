@@ -134,9 +134,7 @@
   transition: background-color 0.2s ease; /* تأثير سلس */
 
 }
-    .Pay {
-      position: relative;
-    }
+
     .username-dropdown div {
   padding: 8px 12px;
   cursor: pointer;
@@ -150,26 +148,26 @@
             cursor: pointer;
             
             padding: 10px;
-            background: url(../imag/menu@0.5x.icon-e2970.png);
+            background: url(../icons/menu@0.5x.icon-e2970.png);
             background-size:  contain;
             background-position: center;
             background-repeat: no-repeat;
             z-index: 9999;
         } 
-          .Chat-btn {
-            position: fixed;
-            display: flex;
+          .users-btn {
+            position: absolute;
+        
             border: none;
             right: 10px;
             top: 20px;
             cursor: pointer;
             padding: 10px;
-            background: url(../imag/comment@0.5x.icon-2df01.png);
+            background: url(../icons/friends-9e435.png);
             background-size:  contain;
             background-position: center;
             background-repeat: no-repeat;
             z-index: 9999;
-            gap: 5px;
+          
         } 
        
         .rate {
@@ -180,7 +178,7 @@
             top: 20px;
             cursor: pointer;
             padding: 10px;
-            background: url(../Emojis/star.png);
+            background: url(../icons/star.png);
             background-size:  contain;
             background-position: center;
             background-repeat: no-repeat;
@@ -255,7 +253,7 @@
   font-size: 13px;
   border-radius: 3px;
   width: 100%;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
 }
 
 .dropdown-button:hover {
@@ -265,6 +263,7 @@
 
 #confirmLogout {
   color: #ff6b6b;
+  transition: all 0.3s ease;
 }
 
 #confirmLogout:hover {
@@ -288,6 +287,7 @@
   to {
     transform: scale(1);
     opacity: 1;
+    
   }
 }
 
@@ -382,16 +382,12 @@
 span{
   font-family: minecraft-five;
 }
-/* أنماط قسم الأكواد الترويجية */
-#blueButton {
-  font-family: minecraft-five;
-  transition: background-color 0.3s;
-}
+
  .coin-particle {
       position: absolute;
       width: 16px;
       height: 16px;
-      background-image: url('../new_emojis/coinss_gif.gif');
+      background-image: url('../icons/coinss_gif.gif');
       background-size: cover;
       pointer-events: none;
       z-index: 1;
@@ -426,9 +422,10 @@ span{
             padding: 10px;
             color: #FFFFFF;
             margin: auto;
-            transition: background-color,border,box-shadow 0.5s;
+            transition: all 0.3s ease;
 }
 #whiteButton:hover{
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
            top: 2px;
             height: 40px;
             color:#FFFFFF ;
@@ -628,6 +625,7 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
   position: fixed;
   top: 0;
   animation: fadeIn 0.3s ease-in-out;
+  transition: all 0.3s ease;
 }
 
 @keyframes fadeIn {
@@ -648,7 +646,170 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
   width: 100%;
   
 }
+/* تأثير النقاط المضافة */
+.points-added {
+  position: absolute;
+  top: -20px; /* ارفعه قليلاً فوق النص */
+  left: 59px;
+  transform: translateX(50%);
+  color: #2EFF37 !important;
+  font-weight: bold;
+  font-size: 1.2em !important;
+  transition: all 1s ease-out;
+  pointer-events: none;
+  animation: floatUp 1s ease-out forwards;
+  text-shadow: 0px 1px 0px #000000;
+  
+}
 
+@keyframes floatUp {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+}
+
+#fallTokens{
+text-shadow:0px 1px 0px #3A1B00;
+background: #915E04;
+border: 2px solid #A65E0F;
+color: #FFA252;
+font-size: 17px;
+transition: all 0.5s;
+}
+.marketplace-container {
+  position: relative;
+  
+}
+
+
+.particle {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background-color: #FFC208;
+  
+  animation: riseUp 3s ease-out forwards;
+  pointer-events: none;
+  box-shadow: 2px 1px 15px 2px rgba(255, 210, 73, 1);
+-webkit-box-shadow: 2px 1px 15px 2px rgba(255, 210, 73, 1);
+-moz-box-shadow: 2px 1px 15px 2px rgba(255, 210, 72, 1);
+  z-index: 1;
+  
+}
+
+@keyframes riseUp {
+  0% {
+    transform: translateY(0) scale(1.4);
+    opacity: 1;
+  }
+  40%{
+    
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-60px) scale(0.7);
+    opacity: 0;
+  }
+}
+#marketplacebtn {
+  width: 100%;
+  padding: 10px;
+  background-color: #FFFEBD;
+  border: 2px solid #FFC208;
+  box-shadow: 0 4px 0 #6D511F;
+  transition: all 0.5s;
+  position: relative;
+  transition: all 0.3s ease;
+  
+}
+#marketplacebtn:hover{
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background-color: #9A996D;
+border: 2px solid #FFE492;
+box-shadow: 4px 0 15px #FFC208;
+transition: all 0.3s ease;
+}
+#achievementbtn{
+  width: 100%;
+padding: 10px;
+background-color: #966001;
+border: 2px solid #F1BD0B;
+box-shadow: 0 4px 0 #6D511F;
+transition: all 0.5s;
+color: #FFFFFF;
+text-shadow: 2px 2px 5px #4F3506;
+transition: all 0.3s ease;
+}
+#achievementbtn:hover{
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background-color: #452D05;
+border: 2px solid #FFDF92;
+color: #F5F5F5;
+box-shadow: 2px 0 15px #FFDF92;
+transition: all 0.3s ease;
+}
+.currency-selector {
+  position: relative;
+  display: inline-block;
+}
+
+.currency-toggle {
+  background: #8C6A15;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  align-items: center;
+  gap: 5px;
+  height: 40px;
+  transition: all 0.3s ease;
+}
+
+.currency-toggle:hover {
+  background: #A57C1B;
+}
+
+.currency-dropdown {
+  display: none;
+  position: absolute;
+  background-color: #2E2100;
+  border: 1px solid #8C6A15;
+  border-radius: 5px;
+  min-width: 120px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  padding: 5px 0;
+}
+
+.currency-dropdown.show {
+  display: block;
+}
+
+.currency-option {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.currency-option:hover {
+  background-color: #8C6A15;
+}
+
+#sendPointsAmount {
+
+  padding: 8px;
+  border: 2px solid #8C6A
+  color: white;
+  height: 40px;
+  box-sizing: border-box;
+}
   </style>
   <title>general </title>
 </head>
@@ -658,86 +819,17 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
 <div class="notification-container" id="notificationContainer"></div>
 <div class="sticky-header"> 
   <div class="header">
-    <button class="Chat-btn" id="Chat-btn" type="button"></button>
+    <button class="users-btn" id="users-btn" type="button"></button>
     <button class="menu" id="menuButton" type="button"></button>
     <button class="rate" id="rateButton" type="button"></button>
   general
-  <img src="../Emojis/Win_Computer.gif" loading="lazy" height="25">  
+  <img src="../icons/Win_Computer.gif" loading="lazy" height="25">  
   </div> 
-</div>
-  <div class="content"> 
-<div class="description">
-    <h1 id="welcomeMessage"><img class="lodinimg" src="../imag/loading_spinner.gif" height="15" /></h1>
-    
-    <div class="points">
-      <div class="title"> your coine : <span id="points">
-        <img class="lodinimg" src="../imag/loading_spinner.gif" height="13" />
-        </span>
-        <span id="points-float" style="display: inline-block; position: relative;"></span>
-        <img src="../new_emojis/coinss_gif.gif"loading="lazy" height="15">
-        </div> 
-    </div>
-</div>
-      <div class="description"> 
-        Get coins between 1000 coine and 1 coine.
-        <button id="whiteButton">+ coins <img src="../new_emojis/Alot_of_coins.gif" loading="lazy"height="16">
-        <audio id="coinSound" src="../sounds/coin_fill_up.ogg"></audio>
-        </button>
-        
-      </div> 
-        <div class="description"> 
-          <div class="title">marketplace</div> Buy features and things for your account 
-          using your coins
-          <a href="marketplace.html">
-            <div class="button">
-              <button id="greenButton">Marketplace <img src="../imag/marketplace-icon-7f96f.png"loading="lazy" height="15"></button>
-            </div>
-          </a> 
-        </div>
-<!--
-         <div class="description"> 
-           <div class="title">Trading </div>Trade your coins on the MC Co trading platform.
-             <a href="trading.html">
-               <div class="button">
-                <button id="blueButton">Dev.Trading dashboard <img src="../Emojis/chart_up.png"loading="lazy" height="15"></button>
-                 </div>
-               </a> 
-        </div>
-        -->
-        <div class="description">  
-          <div class="title"> Send coins 
-          </div> 
-          Send coins to other users.
-          <div>
-            <div class="Pay">
-              <br>
-              <input type="text" id="receiverUsername" name="username" placeholder="username " required>
-              <div class="username-dropdown" id="usernameDropdown"></div>
-               </br> 
-              <br>
-              <input type="number" id="sendPointsAmount" name="points" placeholder="coins" required>
-              </br>
-              <br>
-              <button id="redButton" >Send <img src="../Emojis/gift_gif.gif"loading="lazy" height="15"> </button>
-            </div> 
-            </br>
-          </div> 
-          
-          <div id="sendPointsResult"></div> 
-        </div> 
-      </div>
-  
-    
-    </div>
-  </div> 
-</div>
-  </div>
-  <!-- يضاف داخل div.header بعد زر الرجوع -->
-<div class="logout-dropdown" id="logoutDropdown">
+  <div class="logout-dropdown" id="logoutDropdown">
   <h3>MENU</h3>
   <div class="logout-options">
     <button id="confirmLogout" class="dropdown-button">Sign out</button>
-    <button id="settingsButton" class="dropdown-button">Dev.Settings </button>
+    <button id="settingsButton" class="dropdown-button">Settings </button>
     
     <button id="cancelLogout" class="dropdown-button">Close</button>
   </div>
@@ -764,8 +856,190 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
     <div class="rated-message" id="ratedMessage">Thank you ❤️!</div>
   </div>
 </div>
+</div>
+  <div class="content"> 
+
+    <h1 id="welcomeMessage"><img class="lodinimg" src="../icons/loading_spinner.gif" height="15" /></h1>
+    
+<div class="points">
+  <div class="title">
+    your wallet : <span id="points">
+      <img class="lodinimg" src="../icons/loading_spinner.gif" height="13" /></span>
+    <span id="points-float" style="display: inline-block; position: relative;"></span><img src="../icons/coinss_gif.gif" loading="lazy" height="15">|
+    <span id="fallTokens">
+      <img class="lodinimg" src="../icons/loading_spinner.gif" height="13" /></span>
+    <img src="../icons/fall_token.png" alt="Fall Token" height="15">
+  </div>
+</div>
+
+
+      <div class="description"> 
+        Get coins between 1000 coine and 1 coine.
+        <button id="whiteButton">+ coins <img src="../icons/Alot_of_coins.gif" loading="lazy"height="16">
+        <audio id="coinSound" src="../sounds/coin_fill_up.ogg"></audio>
+        </button>
+        <!-- promo-banner يظهر فقط إذا كان العرض مفعّل -->
+<div id="promo-banner" style="display: none; background: gold; padding: 10px;">
+  🎉 عرض خاص بمناسبة العيد! احصل على 50 نقطة مجانًا!
+</div>
+      </div> 
+        <div class="description"> 
+          <div class="title">marketplace</div> Buy features and things for your account 
+          using your coins
+          <a href="marketplace.html">
+            <div class="marketplace-container ">
+              <button id="marketplacebtn">Marketplace <img src="../icons/marketplace_new_logo.png"loading="lazy" height="15"></button>
+            </div>
+          </a> 
+        </div>
+        <!---
+                <div class="description">
+          <div class="title">Achievements</div> Complete missions to get achievements. 
+          <a href="marketplace.html">
+            <div class="button">
+              <button id="achievementbtn">achievements <img src="../icons/Achievements_book.png" loading="lazy" height="15"></button>
+            </div>
+          </a>
+        </div>
+
+         <div class="description"> 
+           <div class="title">Trading </div>Trade your coins on the MC Co trading platform.
+             <a href="trading.html">
+               <div class="button">
+                <button id="blueButton">Dev.Trading dashboard <img src="../icons/chart_up.png"loading="lazy" height="15"></button>
+                 </div>
+               </a> 
+        </div>
+        -->
+
+<div class="description">
+  <div class="title"> Send coins / Fall Tokens </div>
+  Send coins or Fall Tokens to other users.
+  <div>
+    <div class="Pay">
+      <br>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <input type="text" id="receiverUsername" name="username" placeholder="username" required>
+        <div class="username-dropdown" id="usernameDropdown"></div>
+      </div>
+      </br>
+      <br>
+      <div> 
+        <input type="number" id="sendPointsAmount" name="points" placeholder="amount" step="any" required>
+        <div class="currency-selector">
+          <button id="currencyToggle" class="currency-toggle">
+            <img src="../icons/coinss_gif.gif" id="currencyIcon" height="20">
+          </button>
+          <div class="currency-dropdown" id="currencyDropdown">
+            <div class="currency-option" data-currency="points" data-icon="../icons/coinss_gif.gif">
+              <img src="../icons/coinss_gif.gif" height="15"> Coins
+            </div>
+            <div class="currency-option" data-currency="fallTokens" data-icon="../icons/fall_token.png">
+              <img src="../icons/fall_token.png" height="15"> Fall Tokens
+            </div>
+          </div>
+        </div>
+      </div>
+      </br>
+      <br>
+      <button id="redButton">Send <img src="../icons/gift_gif.gif" loading="lazy" height="15"></button>
+    </div>
+    </br>
+  </div>
+  
+  <div id="sendPointsResult"></div>
+</div>
+      </div>
+    </div>
+  </div> 
+</div>
+  </div>
+  <!-- يضاف داخل div.header بعد زر الرجوع -->
 <script>
-  document.getElementById("Chat-btn").addEventListener("click", function() {
+  const button = document.getElementById('marketplacebtn');
+  const container = document.querySelector('.marketplace-container');
+  
+  function createParticle() {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    
+    // توليد موقع عشوائي حول الزر
+    const padding = 10;
+    const randomX = Math.random() * (button.offsetWidth + padding * 2) - padding;
+    const randomY = Math.random() * (button.offsetHeight + padding * 2) - padding;
+    
+    particle.style.left = `${randomX}px`;
+    particle.style.top = `${randomY}px`;
+    
+    container.appendChild(particle);
+    
+    // حذف بعد انتهاء الأنميشن
+    setTimeout(() => {
+      particle.remove();
+    }, 3000);
+  }
+  
+  // توليد جزيئات بشكل مستمر
+  setInterval(createParticle, 300);
+</script>
+<script>
+  // دالة مبسطة لحفظ واسترجاع الصور باستخدام الرابط كمفتاح
+  function cacheImages() {
+    // تحديد جميع الصور في الصفحة
+    const images = document.querySelectorAll('img, [style*="background-image"]');
+    
+    images.forEach(element => {
+      let imageUrl;
+      
+      // الحصول على رابط الصورة سواء من src أو من background-image
+      if (element.tagName === 'IMG') {
+        imageUrl = element.src;
+      } else {
+        const style = window.getComputedStyle(element);
+        imageUrl = style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+      }
+      
+      // تخطي الروابط الفارغة أو روابط البيانات (data URLs)
+      if (!imageUrl || imageUrl.startsWith('data:')) return;
+      
+      // التحقق مما إذا كانت الصورة مخزنة مسبقاً
+      const cachedImage = localStorage.getItem(imageUrl);
+      
+      if (cachedImage) {
+        // إذا كانت الصورة مخزنة، نستخدمها مباشرة
+        if (element.tagName === 'IMG') {
+          element.src = cachedImage;
+        } else {
+          element.style.backgroundImage = `url(${cachedImage})`;
+        }
+      } else {
+        // إذا لم تكن مخزنة، نحملها ونخزنها
+        fetch(imageUrl)
+          .then(response => response.blob())
+          .then(blob => {
+            const reader = new FileReader();
+            reader.onload = function() {
+              localStorage.setItem(imageUrl, this.result);
+              if (element.tagName === 'IMG') {
+                element.src = this.result;
+              } else {
+                element.style.backgroundImage = `url(${this.result})`;
+              }
+            };
+            reader.readAsDataURL(blob);
+          })
+          .catch(error => {
+            console.error('Error caching image:', error);
+          });
+      }
+    });
+  }
+  
+  // تشغيل الدالة عند تحميل الصفحة
+  window.addEventListener('DOMContentLoaded', cacheImages);
+</script>
+<script>
+  document.getElementById("users-btn").addEventListener("click", function() {
     window.location.href = "List_users.html";
   });
 </script>
@@ -815,82 +1089,74 @@ background-color: #9C9C9C00; /* يمكنك تقليل العتامة هنا إذ
   </script>
 
 <script type="module">
-import { db } from '../scripts/main.js'; 
-import {
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  collection,
-  getDocs,
-  onSnapshot,
-  query,
-  where,
-  orderBy,
-  addDoc,
-  increment // أضف هذه الدالة
-} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-    
-    import {
-      GoogleAuthProvider,
-      signInWithPopup,
-      signInAnonymously,
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { db } from '../scripts/main.js';   
+import {  
+  doc,  
+  getDoc,  
+  setDoc,  
+  updateDoc,  
+  collection,  
+  getDocs,  
+  onSnapshot,  
+  query,  
+  where,  
+  orderBy,  
+  addDoc, 
+  increment // أضف هذه الدالة  
+} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";  
       
-const activeUser = localStorage.getItem('activeUser');
+    import {  
+      GoogleAuthProvider,  
+      signInWithPopup,  
+      signInAnonymously,  
+      onAuthStateChanged,  
+      signOut  
+    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";  
+        
+const activeUser = localStorage.getItem('activeUser');  
+  
 
-if (!activeUser) {
-  alert('Please log in first!');
-  window.location.href = 'login.html';
-}
+if (!activeUser) {  
+  alert('Please log in first!');  
+  window.location.href = 'login.html';  
+}  
+  
+// عند تحميل الصفحة، تحقق من حالة التقييم  
+document.addEventListener('DOMContentLoaded', function() {  
+  checkRatingStatus();  
+});  
+  
+// تحقق من حالة التقييم (من localStorage وقاعدة البيانات)  
+async function checkRatingStatus() {  
+  const rateButton = document.getElementById('rateButton');  
+    
+  // تحقق من localStorage أولاً لأداء أسرع  
+  const localRated = localStorage.getItem('userRated');  
+  if (localRated === 'true') {  
+    rateButton.style.display = 'none';  
+    return;  
+  }  
+    
+  // إذا لم يكن هناك بيانات في localStorage، تحقق من قاعدة البيانات  
+  try {  
+    const userDocRef = doc(db, 'users', activeUser);  
+    const userDoc = await getDoc(userDocRef);  
+      
+    if (userDoc.exists() && userDoc.data().hasRated) {  
+      localStorage.setItem('userRated', 'true');  
+      rateButton.style.display = 'none';  
+    }  
+  } catch (error) {  
+    console.error('Error checking rating status:', error);  
+  }  
+}  
 
-
-// نظام التقييم// نظام التقييم الكامل
-document.getElementById('rateButton').addEventListener('click', function(e) {
+// عند النقر على زر التقييم
+document.getElementById('rateButton')?.addEventListener('click', function(e) {
   e.stopPropagation();
   const ratingOverlay = document.getElementById('ratingOverlay');
   ratingOverlay.style.display = 'flex';
   checkUserRating();
-});
-
-// النجوم التفاعلية
-const stars = document.querySelectorAll('.star');
-stars.forEach(star => {
-  star.addEventListener('click', function() {
-    const rating = parseInt(this.getAttribute('data-rating'));
-    
-    stars.forEach((s, index) => {
-      if (index < rating) {
-        s.classList.add('active');
-      } else {
-        s.classList.remove('active');
-      }
-    });
-    
-    document.querySelector('.stars-container').setAttribute('data-selected', rating);
-  });
-  
-  star.addEventListener('mouseover', function() {
-    const rating = parseInt(this.getAttribute('data-rating'));
-    
-    stars.forEach((s, index) => {
-      if (index < rating) {
-        s.style.color = '#FFD700';
-      }
-    });
-  });
-  
-  star.addEventListener('mouseout', function() {
-    const selectedRating = document.querySelector('.stars-container').getAttribute('data-selected') || 0;
-    
-    stars.forEach((s, index) => {
-      if (index >= selectedRating) {
-        s.style.color = '#555';
-      }
-    });
-  });
 });
 
 // تأكيد التقييم
@@ -898,102 +1164,93 @@ document.getElementById('confirmRating').addEventListener('click', async functio
   const selectedRating = document.querySelector('.stars-container').getAttribute('data-selected');
   
   if (!selectedRating || selectedRating === '0') {
-    alert('Please select a rating first!');
+    alert('الرجاء اختيار تقييم أولاً!');
     return;
   }
   
-  await saveRating(parseInt(selectedRating));
-  
-  document.getElementById('ratedMessage').style.display = 'block';
-  document.getElementById('confirmRating').style.display = 'none';
-  
-  setTimeout(() => {
-    document.getElementById('ratingOverlay').style.display = 'none';
-    document.getElementById('ratedMessage').style.display = 'none';
-    document.getElementById('confirmRating').style.display = 'block';
+  try {
+    // حفظ التقييم في قاعدة البيانات
+    await saveRating(parseInt(selectedRating));
     
-    stars.forEach(star => {
-      star.classList.remove('active');
-    });
-    document.querySelector('.stars-container').setAttribute('data-selected', '0');
-  }, 2000);
+    // حفظ حالة التقييم في localStorage
+    localStorage.setItem('userRated', 'true');
+    
+    // إخفاء زر التقييم
+    document.getElementById('rateButton').style.display = 'none';
+    
+    // إظهار رسالة الشكر وإخفاء زر التأكيد
+    document.getElementById('ratedMessage').style.display = 'block';
+    document.getElementById('confirmRating').style.display = 'none';
+    
+    // إغلاق نافذة التقييم بعد ثانيتين
+    setTimeout(() => {
+      document.getElementById('ratingOverlay').style.display = 'none';
+    }, 2000);
+    
+  } catch (error) {
+    console.error('Error confirming rating:', error);
+    alert('حدث خطأ أثناء حفظ التقييم، الرجاء المحاولة لاحقاً');
+  }
 });
 
-// دالة لحفظ التقييم
+// دالة حفظ التقييم (كما هي مع بعض التحسينات)
 async function saveRating(rating) {
   const userDocRef = doc(db, 'users', activeUser);
   const ratingsRef = collection(db, 'ratings');
   
-  const userDoc = await getDoc(userDocRef);
-  if (userDoc.data().hasRated) {
-    const ratingQuery = query(ratingsRef, where("username", "==", activeUser));
-    const querySnapshot = await getDocs(ratingQuery);
-    
-    querySnapshot.forEach(async (doc) => {
-      await updateDoc(doc.ref, {
-        rating: rating,
-        timestamp: new Date().toISOString()
-      });
-    });
-  } else {
-    await addDoc(ratingsRef, {
-      username: activeUser,
-      rating: rating,
-      timestamp: new Date().toISOString()
-    });
-    
-    await updateDoc(userDocRef, {
-      hasRated: true
-    });
-  }
+  // تسجيل التقييم في مجموعة التقييمات
+  await addDoc(ratingsRef, {
+    username: activeUser,
+    rating: rating,
+    timestamp: new Date().toISOString()
+  });
   
+  // تحديث حالة المستخدم
+  await updateDoc(userDocRef, {
+    hasRated: true,
+    lastRatingDate: new Date().toISOString()
+  });
+  
+  // منح نقاط المكافأة إذا كانت التقييمات عالية
   if (rating >= 4) {
     const pointsEarned = rating === 5 ? 6000 : 10000;
-    
     await updateDoc(userDocRef, {
       points: increment(pointsEarned)
     });
-    
     showCustomAlert(pointsEarned, "Rating Reward");
   }
 }
 
-// التحقق من التقييم السابق
+// التحقق من التقييم السابق عند فتح النافذة
 async function checkUserRating() {
-  const userDocRef = doc(db, 'users', activeUser);
-  const userDoc = await getDoc(userDocRef);
-  
-  if (userDoc.exists() && userDoc.data().hasRated) {
-    const ratingsRef = collection(db, 'ratings');
-    const ratingQuery = query(ratingsRef, where("username", "==", activeUser));
-    const querySnapshot = await getDocs(ratingQuery);
+  try {
+    const userDocRef = doc(db, 'users', activeUser);
+    const userDoc = await getDoc(userDocRef);
     
-    querySnapshot.forEach((doc) => {
-      const rating = doc.data().rating;
+    if (userDoc.exists() && userDoc.data().hasRated) {
+      const ratingsRef = collection(db, 'ratings');
+      const ratingQuery = query(ratingsRef, where("username", "==", activeUser));
+      const querySnapshot = await getDocs(ratingQuery);
       
-      stars.forEach((star, index) => {
-        if (index < rating) {
-          star.classList.add('active');
-        }
+      querySnapshot.forEach((doc) => {
+        const rating = doc.data().rating;
+        
+        stars.forEach((star, index) => {
+          if (index < rating) {
+            star.classList.add('active');
+          }
+        });
+        
+        document.querySelector('.stars-container').setAttribute('data-selected', rating);
+        document.getElementById('ratedMessage').style.display = 'block';
+        document.getElementById('confirmRating').style.display = 'none';
       });
-      
-      document.querySelector('.stars-container').setAttribute('data-selected', rating);
-      document.getElementById('ratedMessage').style.display = 'block';
-      document.getElementById('confirmRating').style.display = 'none';
-    });
+    }
+  } catch (error) {
+    console.error('Error checking user rating:', error);
   }
 }
 
-// إغلاق النافذة عند النقر خارجها
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.rating-box') && !e.target.closest('#rateButton')) {
-    document.getElementById('ratingOverlay').style.display = 'none';
-  }
-});
-// استدعاء الدالة لعرض الأكواد المتاحة عند تحميل الصفحة
-
-
-// متغير لتتبع آخر رسالة
 let lastMessageTimestamp = null;
 
 // دالة لتنسيق عدد النقاط مع تأثير العد
@@ -1005,23 +1262,23 @@ function formatPoints(num, element) {
   const target = num;
   const duration = 800;
   const startTime = performance.now();
-
+  
   if (target < current) {
     element.classList.add('counting-down');
     setTimeout(() => {
       element.classList.remove('counting-down');
-    }, 500);
+    }, 800);
   }
-
+  
   function updateCounter(currentTime) {
     const elapsed = currentTime - startTime;
     const progress = Math.min(elapsed / duration, 1);
     
     let value;
     if (target > current) {
-      value = Math.floor(current + (target - current) * progress);
+      value = current + (target - current) * progress;
     } else {
-      value = Math.floor(current - (current - target) * progress);
+      value = current - (current - target) * progress;
     }
     
     let formattedValue;
@@ -1031,8 +1288,11 @@ function formatPoints(num, element) {
       formattedValue = (value / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
     } else if (value >= 1_000_000) {
       formattedValue = (value / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+    } else if (value >= 1_000) {
+      formattedValue = (value / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
     } else {
-      formattedValue = value.toLocaleString();
+      // لعرض الكسور لـ Fall Tokens
+      formattedValue = value.toFixed(5).replace(/\.?0+$/, '');
     }
     
     element.textContent = formattedValue;
@@ -1103,14 +1363,14 @@ function showBrowserNotification(sender, message) {
     if (Notification.permission === "granted") {
         new Notification(`  new message from ${sender}`, {
             body: message.length > 50 ? message.substring(0, 50) + "..." : message,
-            icon: "../imag/player-head-128-052ba.png"
+            icon: "../icons/player-head-128-052ba.png"
         });
     } else if (Notification.permission !== "denied") {
         Notification.requestPermission().then(permission => {
             if (permission === "granted") {
                 new Notification(`  new message from ${sender}`, {
                     body: message.length > 50 ? message.substring(0, 50) + "..." : message,
-                    icon: "../imag/player-head-128-052ba.png"
+                    icon: "../icons/player-head-128-052ba.png"
                 });
             }
         });
@@ -1134,7 +1394,7 @@ function showMessageNotification(sender, message, type) {
     if (displayMessage.length > 30) {
       displayMessage = displayMessage.substring(0, 30) + "...";
     }
-    displayContent = `<div class="notification-message"><div class="img2"><img src="../Emojis/arrow_right.png"loading="lazy">${displayMessage}</div></div>`;
+    displayContent = `<div class="notification-message"><div class="img2"><img src="../icons/arrow_right.png"loading="lazy">${displayMessage}</div></div>`;
   }
   
   notification.innerHTML = `
@@ -1143,7 +1403,7 @@ function showMessageNotification(sender, message, type) {
             <div style="width: 100%; height: 1px; background-color: white; margin: 10px 0;"></div>  
             ${displayContent}
         </div>
-        <img src="../imag/player-head-128-052ba.png"loading="lazy" alt="${sender}">
+        <img src="../icons/player-head-128-052ba.png"loading="lazy" alt="${sender}">
     `;
   
   notification.addEventListener('click', () => {
@@ -1166,30 +1426,36 @@ async function getUserData() {
     const user = userDoc.data();
     const welcomeElement = document.getElementById('welcomeMessage');
     
-    // نضيف تأثير الظهور السلس أولاً
     welcomeElement.style.opacity = '1';
     welcomeElement.style.transform = 'translateY(0)';
     
-    // نستدعي تأثير الكتابة بسرعة مناسبة
     await smoothTypeWriter(`Welcome ${activeUser}!`, welcomeElement, 80);
     
+    // عرض النقاط العادية (Coins)
     formatPoints(user.points, document.getElementById('points'));
     
+    // عرض Fall Tokens بنفس الطريقة
+    const fallTokensElement = document.getElementById('fallTokens');
+    if (user.fallTokens !== undefined) {
+      formatPoints(user.fallTokens, fallTokensElement);
+    } else {
+      fallTokensElement.textContent = '0'; // القيمة الافتراضية إذا لم تكن موجودة
+    }
+    
+    // إشعارات النقاط (إذا وجدت)
     if (user.notification && user.notification.read === false) {
       const from = user.notification.from;
       const amount = user.notification.amount;
-      
       showCustomAlert(amount, from);
-      
-      await updateDoc(userDocRef, {
-        "notification.read": true
-      });
+      await updateDoc(userDocRef, { "notification.read": true });
     }
   } else {
     alert('User does not exist in the database!');
     window.location.href = 'login.html';
   }
 }
+
+
 
 // دالة الكتابة السلسة المعدلة
 async function smoothTypeWriter(text, element, speed = 80) {
@@ -1222,106 +1488,202 @@ document.getElementById('whiteButton').addEventListener('click', async function 
 
     const chance = Math.random();
     if (chance <= 0.05) {
-      earnedPoints = Math.floor(Math.random() * 11) + 30;
+      earnedPoints = Math.floor(Math.random() * 11) + 50;
     } else {
       earnedPoints = Math.floor(Math.random() * 29) + 1;
     }
 
-    user.points += earnedPoints;
-
-    await updateDoc(userDocRef, { points: user.points });
-    formatPoints(user.points);
-    showCustomAlert(earnedPoints);
+    // عرض التأثير قبل تحديث النقاط
+    showPointsAddedEffect(earnedPoints);
+    
+    // تحديث النقاط في قاعدة البيانات
+    await updateDoc(userDocRef, { 
+      points: user.points + earnedPoints 
+    });
+    
+    // تحديث العداد
+    formatPoints(user.points + earnedPoints);
+    
+    // عرض التنبيه المخصص (اختياري)
+  
   } else {
     alert('المستخدم غير موجود!');
   }
 });
 
+// دالة لعرض تأثير إضافة النقاط
+function showPointsAddedEffect(points) {
+  const pointsContainer = document.querySelector('.points');
+  const addedElement = document.createElement('div');
+  addedElement.className = 'points-added';
+  addedElement.textContent = `+${points}`;
+  
+  // وضع العنصر في المكان المناسب
+  addedElement.style.right = '0';
+  addedElement.style.top = '0';
+  
+  pointsContainer.appendChild(addedElement);
+  
+  // إزالة العنصر بعد انتهاء الأنيميشن
+  setTimeout(() => {
+    addedElement.remove();
+  }, 2000);
+}
 // دالة لإرسال النقاط
-document.getElementById('redButton').addEventListener('click', async function () {
-  const sender = activeUser;
-  const receiver = document.getElementById('receiverUsername').value.trim();
-  const pointsValue = document.getElementById('sendPointsAmount').value.trim();
+// اختيار العملة
+const currencyToggle = document.getElementById('currencyToggle');
+const currencyDropdown = document.getElementById('currencyDropdown');
+const currencyIcon = document.getElementById('currencyIcon');
+let selectedCurrency = 'points';
 
-  if (!receiver || !pointsValue) {
-    alert('يرجى ملء كل الخانات!');
-    return;
-  }
-
-  const points = parseInt(pointsValue);
-
-  if (isNaN(points) || points <= 0) {
-    alert('يرجى إدخال عدد نقاط صحيح وأكبر من 0!');
-    return;
-  }
-
-  if (receiver === sender) {
-    alert('لا يمكنك إرسال النقاط إلى نفسك!');
-    return;
-  }
-
-  const senderDocRef = doc(db, 'users', sender);
-  const receiverDocRef = doc(db, 'users', receiver);
-
-  const [senderDocSnap, receiverDocSnap] = await Promise.all([
-    getDoc(senderDocRef),
-    getDoc(receiverDocRef)
-  ]);
-
-  if (!receiverDocSnap.exists()) {
-    alert('اسم المستخدم المستقبل غير موجود!');
-    return;
-  }
-
-  const senderData = senderDocSnap.data();
-  if (senderData.points < points) {
-    alert('ليس لديك نقاط كافية!');
-    return;
-  }
-
-  // تنفيذ عملية التحويل
-  await Promise.all([
-    updateDoc(senderDocRef, {
-      points: senderData.points - points
-    }),
-    updateDoc(receiverDocRef, {
-      points: (receiverDocSnap.data().points || 0) + points,
-      notification: {
-        from: sender,
-        amount: points,
-        read: false
-      }
-    })
-  ]);
-
-  // عرض التأثيرات
-  const pointsElement = document.getElementById('points');
-  formatPoints(senderData.points - points, pointsElement);
-
-  const floatContainer = document.getElementById('points-float');
-  const floatPoints = document.createElement('div');
-  floatPoints.textContent = `-${points.toLocaleString()}`;
-  floatPoints.style.position = 'absolute';
-  floatPoints.style.color = 'red';
-  floatPoints.style.fontWeight = 'bold';
-  floatPoints.style.fontSize = '1.2em';
-  floatPoints.style.right = '0';
-  floatPoints.style.top = '0';
-  floatPoints.style.opacity = '1';
-  floatPoints.style.transition = 'all 1s ease-out';
-  floatPoints.style.pointerEvents = 'none';
-
-  floatContainer.appendChild(floatPoints);
-
-  setTimeout(() => {
-    floatPoints.style.top = '-20px';
-    floatPoints.style.opacity = '0';
-  }, 50);
-
-  setTimeout(() => {
-    floatPoints.remove();
-  }, 2500);
+// إظهار/إخفاء قائمة العملات
+currencyToggle.addEventListener('click', function(e) {
+  e.stopPropagation();
+  currencyDropdown.classList.toggle('show');
 });
+
+// اختيار عملة من القائمة
+document.querySelectorAll('.currency-option').forEach(option => {
+  option.addEventListener('click', function() {
+    selectedCurrency = this.getAttribute('data-currency');
+    currencyIcon.src = this.getAttribute('data-icon');
+    currencyDropdown.classList.remove('show');
+    
+    // تحديث الخطوة بناءً على نوع العملة
+    const amountInput = document.getElementById('sendPointsAmount');
+    if (selectedCurrency === 'fallTokens') {
+      amountInput.step = '0.00001';
+      amountInput.min = '0.00001';
+    } else {
+      amountInput.step = '1';
+      amountInput.min = '1';
+    }
+  });
+});
+
+// إغلاق القائمة عند النقر خارجها
+window.addEventListener('click', function() {
+  currencyDropdown.classList.remove('show');
+});
+
+// دالة لإرسال النقاط المعدلة
+document.getElementById('redButton').addEventListener('click', async function() {
+      const sender = activeUser;
+      const receiver = document.getElementById('receiverUsername').value.trim();
+      const amount = document.getElementById('sendPointsAmount').value.trim();
+      
+      if (!receiver || !amount) {
+        alert('Please fill all fields!');
+        return;
+      }
+      
+      const amountValue = parseFloat(amount);
+      
+      if (isNaN(amountValue)) {
+          alert('Please enter a valid amount!');
+          return;
+        }
+        
+        if (selectedCurrency === 'points' && !Number.isInteger(amountValue)) {
+          alert('Coins must be whole numbers!');
+          return;
+        }
+        
+        if (amountValue <= 0) {
+          alert('Amount must be greater than 0!');
+          return;
+        }
+        
+        if (selectedCurrency === 'fallTokens' && amountValue < 0.00001) {
+          alert('Minimum Fall Tokens amount is 0.00001!');
+          return;
+        }
+        
+        if (receiver === sender) {
+          alert('You cannot send to yourself!');
+          return;
+        }
+        
+        const senderDocRef = doc(db, 'users', sender);
+        const receiverDocRef = doc(db, 'users', receiver);
+        
+        const [senderDocSnap, receiverDocSnap] = await Promise.all([
+          getDoc(senderDocRef),
+          getDoc(receiverDocRef)
+        ]);
+        
+        if (!receiverDocSnap.exists()) {
+          alert('Recipient username does not exist!');
+          return;
+        }
+        
+        const senderData = senderDocSnap.data();
+        const senderBalance = senderData[selectedCurrency] || 0;
+        
+        if (senderBalance < amountValue) {
+          const currencyName = selectedCurrency === 'points' ? 'Coins' : 'Fall Tokens';
+          alert(`You don't have enough ${currencyName}!`);
+          return;
+        }
+        
+        // تنفيذ عملية التحويل
+        try {
+          const updateData = {};
+          updateData[selectedCurrency] = increment(-amountValue);
+          
+          await updateDoc(senderDocRef, updateData);
+          
+          const receiverUpdateData = {};
+          receiverUpdateData[selectedCurrency] = increment(amountValue);
+          receiverUpdateData.notification = {
+            from: sender,
+            amount: amountValue,
+            currency: selectedCurrency,
+            read: false
+          };
+          
+          await updateDoc(receiverDocRef, receiverUpdateData);
+          
+          // تحديث العرض للمستخدم
+          const pointsElement = document.getElementById(selectedCurrency === 'points' ? 'points' : 'fallTokens');
+          formatPoints(senderBalance - amountValue, pointsElement);
+          
+          const floatContainer = document.getElementById('points-float');
+          const floatPoints = document.createElement('div');
+          floatPoints.textContent = `-${amountValue.toLocaleString()}`;
+          floatPoints.style.position = 'absolute';
+          floatPoints.style.color = 'red';
+          floatPoints.style.fontWeight = 'bold';
+          floatPoints.style.fontSize = '1.2em';
+          floatPoints.style.right = '0';
+          floatPoints.style.top = '0';
+          floatPoints.style.opacity = '1';
+          floatPoints.style.transition = 'all 1s ease-out';
+          floatPoints.style.pointerEvents = 'none';
+          
+          floatContainer.appendChild(floatPoints);
+          
+          setTimeout(() => {
+            floatPoints.style.top = '-20px';
+            floatPoints.style.opacity = '0';
+          }, 50);
+          
+          setTimeout(() => {
+            floatPoints.remove();
+          }, 2500);
+          
+          const currencyName = selectedCurrency === 'points' ? 'Coins' : 'Fall Tokens';
+          alert(`Successfully sent ${amountValue} ${currencyName} to ${receiver}!`);
+          
+          // إعادة تعيين الحقول
+          document.getElementById('receiverUsername').value = '';
+          document.getElementById('sendPointsAmount').value = '';
+          
+        } catch (error) {
+          console.error('Error sending currency:', error);
+          alert('An error occurred while sending. Please try again.');
+        }
+      });
 
 // دالة لعرض التنبيه المخصص
 function showCustomAlert(points, from = null) {
@@ -1440,6 +1802,7 @@ document.addEventListener('click', (event) => {
 });
 
 </script>
+
 <script>
   // تسجيل الخروج
 // استبدال الكود القديم بهذا الكود

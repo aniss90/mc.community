@@ -77,7 +77,7 @@
     
     .user-bio {
       font-family: 'minecraft', sans-serif;
-      color: #959595;
+      color: #FFFFFF;
       font-size: 14px;
       max-width: 300px;
     }
@@ -416,21 +416,26 @@
       }
     }
     #userPoints{
-      text-shadow:0px 1px 0px #3A2700;
-background: #916204;
-border: 2px solid #A6730F;
-color: #FFD952;
-font-size: 17px;
+      text-shadow: 0px 1px 0px #3A2700;
+      background: #916204;
+      border: 2px solid #A6730F;
+      color: #FFD952;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
       font-family: MinecraftFive-Regular;
     }
     #userItems{
-      text-shadow:0px 1px 0px #000F3A;
-background: #160491;
-border: 2px solid #220FA6;
-      color:#5282FF;
-      font-size:17px;
+      text-shadow: 0px 1px 0px #000F3A;
+      background: #160491;
+      border: 2px solid #220FA6;
+      color: #5282FF;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
       font-family: MinecraftFive-Regular;
     }
+    
 /* التصميم الجديد حسب طلبك */
 #purchasedItemsContainer {
     display: flex;
@@ -443,9 +448,9 @@ margin-top: 30px;
 
 .item-card {
     width: auto; /* حجم متوسط */
-    background: #4B4B4B00; /* رمادي غامق */
-    border-radius: 2px;
-    border: 2px solid #C1C1C1; /* رمادي فاتح */
+    background: #333333; /* رمادي غامق */
+    border-radius: 5px;
+    border: none;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -523,35 +528,107 @@ font-size: auto;
   width: 100%;
   
 }
+    /* Share Profile Button */
+    #shareProfileBtn {
+      position: absolute;
+      right: 5%;
+      top: 5%;
+      padding: 10px;
+background: url(../icons/Share_logo.png);
+background-size: contain;
+background-position: center;
+background-repeat: no-repeat;
+z-index: 9999;
+border: none;
+box-shadow: none;
+    }
+    
+    #shareProfileBtn:hover {
+      background-color: #3367D6;
+    }
+    
+    /* QR Code Container */
+    #qrCodeContainer canvas {
+      border: 2px solid #C8C8C8;
+      border-radius: 5px;
+      padding: 5px;
+      background: white;
+    }
+    
+    .error-message {
+      color: #ff6b6b;
+      font-family: 'minecraft';
+      font-size: 12px;
+      text-align: center;
+    }
+    .user-handle {
+  color: #959595;
+  font-size: 14px;
+  font-family: 'minecraft', sans-serif;
+  margin: 2px 0;
+}
+    #userFallTokens {
+      text-shadow: 0px 1px 0px #000F3A;
+      background: #915104;
+      border: 2px solid #A6500F;
+      color: #FFA752;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+        #userLikes {
+      text-shadow: 0px 1px 0px #3A0000;
+      background: #910404;
+      border: 2px solid #A60F0F;
+      color: #FF5252;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
   </style>
 </head>
 <body>
   <div class="sticky-header"> 
   <div class="header">
     <button class="back" id="backButton" type="button" onclick="goBack()"></button>
-    Settings <img src="../imag/gif_test-83efe.gif" height="30">
+   profile Settings <img src="../icons/gif_test-83efe.gif" height="30">
   </div>
   </div>
   <div class="content">
     <div class="settings-container">
       <!-- Profile Section -->
+      
       <div class="profile-section">
-        <img src="../imag/player-head-128-052ba.png" class="profile-pic" id="profilePic">
+        <img src="../icons/player-head-128-052ba.png" class="profile-pic" id="profilePic">
         <div class="profile-info">
-          <div class="username" id="usernameDisplay">Username</div>
-          <div class="user-bio" id="userBio">This is my awesome bio!</div>
-        </div>
+          <div class="username" id="usernameDisplay">Loading...</div>
+  <div class="user-handle" id="userHandle">@username</div> 
+  <div class="user-bio" id="userBio"></div>
+</div>
         <div class="stats">
           <div class="stat-item">
             <div class="stat-value" id="userPoints">0</div>
             <div class="stat-label">Coins</div>
           </div>
+                    <div class="stat-item">
+            <div class="stat-value" id="userFallTokens">0</div>
+            <div class="stat-label">Fall Tokens</div>
+          </div>
           <div class="stat-item">
             <div class="stat-value" id="userItems">0</div>
             <div class="stat-label">Items</div>
           </div>
+        <div class="stat-item">
+          <div class="stat-value" id="userLikes">0</div>
+          <div class="stat-label">Likes</div>
+        </div>
+      
         </div>
         <button class="edit-profile-btn" id="editProfileBtn">Edit Profile</button>
+        
+        <button class="edit-profile-btn" id="shareProfileBtn"></button>
       </div>
       
       <!-- Settings Sections -->
@@ -623,12 +700,14 @@ font-size: auto;
         <label class="form-label">Profile Picture</label>
         <div class="file-input-container">
           <input type="file" id="profilePicInput" class="file-input" accept="image/*">
+          
           <label for="profilePicInput" class="file-input-label">Choose Image</label>
         </div>
         <div id="selectedFileName" style="font-family: 'minecraft'; color: #959595; font-size: 12px; margin-top: 5px;"></div>
       </div>
       <div class="form-group">
         <label class="form-label">Username</label>
+        <p style="color: wheat;">you canalsouse icons in your username.</p>
         <input type="text" id="editUsername" class="form-input" maxlength="20">
       </div>
       <div class="form-group">
@@ -735,8 +814,91 @@ font-size: auto;
       </div>
     </div>
   </div>
+  <!-- Share Profile Modal -->
+  <div class="modal" id="shareProfileModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Share Your Profile</div>
+        <button class="close-modal" id="closeShareModal">&times;</button>
+      </div>
+      <div class="card-content">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div id="qrCodeContainer" style="margin: 0 auto; width: 150px; height: 150px;"></div>
+          <div id="qrCodeError" class="error-message" style="display: none;"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Profile Link</label>
+          <div style="display: flex; gap: 5px;">
+            <input type="text" id="profileLink" class="form-input" readonly>
+            <button class="modal-btn" id="copyLinkBtn" style="padding: 8px 12px;">Copy</button>
+          </div>
+        </div>
+        <div style="font-family: 'minecraft'; color: #959595; font-size: 12px; margin-top: 10px; text-align: center;">
+          Share this link or QR code to let others view your profile
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" id="closeShareModalBtn">Close</button>
+      </div>
+    </div>
+  </div>
+<script>
+  // دالة مبسطة لحفظ واسترجاع الصور باستخدام الرابط كمفتاح
+  function cacheImages() {
+    // تحديد جميع الصور في الصفحة
+    const images = document.querySelectorAll('img, [style*="background-image"]');
+    
+    images.forEach(element => {
+      let imageUrl;
+      
+      // الحصول على رابط الصورة سواء من src أو من background-image
+      if (element.tagName === 'IMG') {
+        imageUrl = element.src;
+      } else {
+        const style = window.getComputedStyle(element);
+        imageUrl = style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+      }
+      
+      // تخطي الروابط الفارغة أو روابط البيانات (data URLs)
+      if (!imageUrl || imageUrl.startsWith('data:')) return;
+      
+      // التحقق مما إذا كانت الصورة مخزنة مسبقاً
+      const cachedImage = localStorage.getItem(imageUrl);
+      
+      if (cachedImage) {
+        // إذا كانت الصورة مخزنة، نستخدمها مباشرة
+        if (element.tagName === 'IMG') {
+          element.src = cachedImage;
+        } else {
+          element.style.backgroundImage = `url(${cachedImage})`;
+        }
+      } else {
+        // إذا لم تكن مخزنة، نحملها ونخزنها
+        fetch(imageUrl)
+          .then(response => response.blob())
+          .then(blob => {
+            const reader = new FileReader();
+            reader.onload = function() {
+              localStorage.setItem(imageUrl, this.result);
+              if (element.tagName === 'IMG') {
+                element.src = this.result;
+              } else {
+                element.style.backgroundImage = `url(${this.result})`;
+              }
+            };
+            reader.readAsDataURL(blob);
+          })
+          .catch(error => {
+            console.error('Error caching image:', error);
+          });
+      }
+    });
+  }
   
-  <script type="module">
+  // تشغيل الدالة عند تحميل الصفحة
+  window.addEventListener('DOMContentLoaded', cacheImages);
+</script>
+<script type="module">
     import { db, auth } from '../scripts/main.js';
     import { 
       doc, 
@@ -767,65 +929,63 @@ font-size: auto;
     // Get current user data
     const user = auth.currentUser;
     let currentUserData = {};
-    // أضف هذه الدالة قبل أي استعمال لها
-function formatNumber(num) {
-    if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
-    if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
-    if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
-    if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
-    return num.toString();
-}
+    
+    function formatNumber(num) {
+        if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
+        if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+        if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+        if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+        return num.toString();
+    }
+
     // Load user data from localStorage or Firestore
-async function loadUserData() {
-  try {
-    
-    
-    const userId = localStorage.getItem("activeUser");
-    if (!userId) {
-      console.warn("لا يوجد مستخدم مسجل");
-      window.location.href = "login.html";
-      return;
+    async function loadUserData() {
+      try {
+        const userId = localStorage.getItem("activeUser");
+        if (!userId) {
+          console.warn("No user logged in");
+          window.location.href = "login.html";
+          return;
+        }
+        
+        const userDocRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userDocRef);
+        
+        if (!userDoc.exists()) {
+          throw new Error("User document not found");
+        }
+        
+        currentUserData = userDoc.data();
+        displayUserData(currentUserData);
+        
+        // Display purchased items
+        const purchasedItems = currentUserData.purchasedItems || [];
+        if (purchasedItems.length > 0) {
+          displayPurchasedItems(purchasedItems);
+        } else {
+          document.getElementById('noItemsMessage').style.display = 'block';
+        }
+        
+      } catch (error) {
+        console.error("Error details:", {
+          message: error.message,
+          stack: error.stack,
+          name: error.name
+        });
+        alert("⚠️ Error loading data. Please try again later.");
+      }
     }
-    
-    
-    const userDocRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userDocRef);
-    
-    if (!userDoc.exists()) {
-      throw new Error("مستند المستخدم غير موجود");
-    }
-    
-    currentUserData = userDoc.data();
-    
-    
-    displayUserData(currentUserData);
-    
-    // عرض الأدوات المشتراة
-    const purchasedItems = currentUserData.purchasedItems || [];
-    
-    
-    if (purchasedItems.length > 0) {
-      displayPurchasedItems(purchasedItems);
-    } else {
-      document.getElementById('noItemsMessage').style.display = 'block';
-    }
-    
-  } catch (error) {
-    console.error("تفاصيل الخطأ:", {
-      message: error.message,
-      stack: error.stack,
-      name: error.name
-    });
-    alert("حدث خطأ في تحميل البيانات. الرجاء المحاولة لاحقًا.");
-  }
-}
     
     // Display user data in the UI
     function displayUserData(userData) {
-      document.getElementById('usernameDisplay').textContent = userData.displayName || userData.username || "User";
-      document.getElementById('userBio').textContent = userData.bio || "No bio yet";
-      document.getElementById('userPoints').textContent = userData.points || 0 ;
+      const userId = localStorage.getItem("activeUser");
       
+      document.getElementById('usernameDisplay').textContent = userData.displayName || userData.username || "User";
+      document.getElementById('userHandle').textContent = "@" + userId;
+      document.getElementById('userBio').textContent = userData.bio || "No bio yet";
+      document.getElementById('userPoints').textContent = userData.points || 0;
+      document.getElementById('userFallTokens').textContent = formatNumber(userData.fallTokens || 0);
+      document.getElementById('userLikes').textContent = formatNumber(userData.likes || 0);
       // Set profile picture if available
       if (userData.photoURL) {
         document.getElementById('profilePic').src = userData.photoURL;
@@ -849,49 +1009,49 @@ async function loadUserData() {
     }
     
     // Display purchased items
-function displayPurchasedItems(purchasedItemNames) {
-  const container = document.getElementById('purchasedItemsContainer');
-  container.innerHTML = '';
-  
-  if (!purchasedItemNames || purchasedItemNames.length === 0) {
-    document.getElementById('noItemsMessage').style.display = 'block';
-    return;
-  }
-  
-  purchasedItemNames.forEach(itemName => {
-    const itemData = shopItems.find(item =>
-      item.name.trim().toLowerCase() === itemName.trim().toLowerCase()
-    );
-    
-    const itemCard = document.createElement('div');
-    itemCard.className = 'item-card';
-    
-    if (itemData) {
-      itemCard.innerHTML = `
-                <div class="item-image">
-                    <img src="${itemData.imageUrl}" alt="${itemData.name}"
-                         onerror="this.src='../imag/default_item.png'">
-                </div>
-                <div class="item-info">
-                    <div class="item-name">${itemData.name}</div>
-                    <div class="item-price">${formatNumber(itemData.price)}<img src="../new_emojis/coinss_gif.gif"loading="lazy" height="15"></div>
-                </div>
-            `;
-    } else {
-      itemCard.innerHTML = `
-                <div class="item-image">
-                    <img src="../imag/default_item.png" alt="${itemName}">
-                </div>
-                <div class="item-info">
-                    <div class="item-name">${itemName}</div>
-                    <div class="item-warning"> Not available</div>
-                </div>
-            `;
+    function displayPurchasedItems(purchasedItemNames) {
+      const container = document.getElementById('purchasedItemsContainer');
+      container.innerHTML = '';
+      
+      if (!purchasedItemNames || purchasedItemNames.length === 0) {
+        document.getElementById('noItemsMessage').style.display = 'block';
+        return;
+      }
+      
+      purchasedItemNames.forEach(itemName => {
+        const itemData = shopItems.find(item =>
+          item.name.trim().toLowerCase() === itemName.trim().toLowerCase()
+        );
+        
+        const itemCard = document.createElement('div');
+        itemCard.className = 'item-card';
+        
+        if (itemData) {
+          itemCard.innerHTML = `
+            <div class="item-image">
+                <img src="${itemData.imageUrl}" alt="${itemData.name}"
+                     onerror="this.src='../icons/default_item.png'">
+            </div>
+            <div class="item-info">
+                <div class="item-name">${itemData.name}</div>
+                <div class="item-price">${formatNumber(itemData.price)}<img src="../icons/coinss_gif.gif"loading="lazy" height="15"></div>
+            </div>
+          `;
+        } else {
+          itemCard.innerHTML = `
+            <div class="item-image">
+                <img src="../icons/default_item.png" alt="${itemName}">
+            </div>
+            <div class="item-info">
+                <div class="item-name">${itemName}</div>
+                <div class="item-warning"> Not available</div>
+            </div>
+          `;
+        }
+        
+        container.appendChild(itemCard);
+      });
     }
-    
-    container.appendChild(itemCard);
-  });
-}
     
     // Modal toggle functions
     function toggleModal(modalId, show) {
@@ -899,16 +1059,8 @@ function displayPurchasedItems(purchasedItemNames) {
       modal.style.display = show ? 'flex' : 'none';
     }
     
-    // Toggle password visibility
-    function togglePasswordVisibility(inputId) {
-      const input = document.getElementById(inputId);
-      const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-      input.setAttribute('type', type);
-    }
-    
     // Event listeners for modals
     document.getElementById('editProfileBtn').addEventListener('click', () => {
-      // Fill modal with current data
       document.getElementById('editUsername').value = currentUserData.displayName || currentUserData.username || "";
       document.getElementById('editBio').value = currentUserData.bio || "";
       toggleModal('editProfileModal', true);
@@ -958,7 +1110,7 @@ function displayPurchasedItems(purchasedItemNames) {
       const fileInput = document.getElementById('profilePicInput');
       
       if (!newUsername) {
-        alert('Username cannot be empty');
+        alert('🚫 Username cannot be empty');
         return;
       }
       
@@ -975,8 +1127,6 @@ function displayPurchasedItems(purchasedItemNames) {
         // Handle profile picture upload
         if (fileInput.files.length > 0) {
           const file = fileInput.files[0];
-          // In a real app, you would upload this to Firebase Storage
-          // For this example, we'll just store as data URL
           const reader = new FileReader();
           reader.onload = async function(event) {
             updateData.photoURL = event.target.result;
@@ -984,6 +1134,7 @@ function displayPurchasedItems(purchasedItemNames) {
             currentUserData = { ...currentUserData, ...updateData };
             displayUserData(currentUserData);
             toggleModal('editProfileModal', false);
+            alert('✅ Profile updated successfully!');
           };
           reader.readAsDataURL(file);
         } else {
@@ -991,145 +1142,144 @@ function displayPurchasedItems(purchasedItemNames) {
           currentUserData = { ...currentUserData, ...updateData };
           displayUserData(currentUserData);
           toggleModal('editProfileModal', false);
+          alert('✅ Profile updated successfully!');
         }
       } catch (error) {
         console.error("Error updating profile:", error);
-        alert("Failed to update profile. Please try again.");
+        alert("⚠️ Failed to update profile. Please try again.");
       }
     });
     
     // Change password
-// Change password
-document.getElementById('savePasswordBtn').addEventListener('click', async () => {
-  const currentPassword = document.getElementById('currentPassword').value;
-  const newPassword = document.getElementById('newPassword').value;
-  const confirmPassword = document.getElementById('confirmPassword').value;
-  
-  if (!currentPassword || !newPassword || !confirmPassword) {
-    alert('Please fill all fields');
-    return;
-  }
-  
-  if (newPassword !== confirmPassword) {
-    alert('New passwords do not match');
-    return;
-  }
-  
-  if (newPassword.length < 6) {
-    alert('Password must be at least 6 characters');
-    return;
-  }
-  
-  try {
-    const userId = localStorage.getItem("activeUser");
-    const userDocRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userDocRef);
-    
-    if (!userDoc.exists()) {
-      alert('User not found');
-      return;
-    }
-    
-    const userData = userDoc.data();
-    if (userData.password !== currentPassword) {
-      alert('Current password is incorrect');
-      return;
-    }
-    
-    await updateDoc(userDocRef, { password: newPassword });
-    
-    alert('Password changed successfully!');
-    toggleModal('changePasswordModal', false);
-  } catch (error) {
-    console.error("Error changing password:", error);
-    alert("Failed to change password. Please try again.");
-  }
-});
+    document.getElementById('savePasswordBtn').addEventListener('click', async () => {
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        alert('🚫 Please fill all fields');
+        return;
+      }
+      
+      if (newPassword !== confirmPassword) {
+        alert('🔒 New passwords do not match');
+        return;
+      }
+      
+      if (newPassword.length < 6) {
+        alert('🔐 Password must be at least 6 characters');
+        return;
+      }
+      
+      try {
+        const userId = localStorage.getItem("activeUser");
+        const userDocRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userDocRef);
+        
+        if (!userDoc.exists()) {
+          alert('👤 User not found');
+          return;
+        }
+        
+        const userData = userDoc.data();
+        if (userData.password !== currentPassword) {
+          alert('❌ Current password is incorrect');
+          return;
+        }
+        
+        await updateDoc(userDocRef, { password: newPassword });
+        
+        alert('🔑 Password changed successfully!');
+        toggleModal('changePasswordModal', false);
+      } catch (error) {
+        console.error("Error changing password:", error);
+        alert("⚠️ Failed to change password. Please try again.");
+      }
+    });
     
     // Change email
-// Change email
-document.getElementById('saveEmailBtn').addEventListener('click', async () => {
-  const newEmail = document.getElementById('newEmail').value.trim();
-  const confirmEmail = document.getElementById('confirmEmail').value.trim();
-  const currentPassword = document.getElementById('emailCurrentPassword').value;
-  
-  if (!newEmail || !confirmEmail || !currentPassword) {
-    alert('Please fill all fields');
-    return;
-  }
-  
-  if (newEmail !== confirmEmail) {
-    alert('Emails do not match');
-    return;
-  }
-  
-  try {
-    const userId = localStorage.getItem("activeUser");
-    const userDocRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userDocRef);
+    document.getElementById('saveEmailBtn').addEventListener('click', async () => {
+      const newEmail = document.getElementById('newEmail').value.trim();
+      const confirmEmail = document.getElementById('confirmEmail').value.trim();
+      const currentPassword = document.getElementById('emailCurrentPassword').value;
+      
+      if (!newEmail || !confirmEmail || !currentPassword) {
+        alert('🚫 Please fill all fields');
+        return;
+      }
+      
+      if (newEmail !== confirmEmail) {
+        alert('📧 Emails do not match');
+        return;
+      }
+      
+      try {
+        const userId = localStorage.getItem("activeUser");
+        const userDocRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userDocRef);
+        
+        if (!userDoc.exists()) {
+          alert('👤 User not found');
+          return;
+        }
+        
+        const userData = userDoc.data();
+        if (userData.password !== currentPassword) {
+          alert('❌ Current password is incorrect');
+          return;
+        }
+        
+        await updateDoc(userDocRef, { email: newEmail });
+        
+        alert('📧 Email changed successfully!');
+        toggleModal('changeEmailModal', false);
+        document.getElementById('currentEmail').value = newEmail;
+      } catch (error) {
+        console.error("Error changing email:", error);
+        alert("⚠️ Failed to change email. Please try again.");
+      }
+    });
     
-    if (!userDoc.exists()) {
-      alert('User not found');
-      return;
-    }
-    
-    const userData = userDoc.data();
-    if (userData.password !== currentPassword) {
-      alert('Current password is incorrect');
-      return;
-    }
-    
-    await updateDoc(userDocRef, { email: newEmail });
-    
-    alert('Email changed successfully!');
-    toggleModal('changeEmailModal', false);
-    document.getElementById('currentEmail').value = newEmail;
-  } catch (error) {
-    console.error("Error changing email:", error);
-    alert("Failed to change email. Please try again.");
-  }
-});
-    
-// Delete account
-document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
-  const password = document.getElementById('deleteAccountPassword').value;
-  
-  if (!password) {
-    alert('Please enter your password');
-    return;
-  }
-  
-  if (!confirm('Are you absolutely sure you want to delete your account? This cannot be undone.')) {
-    return;
-  }
-  
-  try {
-    const userId = localStorage.getItem("activeUser");
-    const userDocRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userDocRef);
-    
-    if (!userDoc.exists()) {
-      alert('User not found');
-      return;
-    }
-    
-    const userData = userDoc.data();
-    if (userData.password !== password) {
-      alert('Password is incorrect');
-      return;
-    }
-    
-    await deleteDoc(userDocRef);
-    
-    localStorage.removeItem("activeUser");
-    
-    alert('Account deleted successfully. You will be redirected to the home page.');
-    window.location.href = "index.html";
-  } catch (error) {
-    console.error("Error deleting account:", error);
-    alert("Failed to delete account. Please try again.");
-  }
-});
+    // Delete account
+    document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
+      const password = document.getElementById('deleteAccountPassword').value;
+      
+      if (!password) {
+        alert('🚫 Please enter your password');
+        return;
+      }
+      
+      if (!confirm('❗❗ Are you absolutely sure you want to delete your account? This cannot be undone.')) {
+        return;
+      }
+      
+      try {
+        const userId = localStorage.getItem("activeUser");
+        const userDocRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userDocRef);
+        
+        if (!userDoc.exists()) {
+          alert('👤 User not found');
+          return;
+        }
+        
+        const userData = userDoc.data();
+        if (userData.password !== password) {
+          alert('❌ Password is incorrect');
+          return;
+        }
+        
+        await deleteDoc(userDocRef);
+        
+        localStorage.removeItem("activeUser");
+        
+        alert('🗑️ Account deleted successfully. You will be redirected to the home page.');
+        window.location.href = "login.html";
+      } catch (error) {
+        console.error("Error deleting account:", error);
+        alert("⚠️ Failed to delete account. Please try again.");
+      }
+    });
     
     // Dark mode toggle
     document.getElementById('darkModeToggle').addEventListener('change', function() {
@@ -1143,40 +1293,128 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', async () =
       document.body.classList.add('dark-mode');
     }
     
-    // Add this to your script (near the top, with your other functions)
-window.togglePasswordVisibility = function(inputId) {
-  const input = document.getElementById(inputId);
-  const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-  input.setAttribute('type', type);
-  
-  // Optional: Toggle eye icon
-  const eyeIcon = input.nextElementSibling.querySelector('i');
-  if (eyeIcon) {
-    eyeIcon.classList.toggle('fa-eye');
-    eyeIcon.classList.toggle('fa-eye-slash');
-  }
-};
-    // Add this to your DOMContentLoaded event listener or initialization code
-document.querySelectorAll('.toggle-password').forEach(button => {
-  button.addEventListener('click', function() {
-    const inputId = this.getAttribute('data-target');
-    const input = document.getElementById(inputId);
-    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-    input.setAttribute('type', type);
+    // Password visibility toggle
+    window.togglePasswordVisibility = function(inputId) {
+      const input = document.getElementById(inputId);
+      const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+      input.setAttribute('type', type);
+      
+      const eyeIcon = input.nextElementSibling.querySelector('i');
+      if (eyeIcon) {
+        eyeIcon.classList.toggle('fa-eye');
+        eyeIcon.classList.toggle('fa-eye-slash');
+      }
+    };
     
-    // Toggle eye icon if present
-    const eyeIcon = this.querySelector('i');
-    if (eyeIcon) {
-      eyeIcon.classList.toggle('fa-eye');
-      eyeIcon.classList.toggle('fa-eye-slash');
-    }
-  });
-});
-    // Initialize the page
+    // Initialize the page - load user data first
     document.addEventListener('DOMContentLoaded', () => {
       loadUserData();
     });
-  </script>
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script>
+  // Enhanced QR Code generation with better error handling
+  async function generateQRCode(containerId, text, errorId) {
+    const container = document.getElementById(containerId);
+    const errorElement = document.getElementById(errorId);
+    
+    try {
+      container.innerHTML = '';
+      errorElement.style.display = 'none';
+      
+      if (!QRCode || typeof QRCode.toCanvas !== 'function') {
+        throw new Error('QRCode library not loaded correctly.');
+      }
+      
+      const canvas = document.createElement('canvas');
+      container.appendChild(canvas);
+      
+      await QRCode.toCanvas(canvas, text, {
+        width: 150,
+        errorCorrectionLevel: 'H',
+        margin: 1,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      });
+      
+      return true;
+    } catch (error) {
+      console.error('QR Code generation failed:', error);
+      errorElement.textContent = '⚠️ Failed to generate QR code. Displaying link instead.';
+      errorElement.style.display = 'block';
+      
+      container.innerHTML = `
+        <div style="word-break: break-all; font-family: 'minecraft'; 
+             font-size: 12px; color: white; padding: 10px; 
+             background: #333; border-radius: 5px;">
+          ${text}
+        </div>
+      `;
+      return false;
+    }
+  }
+  
+  // Share Profile functionality
+  document.getElementById('shareProfileBtn').addEventListener('click', async function() {
+    const userId = localStorage.getItem("activeUser");
+    if (!userId) {
+      alert('🔒 You need to be logged in to share your profile');
+      return;
+    }
+    
+    const profileLink = `${window.location.origin}/profile.html?user=${userId}`;
+    document.getElementById('profileLink').value = profileLink;
+    
+    const btn = this;
+    btn.disabled = true;
+    const originalText = btn.textContent;
+    btn.textContent = '🔄 Generating...';
+    
+    try {
+      await generateQRCode('qrCodeContainer', profileLink, 'qrCodeError');
+      toggleModal('shareProfileModal', true);
+    } catch (error) {
+      console.error('QR code generation completely failed:', error);
+      alert('⚠️ Failed to generate shareable content. Please try again later.');
+    } finally {
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
+  });
+  
+  // Copy link functionality
+  document.getElementById('copyLinkBtn').addEventListener('click', function() {
+    const profileLink = document.getElementById('profileLink');
+    profileLink.select();
+    document.execCommand('copy');
+    
+    const originalText = this.textContent;
+    this.textContent = '✅ Copied!';
+    setTimeout(() => {
+      this.textContent = originalText;
+    }, 2000);
+  });
+  
+  // Modal functions
+  function toggleModal(modalId, show) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.style.display = show ? 'flex' : 'none';
+    } else {
+      console.error('Modal not found:', modalId);
+    }
+  }
+
+  // Close share modal
+  document.getElementById('closeShareModal').addEventListener('click', () => toggleModal('shareProfileModal', false));
+  document.getElementById('closeShareModalBtn').addEventListener('click', () => toggleModal('shareProfileModal', false));
+</script>
+
+  <!-- باقي السكريبتات تبقى كما هي -->
+
       <script>
 window.addEventListener('scroll', function() {
   const header = document.querySelector('.sticky-header');
@@ -1197,4 +1435,3 @@ window.addEventListener('scroll', function() {
         }  
     </script>
 </body>
-</html>

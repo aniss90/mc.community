@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/main.css">
+  <title>User Profile</title>
+  <style>
+    @font-face {
+      font-family: minecraft;
+      src: url('../font/Minecraft-Default.otf');
+    }
+    @font-face {
+      font-family: minecraft-ten;
+      src: url('../font/Minecraft-Ten.ttf');
+    }
+    @font-face {
+      font-family: minecraft-five;
+      src: url('../font/Minecraft-Five.ttf');
+    }
+    @font-face {
+      font-family: MinecraftFive-Regular;
+      src: url('../font/MinecraftFive-Regular.ttf');
+    }
+    
+    body {
+      background-color: #1A1A1A;
+      color: white;
+      font-family: 'minecraft', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .profile-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      background-color: #262626;
+      padding: 20px;
+      border-radius: 5px;
+      border: 2px solid #4a4a4a;
+      margin-bottom: 20px;
+
+  
+}
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 20px;
+      object-fit: cover;
+      border: 2px solid #C8C8C891;
+      box-shadow: 0 2px 10px #0000008A;
+      backdrop-filter: blur(2px);
+    }
+    
+    .username {
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      font-size: 24px;
+      color: #fff;
+      margin: 10px 0;
+    }
+    
+    .user-bio {
+      color: #CCCCCC;
+      font-size: 14px;
+      max-width: 300px;
+      margin: 0 auto;
+      text-align: center;
+      word-break: break-word;
+border: none;
+    }
+    
+    .user-bio a {
+      color: #5282FF;
+      text-decoration: none;
+    }
+    
+    .user-bio a:hover {
+      text-decoration: underline;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 20px 0;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      font-size: 20px;
+      color: #fff;
+    }
+    
+    .stat-label {
+      color: #959595;
+      font-size: 12px;
+    }
+    
+    .items-section {
+      background-color: #262626;
+      padding: 15px;
+      border-radius: 5px;
+      border: 2px solid #4a4a4a;
+    }
+    
+    .section-title {
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      color: #E0BA31;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    
+    .purchased-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    
+    .item-card {
+      background-color: #3a3a3a;
+      padding: 5px;
+      border-radius: 5px;
+      width: 80px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .item-icon {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+    
+    .item-name {
+      color: #FFFFFF;
+      font-size: 10px;
+      margin-top: 5px;
+    }
+    
+    #userPoints {
+      text-shadow: 0px 1px 0px #3A2700;
+      background: #916204;
+      border: 2px solid #A6730F;
+      color: #FFD952;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+    
+    #userItems {
+      text-shadow: 0px 1px 0px #000F3A;
+      background: #160491;
+      border: 2px solid #220FA6;
+      color: #5282FF;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+    #userFallTokens{
+      text-shadow: 0px 1px 0px #3A1700;
+      background: #915104;
+      border: 2px solid #A6500F;
+      color: #FFA752;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+    .user-handle {
+      color: #D9D9D9;
+      text-shadow: 0px 1px 0px #838383;
+      border: none;
+      font-size: 14px;
+      font-family: 'minecraft', sans-serif;
+      margin: 2px 0;
+    }
+    
+    .item-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .item-price {
+      color: #FFD700;
+      font-family: 'minecraft-five', sans-serif;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    
+    .profile-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .chat-btn, .like-btn {
+      background-color: #1AB32C00;
+      
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 15px;
+      font-family: 'minecraft';
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 5px;
+    }
+    
+    .chat-btn:hover {
+      background-color: #FFFFFF;
+      color: #3A3A3A;
+      border-radius: 5px;
+      border: 1px solid #474747;
+    }
+    
+    .like-btn:hover {
+      background-color: #FF3E3E;
+      color: white;
+    }
+    
+    .chat-btn img {
+      height: 14px;
+    }
+    
+    .like-btn.liked {
+      background-color: #FF3E3E;
+      color: white;
+      border-color: #FF3E3E;
+    }
+    
+    #userLikes {
+      text-shadow: 0px 1px 0px #3A0000;
+      background: #910404;
+      border: 2px solid #A60F0F;
+      color: #FF5252;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+    
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .rare-item-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(255, 0, 0, 0.7);
+      color: white;
+      font-size: 8px;
+      padding: 2px;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="sticky-header">
+    <div class="header">
+      <div id="usernameDisplay" style="color: black;font-size: 35px;font-family: Minecraft-ten;">Loading...</div>
+      <button class="back" id="backButton" type="button" onclick="goBack()"></button>
+    </div>
+  </div>
+  
+  <div class="content">
+    <div class="profile-section">
+      <img src="../icons/player-head-128-052ba.png" class="profile-pic" id="profilePic">
+      <div class="profile-info">
+        <div class="user-handle" id="userHandle">@username</div>
+        <div class="user-bio" id="userBio"></div>
+      </div>
+      
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-value" id="userPoints">0</div>
+          <div class="stat-label">Coins</div>
+        </div>
+        <div class="stat-item">
+  <div class="stat-value" id="userFallTokens">0</div>
+  <div class="stat-label">Fall Tokens</div>
+</div>
+        <div class="stat-item">
+          <div class="stat-value" id="userItems">0</div>
+          <div class="stat-label">Items</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="userLikes">0</div>
+          <div class="stat-label">Likes</div>
+        </div>
+      </div>
+      
+      <div class="profile-actions">
+        <button class="chat-btn" id="chatBtn">Message</button>
+        <button class="like-btn" id="likeBtn">Like</button>
+        
+      </div>
+    </div>
+    
+    <div class="items-section">
+      <div class="title">Purchased Items</div>
+      <div id="noItemsMessage" style="text-align: center; color: #959595;">This user hasn't purchased any items yet.</div>
+      <div class="purchased-items" id="purchasedItemsContainer"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { db } from '../scripts/main.js';
+    import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, increment } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+    import { shopItems } from './items.js';
+    
+    // Get user ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('user');
+    
+    if (!userId) {
+      alert('Please select a user to preview their profile.');
+      window.location.href = 'List_users.html';
+    }
+    
+    // Get current user ID
+    const currentUserId = localStorage.getItem("activeUser");
+    
+    function formatNumber(num) {
+      if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
+      if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+      if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+      if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+      return num.toString();
+    }
+    
+    // Function to detect and format links in bio
+    function formatBioWithLinks(bio) {
+      if (!bio) return '';
+      
+      // Regular expression to match URLs
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+      return bio.replace(urlRegex, url => {
+        // Shorten long URLs for display
+        const displayUrl = url.length > 30 ? url.substring(0, 27) + '...' : url;
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${displayUrl}</a>`;
+      });
+    }
+    
+    // Load user data
+    async function loadUserProfile() {
+      try {
+        const userDocRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userDocRef);
+        
+        if (!userDoc.exists()) {
+          document.getElementById('usernameDisplay').textContent = 'User Not Found';
+          return;
+        }
+        
+        const userData = userDoc.data();
+        
+        // Display basic data
+        document.getElementById('usernameDisplay').textContent = userData.displayName || userData.username || "User";
+        document.getElementById('userHandle').textContent = "@" + userId;
+        document.getElementById('userBio').innerHTML = formatBioWithLinks(userData.bio || "");
+        document.getElementById('userPoints').textContent = formatNumber(userData.points || 0);
+        document.getElementById('userLikes').textContent = formatNumber(userData.likes || 0);
+        document.getElementById('userFallTokens').textContent = formatNumber(userData.fallTokens || 0);
+        // Display purchased items
+        if (userData.purchasedItems && Array.isArray(userData.purchasedItems)) {
+          document.getElementById('noItemsMessage').style.display = 'none';
+          displayPurchasedItems(userData.purchasedItems);
+          document.getElementById('userItems').textContent = userData.purchasedItems.length;
+        } else {
+          document.getElementById('noItemsMessage').style.display = 'block';
+          document.getElementById('userItems').textContent = '0';
+        }
+        
+        if (userData.photoURL) {
+          document.getElementById('profilePic').src = userData.photoURL;
+        }
+        
+        // Check if current user already liked this profile
+        if (currentUserId && userData.likedBy && userData.likedBy.includes(currentUserId)) {
+          document.getElementById('likeBtn').classList.add('liked');
+          document.getElementById('likeBtn').textContent = 'Liked';
+          document.getElementById('likeBtn').disabled = true;
+        }
+        
+        // Set up chat button
+        document.getElementById('chatBtn').addEventListener('click', () => {
+          if (!currentUserId) {
+            alert("Please login to start chatting");
+            window.location.href = "login.html";
+            return;
+          }
+          window.location.href = `chat_beta.html?user=${userId}`;
+        });
+        
+        // Set up like button
+        document.getElementById('likeBtn').addEventListener('click', async () => {
+          if (!currentUserId) {
+            alert("Please login to like profiles");
+            window.location.href = "login.html";
+            return;
+          }
+          
+          if (currentUserId === userId) {
+            alert("You can't like your own profile");
+            return;
+          }
+          
+          const likeBtn = document.getElementById('likeBtn');
+          const userLikesElement = document.getElementById('userLikes');
+          
+          try {
+            await updateDoc(userDocRef, {
+              likedBy: arrayUnion(currentUserId),
+              likes: increment(1)
+            });
+            
+            const currentUserRef = doc(db, 'users', currentUserId);
+            await updateDoc(currentUserRef, {
+              likedUsers: arrayUnion(userId)
+            });
+            
+            likeBtn.classList.add('liked');
+            likeBtn.textContent = 'Liked';
+            likeBtn.disabled = true;
+            userLikesElement.textContent = formatNumber(parseInt(userLikesElement.textContent) + 1);
+            
+          } catch (error) {
+            console.error("Error updating like:", error);
+            alert("An error occurred while updating the like. Please try again.");
+          }
+        });
+        
+      } catch (error) {
+        console.error("Error loading profile:", error);
+        document.getElementById('usernameDisplay').textContent = 'Error Loading Profile';
+      }
+    }
+    
+    // Display purchased items
+    function displayPurchasedItems(purchasedItemNames) {
+      const container = document.getElementById('purchasedItemsContainer');
+      container.innerHTML = '';
+      
+      if (!purchasedItemNames || purchasedItemNames.length === 0) {
+        document.getElementById('noItemsMessage').style.display = 'block';
+        return;
+      }
+      
+      purchasedItemNames.forEach(itemName => {
+        const itemData = shopItems.find(item =>
+          item.name.trim().toLowerCase() === itemName.trim().toLowerCase()
+        );
+        
+        const itemCard = document.createElement('div');
+        itemCard.className = 'item-card';
+        
+        if (itemData) {
+          itemCard.innerHTML = `
+            <img src="${itemData.imageUrl}" class="item-icon" alt="${itemData.name}" 
+                 onerror="this.src='../icons/default_item.png'">
+            <div class="item-name">${itemData.name}</div>
+            <div class="item-price">${formatNumber(itemData.price)} <img src="../icons/coinss_gif.gif" height="12"></div>
+          `;
+        } else {
+          itemCard.innerHTML = `
+            <img src="../icons/default_item.png" class="item-icon" alt="${itemName}">
+            <div class="item-name">${itemName}</div>
+            <div class="rare-item-label">This item is so rare</div>
+          `;
+        }
+        
+        container.appendChild(itemCard);
+      });
+    }
+    
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', loadUserProfile);
+  </script>
+  
+  <script>
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '/';
+      }
+    }
+  </script>
+</body>
+</html>
