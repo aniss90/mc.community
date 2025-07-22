@@ -20,161 +20,219 @@
       src: url('../font/Minecraft-Five.ttf');  
     }  
   
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        
-            margin: 0 auto;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        
-        #chatBox {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-            
-            background-color: #232323;
-        }
-.message {
-    margin: 5px 0;
-    padding: 10px 15px;
-    border-radius: 7px;
-    max-width: 80%;
-    display: inline-block;
-    word-wrap: break-word;
-    position: relative;
-    clear: both;
-}
 
-.myMessage {
-    background-color: #dcf8c6;
-    float: right;
-    margin-right: 10px;
-}
-
-.otherMessage {
-    background-color: white;
-    float: left;
-    margin-left: 10px;
-}
-        .input-area {
-    border-radius: 50px;
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0 auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+    }
+    
+    #chatBox {
+        flex: 1;
+        overflow-y: auto;
+        padding: 15px;
+        background-color: #23232300;
+    }
+    
+    .message {
+        margin: 5px 0;
+        padding: 10px 15px;
+        border-radius: 7px;
+        max-width: 80%;
+        display: inline-block;
+        word-wrap: break-word;
+        position: relative;
+        clear: both;
+        transition: all 0.3s ease;
+    }
+    
+    .myMessage {
+        background-color: #dcf8c6;
+        float: right;
+        margin-right: 10px;
+    }
+    
+    .otherMessage {
+        background-color: white;
+        float: left;
+        margin-left: 10px;
+    }
+    
+.input-area {
     display: flex;
-    align-items: center;
+    align-items: flex-end; /* ممتاز */
     padding: 5px 10px;
     background-color: #4B4B4B;
     border: 2px solid #484848;
+    border-radius: 25px;
     margin: 10px;
-    height: 50px;
     box-sizing: border-box;
+    transition: all 0.2s ease;
+    transition: height 0.2s ease;
+}
+
+.input-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    align-items: flex-end; /* لضبط تموضع الكتابة */
 }
 
 #message-input {
-    flex: 1;
+    width: 100%;
     background-color: transparent;
     border: none;
     outline: none;
     box-shadow: none;
     color: white;
     font-size: 16px;
-    padding: 0 10px;
-    height: 100%;
-    text-align: left;
-    direction: ltr; 
-    text-align: start;
-
+    padding: 6px 10px;
+    line-height: 20px;
+    resize: none;
+    overflow-y: hidden;
+    min-height: 20px;
+    max-height: 150px;
+    height: auto;
+    transition: height 0.2s ease;
 }
-#message-input:focus {
-    border: none;
-    outline: none;
-    box-shadow: none;
-}
+/* ✅ الزرين متمركزين فوق بعض */
 .action-buttons {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    position: relative;
+    width: 40px;
+    height: 40px; 
+    align-items: flex-end;
+    justify-content: center;
+    margin-left: 8px;
+    position: relative;
+    transition: all 0.2s ease;
 }
 
+/* إعداد الزرين ليكونوا فوق بعض */
 #send-btn,
 #upload-btn {
-    width: 30px;
-    height: 30px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
     border: none;
-    background-size: contain;
+    border-radius: 50%;
+    background-size: 25px 25px;
+    background-color: #2F2F2F;
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-#send-btn {
-    background-image: url('../icons/Message_send_logo.png');
+    transition: all 0.3s ease;
 }
 
-#upload-btn {
-    background-image: url('../icons/Gallery_logo.png');
+/* زر الإرسال مخفي بالبداية */
+#send-btn {
+    background-image: url('../icons/send_icon.svg');
+    opacity: 0;
+    z-index: 1;
+    transform: scale(0.8);
 }
-        #image-input {
-            display: none;
-        }
-      .blur-background .message:not(.selected-message) {  
-    filter: blur(4px);  
+
+/* زر الصور ظاهر بالبداية */
+#upload-btn {
+    background-image: url('../icons/Gallery_icon.svg');
+    opacity: 1;
+    z-index: 2;
+    transform: scale(1);
+}
+
+    #send-btn.active {
+        opacity: 1;
+        transform: scale(1);
+        z-index: 1; /* لجعل زر الإرسال فوق زر الصورة عند الظهور */
+    }
+
+    #upload-btn.hidden {
+        opacity: 0;
+        transform: scale(0.8);
+        z-index: 0; /* إرسال زر الصورة للخلف عند الاختفاء */
+    }
+
+
+    #image-input {
+        display: none;
+    }
     
-}  
-  
-/* قائمة الخيارات */  
-.message-options {  
-    position: absolute;  
-    background: rgba(0, 0, 0, 0.8);  
-    color: white;  
-    padding: 8px;  
-    border-radius: 8px;  
-    display: flex;  
-    gap: 10px;  
-    bottom: -40px; /* الأزرار تظهر تحت الرسالة */  
-    left: 50%;  
-    transform: translateX(-50%);  
-    display: none;  
-    z-index: 100;  
-    backdrop-filter: blur(8px); 
-            -webkit-backdrop-filter: blur(90px);
+    .blur-background .message:not(.selected-message) {  
+        filter: blur(4px);  
+    }  
     
-}  
-/* تنسيق الأزرار */  
-.option-btn {  
-    padding: 6px 12px;  
-    border: none;  
-    cursor: pointer;  
-    border-radius: 5px;  
-    font-size: 14px;  
-        
-}  
-  
-.option-btn.copy {  
-    background-color: green;  
-    color: white;  
-}  
-  
-.option-btn.delete {  
-    background-color: red;  
-    color: white;  
-}   
-        #chatUser{
-            font-family: minecraft-ten;
-            font-size: 30px;
-        }
-          .header {
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.81);
+    /* قائمة الخيارات */  
+    .message-options {  
+        position: absolute;  
+        background: rgba(0, 0, 0, 0.8);  
+        color: white;  
+        padding: 8px;  
+        border-radius: 8px;  
+        display: flex;  
+        gap: 10px;  
+        bottom: -40px; /* الأزرار تظهر تحت الرسالة */  
+        left: 50%;  
+        transform: translateX(-50%);  
+        display: none;  
+        z-index: 100;  
+        backdrop-filter: blur(8px); 
+        -webkit-backdrop-filter: blur(90px);
+    }  
+    
+    /* تنسيق الأزرار */  
+    .option-btn {  
+        padding: 6px 12px;  
+        border: none;  
+        cursor: pointer;  
+        border-radius: 5px;  
+        font-size: 14px;  
+    }  
+    
+    .option-btn.copy {  
+        background-color: green;  
+        color: white;  
+    }  
+    
+    .option-btn.delete {  
+        background-color: red;  
+        color: white;  
+    }   
+    
+    #chatUser {
+        font-family: minecraft-ten;
+        font-size: 30px;
+    }
+    
+    .header {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.81);
+        transition: all 0.3s ease;
+    }
+    
+    .lodinimg {
+        left: 50%;
+        transform: translateX(-50%);  
+        transition: all 0.3s ease;
+    }
+    @keyframes slideUpMessage {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
   }
-  .lodinimg{
-      left: 50%;
-      transform: translateX(-50%);  
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
-  
-    </style>
+}
+
+.message.new-message {
+  animation: slideUpMessage 0.4s ease-out;
+}
+</style>
+
+
 </head>
 <body>
     <div class="chat-container">
@@ -185,14 +243,14 @@
         
         <div id="chatBox"><img class="lodinimg" src="../icons/loading_spinner.gif" height="20" /></div>
         
-        <div class="input-area">
-    <input type="text" id="message-input" placeholder="message...">
-             <div class="action-buttons"> 
-                <button id="upload-btn"></button>
-                <button id="send-btn"></button>
-                <input type="file" id="image-input" accept="image/*">
-            </div>
-        </div>
+<div class="input-area">
+  <textarea id="message-input" placeholder="Message.." rows="1"></textarea>
+  <div class="action-buttons">
+    <button id="upload-btn"></button>
+    <button id="send-btn"></button>
+    <input type="file" id="image-input" accept="image/*">
+  </div>
+</div>
     </div>
 
     <script type="module">
@@ -251,19 +309,19 @@
 
             // Time formatting function
             function timeSince(date) {
-                const seconds = Math.floor((new Date() - date) / 1000);
-                let interval = Math.floor(seconds / 31536000);
-                if (interval >= 1) return ` ${interval} y`;
-                interval = Math.floor(seconds / 2592000);
-                if (interval >= 1) return ` ${interval} m`;
-                interval = Math.floor(seconds / 86400);
-                if (interval >= 1) return ` ${interval} d`;
-                interval = Math.floor(seconds / 3600);
-                if (interval >= 1) return ` ${interval} h`;
-                interval = Math.floor(seconds / 60);
-                if (interval >= 1) return ` ${interval} m`;
-                return "now";
-            }
+    const seconds = Math.floor((new Date() - date) / 1000);
+    let interval = Math.floor(seconds / 31536000);
+    if (interval >= 1) return ` ${interval} y`;
+    interval = Math.floor(seconds / 604800); // ✅ أسابيع
+    if (interval >= 1) return ` ${interval} w`;
+    interval = Math.floor(seconds / 86400);
+    if (interval >= 1) return ` ${interval} d`;
+    interval = Math.floor(seconds / 3600);
+    if (interval >= 1) return ` ${interval} h`;
+    interval = Math.floor(seconds / 60);
+    if (interval >= 1) return ` ${interval} min`;
+    return "now";
+}
 
             // HTML escaping function
             function escapeHTML(text) {
@@ -281,27 +339,29 @@
             );
 
             // Real-time messages listener
-            const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
-                chatBox.innerHTML = "";
-
-                snapshot.forEach((docSnap) => {
-                    const data = docSnap.data();
-                    const isMyMessage = (data.sender === activeUser);
-                    const messageElement = document.createElement("div");
-                    messageElement.classList.add("message", isMyMessage ? "myMessage" : "otherMessage");
-                    messageElement.setAttribute("data-id", docSnap.id);
-
-                    const timestamp = data.timestamp?.toDate ? data.timestamp.toDate() : new Date();
-                    const formattedTime = timeSince(timestamp);
-                    const fullDate = timestamp.toLocaleString("en-NM");
-
-                    let contentHTML = `
-                        <div style="font-size: 12px; color: gray; margin-bottom: 5px;">
-                            ${fullDate} - ${formattedTime}
-                        </div>
-                    `;
-
-         if (data.type === "image") {
+const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
+    chatBox.innerHTML = "";
+    
+    const docs = snapshot.docs; // نحول النتائج إلى مصفوفة
+    
+    docs.forEach((docSnap, index) => {
+        const data = docSnap.data();
+        const isMyMessage = (data.sender === activeUser);
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("message", isMyMessage ? "myMessage" : "otherMessage");
+        messageElement.setAttribute("data-id", docSnap.id);
+        
+        const timestamp = data.timestamp?.toDate ? data.timestamp.toDate() : new Date();
+        const formattedTime = timeSince(timestamp);
+        const fullDate = timestamp.toLocaleString("en-NM");
+        
+        let contentHTML = `
+            <div style="font-size: 12px; color: gray; margin-bottom: 5px;">
+                ${fullDate} - ${formattedTime}
+            </div>
+        `;
+        
+     if (data.type === "image") {
     contentHTML += `
         <strong>${data.sender}:</strong><br>
         <img 
@@ -311,53 +371,60 @@
             alt="صورة محادثة"
         >
     `;
-          } else {
-                        const escapedMessage = escapeHTML(data.message);
-                        contentHTML += `<strong>${data.sender}:</strong> ${escapedMessage}`;
-                    }
+} else {
+    const escapedMessage = escapeHTML(data.message).replace(/\n/g, "<br>");
+    contentHTML += `<strong>${data.sender}:</strong><br>${escapedMessage}`;
+}
+        
+        messageElement.innerHTML = contentHTML;
+        
+        // ✅ أنميشن فقط لآخر رسالة
+        if (index === docs.length - 1) {
+            messageElement.classList.add("new-message");
+            setTimeout(() => {
+                messageElement.classList.remove("new-message");
+            }, 600);
+        }
+        
+        chatBox.appendChild(messageElement);
+    });
+    
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
 
-                    messageElement.innerHTML = contentHTML;
-                    chatBox.appendChild(messageElement);
-                });
 
-                chatBox.scrollTop = chatBox.scrollHeight;
-            });
+function autoResizeTextarea() {
+    messageInput.style.height = "auto";
+    messageInput.style.height = Math.min(messageInput.scrollHeight, 150) + "px";
+}
 
-            // Auto-resize textarea
-            messageInput.addEventListener("input", () => {
-                messageInput.style.height = "auto";
-                messageInput.style.height = (messageInput.scrollHeight) + "px";
-            });
+// عند الكتابة
+messageInput.addEventListener("input", autoResizeTextarea);
 
-            // Send message function
-            async function sendMessage() {
-                let messageText = messageInput.value.trim();
-
-                if (messageText === "") {
-
-                    return;
-                }
-
-                const maxChars = 200;
-                if (messageText.length > maxChars) {
-                    messageText = messageText.substring(0, maxChars);
-                    alert("  You cannot send more than 200 characters. !\n ما تقدر ترسل اكثر من 200 حرف! ");
-                }
-
-                try {
-                    await addDoc(messagesRef, {
-                        sender: activeUser,
-                        receiver: receiver,
-                        message: messageText,
-                        timestamp: new Date()
-                    });
-
-                    messageInput.value = "";
-                    messageInput.style.height = "40px";
-                } catch (error) {
-                    console.error("حدث خطأ أثناء إرسال الرسالة:", error);
-                }
-            }
+// عند الإرسال
+async function sendMessage() {
+    let messageText = messageInput.value.trim();
+    if (messageText === "") return;
+    
+    if (messageText.length > 200) {
+        messageText = messageText.substring(0, 200);
+        alert("لا يمكنك إرسال أكثر من 200 حرف!");
+    }
+    
+    try {
+        await addDoc(messagesRef, {
+            sender: activeUser,
+            receiver: receiver,
+            message: messageText,
+            timestamp: new Date()
+        });
+        
+        messageInput.value = "";
+        messageInput.style.height = "40px"; // يرجع بحجمه الأصلي
+    } catch (error) {
+        console.error("خطأ أثناء الإرسال:", error);
+    }
+}
 
             // Send button event
             sendButton.addEventListener("click", sendMessage);
@@ -538,6 +605,31 @@
         
         this.style.direction = isArabic ? 'rtl' : 'ltr';
     });
+</script>
+<script>
+    // إضافة JavaScript للتحكم في ظهور الأزرار
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        const uploadBtn = document.getElementById('upload-btn');
+        
+        messageInput.addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                // إذا كان هناك نص، أظهر زر الإرسال وأخفي زر الرفع
+                sendBtn.classList.add('active');
+                uploadBtn.classList.add('hidden');
+            } else {
+                // إذا كان الحقل فارغاً، أظهر زر الرفع وأخفي زر الإرسال
+                sendBtn.classList.remove('active');
+                uploadBtn.classList.remove('hidden');
+            }
+        });
+    });
+    
+    function goBack() {
+        // وظيفة العودة للخلف
+        window.history.back();
+    }
 </script>
       <script>
     function goBack() {

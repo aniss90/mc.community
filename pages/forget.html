@@ -22,25 +22,39 @@
     
 
         button {
-            
-            color: black;
             cursor: pointer;
             padding: 10px;
-            border: 2px solid #3D3D3D;
-  border: 2px solid #DCDCDC;
-  background-color: #FFFFFF;
  
         }
-        button:hover {
-            background-color:#6D6D6D;
-           
-        }
+        
         #emailDisplay {
             font-weight: bold;
             margin-top: 10px;
+            
+        }
+        #fetchEmailBtn{
+          background-color: #AEAEAE;
+          border: 2px solid #2F2F2F;
+          transition: all 0.3s ease;
+        }
+        #fetchEmailBtn:hover{
+          background-color: #2B2B2B;
+          border: 2px solid #9D9897;
+        box-shadow: 4px 0px 15px #8E8E8E;
+        color: #FFFFFF;
         }
         #sendPasswordBtn {
             display: none;
+            width: 100%;
+          text-align: center;
+          background-color: #159227;
+          border: 2px solid #459D52;
+            color: #DFE9E1;
+        transition: all 0.3s ease;
+        }
+        #sendPasswordBtn:hover{
+          background-color: #02340A;
+          border: 2px solid #91FFA1;
         }
         p {
           color: #FFFFFF
@@ -74,8 +88,7 @@
         <button id="sendPasswordBtn">  send the password</button>
       
     </div>
-  </div>
-      </div>
+  </div> 
       <script>
   emailjs.init("XJZUq8LRFG1aasSHu"); // مفتاحك العام من EmailJS
 </script>
@@ -149,7 +162,6 @@ document.getElementById("sendPasswordBtn").addEventListener("click", async () =>
     to_email: currentEmail,
     user_name: username,
     password: currentPassword,
-    avatar_url: photoURL // ← هنا نمرر رابط الصورة
   }, "XJZUq8LRFG1aasSHu")
   .then(() => {
     alert("✅ تم إرسال كلمة المرور إلى بريدك الإلكتروني!");

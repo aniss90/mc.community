@@ -336,13 +336,11 @@ th, td {
              <div class="search-container">  
         <input type="text" id="searchInput" placeholder="Search for users..." onkeyup="searchUsers()" />  
       </div>  
-</div>  
+
       <table>  
   <thead>  
     <tr>  
-      <th>Username <img src="../icons/player-head-128-052ba.png" height="12" /></th>  
-      <th>Coins <img src="../icons/Alot_of_coins.gif" alt="Coin" height="12" /></th>
-      <th>Fall Tokens <img src="../icons/fall_token.png" alt="Fall Token" height="12" /></th>
+
     </tr>  
   </thead>  
   <tbody id="userList">  
@@ -351,20 +349,22 @@ th, td {
 </table>
     
   </div>  
-  <div class="description">   
-  <div class="right-image">  
-    <div id="topUsersContainer" class="top-users-container" style="display: none;">    
-    <div class="description">   
-      <div class="top-users-title">Top Users <img src="../icons/Top1.gif" height="16"></div>  
-      <div id="topUsersList"></div>  
-    </div>  
-    </div>  
-    <img src="../icons/Sign-in_Prompts_Launch Animated-fdbda.gif" width="40%" />  
-  </div>  
-  </div>  
+      </div>
+        <div class="description">
+    <div class="right-image">
+      <div id="topUsersContainer" class="top-users-container" style="display: none;">
+        <div class="description">
+          <div class="top-users-title">Top Users <img src="../icons/Top1.gif" height="16"></div>
+          <div id="topUsersList"></div>
+        </div>
+      </div>
+      <img src="../icons/Sign-in_Prompts_Launch Animated-fdbda.gif" width="40%" />
+    </div>
+  </div>
 </div>
 
   </div>  
+  
   <script>
   // دالة مبسطة لحفظ واسترجاع الصور باستخدام الرابط كمفتاح
   function cacheImages() {

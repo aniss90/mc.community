@@ -7,7 +7,7 @@ export const shopItems = [
     },  
     { 
         name: "The CD", 
-        price: 850000, 
+        price: 85000000, 
         imageUrl: "../icons/cd_gif.gif",
         description: "A rare CD containing mysterious tracks, waiting to be discovered."
     },  
@@ -73,13 +73,13 @@ export const shopItems = [
     },  
     { 
         name: "Eye", 
-        price: 80000, 
+        price: 8000000, 
         imageUrl: "../icons/eye_gif.gif",
         description: "An eye that watches everything, never blinking, always observing."
     },  
     { 
         name: "Galaxy", 
-        price: 22000, 
+        price: 2200000, 
         imageUrl: "../icons/galaxy_gif.gif" ,
         description: "A swirling galaxy held within your hands, endless stars in view."
     },  
@@ -91,7 +91,7 @@ export const shopItems = [
     },  
     { 
         name: "Enchanted table", 
-        price: 1200000, 
+        price: 12000000, 
         imageUrl: "../icons/enchantedtable.gif",
         description: "An ancient, enchanted table that grants powerful magical abilities."
     },  
@@ -109,7 +109,7 @@ export const shopItems = [
     },  
     { 
         name: "The poop", 
-        price: 2500, 
+        price: 7000000, 
         imageUrl: "../icons/poop.png",
         description: "It's just piece of poop,  or is it..."
     },  
@@ -121,19 +121,19 @@ export const shopItems = [
     },  
     { 
         name: "The stare", 
-        price: 110000, 
+        price: 1100000, 
         imageUrl: "../icons/The_stare.gif",
         description: "A hypnotic stare that pierces deep into your soul, never breaking eye contact."
     },  
     { 
         name: "Bate", 
-        price: 120000, 
+        price: 220000, 
         imageUrl: "../icons/F_121.gif",
         description: "An ancient artifact of incredible power, lost to history."
     },
     {
         name: "The Warden", 
-        price: 175000, 
+        price: 175000000, 
         imageUrl: "../icons/sniff-sniffing.gif",
         description: "A terrifying guardian creature, silent yet incredibly powerful."
     },
@@ -145,7 +145,7 @@ export const shopItems = [
     },
     {
         name: "The goon", 
-        price: 8000, 
+        price: 880000, 
         imageUrl: "../icons/-goon.gif",
         description: "A tough and fearless brawler, ready to take on any fight."
     }, 
@@ -157,7 +157,7 @@ export const shopItems = [
     }, 
     {
         name: "Crystal", 
-        price: 60000, 
+        price: 600000, 
         imageUrl: "../icons/-crystal.gif",
         description: "A powerful crystal that enhances your abilities and strength."
     }, 
@@ -169,13 +169,13 @@ export const shopItems = [
     }, 
     {
         name: "Diamond pick", 
-        price: 8000, 
+        price: 80000, 
         imageUrl: "../icons/-gif.gif",
         description: "A diamond pickaxe that breaks through the toughest materials with ease."
     }, 
     {
         name: "Nether star", 
-        price: 80000, 
+        price: 750000, 
         imageUrl: "../icons/spinning_nether_star.gif",
         description: "A star imbued with dark energy from the Nether, full of power."
     }, 
@@ -193,7 +193,7 @@ export const shopItems = [
     }, 
     {
         name: "Desert boss", 
-        price: 3100000, 
+        price: 310000000, 
         imageUrl: "../icons/Desert_boss.gif",
         description: "Escaping from the desert boss is impossible."
     }, 
@@ -205,20 +205,20 @@ export const shopItems = [
     }, 
     {
         name: "woods", 
-        price: 200, 
-        imageUrl: "../icons/woods.jpg",
+        price: 2000, 
+        imageUrl: "../icons/Woods.jpg",
         description: "Just a bunch of wood."
     },
     {
         name: "Golden Star", 
-        price: 3500000, 
+        price: 35000000, 
         imageUrl: "../icons/star.gif",
         description: "She is a star made of pure raw gold. ."
     },
     {
-    name: "",
+    name: "Money package",
     price: 3500000,
     imageUrl: "../icons/Moneys.gif",
-    description: "She is a star made of pure raw gold. ."
+    description: "bro if you fine it you well be rich but it's well never happen."
 },
 ];

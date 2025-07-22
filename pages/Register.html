@@ -196,9 +196,9 @@
   .profile-image-preview {
     width: 150px;
     height: 150px;
-    border-radius: 50%;
+    border-radius: 25px;
     overflow: hidden;
-    border: 3px solid #e0e0e0;
+    border: 2px solid #727272;
     background-color: #F5F5F500;
     display: flex;
     align-items: center;
@@ -208,7 +208,7 @@
   }
   
   .profile-image-preview:hover {
-    border-color: #1877f2; /* لون أزرق مشابه لفيسبوك */
+    border-color: #CDCDCD; /* لون أزرق مشابه لفيسبوك */
   }
   
   .profile-image-preview img {
@@ -221,17 +221,17 @@
     position: absolute;
     bottom: 10px;
     right: 10px;
-    background-color: #1877f2;
+    background-color: #474747;
     color: white;
     width: 30px;
     height: 30px;
-    border-radius: 50%;
+    border-radius: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 20px;
     font-weight: bold;
-    border: 2px solid white;
+    border: 2px solid #BFBFBF;
   }
   
 
@@ -257,7 +257,7 @@
           <div class="profile-upload-container">
             <label for="profileImage" class="profile-image-label">
               <div class="profile-image-preview" id="profilePreview">
-                <img id="previewImage" src="../icons/no-player-profile-d13a7.png" alt="Profile Preview">
+                <img id="previewImage" src="../icons/player-head-128-052ba.png" alt="Profile Preview">
                 <div class="upload-icon">+</div>
               </div>
             </label>
@@ -286,7 +286,7 @@
           <br>   
           </div>
         <div> 
-          <div class="description"> Click the button to save your information.
+          <div class="description"> Click the button to save you're account information.
             <div class="button">   
               <button type="button" id="whiteButton"> Register <img src="../icons/add-player@0.5x.icon-2f437.png" height="15"></button>  
             </div>  
@@ -303,7 +303,20 @@
   </div>    
   
 
+<script>
+  window.onload = function() {
+  const emailField = document.getElementById("email");
+  const usernameField = document.getElementById("username");
   
+  const savedEmail = localStorage.getItem("googleEmailForRegister");
+  
+  if (savedEmail) {
+    emailField.value = savedEmail;
+    usernameField.value = savedEmail.split('@')[0];
+    localStorage.removeItem("googleEmailForRegister");
+  }
+};
+</script>
 <script type="module">
   import { db } from '../scripts/main.js';
   import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
@@ -352,25 +365,22 @@
     registerButton.disabled = !(isUsernameValid && isPasswordValid && isEmailValid);
   }
   
-  // معاينة الصورة عند الاختيار
-  profileImageInput.addEventListener('change', function() {
-    const file = this.files[0];
-    if (file) {
-      // التحقق من حجم الصورة (حد أقصى 2MB)
-      if (file.size > 2 * 1024 * 1024) {
-        alert('حجم الصورة كبير جداً. الحد الأقصى 2MB');
-        this.value = '';
-        return;
-      }
-      
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        previewImage.src = e.target.result;
-      }
-      reader.readAsDataURL(file);
+profileImageInput.addEventListener('change', function() {
+  const file = this.files[0];
+  if (file) {
+    if (file.size > 2 * 1024 * 1024) {
+      alert('حجم الصورة كبير جداً. الحد الأقصى 2MB');
+      this.value = '';
+      return;
     }
-  });
-  
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewImage.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+});
   // إضافة مستمعين للأحداث
   togglePassword.addEventListener('click', function() {
     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -402,6 +412,20 @@
     const password = passwordInput.value.trim();
     const email = emailInput.value.trim();
     const profileImage = profileImageInput.files[0];
+let photoURL = '';
+let photoBase64 = '';
+
+// إذا تم رفع صورة يدويًا
+if (profileImage) {
+  const base64String = await new Promise((resolve) => {
+    convertImageToBase64(profileImage, resolve);
+  });
+  
+  if (base64String) {
+    photoURL = base64String;
+    photoBase64 = base64String.split(',')[1];
+  }
+}
     
     // التحقق من الصحة قبل الإرسال
     const isUsernameValid = validateUsername(username);
@@ -424,13 +448,18 @@
       
       // بيانات المستخدم الأساسية
       const userData = {
-        password,
-        points: 0,
-        email: email,
-        photoURL: '', // سيتم تحديثها إذا تم رفع صورة
-        photoBase64: '' // سيتم تخزين الصورة هنا
-      };
-      
+  password,
+  email,
+  points: 0,
+  fallTokens: 0,
+  status: 'online',
+  hasRated: false,
+  notification: { read: true },
+  photoURL: '',
+  photoBase64: '', 
+  lastSeenMessages: {}
+  
+};
       // إذا تم اختيار صورة
       if (profileImage) {
         // تحويل الصورة إلى Base64

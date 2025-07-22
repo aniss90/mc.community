@@ -138,7 +138,7 @@ div.header {
     left: 0;
     width: 100%;
     height: auto;
-    background-color: #4B4B4BC2;
+    background-color: #4B4B4B8F;
     backdrop-filter: blur(8px); 
   -webkit-backdrop-filter: blur(5px);
     text-align: center;
@@ -272,20 +272,8 @@ a.link:hover {
 }
 
 
-  .login-box input:hover {
-  filter: blur(0);
-  transform: scale(1.05);
-  }
-  .Pay input {
-  width: 50%;
-  padding: 10px;
-  margin: auto;
-  border: 2px solid #303233;
-  box-shadow: 0px 3px 0px rgba(60, 60, 60, 1); 
-  background: #1E1E1F;
-  text-align: center;
-  color: #FFFFFF;
-  }
+
+
   .input-container {
   display: flex;
     
@@ -296,18 +284,17 @@ input {
   padding: 10px;
   margin: auto;
   border: 2px solid #303233;
-  box-shadow: 0px 3px 0px rgba(60, 60, 60, 1); 
-  background: #1e1e1f;
-  text-align: center;
-  color: #FFFFFF;
-  position: relative;
-  overflow: hidden;
-  transition: filter 0.5s, transform 0.3s;
-    
+  
+  outline: none;
+    background-color: #ECECEC00;
+    transform: none;
+  color: #C7C7C7;
+    box-shadow: none;
+    transition: all 0.5s;
   } 
   input:hover {
-  filter: blur(0);
-  transform: scale(1.05);
+  border: 2px solid #5F5F5F;
+    box-shadow: 0 2px 10px #5F5F5F;
   }
   .points {
       font-size: auto; 
