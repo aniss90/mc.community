@@ -8,13 +8,13 @@
   <title>User Settings</title>
      <!-- Open Graph Meta Tags -->
 <!-- Dynamic Meta Tags -->
+<!-- Dynamic Meta Tags -->
 <meta property="og:type" content="profile">
 <meta property="og:url" content="">
 <meta property="og:title" content="">
 <meta property="og:description" content="">
 <meta property="og:image" content="">
-<meta property="og:site_name" content="MC Community">
-<meta property="profile:username" content="">
+<meta property="og:site_name" content="mc co">
 <meta name="twitter:card" content="summary_large_image">
   <style>
     @font-face {
@@ -1229,68 +1229,6 @@ flex-shrink: 0;
         document.getElementById('currentEmail').value = userData.email;
       }
     }
-    // Dynamic Meta Tags for Social Sharing
-// دالة تحديث بيانات التعريف للشبكات الاجتماعية
-async function updateMetaForCurrentUser() {
-  // الحصول على معرف المستخدم من الرابط
-  const urlParams = new URLSearchParams(window.location.search);
-  const userId = urlParams.get('user') || localStorage.getItem("activeUser");
-  
-  if (!userId) return;
-  
-  try {
-    // جلب بيانات المستخدم من Firestore
-    const userDoc = await getDoc(doc(db, 'users', userId));
-    if (!userDoc.exists()) return;
-    
-    const userData = userDoc.data();
-    const baseUrl = window.location.origin;
-    
-    // بيانات ديناميكية لكل مستخدم
-    const dynamicMeta = {
-      'og:url': `${baseUrl}${window.location.pathname}?user=${userId}`,
-      'og:title': `${userData.displayName || userData.username || userId}'s MC Profile`,
-      'og:description': userData.bio || "Check out my Minecraft creations!",
-      'og:image': userData.photoURL || `${baseUrl}/images/default_profile.jpg`,
-      'profile:username': userId
-    };
-    
-    // تحديث الوسوم ديناميكياً
-    Object.entries(dynamicMeta).forEach(([property, content]) => {
-      let tag = document.querySelector(`meta[property="${property}"]`);
-      if (!tag) {
-        tag = document.createElement('meta');
-        tag.setAttribute('property', property);
-        document.head.appendChild(tag);
-      }
-      tag.setAttribute('content', content);
-    });
-    
-    // تحديث عنوان الصفحة
-    document.title = `${userData.displayName || userId}'s Profile - MC Community`;
-    
-    console.log('Meta tags updated for user:', userId);
-    
-  } catch (error) {
-    console.error("Error updating meta tags:", error);
-  }
-}
-
-// استدعاء الدالة عند تحميل الصفحة وعند تغيير المستخدم
-window.addEventListener('DOMContentLoaded', updateMetaForCurrentUser);
-window.addEventListener('hashchange', updateMetaForCurrentUser);
-
-function generateProfileLink(userId) {
-  const userDoc = await getDoc(doc(db, 'users', userId));
-  const userData = userDoc.data();
-  
-  return {
-    url: `${window.location.origin}/profile.html?user=${userId}`,
-    title: `${userData.displayName || userId}'s MC Profile`,
-    description: userData.bio || "Minecraft enthusiast",
-    image: userData.photoURL || `${window.location.origin}/default_avatar.jpg`
-  };
-}
 
     // Display purchased items
     function displayPurchasedItems(purchasedItemNames) {
@@ -1795,7 +1733,72 @@ googleUnlinkBtn.addEventListener('click', async () => {
 });
 
 </script>
-
+<script>
+  // دالة رئيسية لتحديث بيانات التعريف
+  async function updateMetaTags() {
+    const userId = getCurrentUserId(); // الحصول على ID المستخدم الحالي
+    
+    if (!userId) return;
+    
+    try {
+      const userDoc = await getDoc(doc(db, "users", userId));
+      if (!userDoc.exists()) return;
+      
+      const userData = userDoc.data();
+      const currentUrl = window.location.href.split('?')[0] + `?user=${userId}`;
+      
+      // إنشاء رابط الصورة مع token الوصول
+      const imageUrl = await getAccessibleImageUrl(userData.photoURL);
+      
+      // تحديث وسوم التعريف
+      updateTag('og:url', currentUrl);
+      updateTag('og:title', `${userData.displayName || userId}'s MC Profile`);
+      updateTag('og:description', userData.bio || "Minecraft Player Profile");
+      updateTag('og:image', imageUrl);
+      updateTag('profile:username', userId);
+      
+      // تحديث عنوان الصفحة
+      document.title = `${userData.displayName || userId}'s Profile`;
+      
+    } catch (error) {
+      console.error("Error updating meta tags:", error);
+    }
+  }
+  
+  // دالة مساعدة للحصول على رابط صورة متاح
+  async function getAccessibleImageUrl(photoURL) {
+    if (!photoURL) return 'https://example.com/default_profile.jpg';
+    
+    // إذا كانت الصورة في Firebase Storage
+    if (photoURL.startsWith('gs://')) {
+      const storageRef = ref(storage, photoURL);
+      return getDownloadURL(storageRef);
+    }
+    
+    return photoURL;
+  }
+  
+  // دالة مساعدة لتحديث الوسوم
+  function updateTag(property, content) {
+    let tag = document.querySelector(`meta[property="${property}"]`);
+    if (!tag) {
+      tag = document.createElement('meta');
+      tag.setAttribute('property', property);
+      document.head.appendChild(tag);
+    }
+    tag.setAttribute('content', content);
+  }
+  
+  // دالة للحصول على ID المستخدم الحالي
+  function getCurrentUserId() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('user') || localStorage.getItem("activeUser");
+  }
+  
+  // استدعاء عند تحميل الصفحة وتغيير المستخدم
+  window.addEventListener('DOMContentLoaded', updateMetaTags);
+  window.addEventListener('hashchange', updateMetaTags);
+</script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <script>
   // Enhanced QR Code generation with better error handling
