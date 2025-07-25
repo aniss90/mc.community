@@ -6,7 +6,19 @@
   <link rel="stylesheet" href="../style/main.css">
   <link rel="icon" type="image/x-icon" href="../icons/Setting_icon.png">
   <title>User Settings</title>
-     
+     <!-- Open Graph Meta Tags -->
+<meta property="og:type" content="profile">
+<meta property="og:url" content="">
+<meta property="og:title" content="">
+<meta property="og:description" content="">
+<meta property="og:image" content="">
+<meta property="og:site_name" content="MC Community">
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="">
   <style>
     @font-face {
       font-family: minecraft;
@@ -1220,7 +1232,62 @@ flex-shrink: 0;
         document.getElementById('currentEmail').value = userData.email;
       }
     }
+    // Dynamic Meta Tags for Social Sharing
+// دالة تحديث بيانات التعريف للشبكات الاجتماعية
+async function updateSocialMetaTags() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const userId = urlParams.get('user') || localStorage.getItem("activeUser");
+  
+  if (!userId) return;
+  
+  try {
+    const userDocRef = doc(db, 'users', userId);
+    const userDoc = await getDoc(userDocRef);
     
+    if (!userDoc.exists()) return;
+    
+    const userData = userDoc.data();
+    const profileUrl = `${window.location.origin}/mc.community/pages/profile.html?user=${userId}`;
+    const profileName = userData.displayName || userData.username || "MC Player";
+    const profileBio = userData.bio || "Check out my Minecraft profile";
+    const profileImage = userData.photoURL || `${window.location.origin}/icons/default_profile.png`;
+    
+    // تحديث عناصر الصفحة
+    document.title = `${profileName}'s MC Profile`;
+    
+    // تحديث Open Graph Meta Tags
+    document.querySelector('meta[property="og:url"]').content = profileUrl;
+    document.querySelector('meta[property="og:title"]').content = `${profileName}'s MC Profile`;
+    document.querySelector('meta[property="og:description"]').content = profileBio;
+    document.querySelector('meta[property="og:image"]').content = profileImage;
+    
+    // تحديث Twitter Meta Tags
+    document.querySelector('meta[name="twitter:title"]').content = `${profileName}'s MC Profile`;
+    document.querySelector('meta[name="twitter:description"]').content = profileBio;
+    document.querySelector('meta[name="twitter:image"]').content = profileImage;
+    
+  } catch (error) {
+    console.error("Error updating social meta tags:", error);
+  }
+}
+
+// استدعاء الدالة عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', updateSocialMetaTags);
+
+// Initialize profile page with meta tags
+document.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const profileUserId = urlParams.get('user');
+  
+  if (profileUserId) {
+    const userDocRef = doc(db, 'users', profileUserId);
+    getDoc(userDocRef).then(userDoc => {
+      if (userDoc.exists()) {
+        updateMetaTagsForProfile(userDoc.data());
+      }
+    });
+  }
+});
     // Display purchased items
     function displayPurchasedItems(purchasedItemNames) {
       const container = document.getElementById('purchasedItemsContainer');
@@ -1725,6 +1792,106 @@ googleUnlinkBtn.addEventListener('click', async () => {
 
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script>
+  // Enhanced QR Code generation with better error handling
+  async function generateQRCode(containerId, text, errorId) {
+    const container = document.getElementById(containerId);
+    const errorElement = document.getElementById(errorId);
+    
+    try {
+      container.innerHTML = '';
+      errorElement.style.display = 'none';
+      
+      if (!QRCode || typeof QRCode.toCanvas !== 'function') {
+        throw new Error('QRCode library not loaded correctly.');
+      }
+      
+      const canvas = document.createElement('canvas');
+      container.appendChild(canvas);
+      
+      await QRCode.toCanvas(canvas, text, {
+        width: 150,
+        errorCorrectionLevel: 'H',
+        margin: 1,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      });
+      
+      return true;
+    } catch (error) {
+      console.error('QR Code generation failed:', error);
+      errorElement.textContent = '⚠️ Failed to generate QR code. Displaying link instead.';
+      errorElement.style.display = 'block';
+      
+      container.innerHTML = `
+        <div style="word-break: break-all; font-family: 'minecraft'; 
+             font-size: 12px; color: white; padding: 10px; 
+             background: #333; border-radius: 5px;">
+          ${text}
+        </div>
+      `;
+      return false;
+    }
+  }
+  
+  // Share Profile functionality
+  document.getElementById('shareProfileBtn').addEventListener('click', async function() {
+    const userId = localStorage.getItem("activeUser");
+    if (!userId) {
+      alert('🔒 You need to be logged in to share your profile');
+      return;
+    }
+    
+    const profileLink = `${window.location.origin}/mc.community/pages/profile.html?user=${userId}`;
+    document.getElementById('profileLink').value = profileLink;
+    
+    const btn = this;
+    btn.disabled = true;
+    const originalText = btn.textContent;
+    btn.textContent = '🔄 Generating...';
+    
+    try {
+      await generateQRCode('qrCodeContainer', profileLink, 'qrCodeError');
+      toggleModal('shareProfileModal', true);
+    } catch (error) {
+      console.error('QR code generation completely failed:', error);
+      alert('⚠️ Failed to generate shareable content. Please try again later.');
+    } finally {
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
+  });
+  
+  // Copy link functionality
+  document.getElementById('copyLinkBtn').addEventListener('click', function() {
+    const profileLink = document.getElementById('profileLink');
+    profileLink.select();
+    document.execCommand('copy');
+    
+    const originalText = this.textContent;
+    this.textContent = '✅ Copied!';
+    setTimeout(() => {
+      this.textContent = originalText;
+    }, 2000);
+  });
+  
+  // Modal functions
+  function toggleModal(modalId, show) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.style.display = show ? 'flex' : 'none';
+    } else {
+      console.error('Modal not found:', modalId);
+    }
+  }
+
+  // Close share modal
+  document.getElementById('closeShareModal').addEventListener('click', () => toggleModal('shareProfileModal', false));
+  document.getElementById('closeShareModalBtn').addEventListener('click', () => toggleModal('shareProfileModal', false));
+</script>
 
   <!-- باقي السكريبتات تبقى كما هي -->
 

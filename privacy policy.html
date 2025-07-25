@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>privacy Policy</title>
+    <link rel="stylesheet" href="style/main.css">
+    <link rel="icon" type="image/x-icon" href="web/ytlogo.png">
+    <style>
+        @font-face {
+            font-family: minecraft;
+            src: url('font/Minecraft-Default.otf');
+        }
+
+        @font-face {
+            font-family: minecraft-ten;
+            src: url('font/Minecraft-Ten.ttf');
+        }
+
+        @font-face {
+            font-family: minecraft-five;
+            src: url('font/Minecraft-Five.ttf');
+        }
+
+      
+        p {
+            line-height: 1.6;
+            font-size: 1rem;
+            color: #FFFFFF;
+        }
+
+        ul {
+            margin-top: 10px;
+        }
+
+        ul li {
+            margin-bottom: 8px;
+            color: #FFFFFF;
+        }
+
+        strong {
+            color: #FFFFFF;
+        }
+
+        .contact-info {
+            background-color: #4B4B4B;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding-bottom: 80px;
+            flex-grow: 1;
+            padding-bottom: 20px;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding-bottom: 60px;
+            padding-top: 40px;
+            
+        }
+
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            background-color: #5E5E5E;
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        .translate-btn {
+    position: relative;
+    top: 5px;
+    right: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    z-index: 10;
+    margin-bottom: 20px; /* إضافة مسافة تحت الزر */
+}
+
+
+        /* إضافة هذه القاعدة لجعل النص يظهر من اليمين لليسار عند استخدام العربية */
+[lang="ar"] {
+    direction: rtl;
+    text-align: right;
+}
+    </style>
+</head>
+<body>
+     
+   
+
+    <div class="header">
+        Privacy policy <img src="icons/gavel_gif.gif" height="20">
+        <button class="back" id="backButton" type="button" onclick="goBack()"></button>
+    </div>
+
+    <div class="content">
+       <button id="translate-btn" class="translate-btn">ترجم إلى العربية</button>
+        <div class="title">The Information We Collect</div>
+        
+        <div class="description">
+            <p>We collect two types of information when you use our website:</p>
+            <ul>
+                <li><strong>Personal Information</strong>: Such as name, email address, and password that you provide when registering on the site.</li>
+                <li><strong>Non-personal Information</strong>: Such as browser type, IP address, pages you visited, and the time you spent on the site. We may use cookies to collect this information.</li>
+            </ul>
+        </div>
+
+        <div class="title">How We Use the Information</div>
+        <div class="description">
+            <p>We use the information we collect for the following purposes:</p>
+            <ul>
+                <li>To provide a personalized user experience and improve the site.</li>
+                <li>To send messages related to your account, such as system updates or changes to the privacy policy.</li>
+                <li>To enable communication between users and provide features such as chats, messages, and currency exchange.</li>
+                <li>To analyze site usage to improve its performance and offer customized content.</li>
+            </ul>
+        </div>
+
+        <div class="title">Sharing the Information</div>
+        <div class="description">
+            <p>We will not share your personal information with third parties, except in the following cases:</p>
+            <ul>
+                <li>If required by law or in response to a legal request.</li>
+                <li>If necessary to protect our rights or the rights of other users.</li>
+            </ul>
+        </div>
+
+        <div class="title">Information Security</div>
+        <div class="description">
+            <p>We take appropriate security measures to protect your personal information from unauthorized access or misuse. However, we cannot guarantee complete security for data over the internet.</p>
+        </div>
+
+        <div class="title">Your Rights</div>
+        <div class="description">
+            <p>You have the right to access the personal information we hold about you, as well as to modify or delete it. If you wish to update your data or request account deletion, you can contact us using the following information.</p>
+        </div>
+
+        <div class="title">Changes to the Privacy Policy</div>
+        <div class="description">
+            <p>We may update this privacy policy from time to time. If any significant changes are made, you will be notified with a clear notice on the site.</p>
+        </div>
+
+        <div class="contact-info">
+            <div class="title">Contact Us</div>
+            <div class="description">
+                <p>If you have any questions or concerns about this privacy policy or how we handle your personal information, you can contact us at:</p>
+                <p><strong>Email:</strong> <a target="_blank"  class="link" href="mc.community31@gmail.com">mc.community31</a></p>
+                <p><strong>Phone Number:</strong> +213696349542</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025/2026 mc.community. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById("translate-btn").addEventListener("click", function() {
+    if (this.textContent === "ترجم إلى العربية") {
+        translateToArabic();
+        this.textContent =  "To English";
+        document.documentElement.setAttribute('lang', 'ar'); // تغيير اللغة إلى العربية
+    } else {
+        translateToEnglish();
+        this.textContent = "ترجم إلى العربية";
+        document.documentElement.setAttribute('lang', 'en'); // تغيير اللغة إلى الإنجليزية
+    }
+});
+
+function translateToArabic() {
+    // ترجمة العناوين والفقرات
+    document.querySelector('.header').textContent = 'سياسة الخصوصية';
+    document.querySelector('.title').textContent = 'المعلومات التي نقوم بجمعها';
+    
+    // ترجمة المحتوى
+    document.querySelectorAll('.description p')[0].innerHTML = "نقوم بجمع نوعين من المعلومات عندما تستخدم موقعنا:";
+    document.querySelectorAll('.description ul li')[0].innerHTML = "<strong>المعلومات الشخصية</strong>: مثل الاسم، البريد الإلكتروني، وكلمة المرور التي تقدمها عند التسجيل في الموقع.";
+    document.querySelectorAll('.description ul li')[1].innerHTML = "<strong>المعلومات غير الشخصية</strong>: مثل نوع المتصفح، عنوان IP، الصفحات التي قمت بزيارتها، ووقت استخدامك للموقع. قد نستخدم ملفات تعريف الارتباط (Cookies) لجمع هذه المعلومات.";
+    
+    // ترجمة باقي الأقسام
+    document.querySelectorAll('.description p')[1].innerHTML = "نستخدم المعلومات التي نقوم بجمعها للأغراض التالية:";
+    document.querySelectorAll('.description ul li')[2].innerHTML = "لتوفير تجربة مستخدم مخصصة وتحسين الموقع.";
+    document.querySelectorAll('.description ul li')[3].innerHTML = "لإرسال رسائل تتعلق بحسابك مثل التحديثات النظامية أو التغييرات في سياسة الخصوصية.";
+    document.querySelectorAll('.description ul li')[4].innerHTML = "تمكين التواصل بين المستخدمين وتوفير ميزات مثل الدردشة، الرسائل، وتبادل العملات.";
+    document.querySelectorAll('.description ul li')[5].innerHTML = "لتحليل استخدام الموقع لتحسين أدائه وتقديم محتوى مخصص.";
+
+    // ترجمة المعلومات المتعلقة بالمشاركة
+    document.querySelectorAll('.description p')[2].innerHTML = "لن نشارك معلوماتك الشخصية مع أطراف ثالثة، باستثناء الحالات التالية:";
+    document.querySelectorAll('.description ul li')[6].innerHTML = "إذا كان ذلك مطلوبًا بموجب القانون أو استجابة لطلب قانوني.";
+    document.querySelectorAll('.description ul li')[7].innerHTML = "إذا كان من الضروري حماية حقوقنا أو حقوق المستخدمين الآخرين.";
+
+    // ترجمة معلومات الأمان
+    document.querySelectorAll('.description p')[3].innerHTML = "نحن نتخذ التدابير الأمنية المناسبة لحماية معلوماتك الشخصية من الوصول غير المصرح به أو سوء الاستخدام. ومع ذلك، لا يمكننا ضمان الأمان الكامل للبيانات عبر الإنترنت.";
+
+    // ترجمة حقوق المستخدم
+    document.querySelectorAll('.description p')[4].innerHTML = "لك الحق في الوصول إلى المعلومات الشخصية التي نحتفظ بها عنك، وكذلك تعديلها أو حذفها. إذا كنت ترغب في تحديث بياناتك أو طلب حذف الحساب، يمكنك الاتصال بنا باستخدام المعلومات التالية.";
+
+    // ترجمة سياسة الخصوصية
+    document.querySelectorAll('.description p')[5].innerHTML = "قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. إذا تم إجراء أي تغييرات هامة، سيتم إعلامك بإشعار واضح على الموقع.";
+
+    // ترجمة قسم الاتصال
+    document.querySelector('.contact-info .title').innerHTML = "اتصل بنا";
+    document.querySelectorAll('.contact-info .description p')[0].innerHTML = "إذا كانت لديك أي أسئلة أو استفسارات حول سياسة الخصوصية هذه أو كيفية التعامل مع معلوماتك الشخصية، يمكنك الاتصال بنا على:";
+    document.querySelectorAll('.contact-info .description p')[1].innerHTML = "<strong>البريد الإلكتروني:</strong> <a class='link' href='mc.community31@gmail.com'>mc.community31</a>";
+    document.querySelectorAll('.contact-info .description p')[2].innerHTML = "<strong>رقم الهاتف:</strong> +213696349542";
+    
+    // ترجمة الفوتر
+    document.querySelector('footer p').innerHTML = '&copy; 2025/2026 mc.community. جميع الحقوق محفوظة.';
+}
+
+function translateToEnglish() {
+    // ترجمة العناوين والفقرات إلى الإنجليزية
+    document.querySelector('.header').textContent = 'Privacy policy';
+    document.querySelector('.title').textContent = 'The Information We Collect';
+    
+    // ترجمة المحتوى إلى الإنجليزية
+    document.querySelectorAll('.description p')[0].innerHTML = "We collect two types of information when you use our website:";
+    document.querySelectorAll('.description ul li')[0].innerHTML = "<strong>Personal Information</strong>: Such as name, email address, and password that you provide when registering on the site.";
+    document.querySelectorAll('.description ul li')[1].innerHTML = "<strong>Non-personal Information</strong>: Such as browser type, IP address, pages you visited, and the time you spent on the site. We may use cookies to collect this information.";
+    
+    // ترجمة باقي الأقسام إلى الإنجليزية
+    document.querySelectorAll('.description p')[1].innerHTML = "We use the information we collect for the following purposes:";
+    document.querySelectorAll('.description ul li')[2].innerHTML = "To provide a personalized user experience and improve the site.";
+    document.querySelectorAll('.description ul li')[3].innerHTML = "To send messages related to your account, such as system updates or changes to the privacy policy.";
+    document.querySelectorAll('.description ul li')[4].innerHTML = "To enable communication between users and provide features such as chats, messages, and currency exchange.";
+    document.querySelectorAll('.description ul li')[5].innerHTML = "To analyze site usage to improve its performance and offer customized content.";
+
+    // ترجمة المعلومات المتعلقة بالمشاركة
+    document.querySelectorAll('.description p')[2].innerHTML = "We will not share your personal information with third parties, except in the following cases:";
+    document.querySelectorAll('.description ul li')[6].innerHTML = "If required by law or in response to a legal request.";
+    document.querySelectorAll('.description ul li')[7].innerHTML = "If necessary to protect our rights or the rights of other users.";
+
+    // ترجمة معلومات الأمان
+    document.querySelectorAll('.description p')[3].innerHTML = "We take appropriate security measures to protect your personal information from unauthorized access or misuse. However, we cannot guarantee complete security for data over the internet.";
+
+    // ترجمة حقوق المستخدم
+    document.querySelectorAll('.description p')[4].innerHTML = "You have the right to access the personal information we hold about you, as well as to modify or delete it. If you wish to update your data or request account deletion, you can contact us using the following information.";
+
+    // ترجمة سياسة الخصوصية
+    document.querySelectorAll('.description p')[5].innerHTML = "We may update this privacy policy from time to time. If any significant changes are made, you will be notified with a clear notice on the site.";
+
+    // ترجمة قسم الاتصال
+    document.querySelector('.contact-info .title').innerHTML = "Contact Us";
+    document.querySelectorAll('.contact-info .description p')[0].innerHTML = "If you have any questions or concerns about this privacy policy or how we handle your personal information, you can contact us at:";
+    document.querySelectorAll('.contact-info .description p')[1].innerHTML = "<strong>Email:</strong> <a class='link' href='mc.community31@gmail.com'>mc.community31</a>";
+    document.querySelectorAll('.contact-info .description p')[2].innerHTML = "<strong>Phone Number:</strong> +213696349542";
+    
+    // ترجمة الفوتر
+    document.querySelector('footer p').innerHTML = '&copy; 2025/2026 mc.community. All rights reserved.';
+}
+    </script>
+      <script>
+  function goBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
+    }
+  }
+</script>
+</body>
+</html>
