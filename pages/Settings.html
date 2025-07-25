@@ -7,18 +7,15 @@
   <link rel="icon" type="image/x-icon" href="../icons/Setting_icon.png">
   <title>User Settings</title>
      <!-- Open Graph Meta Tags -->
+<!-- Dynamic Meta Tags -->
 <meta property="og:type" content="profile">
 <meta property="og:url" content="">
 <meta property="og:title" content="">
 <meta property="og:description" content="">
 <meta property="og:image" content="">
 <meta property="og:site_name" content="MC Community">
-
-<!-- Twitter Meta Tags -->
+<meta property="profile:username" content="">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="">
-<meta name="twitter:description" content="">
-<meta name="twitter:image" content="">
   <style>
     @font-face {
       font-family: minecraft;
@@ -1234,60 +1231,67 @@ flex-shrink: 0;
     }
     // Dynamic Meta Tags for Social Sharing
 // دالة تحديث بيانات التعريف للشبكات الاجتماعية
-async function updateSocialMetaTags() {
+async function updateMetaForCurrentUser() {
+  // الحصول على معرف المستخدم من الرابط
   const urlParams = new URLSearchParams(window.location.search);
   const userId = urlParams.get('user') || localStorage.getItem("activeUser");
   
   if (!userId) return;
   
   try {
-    const userDocRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userDocRef);
-    
+    // جلب بيانات المستخدم من Firestore
+    const userDoc = await getDoc(doc(db, 'users', userId));
     if (!userDoc.exists()) return;
     
     const userData = userDoc.data();
-    const profileUrl = `${window.location.origin}/mc.community/pages/profile.html?user=${userId}`;
-    const profileName = userData.displayName || userData.username || "MC Player";
-    const profileBio = userData.bio || "Check out my Minecraft profile";
-    const profileImage = userData.photoURL || `${window.location.origin}/icons/default_profile.png`;
+    const baseUrl = window.location.origin;
     
-    // تحديث عناصر الصفحة
-    document.title = `${profileName}'s MC Profile`;
+    // بيانات ديناميكية لكل مستخدم
+    const dynamicMeta = {
+      'og:url': `${baseUrl}${window.location.pathname}?user=${userId}`,
+      'og:title': `${userData.displayName || userData.username || userId}'s MC Profile`,
+      'og:description': userData.bio || "Check out my Minecraft creations!",
+      'og:image': userData.photoURL || `${baseUrl}/images/default_profile.jpg`,
+      'profile:username': userId
+    };
     
-    // تحديث Open Graph Meta Tags
-    document.querySelector('meta[property="og:url"]').content = profileUrl;
-    document.querySelector('meta[property="og:title"]').content = `${profileName}'s MC Profile`;
-    document.querySelector('meta[property="og:description"]').content = profileBio;
-    document.querySelector('meta[property="og:image"]').content = profileImage;
+    // تحديث الوسوم ديناميكياً
+    Object.entries(dynamicMeta).forEach(([property, content]) => {
+      let tag = document.querySelector(`meta[property="${property}"]`);
+      if (!tag) {
+        tag = document.createElement('meta');
+        tag.setAttribute('property', property);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute('content', content);
+    });
     
-    // تحديث Twitter Meta Tags
-    document.querySelector('meta[name="twitter:title"]').content = `${profileName}'s MC Profile`;
-    document.querySelector('meta[name="twitter:description"]').content = profileBio;
-    document.querySelector('meta[name="twitter:image"]').content = profileImage;
+    // تحديث عنوان الصفحة
+    document.title = `${userData.displayName || userId}'s Profile - MC Community`;
+    
+    console.log('Meta tags updated for user:', userId);
     
   } catch (error) {
-    console.error("Error updating social meta tags:", error);
+    console.error("Error updating meta tags:", error);
   }
 }
 
-// استدعاء الدالة عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', updateSocialMetaTags);
+// استدعاء الدالة عند تحميل الصفحة وعند تغيير المستخدم
+window.addEventListener('DOMContentLoaded', updateMetaForCurrentUser);
+window.addEventListener('hashchange', updateMetaForCurrentUser);
 
-// Initialize profile page with meta tags
-document.addEventListener('DOMContentLoaded', () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const profileUserId = urlParams.get('user');
+function generateProfileLink(userId) {
+  const userDoc = await getDoc(doc(db, 'users', userId));
+  const userData = userDoc.data();
   
-  if (profileUserId) {
-    const userDocRef = doc(db, 'users', profileUserId);
-    getDoc(userDocRef).then(userDoc => {
-      if (userDoc.exists()) {
-        updateMetaTagsForProfile(userDoc.data());
-      }
-    });
-  }
-});
+  return {
+    url: `${window.location.origin}/profile.html?user=${userId}`,
+    title: `${userData.displayName || userId}'s MC Profile`,
+    description: userData.bio || "Minecraft enthusiast",
+    image: userData.photoURL || `${window.location.origin}/default_avatar.jpg`
+  };
+}
+
     // Display purchased items
     function displayPurchasedItems(purchasedItemNames) {
       const container = document.getElementById('purchasedItemsContainer');
