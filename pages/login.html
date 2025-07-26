@@ -430,8 +430,9 @@ serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
 import {
+getAuth, 
 GoogleAuthProvider,
-signInWithPopup
+signInWithRedirect
 } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
 const togglePassword = document.querySelector('.toggle-password');
@@ -480,7 +481,7 @@ prompt: 'select_account'
 
 document.getElementById('googleLogin').addEventListener('click', async () => {
 try {
-const result = await signInWithPopup(auth, googleProvider);
+const result = await signInWithRedirect(auth, googleProvider);
 const user = result.user;
 
 const usersRef = collection(db, 'users');
