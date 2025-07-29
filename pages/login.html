@@ -419,210 +419,92 @@
 <script type="module">
   import { db, auth } from '../scripts/main.js';
 import {
-doc,
-getDoc,
-setDoc,
-collection,
-query,
-where,
-getDocs,
-serverTimestamp
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-
-import {
-getAuth, 
-GoogleAuthProvider,
-signInWithRedirect
-} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
 const togglePassword = document.querySelector('.toggle-password');
 const passwordInput = document.getElementById('password');
 
 togglePassword.addEventListener('click', function() {
-const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-passwordInput.setAttribute('type', type);
-this.textContent = type === 'password' ? '🙉' : '🙈';
+  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+  passwordInput.setAttribute('type', type);
+  this.textContent = type === 'password' ? '🙉' : '🙈';
 });
 
 // ✅ إعادة توجيه المستخدم إذا كان مسجل دخول
 window.onload = function() {
-const activeUser = localStorage.getItem("activeUser");
-if (activeUser) {
-window.location.href = "general.html";
-}
+  const activeUser = localStorage.getItem("activeUser");
+  if (activeUser) {
+    window.location.href = "general.html";
+  }
 };
 
 // ✅ إظهار تنبيه مخصص
 function showCustomAlert(title, message, imageUrl) {
-const alertElement = document.getElementById('customAlert');
-const alertTitle = document.getElementById('alertTitle');
-const alertMessage = document.getElementById('alertMessage');
-const alertButton = document.getElementById('alertButton');
-const alertImage = document.querySelector('.custom-alert-icon');
-
-alertTitle.textContent = title;
-alertMessage.textContent = message;
-
-// نستخدم الصورة القادمة إن وجدت، وإلا صورة الدونات
-alertImage.src = imageUrl || '../icons/donut.png';
-
-alertElement.style.display = 'flex';
-
-alertButton.onclick = function() {
-alertElement.style.display = 'none';
-window.location.href = 'general.html';
-};
+  const alertElement = document.getElementById('customAlert');
+  const alertTitle = document.getElementById('alertTitle');
+  const alertMessage = document.getElementById('alertMessage');
+  const alertButton = document.getElementById('alertButton');
+  const alertImage = document.querySelector('.custom-alert-icon');
+  
+  alertTitle.textContent = title;
+  alertMessage.textContent = message;
+  
+  // نستخدم الصورة القادمة إن وجدت، وإلا صورة الدونات
+  alertImage.src = imageUrl || '../icons/donut.png';
+  
+  alertElement.style.display = 'flex';
+  
+  alertButton.onclick = function() {
+    alertElement.style.display = 'none';
+    window.location.href = 'general.html';
+  };
 }
-// ✅ إعداد تسجيل الدخول بجوجل مع اختيار الحساب دائمًا
-const googleProvider = new GoogleAuthProvider();
-googleProvider.setCustomParameters({
-prompt: 'select_account'
-});
-
-document.getElementById('googleLogin').addEventListener('click', async () => {
-try {
-const result = await signInWithRedirect(auth, googleProvider);
-const user = result.user;
-
-const usersRef = collection(db, 'users');
-const q = query(usersRef, where('email', '==', user.email));
-const querySnapshot = await getDocs(q);
-if (!querySnapshot.empty) {
-if (querySnapshot.size === 1) {
-const userDoc = querySnapshot.docs[0];
-const username = userDoc.id;
-
-await setDoc(doc(db, 'users', username), {
-lastLogin: serverTimestamp(),
-provider: 'google'
-}, { merge: true });
-
-localStorage.setItem('activeUser', username);
-
-showCustomAlert(
-`Welcome back ${username}!`,
-`You have logged in using your Google account ✅`
-);
-} else {
-// أكثر من حساب بنفس الإيميل
-// عرض الحسابات المتعددة كمربعات
-const accountSelectionAlert = document.getElementById('accountSelectionAlert');
-const accountList = document.getElementById('accountList');
-const confirmBtn = document.getElementById('confirmAccountBtn');
-let selectedUsername = null;
-
-accountList.innerHTML = '';
-
-querySnapshot.forEach(docSnap => {
-const username = docSnap.id;
-const data = docSnap.data();
-const photo = data.photoURL || '../icons/donut.png';
-
-const accountItem = document.createElement('div');
-accountItem.classList.add('account-item');
-
-const img = document.createElement('img');
-img.src = photo;
-img.alt = 'User Image';
-
-const name = document.createElement('div');
-name.textContent = username;
-name.style.color = '#fff';
-
-accountItem.appendChild(img);
-accountItem.appendChild(name);
-
-accountItem.addEventListener('click', () => {
-// إزالة التحديد من الكل
-document.querySelectorAll('.account-item').forEach(item => {
-item.classList.remove('selected');
-});
-
-accountItem.classList.add('selected');
-selectedUsername = username;
-confirmBtn.disabled = false;
-});
-
-accountList.appendChild(accountItem);
-});
-
-accountSelectionAlert.style.display = 'flex';
-
-confirmBtn.onclick = async () => {
-if (!selectedUsername) return;
-
-await setDoc(doc(db, 'users', selectedUsername), {
-lastLogin: serverTimestamp(),
-provider: 'google'
-}, { merge: true });
-
-localStorage.setItem('activeUser', selectedUsername);
-accountSelectionAlert.style.display = 'none';
-
-showCustomAlert(
-`Welcome back ${selectedUsername}!`,
-`You have logged in using your Google account ✅`
-);
-};
-}
-} else {
-// ❌ لا يوجد حساب مرتبط بهذا الإيميل
-localStorage.setItem('googleEmailForRegister', user.email);
-window.location.href = 'Register.html';
-}
-
-} catch (error) {
-console.error('Google login error:', error);
-alert('Failed to login with Google. Please try again.');
-}
-});
 
 // ✅ تسجيل الدخول اليدوي (اسم المستخدم وكلمة المرور)
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
-e.preventDefault();
-const username = document.getElementById('username').value.trim();
-const password = document.getElementById('password').value.trim();
-
-if (!username || !password) {
-alert('Please fill out all fields');
-return;
-}
-
-try {
-const userDocRef = doc(db, 'users', username);
-const userDoc = await getDoc(userDocRef);
-
-if (userDoc.exists() && userDoc.data().password === password) {
-localStorage.setItem('activeUser', username);
-const photoURL = userDoc.data().photoURL || '../icons/donut.png';
-
-showCustomAlert(
-`Welcome back ${username}!!`,
-`You have successfully logged in ✅. Enjoy !`,
-photoURL
-);
-} else {
-alert('Invalid username or password!');
-}
-
-} catch (error) {
-console.error('Error during login:', error);
-alert('An error occurred while logging in, try again please.');
-}
+  e.preventDefault();
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  
+  if (!username || !password) {
+    alert('Please fill out all fields');
+    return;
+  }
+  
+  try {
+    const userDocRef = doc(db, 'users', username);
+    const userDoc = await getDoc(userDocRef);
+    
+    if (userDoc.exists() && userDoc.data().password === password) {
+      localStorage.setItem('activeUser', username);
+      const photoURL = userDoc.data().photoURL || '../icons/donut.png';
+      
+      // تحديث وقت آخر تسجيل دخول
+      await setDoc(userDocRef, {
+        lastLogin: serverTimestamp()
+      }, { merge: true });
+      
+      showCustomAlert(
+        `Welcome back ${username}!!`,
+        `You have successfully logged in ✅. Enjoy !`,
+        photoURL
+      );
+    } else {
+      alert('Invalid username or password!');
+    }
+    
+  } catch (error) {
+    console.error('Error during login:', error);
+    alert('An error occurred while logging in, try again please.');
+  }
 });
 </script>
 
       <script>
-window.addEventListener('scroll', function() {
-  const header = document.querySelector('.sticky-header');
-  if (window.scrollY > 0) {
-    header.classList.add('sticky');
-  } else {
-    header.classList.remove('sticky');
-  }
-});
-</script>
-  <script>    
     function goBack() {  
       if (window.history.length > 1) {  
         window.history.back();  
