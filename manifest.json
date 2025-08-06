@@ -22,5 +22,18 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "screenshots": [
+    {
+      "src": "screenshots/screen1.png",
+      "type": "image/png",
+      "sizes": "1280x720"
+    }
+  ],
+  "categories": ["entertainment", "tools"],
+  "iarc_rating_id": "",
+  "prefer_related_applications": true
 }
