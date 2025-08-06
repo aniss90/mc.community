@@ -1,0 +1,25 @@
+{
+  "name": "mc co",
+  "short_name": "mcco",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#222",
+  "theme_color": "#666",
+  "description": "the web that you can spin time on it",
+  "orientation": "portrait",
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "web/ytlogo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "web/ytlogo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
