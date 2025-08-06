@@ -1,13 +1,13 @@
 {
   "id": "/",
-  "name": "mc co",
-  "short_name": "mcco",
+  "name": "MC Co",
+  "short_name": "MCCO",
   "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#222",
-  "theme_color": "#666",
-  "description": "the web that you can spin time on it",
+  "background_color": "#222222",
+  "theme_color": "#666666",
+  "description": "A fun and engaging web app where you can spend your time productively.",
   "orientation": "portrait",
   "lang": "en",
   "dir": "ltr",
@@ -34,6 +34,5 @@
     }
   ],
   "categories": ["entertainment", "tools"],
-  "iarc_rating_id": "",
-  "prefer_related_applications": true
+  "prefer_related_applications": false
 }
