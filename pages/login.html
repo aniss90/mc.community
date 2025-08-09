@@ -47,10 +47,7 @@
     .input-group {
       position: relative;
     }
-    .input-group input {
-      outline: none;
-      font-size: 16px;
-    }
+    
     .input-group label {
       position: absolute;
       top: 12px;
@@ -99,7 +96,7 @@
     }
     
     /* Custom Alert Styles */
-    .custom-alert {
+  .custom-alert {
       display: none;
       position: fixed;
       top: 0;
@@ -181,6 +178,8 @@
       60% {transform: translateY(-7px);}
     }
     
+    
+    
     /* Social Login Buttons - Small Version */
     .social-login-container {
       margin-top: 20px;
@@ -211,6 +210,7 @@
   overflow: hidden;
   padding: 0 9px;
   gap: 10px;
+  box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
 }
 
 .social-btn img {
@@ -324,7 +324,69 @@
   margin-bott#42445Aom: 8px;
   border: 1px solid #888;
 }
+
+/* أنماط الحظر */
+.banned-alert .custom-alert-title {
+  color: #FF3D3D;
+  font-size: 28px;
+  font-family: minecraft-ten;
+}
+
+.banned-user-info {
+  margin: 15px 0;
+  text-align: center;
+  width: 100%;
+}
+
+.banned-username {
+  color: #C4C4C4;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.banned-duration {
+  color: #9A9A9A;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.time-remaining {
+  color: #959595;
+  font-size: 14px;
+}
+.ban-reason-area {
+  color: #C7C7C7;
+  font-size: 16px;
+  margin-top: ;
+} 
+.ban-reason {
+  color: #C18E3F;
+  font-size: 14px;
+  font-family: MinecraftFive-Regular;
+}
+
+.custom-alert-button {
+  margin-top: 20px;
+}
+.input-error {
+  border: 2px solid #FF3D3D !important;
+  animation: shake 0.3s;
+}
+.input-success {
+  border: 2px solid #4CAF50 !important;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
   </style>
+
+
+
 </head>    
 <body> 
 <div class="sticky-header"> 
@@ -340,26 +402,27 @@
         <form id="loginForm">    
           <div class="input-group"> 
             <input type="text" id="username" placeholder=" " required>  
-            <label for="username">Username</label>  
-          <br>  
+            <label for="username">Username</label>
+          
           <div class="input-group password-container">  
             <input type="password" id="password" placeholder=" " required>  
             <label for="password">Password</label>  
             <span class="toggle-password">🙈</span>  
-          </div>  
-          <br>  
-          <a href="forget.html" class="link">forget password ?</a>  
-          <br>      
-          <div class="description">    
-            <div class="button">     
-              <button type="submit" id="greenButton"> Login <img src="../icons/enter-icon-31b5a.png" height="15"></button>    
-            </div>     
-          </div>
+          </div> 
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+        <a href="forget-password.html" class="link" style="color: #959595; font-size: 12px; text-decoration: none;">Forgot password?</a>
+        <a href="forget-username.html" class="link" style="color: #959595; font-size: 12px; text-decoration: none;">Forgot username?</a>
+      </div>
+          
+            
+              <button type="submit" id="greenButton"> <img src="../icons/enter-icon-31b5a.png" height="15"> Login</button>    
+              
+          
           </div>
 
           <div>     
             <div class="description">    
-              🔸Don't have an account? <a href="Register.html" class="link">Register  <img src="../icons/butterfly_gif.gif" height="12px"></a>     
+              🔸Don't have an account? <a href="Register.html" class="link">Register</a>     
             </div>    
           </div>    
         </form>
@@ -401,7 +464,6 @@
     </div>
   </div>
   
-<!-- اختيار الحساب المرتبط بجوجل -->
 <!-- اختيار الحساب المرتبط بجوجل -->
 <div id="accountSelectionAlert" class="custom-alert">
   <div class="custom-alert-content">
@@ -463,46 +525,159 @@ function showCustomAlert(title, message, imageUrl) {
     window.location.href = 'general.html';
   };
 }
-
-// ✅ تسجيل الدخول اليدوي (اسم المستخدم وكلمة المرور)
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
+  
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value.trim();
+  
+  // حذف الأنماط القديمة
+  usernameInput.classList.remove('input-error', 'input-success');
+  passwordInput.classList.remove('input-error', 'input-success');
   
   if (!username || !password) {
-    alert('Please fill out all fields');
+    if (!username) usernameInput.classList.add('input-error');
+    if (!password) passwordInput.classList.add('input-error');
     return;
   }
+  
+  const isBanned = await checkBanStatus(username);
+  if (isBanned) return;
   
   try {
     const userDocRef = doc(db, 'users', username);
     const userDoc = await getDoc(userDocRef);
     
-    if (userDoc.exists() && userDoc.data().password === password) {
-      localStorage.setItem('activeUser', username);
-      const photoURL = userDoc.data().photoURL || '../icons/donut.png';
+    if (userDoc.exists()) {
+      const storedPassword = userDoc.data().password;
       
-      // تحديث وقت آخر تسجيل دخول
-      await setDoc(userDocRef, {
-        lastLogin: serverTimestamp()
-      }, { merge: true });
-      
-      showCustomAlert(
-        `Welcome back ${username}!!`,
-        `You have successfully logged in ✅. Enjoy !`,
-        photoURL
-      );
+      if (storedPassword === password) {
+        // تسجيل دخول ناجح
+        usernameInput.classList.add('input-success');
+        passwordInput.classList.add('input-success');
+        
+        localStorage.setItem('activeUser', username);
+        const photoURL = userDoc.data().photoURL || '../icons/donut.png';
+        // الحصول على userAgent
+const userAgent = navigator.userAgent;
+const loginTime = new Date().toISOString();
+
+// استخراج اسم الجهاز وإصدار الأندرويد
+let deviceName = "غير معروف";
+let androidVersion = "غير معروف";
+
+const match = userAgent.match(/Android\s([\d.]+);?\s?(.*?)(?:Build|\))/i);
+if (match) {
+  androidVersion = match[1]; // إصدار الأندرويد
+  deviceName = match[2]?.trim() || "غير معروف"; // اسم الجهاز
+}
+
+// إنشاء معرف فريد للجهاز
+const deviceId = `${deviceName}-${Math.random().toString(36).substring(2, 10)}`;
+
+// المعلومات التي سنخزنها
+const deviceInfo = {
+  deviceName,
+  androidVersion,
+  loginTime
+};
+
+// تخزين في Firestore
+const userDevicesRef = doc(db, "users", username);
+await setDoc(userDevicesRef, {
+  devices: {
+    [deviceId]: deviceInfo
+  }
+}, { merge: true });
+
+console.log("تم تسجيل الجهاز:", deviceInfo);
+        await setDoc(userDocRef, { lastLogin: serverTimestamp() }, { merge: true });
+        
+        showCustomAlert(
+          `Welcome back ${username}!!`,
+          `You have successfully logged in ✅. Enjoy !`,
+          photoURL
+        );
+      } else {
+        // كلمة السر خاطئة
+        usernameInput.classList.add('input-success');
+        passwordInput.classList.add('input-error');
+      }
     } else {
-      alert('Invalid username or password!');
+      // اسم المستخدم غير موجود
+      usernameInput.classList.add('input-error');
     }
-    
   } catch (error) {
     console.error('Error during login:', error);
     alert('An error occurred while logging in, try again please.');
   }
 });
-</script>
+
+// ✅ التحقق من حالة الحظر قبل تسجيل الدخول
+async function checkBanStatus(username) {
+  try {
+    const userDocRef = doc(db, 'users', username);
+    const userDoc = await getDoc(userDocRef);
+    
+    if (userDoc.exists() && userDoc.data().banInfo?.isBanned) {
+      const banInfo = userDoc.data().banInfo;
+      const alertElement = document.getElementById('customAlert');
+      const alertImage = document.querySelector('.custom-alert-icon');
+      
+      // إعداد محتوى التنبيه
+      alertElement.classList.add('banned-alert');
+      document.getElementById('alertTitle').textContent = 'You are banned!';
+      
+      // التحكم في عرض الصورة
+      if (userDoc.data().photoURL) {
+        alertImage.src = userDoc.data().photoURL;
+      } 
+      
+      // إعداد رسالة الحظر
+      let banMessage = banInfo.duration === 'permanent' ?
+        `Permanently banned` :
+        `Banned for ${banInfo.duration} days`;
+      
+      if (banInfo.duration !== 'permanent') {
+        const endDate = banInfo.endDate.toDate();
+        const daysRemaining = Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24));
+        banMessage += `<div class="time-remaining">${daysRemaining} days remaining</div>`;
+      }
+      
+      document.getElementById('alertMessage').innerHTML = `
+  <div class="banned-user-info">
+    <div class="banned-username">${username}'s You are now banned. You cannot use this account again. </div>
+    <div class="banned-duration">${banMessage}</div>
+    <div class="ban-reason-area">
+      Reason:
+      <div class="ban-reason">${banInfo.reason || 'No reason specified'}</div>
+    </div>
+  </div>
+`;
+      
+      document.getElementById('alertButton').textContent = 'OK';
+      alertElement.style.display = 'flex';
+      
+      document.getElementById('alertButton').onclick = function() {
+        alertElement.style.display = 'none';
+        alertElement.classList.remove('banned-alert');
+        alertImage.style.display = 'block'; // إعادة عرض الصورة للاستخدام المستقبلي
+      };
+      
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error('Error checking ban status:', error);
+    return false;
+  }
+}
+
+
+
+</script> 
 
       <script>
     function goBack() {  

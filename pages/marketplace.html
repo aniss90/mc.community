@@ -19,7 +19,10 @@
             font-family: minecraft-five;  
             src: url('../font/Minecraft-Five.ttf');  
         }  
-        
+            @font-face {
+      font-family: MinecraftFive-Regular;
+      src: url('../font/MinecraftFive-Regular.ttf');
+    }
         body {
             overflow-x: hidden;
         }
@@ -432,12 +435,17 @@ background-size: 15px;
 #pointsToConvert:hover{
     border: 2px solid #5F5F5F;
     box-shadow: 0 2px 10px #5F5F5F;
+    
 }
 #convertBtn{
     border: 2px solid #FFBF68;
     background-color: #FFA200;
     color: #FFFFFF;
-    box-shadow: 0 2px 0 #B76E0B;
+        box-shadow:
+        0px var(--border-2x-thickness) 0px #78571E,
+        0 0 0 var(--border-thickness) #1a1a1b,
+        0 var(--border-2x-thickness) 0 var(--border-thickness) #1a1a1b;
+    border-radius: 8px;
     width: 100%;
     height: auto;
     font-size: 16px;
@@ -448,8 +456,8 @@ background-size: 15px;
 #convertBtn:hover{
     background-color: #9D5B00;
     box-shadow: none;
-    padding: 11px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
+transform: translateY(var(--border-2x-thickness));
 }
 .new-badge {
     position: absolute;
@@ -507,6 +515,91 @@ width: 100%;
   text-shadow: none; 
  text-shadow: 0 2px 0 #946F1A; 
 }
+.custom-alert {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    pointer-events: all;
+}
+
+
+.custom-alert * {
+  pointer-events: none;
+}
+
+.custom-alert-content,
+.custom-alert-content * {
+  pointer-events: auto;
+} 
+    .custom-alert-content {
+      background-color: #262626;
+      border: 3px solid #E0BA31;
+      padding: 20px;
+      width: 80%;
+      border-radius: 2px;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0px 3px 0px rgba(224, 155, 0, 1);
+      animation: fadeIn 0.3s;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .custom-alert-title {
+      color: gold;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .custom-alert-message {
+      color: #e0e0e0;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .custom-alert-button {
+      transition: background-color 0.5s;
+      height: auto;
+      width: 100%;
+      border: 2px solid #FFFB8D;
+      background-color: #FFFB00;
+      text-shadow: 1px 1px 2px #B9B600;
+      box-shadow: 0px 3px 0px rgba(224, 155, 0, 1);
+      font-size: 16px;
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+      padding: 10px;
+      color: #000000;
+      margin: auto;
+      transition: all 0.3s;
+    }
+
+    .custom-alert-button:hover {
+      background-color: #9D5F00;
+      transform: scale(1.05);
+    }
+
+    .custom-alert-icon {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 15px;
+      border: 2px solid #EA9E27;
+      border-radius: 5px
+    }
     </style>  
 </head>  
 
@@ -552,9 +645,8 @@ width: 100%;
                         <span  id="tokensResult" style="color: orange;">0</span> <img src="../icons/fall_token.png" alt="Fall Token" height="15">
                     </div>
                     </br> 
-                    <div class="button"> 
+                    
                     <button id="convertBtn" class="convert-button">Convert</button>
-</div>
 </div>
 <div class="title"> boxes</div>
 <div class="description"> 
@@ -605,6 +697,14 @@ buy any box here.
             
         </div>
     </div>
+    <div class="custom-alert" id="customAlert">
+    <div class="custom-alert-content">
+        <img class="custom-alert-icon" id="alertIcon" src="" alt="">
+        <div class="custom-alert-title" id="alertTitle"></div>
+        <div class="custom-alert-message" id="alertMessage"></div>
+        <button class="custom-alert-button" onclick="closeCustomAlert()">OK</button>
+    </div>
+</div>
 <script>
   const button = document.getElementById('header');
   const container = document.querySelector('.marketplace-container');
@@ -631,11 +731,21 @@ buy any box here.
   
   // توليد جزيئات بشكل مستمر
   setInterval(createParticle, 300);
+  function showCustomAlert({ icon, title, message }) {
+    document.getElementById('alertIcon').src = icon;
+    document.getElementById('alertTitle').innerText = title;
+    document.getElementById('alertMessage').innerHTML = message;
+    document.getElementById('customAlert').style.display = 'flex';
+}
+
+function closeCustomAlert() {
+    document.getElementById('customAlert').style.display = 'none';
+}
 </script>
     <script type="module">  
         import { db } from '../scripts/main.js';   
         import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";   
-  import { shopItems } from './items.js';
+  import { shopItems } from '../scripts/items.js';
         const activeUser = localStorage.getItem('activeUser');  
 
         if (!activeUser) {  
@@ -735,6 +845,7 @@ buy any box here.
             getUserData();  
         });  
 function createShopItems() {
+    
     const shopContainer = document.querySelector('.shop');
     shopItems.sort((a, b) => b.price - a.price);
     
@@ -843,7 +954,15 @@ function createShopItems() {
                     
                     sellButton.style.display = 'inline-block';
                     
-                    alert(`Purchase Successful!\nYou bought ${item.name} for ${formatNumber(item.price)} coins!`);
+                  // بعد تحديث النقاط والتخزين في قاعدة البيانات، استبدل alert التقليدي بـ:
+showCustomAlert({
+    icon: item.imageUrl,
+    title: `You Bought ${item.name}`,
+    message: `
+    <p style="color: orange;">${formatNumber(item.price)} Coins Spent</p>
+    <p style="color: white;">${item.description || "No description available"}</p>
+  `
+});
                 } else {
                     alert(`Not Enough Coins!\nYou need ${formatNumber(item.price - user.points)} more coins to buy this item.`);
                 }
@@ -891,6 +1010,7 @@ function createShopItems() {
     });
 }
   function createFeatureItems() {
+      let isOpeningBox = false;
     const featuresContainer = document.querySelector('.features-list');
     
     accountFeatures.forEach(feature => {
@@ -1073,7 +1193,98 @@ if (userDoc.exists()) {
                         await updateDoc(userDocRef, { points: user.points });  
 
                         document.getElementById('points').innerText = formatNumber(user.points);  
-                        alert(`You opened a ${boxType} box!\nYou earned ${formatNumber(randomPoints)} coins!`);
+// الرسالة النهائية بعد التوقف
+let finalWin = randomPoints; // هذا هو الرقم الحقيقي اللي فاز فيه اللاعب
+let boxIcon = `../icons/${boxType}_box.png`; // أيقونة الصندوق
+let boxTitle = `${boxType.charAt(0).toUpperCase() + boxType.slice(1)} Box Result`;
+
+let displayElement = document.getElementById("alertMessage");
+let counter = 0;
+let duration = 1500; // 1.5 ثانية
+let intervalSpeed = 50; // كل كم ميلي ثانية الرقم يتغير
+let interval;
+
+function startRollingEffect() {
+    clearInterval(interval);
+    startSound.play();
+    
+    // 🔇 إخفاء زر OK + الأيقونة
+    document.querySelector('.custom-alert-button').style.display = 'none';
+    document.getElementById('alertIcon').style.display = 'none';
+    
+    rollingSound.loop = true;
+    rollingSound.play();
+    
+    let currentSpeed = 30;
+    let slowdownFactor = 1.15;
+    counter = 0;
+    let randomDuration = 1000 + Math.random() * 1000;
+    
+    function rollingStep() {
+        let fakeValue = Math.floor(Math.random() * maxPoints);
+        displayElement.innerHTML = `
+            <p style=" color: #fff; font-size: 26px;" >
+                You got: <font style="font-size: 26px; font-weight: bold; font-family: MinecraftFive-Regular; color: yellow;">
+                ${formatNumber(fakeValue)}
+                </font> Coins
+            </p>
+            <p style="font-size: 14px; color: #888">Rolling...</p>
+        `;
+        
+        counter += currentSpeed;
+        
+        if (counter >= randomDuration) {
+            rollingSound.pause();
+            rollingSound.currentTime = 0;
+            showFinalResult();
+            return;
+        }
+        
+        currentSpeed *= slowdownFactor;
+        setTimeout(rollingStep, currentSpeed);
+    }
+    
+    rollingStep();
+}
+
+function showFinalResult() {
+    // 🎵 الأصوات حسب النتيجة
+    if (finalWin > boxPrice) winSound.play();
+    else if (finalWin < boxPrice) loseSound.play();
+    else neutralSound.play();
+    
+    let color = finalWin > boxPrice ? 'lawngreen' : (finalWin < boxPrice ? 'red' : 'gray');
+    let diff = finalWin - boxPrice;
+    let sign = diff > 0 ? '+' : (diff < 0 ? '-' : '');
+    
+    let messageHTML = `
+        <p style=" color: #fff; font-size: 26px;" >
+            You got: <font style="font-size: 26px; font-weight: bold; font-family: MinecraftFive-Regular; color: ${color};">
+            ${formatNumber(finalWin)}
+            </font> Coins
+        </p>
+        <p style="color: ${color}; font-weight: bold;">
+            ${diff === 0 ? 'No Gain or Loss' : `${sign}${formatNumber(Math.abs(diff))} Coins`}
+        </p>
+    `;
+    
+    showCustomAlert({
+        title: boxTitle,
+        message: messageHTML
+    });
+    
+    // ✅ إظهار زر OK فقط بعد النتيجة
+    document.querySelector('.custom-alert-button').style.display = 'inline-block';
+}
+
+// أولًا نعرض التنبيه فارغ ونبدأ التأثير
+showCustomAlert({
+    title: boxTitle,
+    message: `<p style="font-size: 24px;">Preparing reward...</p>`
+});
+
+// نبدأ التأثير
+setTimeout(startRollingEffect, 100); // تأخير بسيط لتجهيز العنصر
                     } else {  
                         alert(`Not Enough Coins!\nYou need ${formatNumber(boxPrice - user.points)} more coins to buy this box.`);
                     }  
@@ -1087,7 +1298,11 @@ if (userDoc.exists()) {
         
         // متغيرات التحويل
 const CONVERSION_RATE = 100000; // 100,000 points = 1 Fall Token
-
+const startSound = new Audio('../sounds/start.mp3');
+const rollingSound = new Audio('../sounds/rolling.mp3');
+const winSound = new Audio('../sounds/coin_fill_up.ogg');
+const loseSound = new Audio('../sounds/lose.mp3');
+const neutralSound = new Audio('../sounds/neutral.mp3');
 // عناصر DOM
 const pointsInput = document.getElementById('pointsToConvert');
 const tokensResult = document.getElementById('tokensResult');

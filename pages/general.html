@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="../style/main.css">
   <link rel="icon" type="png" href="=../icons/Win_Computer.gif">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>General page</title>
   <style>
     @font-face {
       font-family: minecraft;
@@ -413,7 +414,10 @@ span{
             border: 2px solid #FFFFFF;
             border: 2px solid #8C6A15;
             background-color: #2E2100;
-            box-shadow: 0px 3px 0px rgba(43, 30, 0, 1);
+                box-shadow:
+        0px 3px 0px #2E2100,
+        0 0 0 var(--border-thickness) #1a1a1b,
+        0 3px 0 2px #1a1a1b;
             font-size: 16px;
             cursor: pointer;
             position: relative;
@@ -424,15 +428,16 @@ span{
             transition: all 0.3s ease;
 }
 #whiteButton:hover{
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-           top: 2px;
-            height: 40px;
             color:#FFFFFF ;
             width: 100%;
             position: relative;
             border: 2px solid #FFD15E;
             background-color: #2E2100;
-            box-shadow: 5px 0 15px #BF9837;
+            box-shadow:
+        0px 0px 15px #BF9837,
+        0 0 0 var(--border-thickness) #1a1a1b,
+        0 0 0 0 #1a1a1b;
+  
 }
 /* تأثيرات الظهور التدريجي للصفحة */
 
@@ -721,7 +726,11 @@ transition: all 0.5s;
   padding: 10px;
   background-color: #FFFEBD;
   border: 2px solid #FFC208;
-  box-shadow: 0 4px 0 #6D511F;
+      box-shadow:
+        0px var(--border-2x-thickness) 0px #97966E,
+        0 0 0 var(--border-thickness) #1a1a1b,
+        0 var(--border-2x-thickness) 0 var(--border-thickness) #1a1a1b;
+  border-radius: 8px;
   transition: all 0.5s;
   position: relative;
   transition: all 0.3s ease;
@@ -731,7 +740,11 @@ transition: all 0.5s;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   background-color: #9A996D;
 border: 2px solid #FFE492;
-box-shadow: 4px 0 15px #FFC208;
+    box-shadow:
+        0px 0px 14px #77781E,
+        0 0 0 var(--border-thickness) #1a1a1b,
+        0 0 0 0 #1a1a1b;
+  transform: translateY(var(--border-2x-thickness));
 transition: all 0.3s ease;
 }
 #achievementbtn{
@@ -843,6 +856,7 @@ transition: all 0.3s ease;
 .send-button {
   background: #8C6A15;
   color: white;
+  border: 2px solid ;
   border: none;
   padding: 10px 15px;
   border-radius: 5px;
@@ -905,6 +919,43 @@ transition: all 0.3s ease;
   background-color: #A57C1B;
   color: white;
 } 
+    
+    .Elements-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .Elements-left {
+      flex: 1;
+    }
+    
+    .Elements-right {
+flex: 1;
+    }
+    
+  
+      @media (max-width: 768px) {
+      .Elements-container {
+        flex-direction: column;
+  
+      }
+      
+      .Elements-right {
+        order: 2;
+      width: 100%;
+      }
+      
+      .Elements-left {
+        order: 1;
+        width: 100%;
+      }
+      
+      .custom-alert-content {
+        width: 90%;
+      }
+    }
   </style>
   <title>general </title>
 </head>
@@ -954,9 +1005,10 @@ transition: all 0.3s ease;
 </div>
 </div>
   <div class="content"> 
-
+    <div class="Elements-container">
+            <div class="Elements-left">    
     <h1 id="welcomeMessage"><img class="lodinimg" src="../icons/loading_spinner.gif" height="15" /></h1>
-    
+
 <div class="points">
   <div class="title">
     your wallet : <span id="points">
@@ -971,7 +1023,7 @@ transition: all 0.3s ease;
 
       <div class="description"> 
         Get coins between 1000 coine and 1 coine.
-        <button id="whiteButton">+ coins <img src="../icons/Alot_of_coins.gif" loading="lazy"height="16">
+        <button id="whiteButton"> <img src="../icons/Alot_of_coins.gif" loading="lazy"height="16"> coins +
         <audio id="coinSound" src="../sounds/coin_fill_up.ogg"></audio>
         </button>
         <!-- promo-banner يظهر فقط إذا كان العرض مفعّل -->
@@ -984,7 +1036,7 @@ transition: all 0.3s ease;
           using your coins
           <a href="marketplace.html">
             <div class="marketplace-container ">
-              <button id="marketplacebtn">Marketplace <img src="../icons/Marketplace_new_logo.png"loading="lazy" height="15"></button>
+              <button id="marketplacebtn"> <img src="../icons/Marketplace_new_logo.png"loading="lazy" height="15"> Marketplace</button>
             </div>
           </a> 
         </div>
@@ -1007,7 +1059,8 @@ transition: all 0.3s ease;
                </a> 
         </div>
         -->
-
+            </div>
+            <div class="Elements-right"> 
 <div class="description">
   <div class="title"> Send coins / Fall Tokens </div>
   Send coins or Fall Tokens to other users.
@@ -1050,6 +1103,8 @@ transition: all 0.3s ease;
   
   <div id="sendPointsResult" class="result-message"></div>
 </div>
+            </div>
+    </div>
   <!-- يضاف داخل div.header بعد زر الرجوع -->
 <script>
   const button = document.getElementById('marketplacebtn');
@@ -1081,7 +1136,7 @@ transition: all 0.3s ease;
 
 <script>
   document.getElementById("users-btn").addEventListener("click", function() {
-    window.location.href = "List_users.html";
+    window.location.href = "users_list.html";
   });
 </script>
   <script>
@@ -1166,30 +1221,30 @@ if (!activeUser) {
 // دالة لجلب بيانات المستخدم
 async function getUserData() {
   const userDocRef = doc(db, 'users', activeUser);
-  const userDocSnap = await getDoc(userDocRef);
+  const snap = await getDoc(userDocRef);
   
-  if (!userDocSnap.exists()) {
-    alert('⚠️ User document exists but missing fields or not properly initialized.');
-    return;
+  let user;
+  if (!snap.exists()) {
+    // أنشئ الوثيقة لأول مرة
+    await setDoc(userDocRef, DEFAULT_USER_SCHEMA);
+    user = DEFAULT_USER_SCHEMA;
+  } else {
+    // صحّح أي نقص في الحقول
+    user = await ensureUserSchema(userDocRef, snap.data());
   }
   
-  const user = userDocSnap.data();
   const welcomeElement = document.getElementById('welcomeMessage');
-  
   welcomeElement.style.opacity = '1';
   welcomeElement.style.transform = 'translateY(0)';
   await smoothTypeWriter(`Welcome ${activeUser}!`, welcomeElement, 80);
   
-  // ✅ عرض النقاط (Coins)
-  const userPoints = user.points ?? 0; // استخدم 0 إذا غير موجود
-  formatPoints(userPoints, document.getElementById('points'));
+  // عرض النقاط
+  formatPoints(user.points ?? 0, document.getElementById('points'));
   
-  // ✅ عرض Fall Tokens
-  const fallTokensElement = document.getElementById('fallTokens');
-  const userFallTokens = user.fallTokens ?? 0;
-  formatPoints(userFallTokens, fallTokensElement);
+  // عرض Fall Tokens
+  formatPoints(user.fallTokens ?? 0, document.getElementById('fallTokens'));
   
-  // ✅ إشعارات النقاط (إن وجدت)
+  // إشعار التحويل
   if (user.notification?.read === false) {
     const from = user.notification.from ?? 'unknown';
     const amount = user.notification.amount ?? 0;
@@ -1197,7 +1252,50 @@ async function getUserData() {
     await updateDoc(userDocRef, { "notification.read": true });
   }
 }
+  const DEFAULT_USER_SCHEMA = {
   
+  notification: {
+    from: null,
+    amount: 0,
+    currency: 'points',
+    read: true
+  },
+  lastSeenMessages: {},
+  status: 'online'
+};
+async function ensureUserSchema(userDocRef, rawData) {
+  const data = rawData || {};
+  const patch = {};
+  
+  // أكمل الحقول الناقصة
+  for (const [key, defaultVal] of Object.entries(DEFAULT_USER_SCHEMA)) {
+    if (data[key] === undefined) {
+      patch[key] = defaultVal;
+      continue;
+    }
+    
+    // تصحيح أنواع الحقول الأساسية (اختياري لكن مفيد)
+    if (typeof defaultVal === 'number' && typeof data[key] !== 'number') {
+      const fixed = Number(data[key]);
+      patch[key] = Number.isFinite(fixed) ? fixed : 0;
+    }
+    
+    if (Array.isArray(defaultVal) && !Array.isArray(data[key])) {
+      patch[key] = Array.isArray(data[key]) ? data[key] : [];
+    }
+    
+    if (typeof defaultVal === 'object' && !Array.isArray(defaultVal)) {
+      patch[key] = { ...defaultVal, ...data[key] }; // دمج آمن
+    }
+  }
+  
+  if (Object.keys(patch).length) {
+    await setDoc(userDocRef, patch, { merge: true });
+    return { ...DEFAULT_USER_SCHEMA, ...data, ...patch };
+  }
+  
+  return data;
+}
 // عند تحميل الصفحة، تحقق من حالة التقييم  
 document.addEventListener('DOMContentLoaded', function() {  
   checkRatingStatus();  

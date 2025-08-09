@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="../style/main.css">
   <link rel="icon" type="image/x-icon" href="../icons/Setting_icon.png">
+    <link rel="stylesheet" href="../style/tags.css" />  
   <title>User Settings</title>
      <!-- Open Graph Meta Tags -->
 <!-- Dynamic Meta Tags -->
@@ -16,6 +17,7 @@
 <meta property="og:image" content="">
 <meta property="og:site_name" content="mc co">
 <meta name="twitter:card" content="summary_large_image">
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
   <style>
     @font-face {
       font-family: minecraft;
@@ -37,14 +39,28 @@
   
     
     
-    .settings-container {
-      display: flex;
-      flex-direction: column;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      gap: 20px;
-    }
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+.settings-container>* {
+  flex: 1 1 100%;
+}
+
+@media (min-width: 768px) {
+  .settings-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .settings-container>* {
+    flex: 1 1 45%;
+  }
+}
     
     .profile-section {
       display: flex;
@@ -62,9 +78,12 @@
       height: 120px;
       border-radius: 20px;
       object-fit: cover;
-      border: 2px solid #C8C8C891;
-      cursor: pointer;
+      box-shadow:
+        0px 0px 14px #565656,
+        0 0 0 var(--border-thickness) #1a1a1b,
+        0 0 0 0 #1a1a1b;
   
+      backdrop-filter: blur(2px);
     }
   
     .profile-info {
@@ -105,9 +124,13 @@
     }
     
     .edit-profile-btn {
-      background-color: #2A9A2F;
-      border: 2px solid #47C24C;
-      box-shadow: 0 2px 0 #009F06;
+      background-color: hsla(0, 0%, 20%, 1);
+      border: 2px solid #474747;
+          box-shadow:
+        0px var(--border-2x-thickness) 0px #313131,
+        0 0 0 var(--border-thickness) #1a1a1b,
+        0 var(--border-2x-thickness) 0 var(--border-thickness) #1a1a1b;
+      border-radius: 8px;
       color: white;
       padding: 8px 15px;
       font-family: 'MinecraftFive-Regular', sans-serif;
@@ -117,7 +140,12 @@
     }
     
     .edit-profile-btn:hover {
-      background-color: #137517;
+     border: 2px solid #474747;
+      box-shadow:
+        0px 0px 14px #454545,
+        0 0 0 var(--border-thickness) #1a1a1b,
+        0 0 0 0 #1a1a1b;
+  
     }
     
     .settings-sections {
@@ -263,9 +291,7 @@
       background-color: #262626;
       border: 3px solid #E0BA31;
       padding: 20px;
-      width: 90%;
-      max-width: 500px;
-      border-radius: 2px;
+      width: 85%;
       box-shadow: 0px 3px 0px rgba(224, 155, 0, 1);
       animation: fadeIn 0.3s;
     }
@@ -309,7 +335,7 @@
     
     .form-input {
       width: 100%;
-      padding: 8px;
+      padding: 10px 0 10px 0;
       background-color: #3a3a3a;
       border: 1px solid #4a4a4a;
       color: #e0e0e0;
@@ -317,9 +343,8 @@
     }
     
     .form-textarea {
-      width: 100%;
       height: 100px;
-      padding: 8px;
+      width: 100%;
       background-color: #3a3a3a;
       border: 1px solid #4a4a4a;
       color: #e0e0e0;
@@ -339,21 +364,35 @@
       font-family: 'MinecraftFive-Regular', sans-serif;
       cursor: pointer;
       transition: all 0.3s;
+      border: none;
+      color: #fff;
+      border-radius: 5px;
+      background-color: #45454500;
+      box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
     }
-    
+    .modal-btn:hover{
+      background-color: #3C3C3C;
+    }
     .modal-btn.cancel {
-      background-color: #4a4a4a;
+      background-color: #4A4A4A00;
       color: #e0e0e0;
-      border: 2px solid #5a5a5a;
+      border: 2px solid #5A5A5A00;
+      border-radius: 8px;
     }
-    
+     .modal-btn.cancel:hover{
+       background-color: #4a4a4a;
+       border: 2px solid #5a5a5a;
+     }
     .modal-btn.save {
-      background-color: #2A9A2F;
-      border: 2px solid #47C24C;
-      box-shadow: 0 2px 0 #009F06;
+      background-color: #2A9A2F00;
+      border: 2px solid #47C24C00;
+      border-radius: 8px;
       color: white;
     }
-    
+     .modal-btn.save:hover{
+       background: #2A9A2F;
+       border: 2px solid #47C24C;
+     }
     .file-input-container {
       position: relative;
       display: inline-block;
@@ -460,6 +499,7 @@ margin-top: 30px;
     align-items: center;
     padding: 20px;
     transition: all 0.3s ease;
+    box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
 }
 
 
@@ -539,6 +579,7 @@ font-size: auto;
       top: 5%;
       display: flex;
   max-width: 20px;
+  box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
   overflow: hidden;
   cursor:pointer;
   padding: 4px 4px;
@@ -660,135 +701,50 @@ flex-shrink: 0;
   color: #FF5A5A;
   font-family: MinecraftFive-Regular;
     }
-/* أنماط جديدة */
-
-
-
-.linked-account-photo {
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  border: 1px solid #555;
+.language-switcher {
+  display: flex;
+  gap: 8px;
 }
 
-.linked-account-details {
-  flex: 1;
-}
-
-.linked-account-name {
-  font-family: 'MinecraftFive-Regular';
-  color: #e0e0e0;
-  font-size: 16px;
-}
-
-.linked-account-email {
-  font-family: 'minecraft';
-  color: #959595;
-  font-size: 12px;
-}
-
-/* تعديل أنماط الأزرار */
-#googleAuthBtn {
-  background-color: #2A9A2F;
-  border: 2px solid #47C24C;
-  color: white;
-  padding: 4px 5px;
-  font-family: 'MinecraftFive-Regular';
+.lang-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
 }
 
-#googleAuthBtn:hover {
-  background-color: #137517;
-}
-
-
-.google-link-desc {
-  font-family: 'minecraft';
-  font-size: 13px;
-  color: #ccc;
-}
-#googleUnlinkBtn{
-  background-color: #C42A2A;
-  border: 2px solid #F15555;
-  padding: 4px 5px;
-}
-#googleUnlinkBtn:hover{
-  background-color: #891A1A;
-}
-#googleAuthBtn.google-linked {
-  background-color: #4a4a4a;
-  border-color: #5a5a5a;
-  cursor: default;
-}
-
-#googleAuthBtn.google-linked:hover {
-  background-color: #4a4a4a;
-}
-/* أنماط جديدة */
-
-
-
-.linked-account-photo {
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  border: 1px solid #555;
-}
-
-.linked-account-details {
-  flex: 1;
-}
-
-.linked-account-name {
-  font-family: 'MinecraftFive-Regular';
-  color: #e0e0e0;
-  font-size: 16px;
-}
-
-.linked-account-email {
-  font-family: 'minecraft';
-  color: #959595;
-  font-size: 12px;
-}
-
-/* تعديل أنماط الأزرار */
-#googleAuthBtn {
-  background-color: #2A9A2F;
-  border: 2px solid #47C24C;
+#englishBtn {
+  background-color: #1a73e8;
   color: white;
-  padding: 4px 5px;
-  font-family: 'MinecraftFive-Regular';
-  cursor: pointer;
-  transition: all 0.3s;
 }
 
-#googleAuthBtn:hover {
-  background-color: #137517;
+#arabicBtn {
+  background-color: #34a853;
+  color: white;
 }
 
-
-.google-link-desc {
-  font-family: 'minecraft';
-  font-size: 13px;
-  color: #ccc;
-}
-#googleUnlinkBtn{
-  background-color: #C42A2A;
-  border: 2px solid #F15555;
-  padding: 4px 5px;
-}
-#googleUnlinkBtn:hover{
-  background-color: #891A1A;
-}
-#googleAuthBtn.google-linked {
-  background-color: #4a4a4a;
-  border-color: #5a5a5a;
-  cursor: default;
+.lang-btn:not(.active) {
+  opacity: 0.6;
+  filter: grayscale(0.5);
 }
 
-#googleAuthBtn.google-linked:hover {
-  background-color: #4a4a4a;
+.lang-btn.active {
+  opacity: 1;
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+} 
+#tagsSortableList {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.sortable-item {
+  margin-bottom: 8px;
+  cursor: grab;
+  gap: 5px;
 }
   </style>
 </head>
@@ -808,6 +764,7 @@ flex-shrink: 0;
         <div class="profile-info">
           <div class="username" id="usernameDisplay">Loading...</div>
   <div class="user-handle" id="userHandle">@username</div> 
+  <div class="user-tags-container" id="userTagsContainer" style="margin-top: 5px;"></div>
   <div class="user-bio" id="userBio"></div>
 </div>
         <div class="stats">
@@ -837,50 +794,50 @@ flex-shrink: 0;
       </div>
       
       <!-- Settings Sections -->
-      <div class="settings-sections">
-        <!-- Account Settings -->
-        <div class="settings-card">
-          <div class="card-header">⚙️ Dev.Account Settings</div>
-          <div class="card-content">
-            <div class="setting-item">
-              <span class="setting-label">Dark Mode</span>
-              <label class="toggle-switch">
-                <input type="checkbox" id="darkModeToggle" checked>
-                <span class="slider"></span>
-                
-              </label>
-            </div>
-            <div class="setting-item">
-              <span class="setting-label">Notifications</span>
-              <label class="toggle-switch">
-                <input type="checkbox" id="notificationsToggle" checked>
-                <span class="slider"></span>
-              </label>
-            </div>
-                   <div class="setting-item">
-         <span class="setting-label">Change Password</span>
-         <button class="modal-btn" id="changePasswordBtn" style="padding: 4px 8px;">Change</button>
-       </div>
+<div class="settings-sections">
+  <!-- Account Settings -->
+  <div class="settings-card">
+    <div class="card-header">⚙️ Dev.Account Settings</div>
+    <div class="card-content">
+      <!-- Language Select
+      <div class="setting-item">
+        <span class="setting-label">Language</span>
+        <div class="language-switcher">
+          <button class="lang-btn active" id="englishBtn" data-lang="en">English</button>
+          <button class="lang-btn" id="arabicBtn" data-lang="ar">العربية</button>
+        </div>
+      </div>
+      --> 
+      <div class="setting-item">
+        <span class="setting-label">Dark Mode</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="darkModeToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">Notifications</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="notificationsToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
        <div class="setting-item">
-         <span class="setting-label">Change Email</span>
-         <button class="modal-btn" id="changeEmailBtn" style="padding: 4px 8px;">Change</button>
-       </div>
-          </div>
-        </div><!-- داخل قسم Account Settings -->
-<div class="settings-card">
-  <div class="card-header">🔗 Linked Accounts</div>
-  <div class="card-content" style="display: flex; justify-content: space-between; align-items: center;">
-    <img id="googleProfileImage" src="../icons/player-head-128-052ba.png" style="width: 32px; height: 32px; border-radius: 50%; display: none;" />
-    <div class="google-link-desc" id="googleLinkDescription">
-      Linking your account to Google
-    </div>
-    <div class="google-actions" style="display: flex; gap: 8px;">
-      <button class="modal-btn" id="googleAuthBtn">Link</button>
-      <button class="modal-btn" id="googleUnlinkBtn" style="display: none;">Unlink</button>
+        <span class="setting-label">Change the order of tags </span>
+        <button class="modal-btn"  id="editTagsOrderBtn" style="padding: 4px 8px;">Change</button>
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">Change Password</span>
+        <button class="modal-btn" id="changePasswordBtn" style="padding: 4px 8px;">Change</button>
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">Change Email</span>
+        <button class="modal-btn" id="changeEmailBtn" style="padding: 4px 8px;">Change</button>
+      </div>
     </div>
   </div>
-</div>
-
+  
+  
         
         <!-- Purchased Items -->
         <div class="settings-card">
@@ -1064,7 +1021,27 @@ flex-shrink: 0;
       </div>
     </div>
   </div>
+
+
+<div id="editTagsModal" class="modal">
+  <div class="modal-content">
+<div class="modal-title">Sort tags </div>
+<div class="description"> 
+    <ul id="tagsSortableList"></ul>
+</div>
+            <div style="font-family: 'minecraft'; color: #959595; font-size: 12px; margin-top: 10px; text-align: center;">
+          Long press on the tag and move it to the up and down. After modifying them, click on save changes. 
+        </div>
+    <div class="modal-actions">
+    <button class="modal-btn cancel" onclick="toggleModal('editTagsModal', false)">Close</button> 
+    <button class="modal-btn save" id="saveTagsOrderBtn">Save order </button>
+    </div>
+  </div>
+</div>
+
 <script>
+
+
   // دالة مبسطة لحفظ واسترجاع الصور باستخدام الرابط كمفتاح
   function cacheImages() {
     // تحديد جميع الصور في الصفحة
@@ -1134,7 +1111,8 @@ flex-shrink: 0;
       getDocs,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-    import { shopItems } from './items.js';
+    import { shopItems } from '../scripts/items.js';
+    import { getTagName } from '../scripts/tags.js';
     import {
       GoogleAuthProvider,
       signInWithPopup,
@@ -1180,6 +1158,17 @@ flex-shrink: 0;
         currentUserData = userDoc.data();
         displayUserData(currentUserData);
         
+ if (currentUserData.areatags && currentUserData.areatags.length > 0) {
+  const tagsContainer = document.getElementById('userTagsContainer');
+  tagsContainer.innerHTML = '';
+  
+  currentUserData.areatags.forEach(tag => {
+    const tagElement = document.createElement('span');
+    tagElement.className = `tag tag-${tag}`;
+    tagElement.textContent = '';
+    tagsContainer.appendChild(tagElement);
+  });
+}
         // Display purchased items
         const purchasedItems = currentUserData.purchasedItems || [];
         if (purchasedItems.length > 0) {
@@ -1527,278 +1516,83 @@ flex-shrink: 0;
         eyeIcon.classList.toggle('fa-eye-slash');
       }
     };
+function renderUserTags(tags) {
+  const tagsContainer = document.getElementById('userTagsContainer');
+  tagsContainer.innerHTML = '';
+  
+  tags.forEach(tag => {
+    const tagElement = document.createElement('span');
+    tagElement.className = `tag tag-${tag}`;
+    tagElement.textContent = ''; // ← لا نكتب الاسم
+    tagsContainer.appendChild(tagElement);
+  });
+}
+document.addEventListener('DOMContentLoaded', () => {
+  // تفعيل السحب
+  new Sortable(document.getElementById('tagsSortableList'), {
+    animation: 150
+  });
+  
+  // فتح نافذة الترتيب
+  document.getElementById('editTagsOrderBtn').addEventListener('click', () => {
+    if (!currentUserData || !currentUserData.areatags) {
+      alert("⚠️ لم يتم تحميل بيانات المستخدم بعد");
+      return;
+    }
     
+    const list = document.getElementById('tagsSortableList');
+    list.innerHTML = '';
+    
+    currentUserData.areatags.forEach(tag => {
+      const li = document.createElement('li');
+      li.className = 'sortable-item';
+      
+      const tagSpan = document.createElement('span');
+      tagSpan.className = `tag tag-${tag}`;
+      tagSpan.textContent = '';
+      
+      li.dataset.tag = tag;
+      li.appendChild(tagSpan);
+      list.appendChild(li);
+    });
+    
+    toggleModal('editTagsModal', true);
+  });
+  
+  // حفظ الترتيب وتحديث التاغات
+  document.getElementById('saveTagsOrderBtn').addEventListener('click', async () => {
+    const newTagsOrder = Array.from(document.querySelectorAll('#tagsSortableList li'))
+      .map(li => li.dataset.tag);
+    
+    try {
+      const userId = localStorage.getItem("activeUser");
+      const userDocRef = doc(db, 'users', userId);
+      
+      await updateDoc(userDocRef, {
+        areatags: newTagsOrder
+      });
+      
+      currentUserData.areatags = newTagsOrder;
+      
+      // تحديث العرض مباشرة
+      renderUserTags(newTagsOrder);
+      
+      toggleModal('editTagsModal', false);
+      alert('✅ تم حفظ الترتيب الجديد للتاغات');
+    } catch (err) {
+      console.error("Error updating tags order:", err);
+      alert("⚠️ فشل في حفظ الترتيب");
+    }
+  });
+});
     // Initialize the page - load user data first
     document.addEventListener('DOMContentLoaded', () => {
       loadUserData();
     });
-// Google Account Linking System
-document.addEventListener('DOMContentLoaded', () => {
-  const googleAuthBtn = document.getElementById('googleAuthBtn');
-  const googleAuthText = document.getElementById('googleAuthText');
-  const googleAccountInfo = document.getElementById('googleAccountInfo');
-  const googleAccountPhoto = document.getElementById('googleAccountPhoto');
-  const googleAccountName = document.getElementById('googleAccountName');
-  const googleAccountEmail = document.getElementById('googleAccountEmail');
-  
-  // عرض معلومات حساب جوجل المربوط
-function displayGoogleAccountInfo(userData) {
-  const description = document.getElementById('googleLinkDescription');
-  const authBtn = document.getElementById('googleAuthBtn');
-  const unlinkBtn = document.getElementById('googleUnlinkBtn');
-  
-  // 🟢 الحالة الأولى: ربط مكتمل
-  if (userData.provider === "google" && userData.googleAccount) {
-    const { displayName, email } = userData.googleAccount;
-    description.textContent = `${displayName} (${email})`;
-    
-    authBtn.textContent = 'Linked';
-    authBtn.classList.add('google-linked');
-    authBtn.disabled = true;
-    unlinkBtn.style.display = 'inline-block';
-    
-    // 🟡 الحالة الثانية: يوجد "google" ولكن لا يوجد googleAccount → توليد بيانات
-  } else if (userData.provider === "google" && !userData.googleAccount && userData.email) {
-    description.textContent = `(Linked via Google: ${userData.email})`;
-    
-    authBtn.textContent = 'Linked';
-    authBtn.classList.add('google-linked');
-    authBtn.disabled = true;
-    unlinkBtn.style.display = 'inline-block';
-    
-    // حفظ بيانات googleAccount مفقودة
-    const fallbackGoogleAccount = {
-      displayName: userData.displayName || "Google User",
-      email: userData.email,
-      photoURL: userData.photoURL || "../icons/player-head-128-052ba.png"
-    };
-    
-    // تحديث Firestore فقط إذا لم تكن موجودة مسبقًا
-    const userId = localStorage.getItem("activeUser");
-    const userDocRef = doc(db, 'users', userId);
-    updateDoc(userDocRef, {
-      googleAccount: fallbackGoogleAccount,
-      updatedAt: serverTimestamp()
-    }).then(() => {
-      console.log("✅ تم تحديث googleAccount تلقائيًا");
-    }).catch(err => {
-      console.warn("⚠️ فشل حفظ googleAccount التلقائي:", err.message);
-    });
-    
-    // 🔴 لا يوجد ربط
-  } else {
-    description.textContent = 'Linking your account to Google';
-    authBtn.textContent = 'Link';
-    authBtn.classList.remove('google-linked');
-    authBtn.disabled = false;
-    unlinkBtn.style.display = 'none';
-  }
-}
-  
-  // عرض نافذة التأكيد المخصصة
-  async function showConfirmationModal(title, message, confirmText, cancelText) {
-    return new Promise((resolve) => {
-      const modal = document.createElement('div');
-      modal.className = 'modal';
-      modal.style.display = 'flex';
-      modal.innerHTML = `
-        <div class="modal-content">
-          <div class="modal-header">
-            <div class="modal-title">${title}</div>
-            <button class="close-modal" id="closeModal">&times;</button>
-          </div>
-          <div class="card-content">
-            <p style="font-family: 'minecraft'; color: #e0e0e0;">${message}</p>
-          </div>
-          <div class="modal-actions">
-            <button class="modal-btn cancel" id="cancelBtn">${cancelText}</button>
-            <button class="modal-btn save" id="confirmBtn">${confirmText}</button>
-          </div>
-        </div>
-      `;
-      
-      document.body.appendChild(modal);
-      
-      document.getElementById('confirmBtn').addEventListener('click', () => {
-        document.body.removeChild(modal);
-        resolve(true);
-      });
-      
-      document.getElementById('cancelBtn').addEventListener('click', () => {
-        document.body.removeChild(modal);
-        resolve(false);
-      });
-      
-      document.getElementById('closeModal').addEventListener('click', () => {
-        document.body.removeChild(modal);
-        resolve(false);
-      });
-    });
-  }
-  
-  // ربط حساب جوجل
-  async function linkGoogleAccount() {
-    const userId = localStorage.getItem("activeUser");
-    const userDocRef = doc(db, 'users', userId);
-    
-    try {
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: 'select_account' });
-      
-      const result = await signInWithPopup(auth, provider);
-      const googleUser = result.user;
-      
-      const confirm = await showConfirmationModal(
-        'Link Google Account',
-        `Do you want to link your account with ${googleUser.email}?`,
-        'Confirm Link',
-        'Cancel'
-      );
-      
-      if (!confirm) return;
-      
-      await updateDoc(userDocRef, {
-        provider: "google",
-        googleAccount: {
-          displayName: googleUser.displayName,
-          email: googleUser.email,
-          photoURL: googleUser.photoURL
-        },
-        updatedAt: serverTimestamp()
-      });
-      
-      loadUserData();
-      alert('✅ Google account linked successfully!');
-      
-    } catch (error) {
-      console.error("Google link error:", error);
-      alert('Failed to link Google account: ' + error.message);
-    }
-  }
-  
-  // فك ربط حساب جوجل
-  async function unlinkGoogleAccount() {
-    const confirm = await showConfirmationModal(
-      'Unlink Google Account',
-      'Are you sure you want to unlink your Google account?',
-      'Confirm Unlink',
-      'Cancel'
-    );
-    
-    if (!confirm) return;
-    
-    const userId = localStorage.getItem("activeUser");
-    const userDocRef = doc(db, 'users', userId);
-    
-    try {
-      await updateDoc(userDocRef, {
-        provider: "email",
-        googleAccount: null,
-        updatedAt: serverTimestamp()
-      });
-      
-      loadUserData();
-      alert('Google account unlinked successfully');
-      
-    } catch (error) {
-      console.error("Unlink error:", error);
-      alert('Failed to unlink Google account');
-    }
-  }
-  
-  // معالجة النقر على زر جوجل
-googleAuthBtn.addEventListener('click', async () => {
-  await linkGoogleAccount();
-});
 
-googleUnlinkBtn.addEventListener('click', async () => {
-  await unlinkGoogleAccount();
-});
-  
-  // تحديث واجهة المستخدم عند تحميل البيانات
-  function loadUserData() {
-    const userId = localStorage.getItem("activeUser");
-    if (!userId) return;
-    
-    const userDocRef = doc(db, 'users', userId);
-    getDoc(userDocRef).then(userDoc => {
-      if (userDoc.exists()) {
-        displayGoogleAccountInfo(userDoc.data());
-      }
-    });
-  }
-
-  // التهيئة الأولية
-  loadUserData();
-});
 
 </script>
-<script>
-  // دالة رئيسية لتحديث بيانات التعريف
-  async function updateMetaTags() {
-    const userId = getCurrentUserId(); // الحصول على ID المستخدم الحالي
-    
-    if (!userId) return;
-    
-    try {
-      const userDoc = await getDoc(doc(db, "users", userId));
-      if (!userDoc.exists()) return;
-      
-      const userData = userDoc.data();
-      const currentUrl = window.location.href.split('?')[0] + `?user=${userId}`;
-      
-      // إنشاء رابط الصورة مع token الوصول
-      const imageUrl = await getAccessibleImageUrl(userData.photoURL);
-      
-      // تحديث وسوم التعريف
-      updateTag('og:url', currentUrl);
-      updateTag('og:title', `${userData.displayName || userId}'s MC Profile`);
-      updateTag('og:description', userData.bio || "Minecraft Player Profile");
-      updateTag('og:image', imageUrl);
-      updateTag('profile:username', userId);
-      
-      // تحديث عنوان الصفحة
-      document.title = `${userData.displayName || userId}'s Profile`;
-      
-    } catch (error) {
-      console.error("Error updating meta tags:", error);
-    }
-  }
-  
-  // دالة مساعدة للحصول على رابط صورة متاح
-  async function getAccessibleImageUrl(photoURL) {
-    if (!photoURL) return 'https://example.com/default_profile.jpg';
-    
-    // إذا كانت الصورة في Firebase Storage
-    if (photoURL.startsWith('gs://')) {
-      const storageRef = ref(storage, photoURL);
-      return getDownloadURL(storageRef);
-    }
-    
-    return photoURL;
-  }
-  
-  // دالة مساعدة لتحديث الوسوم
-  function updateTag(property, content) {
-    let tag = document.querySelector(`meta[property="${property}"]`);
-    if (!tag) {
-      tag = document.createElement('meta');
-      tag.setAttribute('property', property);
-      document.head.appendChild(tag);
-    }
-    tag.setAttribute('content', content);
-  }
-  
-  // دالة للحصول على ID المستخدم الحالي
-  function getCurrentUserId() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('user') || localStorage.getItem("activeUser");
-  }
-  
-  // استدعاء عند تحميل الصفحة وتغيير المستخدم
-  window.addEventListener('DOMContentLoaded', updateMetaTags);
-  window.addEventListener('hashchange', updateMetaTags);
-</script>
+
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <script>
   // Enhanced QR Code generation with better error handling

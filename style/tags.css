@@ -1,0 +1,97 @@
+.user-tags {  
+   gap: 5px;  
+   padding-left: 2px;  
+}  
+
+.tag {  
+   font-family: minecraft-five;  
+   font-size: 10px;  
+   padding: 2px 6px;  
+   border-radius: 3px;  
+   text-shadow: 0 1px 0px rgba(0, 0, 0, 0.3);  
+   margin-right: 4px;  
+  
+}
+
+
+/* style/tags.css */
+.tag-admin {
+   background-color: #FF5555;
+   color: white;
+   border: 1px solid #FF0000;
+   
+}
+
+.tag-admin::before {
+   content: "ADMIN";
+}
+
+.tag-moderator {
+   background-color: #55AAFF;
+   color: white;
+   border: 1px solid #0088FF;
+}
+
+.tag-moderator::before {
+   content: "MOD";
+}
+
+.tag-vip {
+   background-color: #FFAA00;
+   color: white;
+   border: 1px solid #FF8800;
+}
+
+.tag-vip::before {
+   content: "VIP";
+}
+
+.tag-builder {
+   background-color: #55FF55;
+   color: black;
+   border: 1px solid #00AA00;
+}
+
+.tag-builder::before {
+   content: "BUILDER";
+}
+
+.tag-friend {
+   background-color: #FF55FF;
+   color: white;
+   border: 1px solid #CC00CC;
+}
+
+.tag-friend::before {
+   content: "FRIEND";
+}
+
+.tag-legend {
+   background: linear-gradient(135deg, #FFAA00, #FF5555);
+   color: white;
+   border: 1px solid #FF0000;
+}
+
+.tag-legend::before {
+   content: "LEGEND";
+}
+
+.tag-youtuber {
+   background-color: #FF0000;
+   color: white;
+   border: 1px solid #CC0000;
+}
+
+.tag-youtuber::before {
+   content: "YOUTUBER";
+}
+.tag-mvp {
+   background-color: #E74141;
+   color: #979797;
+   border: 1px solid #FF9B9B;
+   box-shadow: 0 2px 0 #771F05;
+   border-radius: none;
+}
+.tag-mvp::before {
+   content: "MVP";
+}

@@ -1,0 +1,633 @@
+<!DOCTYPE html>  
+<html>    
+<head>    
+  <meta charset="UTF-8">    
+  <meta name="viewport" content="width=device-width, initial-scale=1">    
+  <link rel="stylesheet" href="../style/main.css">    
+  <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">    
+  <title>Forgot Username</title>    
+    
+  <style>    
+    @font-face {    
+      font-family: minecraft;    
+      src: url('../font/Minecraft-Default.otf');    
+    }    
+    @font-face {    
+      font-family: minecraft-ten;    
+      src: url('../font/Minecraft-Ten.ttf');    
+    }    
+    @font-face {    
+      font-family: minecraft-five;    
+      src: url('../font/Minecraft-Five.ttf');    
+    }   
+    @font-face {    
+      font-family: MinecraftFive-Regular;    
+      src: url('../font/MinecraftFive-Regular.ttf');    
+    }  
+    
+    .password-container {    
+      position: relative;    
+      margin: 10px 0;    
+    }  
+    .toggle-password {  
+      position: absolute;  
+      margin-top: 11px;  
+      transform: translateY(-50%);  
+      transform: translateX(-150%);  
+      cursor: pointer;  
+      user-select: none;  
+      opacity: 0.7;  
+    }  
+    .toggle-password:hover {
+      opacity: 1;
+    }
+    .input-group {
+      position: relative;
+    }
+    .input-group input {
+      outline: none;
+      font-size: 16px;
+    }
+    .input-group label {
+      position: absolute;
+      top: 12px;
+      left: 20%;
+      color: #484848;
+      font-family: minecraft;
+      transition: all 0.3s;
+      pointer-events: none;
+      background-color: transparent;
+      padding: 0 5px;
+    }
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+      top: -10px;
+      border-radius: 10px;
+      left: 20%;
+      font-size: 14px;
+      background-color: rgba(38, 38, 38);
+      color: #959595;
+    }
+    
+    .login-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+      padding: 20px;
+    }
+    
+    .login-box {
+      flex: 1;
+      max-width: 400px;
+    }
+    
+    .login-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .login-image img {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    /* Custom Alert Styles */
+    .custom-alert {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .custom-alert-content {
+      background-color: #262626;
+      border: 3px solid #E0BA31;
+      padding: 20px;
+      width: 80%;
+      border-radius: 2px;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0px 3px 0px rgba(224, 155, 0, 1);
+      animation: fadeIn 0.3s;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .custom-alert-title {
+      color: gold;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .custom-alert-message {
+      color: #e0e0e0;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .custom-alert-button {
+      transition: background-color 0.5s;
+      height: auto;
+      width: 100%;
+      border: 2px solid #FFFB8D;
+      background-color: #FFFB00;
+      text-shadow: 1px 1px 2px #B9B600;
+      box-shadow: 0px 3px 0px rgba(224, 155, 0, 1);
+      font-size: 16px;
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+      padding: 10px;
+      color: #000000;
+      margin: auto;
+      transition: all 0.3s;
+    }
+
+    .custom-alert-button:hover {
+      background-color: #9D5F00;
+      transform: scale(1.05);
+    }
+
+    .custom-alert-icon {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 15px;
+      border: 2px solid #EA9E27;
+      border-radius: 5px
+    }
+
+    /* شبكة الحسابات */
+    .account-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .account-item {
+      width: 100px;
+      max-height: 100px; 
+      justify-self: center;
+      border: none;
+      background-color: #333333F7;
+      border-radius: 5px; 
+      padding: 10px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s;
+      font-family: minecraft;
+    }
+    .account-item .username {
+      color: #C4C4C4;
+      font-size: 12px; 
+    }
+
+    .account-item:hover {
+      border-color: #FFFB00;
+      background-color: #444;
+    }
+
+    .account-item.selected {
+      border-color: #FFFB00;
+      background-color: #555;
+    }
+
+    .account-item img {
+      width: 50px;
+      height: 50px;
+      border-radius: 5px;
+      margin-bottom: 8px;
+      border: 1px solid #888;
+    }
+
+    /* مراحل العملية */
+    .step {
+      display: none;
+    }
+    .step.active {
+      display: block;
+    }
+
+    /* أنماط الحظر */
+    .banned-alert .custom-alert-title {
+      color: #FF3D3D;
+      font-size: 28px;
+      font-family: minecraft-ten;
+    }
+
+    .banned-user-info {
+      margin: 15px 0;
+      text-align: center;
+      width: 100%;
+    }
+
+    .banned-username {
+      color: #C4C4C4;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .banned-duration {
+      color: #9A9A9A;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .time-remaining {
+      color: #959595;
+      font-size: 14px;
+    }
+    .ban-reason-area {
+      color: #C7C7C7;
+      font-size: 16px;
+      margin-top: ;
+    } 
+    .ban-reason {
+      color: #C18E3F;
+      font-size: 14px;
+      font-family: MinecraftFive-Regular;
+    }
+
+    @media (max-width: 768px) {
+      .login-container {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .login-image {
+        order: 2;
+        margin-top: 20px;
+      }
+      
+      .login-box {
+        order: 1;
+        width: 100%;
+      }
+      
+      .custom-alert-content {
+        width: 90%;
+      }
+    }
+    
+    .sticky-header.sticky {
+      position: fixed;
+      top: 0;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0.9; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    } 
+    
+    .header {
+      background-color: #222222;
+      padding: 10px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+     
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+    }
+    
+    #greenButton {
+      font-family: MinecraftFive-Regular;
+    }
+  </style>
+</head>    
+<body> 
+<div class="sticky-header"> 
+  <div class="header">  
+    <button class="back" id="backButton" type="button" onclick="goBack()"></button>   
+    Forgot Username <img src="../icons/gif_test-83efe.gif" height="30">  
+  </div>  
+</div>
+  <div class="content">  
+    <div class="login-container">
+      <div class="login-box">    
+        <div id="step1" class="step active">
+          <div class="title">Find Your Account</div>
+          <form id="emailForm">
+            <div class="input-group"> 
+              <input type="email" id="email" placeholder=" " required>  
+              <label for="email">Email Address</label>  
+            </div>
+            <br>
+            <button type="submit" id="greenButton">Search</button>
+          </form>
+          <div class="description">    
+            🔸Remember your username? <a href="login.html" class="link">Login here</a>     
+          </div>
+        </div>
+        
+        <div id="step2" class="step">
+          <div class="title">Select Your Account</div>
+          <div id="accountsList" class="account-grid">
+            <!-- سيتم ملء الحسابات هنا جافاسكريبت -->
+          </div>
+          <br>
+          <button id="selectAccountBtn" class="custom-alert-button" disabled>Continue</button>
+          <div class="description">    
+            🔸Not your accounts? <a href="#" id="tryAnotherEmail" class="link">Try another email</a>     
+          </div>
+        </div>
+        
+        <div id="step3" class="step">
+          <div class="title">Enter Password</div>
+          <form id="passwordForm">
+            <div class="input-group password-container">  
+              <input type="password" id="finalPassword" placeholder=" " required>  
+              <label for="finalPassword">Password</label>  
+              <span class="toggle-password">🙈</span>  
+            </div>
+            <br>
+            <button type="submit" id="greenButton">Login</button>
+          </form>
+          <div class="description">    
+            🔸Forgot password? <a href="forget-password.html" class="link">Reset/get it</a>     
+          </div>
+        </div>
+      </div>
+     
+      <div class="login-image"> 
+        <div class="description">
+          <img src="../icons/tutorial_end-fbdd6.png" alt="Login Image">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Custom Alert -->
+  <div id="customAlert" class="custom-alert">
+    <div class="custom-alert-content">
+      <img src="../icons/donut.png" class="custom-alert-icon" alt="Success">
+      <div class="custom-alert-title" id="alertTitle">Welcome Back!</div>
+      <div class="custom-alert-message" id="alertMessage"></div>
+      <button class="custom-alert-button" id="alertButton">Continue</button>
+    </div>
+  </div>
+  
+  <!-- No Accounts Found Alert -->
+  <div id="noAccountsAlert" class="custom-alert">
+    <div class="custom-alert-content">
+      <img src="../icons/warning.png" class="custom-alert-icon" alt="Warning">
+      <div class="custom-alert-title">No Accounts Found</div>
+      <div class="custom-alert-message">We couldn't find any accounts associated with this email address.</div>
+      <button class="custom-alert-button" id="noAccountsBtn">Try Again</button>
+    </div>
+  </div>
+
+<script type="module">
+  import { db } from '../scripts/main.js';
+  import { collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+  // متغيرات لتخزين البيانات بين الخطوات
+  let userEmail = '';
+  let selectedUsername = '';
+  let accounts = [];
+
+  // ✅ إظهار/إخفاء خطوات العملية
+  function showStep(stepId) {
+    document.querySelectorAll('.step').forEach(step => {
+      step.classList.remove('active');
+    });
+    document.getElementById(stepId).classList.add('active');
+  }
+
+  // ✅ إظهار تنبيه مخصص
+  function showCustomAlert(title, message, imageUrl) {
+    const alertElement = document.getElementById('customAlert');
+    const alertTitle = document.getElementById('alertTitle');
+    const alertMessage = document.getElementById('alertMessage');
+    const alertButton = document.getElementById('alertButton');
+    const alertImage = document.querySelector('.custom-alert-icon');
+    
+    alertTitle.textContent = title;
+    alertMessage.textContent = message;
+    alertImage.src = imageUrl || '../icons/donut.png';
+    
+    alertElement.style.display = 'flex';
+    
+    alertButton.onclick = function() {
+      alertElement.style.display = 'none';
+      window.location.href = 'general.html';
+    };
+  }
+
+  // ✅ التحقق من حالة الحظر
+  async function checkBanStatus(username) {
+    try {
+      const userDocRef = doc(db, 'users', username);
+      const userDoc = await getDoc(userDocRef);
+      
+      if (userDoc.exists() && userDoc.data().banInfo?.isBanned) {
+        const banInfo = userDoc.data().banInfo;
+        const alertElement = document.getElementById('customAlert');
+        const alertImage = document.querySelector('.custom-alert-icon');
+        
+        alertElement.classList.add('banned-alert');
+        document.getElementById('alertTitle').textContent = 'You are banned!';
+        
+        if (userDoc.data().photoURL) {
+          alertImage.src = userDoc.data().photoURL;
+        } 
+        
+        let banMessage = banInfo.duration === 'permanent' ?
+          `Permanently banned` :
+          `Banned for ${banInfo.duration} days`;
+        
+        if (banInfo.duration !== 'permanent') {
+          const endDate = banInfo.endDate.toDate();
+          const daysRemaining = Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24));
+          banMessage += `<div class="time-remaining">${daysRemaining} days remaining</div>`;
+        }
+        
+        document.getElementById('alertMessage').innerHTML = `
+          <div class="banned-user-info">
+            <div class="banned-username">${username}'s You are now banned. You cannot use this account again. </div>
+            <div class="banned-duration">${banMessage}</div>
+            <div class="ban-reason-area">
+              Reason:
+              <div class="ban-reason">${banInfo.reason || 'No reason specified'}</div>
+            </div>
+          </div>
+        `;
+        
+        document.getElementById('alertButton').textContent = 'OK';
+        alertElement.style.display = 'flex';
+        
+        document.getElementById('alertButton').onclick = function() {
+          alertElement.style.display = 'none';
+          alertElement.classList.remove('banned-alert');
+          alertImage.style.display = 'block';
+        };
+        
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error checking ban status:', error);
+      return false;
+    }
+  }
+
+  // ✅ البحث عن الحسابات المرتبطة بالبريد الإلكتروني
+  document.getElementById('emailForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    userEmail = document.getElementById('email').value.trim();
+    
+    if (!userEmail) {
+      alert('Please enter your email address');
+      return;
+    }
+    
+    try {
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('email', '==', userEmail));
+      const querySnapshot = await getDocs(q);
+      
+      accounts = [];
+      querySnapshot.forEach(doc => {
+        accounts.push({
+          id: doc.id,
+          ...doc.data()
+        });
+      });
+      
+      if (accounts.length === 0) {
+        document.getElementById('noAccountsAlert').style.display = 'flex';
+        document.getElementById('noAccountsBtn').onclick = function() {
+          document.getElementById('noAccountsAlert').style.display = 'none';
+        };
+      } else {
+        displayAccounts(accounts);
+        showStep('step2');
+      }
+    } catch (error) {
+      console.error('Error searching for accounts:', error);
+      alert('An error occurred while searching for accounts');
+    }
+  });
+
+  // ✅ عرض الحسابات المرتبطة بالبريد
+  function displayAccounts(accounts) {
+    const accountsList = document.getElementById('accountsList');
+    accountsList.innerHTML = '';
+    
+    accounts.forEach(account => {
+      const accountItem = document.createElement('div');
+      accountItem.className = 'account-item';
+      accountItem.innerHTML = `
+        <img src="${account.photoURL || '../icons/user.png'}" alt="${account.id}">
+        <div class="username">${account.id}</div>
+      `;
+      
+      accountItem.addEventListener('click', () => {
+        document.querySelectorAll('.account-item').forEach(item => {
+          item.classList.remove('selected');
+        });
+        accountItem.classList.add('selected');
+        selectedUsername = account.id;
+        document.getElementById('selectAccountBtn').disabled = false;
+      });
+      
+      accountsList.appendChild(accountItem);
+    });
+  }
+
+  // ✅ الانتقال إلى إدخال كلمة المرور
+  document.getElementById('selectAccountBtn').addEventListener('click', function() {
+    if (selectedUsername) {
+      showStep('step3');
+    }
+  });
+
+  // ✅ العودة إلى إدخال البريد الإلكتروني
+  document.getElementById('tryAnotherEmail').addEventListener('click', function(e) {
+    e.preventDefault();
+    showStep('step1');
+  });
+
+  // ✅ تسجيل الدخول بعد إدخال كلمة المرور
+  document.getElementById('passwordForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const password = document.getElementById('finalPassword').value.trim();
+    
+    if (!password) {
+      alert('Please enter your password');
+      return;
+    }
+    
+    // التحقق من الحظر أولاً
+    const isBanned = await checkBanStatus(selectedUsername);
+    if (isBanned) return;
+    
+    try {
+      const userDocRef = doc(db, 'users', selectedUsername);
+      const userDoc = await getDoc(userDocRef);
+      
+      if (userDoc.exists() && userDoc.data().password === password) {
+        // تحقق مرة أخرى من الحظر
+        if (userDoc.data().banInfo && userDoc.data().banInfo.isBanned) {
+          await checkBanStatus(selectedUsername);
+          return;
+        }
+        
+        localStorage.setItem('activeUser', selectedUsername);
+        const photoURL = userDoc.data().photoURL || '../icons/donut.png';
+        
+        showCustomAlert(
+          `Welcome back ${selectedUsername}!!`,
+          `You have successfully logged in ✅. Enjoy !`,
+          photoURL
+        );
+      } else {
+        alert('Invalid password!');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      alert('An error occurred while logging in, try again please.');
+    }
+  });
+
+  // ✅ تبديل إظهار/إخفاء كلمة المرور
+  const togglePassword = document.querySelector('.toggle-password');
+  const passwordInput = document.getElementById('finalPassword');
+
+  togglePassword.addEventListener('click', function() {
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+    this.textContent = type === 'password' ? '🙉' : '🙈';
+  });
+</script> 
+
+<script>
+  function goBack() {  
+    if (window.history.length > 1) {  
+      window.history.back();  
+    } else {  
+      window.location.href = '/';
+    }  
+  }  
+</script>    
+</body>  
+</html>

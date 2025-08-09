@@ -241,73 +241,62 @@
   }
   
   // نظام التتبع الذكي للتحديثات
-  async function checkUpdates() {
-    try {
-      
-      // 1. التحقق من تحديثات النص
-      const updateResponse = await fetch("pages/update.txt?t=" + Date.now());
-      if (!updateResponse.ok) return;
-      
-      const updateText = await updateResponse.text();
-      const updateHash = generateHash(updateText);
-      const lastUpdateHash = localStorage.getItem("updateHash");
-      
-      // 2. التحقق من تحديثات الأدوات
-      const itemsResponse = await fetch("pages/items.js?t=" + Date.now());
-      if (!itemsResponse.ok) return;
-      
-      const itemsText = await itemsResponse.text();
-      const itemsHash = generateHash(itemsText);
-      const lastItemsHash = localStorage.getItem("itemsHash");
-      
-      // إذا كان هناك أي تغيير
-      if (updateHash !== lastUpdateHash || itemsHash !== lastItemsHash) {
-        // 3. معالجة تحديثات النص
-        let message = "🔄    news!\n\n";
-        let hasChanges = false;
-        
-        if (updateHash !== lastUpdateHash) {
-          message += `📝 the update:\n${updateText}\n\n`;
-          hasChanges = true;
-          localStorage.setItem("updateHash", updateHash);
-          localStorage.setItem("updateText", updateText);
-        }
-        
-        // 4. معالجة تغييرات الأسعار
-        if (itemsHash !== lastItemsHash) {
-          const oldItems = JSON.parse(localStorage.getItem("shopItems")) || [];
-          const newItems = extractItemsFromText(itemsText);
-          
-          if (newItems) {
-            const priceChanges = comparePrices(oldItems, newItems);
-if (priceChanges.length > 0) {
-  message += "💰  Price change:\n";
-  priceChanges.forEach(change => {
-    const dir = change.change > 0 ? "↑" : "↓";
-    message += `• ${change.name}: ${change.oldPrice} → ${change.newPrice} ${dir}\n`;
-  });
-  
-  // هذا السطر مهم لتخزين التغييرات
-  localStorage.setItem("lastPriceChanges", JSON.stringify(priceChanges));
-  
-  hasChanges = true;
-}
-            localStorage.setItem("shopItems", JSON.stringify(newItems));
-            localStorage.setItem("itemsHash", itemsHash);
+async function checkUpdates() {
+  try {
+    // 1. جلب التحديثات
+    const updateResponse = await fetch("pages/update.txt?t=" + Date.now());
+    if (!updateResponse.ok) return;
+    const updateText = await updateResponse.text();
+    const updateHash = generateHash(updateText);
+
+    // 2. جلب الأدوات
+    const itemsResponse = await fetch("scripts/items.js?t=" + Date.now());
+    if (!itemsResponse.ok) return;
+    const itemsText = await itemsResponse.text();
+    const itemsHash = generateHash(itemsText);
+
+    // 3. إذا اختلف أي منهما عن آخر مرة في السيرفر → أظهر التنبيه مباشرة
+    const lastUpdateHash = localStorage.getItem("updateHash");
+    const lastItemsHash = localStorage.getItem("itemsHash");
+
+    if (updateHash !== lastUpdateHash || itemsHash !== lastItemsHash) {
+      let message = "🔄 news!\n\n";
+
+      // تحديث النص
+      if (updateHash !== lastUpdateHash) {
+        message += `📝 the update:\n${updateText}\n\n`;
+        localStorage.setItem("updateText", updateText);
+      }
+
+      // تحديث الأسعار
+      if (itemsHash !== lastItemsHash) {
+        const oldItems = JSON.parse(localStorage.getItem("shopItems")) || [];
+        const newItems = extractItemsFromText(itemsText);
+        if (newItems) {
+          const priceChanges = comparePrices(oldItems, newItems);
+          if (priceChanges.length > 0) {
+            message += "💰 Price change:\n";
+            priceChanges.forEach(change => {
+              const dir = change.change > 0 ? "↑" : "↓";
+              message += `• ${change.name}: ${change.oldPrice} → ${change.newPrice} ${dir}\n`;
+            });
+            localStorage.setItem("lastPriceChanges", JSON.stringify(priceChanges));
           }
-        }
-        
-        // 5. عرض التنبيه إذا كان هناك تغييرات
-        if (hasChanges) {
-          
-            alert(message);
-          
+          localStorage.setItem("shopItems", JSON.stringify(newItems));
         }
       }
-    } catch (error) {
-      console.error("خطأ في نظام التحديثات:", error);
+
+      // حفظ الهاشات الجديدة
+      localStorage.setItem("updateHash", updateHash);
+      localStorage.setItem("itemsHash", itemsHash);
+
+      // عرض التنبيه فورًا
+      alert(message);
     }
+  } catch (error) {
+    console.error("خطأ في نظام التحديثات:", error);
   }
+}
   
   // دالة مساعدة لاستخراج الأدوات من النص
   function extractItemsFromText(text) {
@@ -430,30 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 
 
-<script>
-  // تحديد مسار Service Worker ديناميكيًا
-const swPath = location.pathname.includes('/mc.community/') ?
-  '/mc.community/firebase-messaging-sw.js' :
-  '/firebase-messaging-sw.js';
 
-  // تسجيل الـ Service Worker
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register(swPath)
-      .then(function(registration) {
-        console.log('Service Worker مسجل بنجاح:', registration);
-      })
-      .catch(function(error) {
-        console.error('فشل تسجيل Service Worker:', error);
-      });
-  }
-  if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(reg => console.log('Service worker registered.', reg))
-      .catch(err => console.error('Service worker registration failed:', err));
-  });
-}
-</script>
 
     <script>
 window.addEventListener('scroll', function() {

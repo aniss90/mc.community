@@ -19,7 +19,6 @@
       font-family: minecraft-five;  
       src: url('../font/Minecraft-Five.ttf');  
     }  
-  
 
     .chat-container {
         display: flex;
@@ -62,7 +61,7 @@
     
 .input-area {
     display: flex;
-    align-items: flex-end; /* ممتاز */
+    align-items: flex-end;
     padding: 5px 10px;
     background-color: #4B4B4B;
     border: 2px solid #484848;
@@ -77,7 +76,7 @@
     flex: 1;
     display: flex;
     align-items: center;
-    align-items: flex-end; /* لضبط تموضع الكتابة */
+    align-items: flex-end;
 }
 
 #message-input {
@@ -97,28 +96,22 @@
     height: auto;
     transition: height 0.2s ease;
 }
-/* ✅ الزرين متمركزين فوق بعض */
+
 .action-buttons {
-    position: relative;
-    width: 40px;
-    height: 40px; 
-    align-items: flex-end;
-    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     margin-left: 8px;
-    position: relative;
-    transition: all 0.2s ease;
 }
 
-/* إعداد الزرين ليكونوا فوق بعض */
+/* تنسيق جديد لأزرار الإرسال والرفع والستيكرز */
 #send-btn,
-#upload-btn {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 40px;
+#upload-btn,
+#sticker-btn {
+    width: 45px;
     height: 40px;
     border: none;
-    border-radius: 50%;
+    border-radius: 45%;
     background-size: 25px 25px;
     background-color: #2F2F2F;
     background-position: center;
@@ -126,34 +119,35 @@
     cursor: pointer;
     transition: all 0.3s ease;
 }
-
-/* زر الإرسال مخفي بالبداية */
+#upload-btn,
+#sticker-btn {
+    width: 40px;
+    background-color: #42445A00;
+    transition: all 1s ease;
+}
 #send-btn {
     background-image: url('../icons/send_icon.svg');
-    opacity: 0;
-    z-index: 1;
-    transform: scale(0.8);
+    display: none;
 }
 
-/* زر الصور ظاهر بالبداية */
 #upload-btn {
     background-image: url('../icons/Gallery_icon.svg');
-    opacity: 1;
-    z-index: 2;
-    transform: scale(1);
 }
 
-    #send-btn.active {
-        opacity: 1;
-        transform: scale(1);
-        z-index: 1; /* لجعل زر الإرسال فوق زر الصورة عند الظهور */
-    }
+#sticker-btn {
+    background-image: url('../icons/sticker_icon.svg');
+    display: block !important; /* التأكد من ظهور زر الستيكرز دائمًا */
+}
 
-    #upload-btn.hidden {
-        opacity: 0;
-        transform: scale(0.8);
-        z-index: 0; /* إرسال زر الصورة للخلف عند الاختفاء */
-    }
+#send-btn.active {
+    display: block;
+    
+}
+
+#upload-btn.hidden {
+    display: none;
+}
+
 
 
     #image-input {
@@ -164,7 +158,6 @@
         filter: blur(4px);  
     }  
     
-    /* قائمة الخيارات */  
     .message-options {  
         position: absolute;  
         background: rgba(0, 0, 0, 0.8);  
@@ -173,7 +166,7 @@
         border-radius: 8px;  
         display: flex;  
         gap: 10px;  
-        bottom: -40px; /* الأزرار تظهر تحت الرسالة */  
+        bottom: -40px; 
         left: 50%;  
         transform: translateX(-50%);  
         display: none;  
@@ -182,7 +175,6 @@
         -webkit-backdrop-filter: blur(90px);
     }  
     
-    /* تنسيق الأزرار */  
     .option-btn {  
         padding: 6px 12px;  
         border: none;  
@@ -230,27 +222,107 @@
 .message.new-message {
   animation: slideUpMessage 0.4s ease-out;
 }
+
+/* أنماط لوحة الستيكرات */
+.stickers-panel {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    max-height: 400px;
+    background-color: #2d2d2d;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    display: none;
+    z-index: 1000;
+    border: 1px solid #444;
+}
+
+.stickers-panel[aria-hidden="false"] {
+    display: block;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #3a3a3a;
+    border-bottom: 1px solid #444;
+    color: white;
+    font-family: minecraft-ten;
+}
+
+.panel-close {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.stickers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 15px;
+    overflow-y: auto;
+    max-height: 350px;
+}
+
+.sticker-item {
+    width: 100%;
+    aspect-ratio: 1;
+    cursor: pointer;
+    transition: transform 0.2s;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.sticker-item:hover {
+    transform: scale(1.1);
+    background-color: #bbb;
+}
+
+.sticker-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
 </style>
-
-
 </head>
 <body>
     <div class="chat-container">
         <div class="header"> <button class="back" id="backButton" type="button" onclick="goBack()"></button>   
-        
             <div id="chatUser"><img src="../icons/magic_book.gif" height="30" /></div>
         </div>
         
         <div id="chatBox"><img class="lodinimg" src="../icons/loading_spinner.gif" height="20" /></div>
         
-<div class="input-area">
-  <textarea id="message-input" placeholder="Message.." rows="1"></textarea>
-  <div class="action-buttons">
-    <button id="upload-btn"></button>
-    <button id="send-btn"></button>
-    <input type="file" id="image-input" accept="image/*">
-  </div>
-</div>
+        <div class="input-area">
+            <textarea id="message-input" placeholder="Message.." rows="1"></textarea>
+            <div class="action-buttons">
+                <button id="sticker-btn"></button>
+                <button id="upload-btn"></button>
+                <button id="send-btn"></button>
+                <input type="file" id="image-input" accept="image/*">
+            </div>
+        </div>
+    </div>
+
+    <!-- لوحة الستيكرات -->
+    <div class="stickers-panel" id="stickersPanel" aria-hidden="true">
+        <div class="panel-header">
+            <div style="font-size:14px">Stickers</div>
+            <div>
+                <button class="panel-close" id="closeStickersBtn"> ✕</button>
+            </div>
+        </div>
+        <div class="stickers-grid" id="stickersGrid"></div>
+        <div id="stickersEmpty" style="display:none; color:#bbb; padding:10px; text-align:center;">
+            no stickers right now.
+        </div>
     </div>
 
     <script type="module">
@@ -282,10 +354,14 @@
             const sendButton = document.getElementById("send-btn");
             const imageInput = document.getElementById("image-input");
             const uploadBtn = document.getElementById("upload-btn");
+            const stickerBtn = document.getElementById("sticker-btn");
             const chatUser = document.getElementById("chatUser");
+            const stickersPanel = document.getElementById("stickersPanel");
+            const closeStickersBtn = document.getElementById("closeStickersBtn");
+            const stickersGrid = document.getElementById("stickersGrid");
 
             // Check if all required elements exist
-            if (!chatBox || !messageInput || !sendButton || !imageInput || !uploadBtn || !chatUser) {
+            if (!chatBox || !messageInput || !sendButton || !imageInput || !uploadBtn || !chatUser || !stickerBtn) {
                 console.error("One or more required DOM elements not found");
                 return;
             }
@@ -297,7 +373,7 @@
 
             if (!activeUser || !receiver) {
                 alert("يجب تسجيل الدخول واختيار مستخدم للدردشة!");
-                window.location.href = "List_users.html";
+                window.location.href = "users_list.html";
                 return;
             }
 
@@ -309,19 +385,19 @@
 
             // Time formatting function
             function timeSince(date) {
-    const seconds = Math.floor((new Date() - date) / 1000);
-    let interval = Math.floor(seconds / 31536000);
-    if (interval >= 1) return ` ${interval} y`;
-    interval = Math.floor(seconds / 604800); // ✅ أسابيع
-    if (interval >= 1) return ` ${interval} w`;
-    interval = Math.floor(seconds / 86400);
-    if (interval >= 1) return ` ${interval} d`;
-    interval = Math.floor(seconds / 3600);
-    if (interval >= 1) return ` ${interval} h`;
-    interval = Math.floor(seconds / 60);
-    if (interval >= 1) return ` ${interval} min`;
-    return "now";
-}
+                const seconds = Math.floor((new Date() - date) / 1000);
+                let interval = Math.floor(seconds / 31536000);
+                if (interval >= 1) return ` ${interval} y`;
+                interval = Math.floor(seconds / 604800);
+                if (interval >= 1) return ` ${interval} w`;
+                interval = Math.floor(seconds / 86400);
+                if (interval >= 1) return ` ${interval} d`;
+                interval = Math.floor(seconds / 3600);
+                if (interval >= 1) return ` ${interval} h`;
+                interval = Math.floor(seconds / 60);
+                if (interval >= 1) return ` ${interval} min`;
+                return "now";
+            }
 
             // HTML escaping function
             function escapeHTML(text) {
@@ -339,96 +415,100 @@
             );
 
             // Real-time messages listener
-const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
-    chatBox.innerHTML = "";
-    
-    const docs = snapshot.docs; // نحول النتائج إلى مصفوفة
-    
-    docs.forEach((docSnap, index) => {
-        const data = docSnap.data();
-        const isMyMessage = (data.sender === activeUser);
-        const messageElement = document.createElement("div");
-        messageElement.classList.add("message", isMyMessage ? "myMessage" : "otherMessage");
-        messageElement.setAttribute("data-id", docSnap.id);
-        
-        const timestamp = data.timestamp?.toDate ? data.timestamp.toDate() : new Date();
-        const formattedTime = timeSince(timestamp);
-        const fullDate = timestamp.toLocaleString("en-NM");
-        
-        let contentHTML = `
-            <div style="font-size: 12px; color: gray; margin-bottom: 5px;">
-                ${fullDate} - ${formattedTime}
-            </div>
-        `;
-        
-     if (data.type === "image") {
-    contentHTML += `
-        <strong>${data.sender}:</strong><br>
-        <img 
-            src="${data.message}" 
-            style="max-width: 100%; max-height: 300px; border-radius: 10px;"
-            onerror="this.src='../icons/image_error.gif';"
-            alt="صورة محادثة"
-        >
-    `;
-} else {
-    const escapedMessage = escapeHTML(data.message).replace(/\n/g, "<br>");
-    contentHTML += `<strong>${data.sender}:</strong><br>${escapedMessage}`;
-}
-        
-        messageElement.innerHTML = contentHTML;
-        
-        // ✅ أنميشن فقط لآخر رسالة
-        if (index === docs.length - 1) {
-            messageElement.classList.add("new-message");
-            setTimeout(() => {
-                messageElement.classList.remove("new-message");
-            }, 600);
-        }
-        
-        chatBox.appendChild(messageElement);
-    });
-    
-    chatBox.scrollTop = chatBox.scrollHeight;
-});
+            const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
+                chatBox.innerHTML = "";
+                
+                const docs = snapshot.docs;
+                
+                docs.forEach((docSnap, index) => {
+                    const data = docSnap.data();
+                    const isMyMessage = (data.sender === activeUser);
+                    const messageElement = document.createElement("div");
+                    messageElement.classList.add("message", isMyMessage ? "myMessage" : "otherMessage");
+                    messageElement.setAttribute("data-id", docSnap.id);
+                    
+                    const timestamp = data.timestamp?.toDate ? data.timestamp.toDate() : new Date();
+                    const formattedTime = timeSince(timestamp);
+                    const fullDate = timestamp.toLocaleString("en-NM");
+                    
+                    let contentHTML = `
+                        <div style="font-size: 12px; color: gray; margin-bottom: 5px;">
+                            ${fullDate} - ${formattedTime}
+                        </div>
+                    `;
+                    
+                    if (data.type === "image") {
+                        contentHTML += `
+                            <strong>${data.sender}:</strong><br>
+                            <img 
+                                src="${data.message}" 
+                                style="max-width: 100%; max-height: 300px; border-radius: 10px;"
+                                onerror="this.src='../icons/image_error.gif';"
+                                alt="صورة محادثة"
+                            >
+                        `;
+                    } else if (data.type === "sticker") {
+                        contentHTML += `
+                            <strong>${data.sender}:</strong><br>
+                            <img 
+                                src="${data.message}" 
+                                style="max-width: 150px; max-height: 150px;"
+                                alt="ستيكر"
+                            >
+                        `;
+                    } else {
+                        const escapedMessage = escapeHTML(data.message).replace(/\n/g, "<br>");
+                        contentHTML += `<strong>${data.sender}:</strong><br>${escapedMessage}`;
+                    }
+                    
+                    messageElement.innerHTML = contentHTML;
+                    
+                    if (index === docs.length - 1) {
+                        messageElement.classList.add("new-message");
+                        setTimeout(() => {
+                            messageElement.classList.remove("new-message");
+                        }, 600);
+                    }
+                    
+                    chatBox.appendChild(messageElement);
+                });
+                
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
 
+            function autoResizeTextarea() {
+                messageInput.style.height = "auto";
+                messageInput.style.height = Math.min(messageInput.scrollHeight, 150) + "px";
+            }
 
-function autoResizeTextarea() {
-    messageInput.style.height = "auto";
-    messageInput.style.height = Math.min(messageInput.scrollHeight, 150) + "px";
-}
+            messageInput.addEventListener("input", autoResizeTextarea);
 
-// عند الكتابة
-messageInput.addEventListener("input", autoResizeTextarea);
+            // عند الإرسال
+            async function sendMessage() {
+                let messageText = messageInput.value.trim();
+                if (messageText === "") return;
+                
+                if (messageText.length > 200) {
+                    messageText = messageText.substring(0, 200);
+                    alert("لا يمكنك إرسال أكثر من 200 حرف!");
+                }
+                
+                try {
+                    await addDoc(messagesRef, {
+                        sender: activeUser,
+                        receiver: receiver,
+                        message: messageText,
+                        timestamp: new Date()
+                    });
+                    
+                    messageInput.value = "";
+                    messageInput.style.height = "40px";
+                } catch (error) {
+                    console.error("خطأ أثناء الإرسال:", error);
+                }
+            }
 
-// عند الإرسال
-async function sendMessage() {
-    let messageText = messageInput.value.trim();
-    if (messageText === "") return;
-    
-    if (messageText.length > 200) {
-        messageText = messageText.substring(0, 200);
-        alert("لا يمكنك إرسال أكثر من 200 حرف!");
-    }
-    
-    try {
-        await addDoc(messagesRef, {
-            sender: activeUser,
-            receiver: receiver,
-            message: messageText,
-            timestamp: new Date()
-        });
-        
-        messageInput.value = "";
-        messageInput.style.height = "40px"; // يرجع بحجمه الأصلي
-    } catch (error) {
-        console.error("خطأ أثناء الإرسال:", error);
-    }
-}
-
-            // Send button event
             sendButton.addEventListener("click", sendMessage);
-
 
             // Image upload handling
             uploadBtn.addEventListener("click", () => {
@@ -436,42 +516,120 @@ async function sendMessage() {
             });
 
             imageInput.addEventListener("change", async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+                const file = e.target.files[0];
+                if (!file) return;
 
-    uploadBtn.disabled = true;
-    uploadBtn.textContent = " wait...";
+                uploadBtn.disabled = true;
+                uploadBtn.textContent = " wait...";
 
-    // تحويل الصورة إلى Base64
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-        const imageBase64 = event.target.result; // الصورة بصيغة Base64
+                const reader = new FileReader();
+                reader.onload = async (event) => {
+                    const imageBase64 = event.target.result;
 
-        try {
-            // تخزين الصورة في Firestore كـ String
-            await addDoc(messagesRef, {
-                sender: activeUser,
-                receiver: receiver,
-                message: imageBase64, // هنا نخزن الصورة كـ Base64
-                timestamp: new Date(),
-                type: "image" // نحدد أن هذه الرسالة صورة
+                    try {
+                        await addDoc(messagesRef, {
+                            sender: activeUser,
+                            receiver: receiver,
+                            message: imageBase64,
+                            timestamp: new Date(),
+                            type: "image"
+                        });
+                    } catch (error) {
+                        console.error("حدث خطأ أثناء حفظ الصورة:", error);
+                        alert("فشل تحميل الصورة!");
+                    } finally {
+                        uploadBtn.disabled = false;
+                        uploadBtn.textContent = "photo";
+                        imageInput.value = "";
+                    }
+                };
+                reader.onerror = () => {
+                    alert("خطأ في قراءة الصورة!");
+                    uploadBtn.disabled = false;
+                    uploadBtn.textContent = "photo";
+                };
+                reader.readAsDataURL(file);
             });
-        } catch (error) {
-            console.error("حدث خطأ أثناء حفظ الصورة:", error);
-            alert("فشل تحميل الصورة!");
-        } finally {
-            uploadBtn.disabled = false;
-            uploadBtn.textContent = "photo";
-            imageInput.value = "";
-        }
-    };
-    reader.onerror = () => {
-        alert("خطأ في قراءة الصورة!");
-        uploadBtn.disabled = false;
-        uploadBtn.textContent = "photo";
-    };
-    reader.readAsDataURL(file); // تحويل الصورة إلى Base64
-});
+
+            // Sticker button functionality
+            stickerBtn.addEventListener("click", toggleStickersPanel);
+            closeStickersBtn.addEventListener("click", toggleStickersPanel);
+
+            function toggleStickersPanel() {
+                const isHidden = stickersPanel.getAttribute("aria-hidden") === "true";
+                stickersPanel.setAttribute("aria-hidden", !isHidden);
+                
+                if (isHidden) {
+                    loadStickers();
+                }
+            }
+
+const stickers = [
+    "Banker.png",
+    "Banned.png",
+    "Battle Box.png",
+    "Beta.png",
+    "Big Head.png",
+    "Boxes.png",
+    "Discord.png",
+    "Earth.png",
+    "Float.png",
+    "Friends.png",
+    "Gems.png",
+    "Laser Tag.png",
+    "Lucky Shot.png",
+    "Market.png",
+    "Match 5.png",
+    "Money.png",
+    "Parkour Tag.png",
+    "Rules.png",
+    "Santa.png",
+    "Slime Walls.png",
+    "Summer.png",
+    "Sumo.png",
+    "Tic Tac Toe.png",
+    "Wizard.png"
+];
+
+function loadStickers() {
+    stickersGrid.innerHTML = "";
+    
+    stickers.forEach(file => {
+        const stickerItem = document.createElement("div");
+        stickerItem.className = "sticker-item";
+        
+        const img = document.createElement("img");
+        img.src = `../Stickers/${file}`;
+        img.alt = file;
+        
+        img.onerror = function() {
+            this.parentNode.remove();
+        };
+        
+        stickerItem.appendChild(img);
+        stickerItem.addEventListener("click", () => {
+            sendSticker(img.src);
+            stickersPanel.setAttribute("aria-hidden", "true");
+        });
+        
+        stickersGrid.appendChild(stickerItem);
+    });
+}
+
+            async function sendSticker(stickerUrl) {
+                try {
+                    await addDoc(messagesRef, {
+                        sender: activeUser,
+                        receiver: receiver,
+                        message: stickerUrl,
+                        timestamp: new Date(),
+                        type: "sticker"
+                    });
+                } catch (error) {
+                    console.error("Error sending sticker:", error);
+                    alert("Failed to send sticker");
+                }
+            }
 
             // Long press message handling
             let holdTimeout;
@@ -585,7 +743,7 @@ async function sendMessage() {
 
             // Clean up on page unload
             window.addEventListener('beforeunload', () => {
-                unsubscribe(); // Stop the Firestore listener
+                unsubscribe();
             });
         });
     </script>
@@ -596,7 +754,7 @@ async function sendMessage() {
         const value = this.value.trim();
         
         if (value === '') {
-            this.style.direction = 'ltr'; // الوضع الافتراضي
+            this.style.direction = 'ltr';
             return;
         }
         
@@ -607,7 +765,6 @@ async function sendMessage() {
     });
 </script>
 <script>
-    // إضافة JavaScript للتحكم في ظهور الأزرار
     document.addEventListener('DOMContentLoaded', function() {
         const messageInput = document.getElementById('message-input');
         const sendBtn = document.getElementById('send-btn');
@@ -615,11 +772,9 @@ async function sendMessage() {
         
         messageInput.addEventListener('input', function() {
             if (this.value.trim() !== '') {
-                // إذا كان هناك نص، أظهر زر الإرسال وأخفي زر الرفع
                 sendBtn.classList.add('active');
                 uploadBtn.classList.add('hidden');
             } else {
-                // إذا كان الحقل فارغاً، أظهر زر الرفع وأخفي زر الإرسال
                 sendBtn.classList.remove('active');
                 uploadBtn.classList.remove('hidden');
             }
@@ -627,18 +782,12 @@ async function sendMessage() {
     });
     
     function goBack() {
-        // وظيفة العودة للخلف
-        window.history.back();
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = '/';
+        }
     }
 </script>
-      <script>
-    function goBack() {
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
-      }
-    }
-  </script>
 </body>
-</html> 
+</html>
