@@ -678,7 +678,18 @@ async function checkBanStatus(username) {
 
 
 </script> 
-
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const pass = params.get('password');
+    if (pass) {
+      const passwordInput = document.querySelector('input[type="password"]');
+      if (passwordInput) {
+        passwordInput.value = pass;
+      }
+    }
+  });
+</script>
       <script>
     function goBack() {  
       if (window.history.length > 1) {  
