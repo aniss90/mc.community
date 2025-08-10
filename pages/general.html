@@ -1244,16 +1244,8 @@ async function getUserData() {
   // عرض Fall Tokens
   formatPoints(user.fallTokens ?? 0, document.getElementById('fallTokens'));
   
-  // إشعار التحويل
-  if (user.notification?.read === false) {
-    const from = user.notification.from ?? 'unknown';
-    const amount = user.notification.amount ?? 0;
-    showCustomAlert(amount, from);
-    await updateDoc(userDocRef, { "notification.read": true });
-  }
 }
   const DEFAULT_USER_SCHEMA = {
-  
   notification: {
     from: null,
     amount: 0,
@@ -1261,7 +1253,6 @@ async function getUserData() {
     read: true
   },
   lastSeenMessages: {},
-  status: 'online'
 };
 async function ensureUserSchema(userDocRef, rawData) {
   const data = rawData || {};

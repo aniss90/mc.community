@@ -34,20 +34,6 @@ export function onClick() {
   audio.play();
 }
 
-export function showAlert(message, type) {
-  const alertBox = document.createElement('div');
-  alertBox.classList.add('custom-alert');
-  alertBox.classList.add(type);
-  alertBox.innerHTML = `${message}<br><button onclick="closeAlert(this)">موافق</button>`;
-  document.body.appendChild(alertBox);
-  
-  setTimeout(() => {
-    alertBox.style.display = 'none';
-    document.body.removeChild(alertBox);
-  }, 3000);
-  
-  alertBox.style.display = 'block';
-}
 
 export function closeAlert(button) {
   const alertBox = button.parentElement;
