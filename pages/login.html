@@ -533,7 +533,6 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
   const username = usernameInput.value.trim();
   const password = passwordInput.value.trim();
   
-  // حذف الأنماط القديمة
   usernameInput.classList.remove('input-error', 'input-success');
   passwordInput.classList.remove('input-error', 'input-success');
   
@@ -554,45 +553,51 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
       const storedPassword = userDoc.data().password;
       
       if (storedPassword === password) {
-        // تسجيل دخول ناجح
         usernameInput.classList.add('input-success');
         passwordInput.classList.add('input-success');
         
         localStorage.setItem('activeUser', username);
         const photoURL = userDoc.data().photoURL || '../icons/donut.png';
+        
         // الحصول على userAgent
-const userAgent = navigator.userAgent;
-const loginTime = new Date().toISOString();
-
-// استخراج اسم الجهاز وإصدار الأندرويد
-let deviceName = "غير معروف";
-let androidVersion = "غير معروف";
-
-const match = userAgent.match(/Android\s([\d.]+);?\s?(.*?)(?:Build|\))/i);
-if (match) {
-  androidVersion = match[1]; // إصدار الأندرويد
-  deviceName = match[2]?.trim() || "غير معروف"; // اسم الجهاز
-}
-
-// إنشاء معرف فريد للجهاز
-const deviceId = `${deviceName}-${Math.random().toString(36).substring(2, 10)}`;
-
-// المعلومات التي سنخزنها
-const deviceInfo = {
-  deviceName,
-  androidVersion,
-  loginTime
-};
-
-// تخزين في Firestore
-const userDevicesRef = doc(db, "users", username);
-await setDoc(userDevicesRef, {
-  devices: {
-    [deviceId]: deviceInfo
-  }
-}, { merge: true });
-
-console.log("تم تسجيل الجهاز:", deviceInfo);
+        const userAgent = navigator.userAgent;
+        const loginTime = new Date().toISOString();
+        
+        let deviceName = "غير معروف";
+        let androidVersion = "غير معروف";
+        
+        const match = userAgent.match(/Android\s([\d.]+);?\s?(.*?)(?:Build|\))/i);
+        if (match) {
+          androidVersion = match[1];
+          deviceName = match[2]?.trim() || "غير معروف";
+        }
+        
+        // إنشاء معرف فريد للجهاز
+        const deviceId = `${deviceName}-${androidVersion}`.replace(/\s+/g, '_');
+        
+        // الحصول على الأجهزة المخزنة
+        const devices = userDoc.data().devices || {};
+        
+        // التحقق إذا كان الجهاز مسجل مسبقًا
+        if (!devices[deviceId]) {
+          const deviceInfo = {
+            deviceName,
+            androidVersion,
+            loginTime
+          };
+          
+          await setDoc(userDocRef, {
+            devices: {
+              ...devices,
+              [deviceId]: deviceInfo
+            }
+          }, { merge: true });
+          
+          console.log("تم تسجيل الجهاز:", deviceInfo);
+        } else {
+          console.log("الجهاز مسجل مسبقًا، لن يتم الحفظ مرة أخرى");
+        }
+        
         await setDoc(userDocRef, { lastLogin: serverTimestamp() }, { merge: true });
         
         showCustomAlert(
@@ -600,13 +605,12 @@ console.log("تم تسجيل الجهاز:", deviceInfo);
           `You have successfully logged in ✅. Enjoy !`,
           photoURL
         );
+        
       } else {
-        // كلمة السر خاطئة
         usernameInput.classList.add('input-success');
         passwordInput.classList.add('input-error');
       }
     } else {
-      // اسم المستخدم غير موجود
       usernameInput.classList.add('input-error');
     }
   } catch (error) {
@@ -614,7 +618,6 @@ console.log("تم تسجيل الجهاز:", deviceInfo);
     alert('An error occurred while logging in, try again please.');
   }
 });
-
 // ✅ التحقق من حالة الحظر قبل تسجيل الدخول
 async function checkBanStatus(username) {
   try {
