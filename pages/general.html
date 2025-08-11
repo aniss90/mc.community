@@ -1219,33 +1219,8 @@ if (!activeUser) {
 
 
 // دالة لجلب بيانات المستخدم
-async function getUserData() {
-  const userDocRef = doc(db, 'users', activeUser);
-  const snap = await getDoc(userDocRef);
-  
-  let user;
-  if (!snap.exists()) {
-    // أنشئ الوثيقة لأول مرة
-    await setDoc(userDocRef, DEFAULT_USER_SCHEMA);
-    user = DEFAULT_USER_SCHEMA;
-  } else {
-    // صحّح أي نقص في الحقول
-    user = await ensureUserSchema(userDocRef, snap.data());
-  }
-  
-  const welcomeElement = document.getElementById('welcomeMessage');
-  welcomeElement.style.opacity = '1';
-  welcomeElement.style.transform = 'translateY(0)';
-  await smoothTypeWriter(`Welcome ${activeUser}!`, welcomeElement, 80);
-  
-  // عرض النقاط
-  formatPoints(user.points ?? 0, document.getElementById('points'));
-  
-  // عرض Fall Tokens
-  formatPoints(user.fallTokens ?? 0, document.getElementById('fallTokens'));
-  
-}
-  const DEFAULT_USER_SCHEMA = {
+const DEFAULT_USER_SCHEMA = {
+  points,
   notification: {
     from: null,
     amount: 0,
@@ -1253,7 +1228,73 @@ async function getUserData() {
     read: true
   },
   lastSeenMessages: {},
+  // أي حقول جديدة تضيفها هنا
 };
+
+async function getUserData() {
+  const userDocRef = doc(db, 'users', activeUser);
+  const snap = await getDoc(userDocRef);
+  
+  let user;
+  if (!snap.exists()) {
+    // إذا المستخدم جديد تمامًا
+    await setDoc(userDocRef, DEFAULT_USER_SCHEMA);
+    user = DEFAULT_USER_SCHEMA;
+  } else {
+    // إذا المستخدم موجود → أضف الحقول الجديدة فقط
+    user = await upgradeUserSchema(userDocRef, snap.data());
+  }
+  
+  // عرض الرسالة
+  const welcomeElement = document.getElementById('welcomeMessage');
+  welcomeElement.style.opacity = '1';
+  welcomeElement.style.transform = 'translateY(0)';
+  await smoothTypeWriter(`Welcome ${activeUser}!`, welcomeElement, 80);
+  
+  // عرض النقاط
+  formatPoints(user.points ?? 0, document.getElementById('points'));
+  formatPoints(user.fallTokens ?? 0, document.getElementById('fallTokens'));
+}
+
+async function upgradeUserSchema(userDocRef, rawData) {
+  const data = rawData || {};
+  const patch = {};
+  const missingFields = []; // لتجميع الحقول الناقصة
+  
+  function deepMergeDefaults(defaultObj, userObj, path = '') {
+    for (const [key, defaultVal] of Object.entries(defaultObj)) {
+      const fullPath = path ? `${path}.${key}` : key;
+      
+      if (userObj[key] === undefined) {
+        patch[fullPath] = defaultVal; // أضف الحقل إذا ناقص
+        missingFields.push(fullPath); // خزنه في القائمة
+      }
+      else if (
+        typeof defaultVal === 'object' &&
+        !Array.isArray(defaultVal) &&
+        typeof userObj[key] === 'object'
+      ) {
+        // إذا كان الحقل كائن → ادخل داخله
+        deepMergeDefaults(defaultVal, userObj[key], fullPath);
+      }
+    }
+  }
+  
+  deepMergeDefaults(DEFAULT_USER_SCHEMA, data);
+  
+  if (Object.keys(patch).length) {
+    await updateDoc(userDocRef, patch);
+    
+    // طباعة الحقول الناقصة في console
+    console.log(`🔍 الحقول الناقصة للمستخدم "${activeUser}":`, missingFields);
+    
+    return { ...data, ...patch };
+  } else {
+    console.log(`✅ لا يوجد حقول ناقصة للمستخدم "${activeUser}"`);
+  }
+  
+  return data;
+}
 async function ensureUserSchema(userDocRef, rawData) {
   const data = rawData || {};
   const patch = {};
