@@ -559,10 +559,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         localStorage.setItem('activeUser', username);
         const photoURL = userDoc.data().photoURL || '../icons/donut.png';
         
-        // الحصول على userAgent
+        // الحصول على معلومات الجهاز
         const userAgent = navigator.userAgent;
-        const loginTime = new Date().toISOString();
-        
         let deviceName = "غير معروف";
         let androidVersion = "غير معروف";
         
@@ -572,34 +570,28 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
           deviceName = match[2]?.trim() || "غير معروف";
         }
         
-        // إنشاء معرف فريد للجهاز
         const deviceId = `${deviceName}-${androidVersion}`.replace(/\s+/g, '_');
-        
-        // الحصول على الأجهزة المخزنة
         const devices = userDoc.data().devices || {};
         
-        // التحقق إذا كان الجهاز مسجل مسبقًا
-        if (!devices[deviceId]) {
-          const deviceInfo = {
+        // تحديث أو إضافة الجهاز مع آخر وقت دخول
+        const updatedDevices = {
+          ...devices,
+          [deviceId]: {
             deviceName,
             androidVersion,
-            loginTime
-          };
-          
-          await setDoc(userDocRef, {
-            devices: {
-              ...devices,
-              [deviceId]: deviceInfo
-            }
-          }, { merge: true });
-          
-          console.log("تم تسجيل الجهاز:", deviceInfo);
-        } else {
-          console.log("الجهاز مسجل مسبقًا، لن يتم الحفظ مرة أخرى");
-        }
+            loginTime: new Date().toISOString()
+          }
+        };
         
-        await setDoc(userDocRef, { lastLogin: serverTimestamp() }, { merge: true });
+        // تحديث بيانات المستخدم
+        await setDoc(userDocRef, {
+          devices: updatedDevices,
+          lastLogin: serverTimestamp()
+        }, { merge: true });
         
+        console.log("تم تحديث أو تسجيل الجهاز:", updatedDevices[deviceId]);
+        
+        // عرض تنبيه النجاح
         showCustomAlert(
           `Welcome back ${username}!!`,
           `You have successfully logged in ✅. Enjoy !`,
