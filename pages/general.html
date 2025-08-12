@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
   <link rel="stylesheet" href="../style/main.css">
-  <link rel="icon" type="png" href="=../icons/Win_Computer.gif">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <title>General page</title>
   <style>
@@ -955,7 +955,7 @@ flex: 1;
       .custom-alert-content {
         width: 90%;
       }
-    }
+    }#1EB318
   </style>
   <title>general </title>
 </head>
@@ -1105,7 +1105,8 @@ flex: 1;
 </div>
             </div>
     </div>
-  <!-- يضاف داخل div.header بعد زر الرجوع -->
+
+  
 <script>
   const button = document.getElementById('marketplacebtn');
   const container = document.querySelector('.marketplace-container');
@@ -1219,31 +1220,16 @@ if (!activeUser) {
 
 
 // دالة لجلب بيانات المستخدم
-const DEFAULT_USER_SCHEMA = {
-  points,
-  notification: {
-    from: null,
-    amount: 0,
-    currency: 'points',
-    read: true
-  },
-  lastSeenMessages: {},
-  // أي حقول جديدة تضيفها هنا
-};
-
 async function getUserData() {
   const userDocRef = doc(db, 'users', activeUser);
   const snap = await getDoc(userDocRef);
   
-  let user;
   if (!snap.exists()) {
-    // إذا المستخدم جديد تمامًا
-    await setDoc(userDocRef, DEFAULT_USER_SCHEMA);
-    user = DEFAULT_USER_SCHEMA;
-  } else {
-    // إذا المستخدم موجود → أضف الحقول الجديدة فقط
-    user = await upgradeUserSchema(userDocRef, snap.data());
+    console.warn("المستخدم غير موجود في قاعدة البيانات");
+    return; // إيقاف التنفيذ إذا ما فيه بيانات
   }
+  
+  const user = snap.data();
   
   // عرض الرسالة
   const welcomeElement = document.getElementById('welcomeMessage');
@@ -1256,83 +1242,130 @@ async function getUserData() {
   formatPoints(user.fallTokens ?? 0, document.getElementById('fallTokens'));
 }
 
-async function upgradeUserSchema(userDocRef, rawData) {
-  const data = rawData || {};
-  const patch = {};
-  const missingFields = []; // لتجميع الحقول الناقصة
-  
-  function deepMergeDefaults(defaultObj, userObj, path = '') {
-    for (const [key, defaultVal] of Object.entries(defaultObj)) {
-      const fullPath = path ? `${path}.${key}` : key;
-      
-      if (userObj[key] === undefined) {
-        patch[fullPath] = defaultVal; // أضف الحقل إذا ناقص
-        missingFields.push(fullPath); // خزنه في القائمة
-      }
-      else if (
-        typeof defaultVal === 'object' &&
-        !Array.isArray(defaultVal) &&
-        typeof userObj[key] === 'object'
-      ) {
-        // إذا كان الحقل كائن → ادخل داخله
-        deepMergeDefaults(defaultVal, userObj[key], fullPath);
-      }
-    }
-  }
-  
-  deepMergeDefaults(DEFAULT_USER_SCHEMA, data);
-  
-  if (Object.keys(patch).length) {
-    await updateDoc(userDocRef, patch);
-    
-    // طباعة الحقول الناقصة في console
-    console.log(`🔍 الحقول الناقصة للمستخدم "${activeUser}":`, missingFields);
-    
-    return { ...data, ...patch };
-  } else {
-    console.log(`✅ لا يوجد حقول ناقصة للمستخدم "${activeUser}"`);
-  }
-  
-  return data;
-}
-async function ensureUserSchema(userDocRef, rawData) {
-  const data = rawData || {};
-  const patch = {};
-  
-  // أكمل الحقول الناقصة
-  for (const [key, defaultVal] of Object.entries(DEFAULT_USER_SCHEMA)) {
-    if (data[key] === undefined) {
-      patch[key] = defaultVal;
-      continue;
-    }
-    
-    // تصحيح أنواع الحقول الأساسية (اختياري لكن مفيد)
-    if (typeof defaultVal === 'number' && typeof data[key] !== 'number') {
-      const fixed = Number(data[key]);
-      patch[key] = Number.isFinite(fixed) ? fixed : 0;
-    }
-    
-    if (Array.isArray(defaultVal) && !Array.isArray(data[key])) {
-      patch[key] = Array.isArray(data[key]) ? data[key] : [];
-    }
-    
-    if (typeof defaultVal === 'object' && !Array.isArray(defaultVal)) {
-      patch[key] = { ...defaultVal, ...data[key] }; // دمج آمن
-    }
-  }
-  
-  if (Object.keys(patch).length) {
-    await setDoc(userDocRef, patch, { merge: true });
-    return { ...DEFAULT_USER_SCHEMA, ...data, ...patch };
-  }
-  
-  return data;
-}
 // عند تحميل الصفحة، تحقق من حالة التقييم  
 document.addEventListener('DOMContentLoaded', function() {  
   checkRatingStatus();  
 });  
+// كود التحقق من قراءة سياسة الخصوصية
+function checkPrivacyPolicyRead() {
+  // تحقق مما إذا كان المستخدم مسجل الدخول
+  const activeUser = localStorage.getItem('activeUser');
+  
+  if (activeUser) {
+    // إذا كان مسجل الدخول، تحقق من قاعدة البيانات
+    checkDatabaseForPrivacyPolicy(activeUser);
+  } else {
+    // إذا لم يكن مسجل الدخول، تحقق من localStorage
+    const privacyRead = localStorage.getItem('privacyPolicyRead');
+    
+    if (privacyRead !== 'true') {
+      showPrivacyButton();
+    }
+  }
+}
 
+// دالة للتحقق من قاعدة البيانات (للمستخدمين المسجلين)
+async function checkDatabaseForPrivacyPolicy(username) {
+  try {
+    const userDoc = await getDoc(doc(db, "users", username));
+    
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      
+      if (userData.privacy_policy !== 'readed') {
+        showPrivacyButton();
+      }
+    }
+  } catch (error) {
+    console.error("Error checking privacy policy status:", error);
+    // في حالة الخطأ، نعرض الزر كإجراء احترازي
+    showPrivacyButton();
+  }
+}
+
+// دالة لعرض زر سياسة الخصوصية
+// تعريف أنميشن الدخول من اليمين
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideInRight {
+    0% {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  .slide-in-right {
+    animation: slideInRight 1s ease forwards;
+  }
+`;
+document.head.appendChild(style);
+
+function showPrivacyButton() {
+  if (!document.getElementById('privacyPolicyBtn')) {
+    const privacyBtn = document.createElement('button');
+    privacyBtn.id = 'privacyPolicyBtn';
+    privacyBtn.textContent = ' Please read the privacy policy. ';
+    privacyBtn.style.position = 'fixed';
+    privacyBtn.style.bottom = '20px';
+    privacyBtn.style.right = '20px';
+    privacyBtn.style.zIndex = '1000';
+    privacyBtn.style.padding = '10px 15px';
+    privacyBtn.style.backgroundColor = '#069F00';
+    privacyBtn.style.color = 'white';
+    privacyBtn.style.border = '2px solid #59CC5D';
+    privacyBtn.style.cursor = 'pointer';
+
+    // إضافة كلاس الأنميشن
+    privacyBtn.classList.add('slide-in-right');
+
+    privacyBtn.addEventListener('click', openPrivacyPolicy);
+
+    document.body.appendChild(privacyBtn);
+  }
+}
+
+// دالة لفتح صفحة سياسة الخصوصية
+function openPrivacyPolicy() {
+  const privacyUrl = '../privacy_policy.html'; // أو أي صفحة تريدها
+  // بدلاً من window.open نستخدم window.location.href للتنقل في نفس الصفحة
+  window.location.href = privacyUrl;
+  
+  // عند قراءة السياسة، قم بتحديث الحالة
+  markPrivacyAsRead();
+}
+
+// دالة لتحديد أن السياسة قد تمت قراءتها
+function markPrivacyAsRead() {
+  const activeUser = localStorage.getItem('activeUser');
+  
+  if (activeUser) {
+    // للمستخدمين المسجلين - تحديث في قاعدة البيانات
+    updateDoc(doc(db, "users", activeUser), {
+      privacy_policy: 'readed',
+      last_privacy_read: new Date().toISOString()
+    }).then(() => {
+      removePrivacyButton();
+    });
+  } else {
+    // للزوار - حفظ في localStorage
+    localStorage.setItem('privacyPolicyRead', 'true');
+    removePrivacyButton();
+  }
+}
+
+// دالة لإزالة زر السياسة
+function removePrivacyButton() {
+  const privacyBtn = document.getElementById('privacyPolicyBtn');
+  if (privacyBtn) {
+    privacyBtn.remove();
+  }
+}
+
+// تشغيل التحقق عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', checkPrivacyPolicyRead);
   
 // تحقق من حالة التقييم (من localStorage وقاعدة البيانات)  
 async function checkRatingStatus() {  
