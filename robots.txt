@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin-pages/
+
+Allow: /
+
+Sitemap: https://aniss90.github.io/mc.community/sitemap.xml
