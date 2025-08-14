@@ -2,7 +2,6 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="../style/main.css">
   <link rel="icon" type="image/x-icon" href="../icons/Setting_icon.png">
     <link rel="stylesheet" href="../style/tags.css" />  
@@ -153,7 +152,14 @@
       flex-direction: column;
       gap: 15px;
     }
+    .risk_place {
+/*background: linear-gradient(180deg, #9F0707A6, #6F0707AD);*/
+background-color: #620909AD; 
+padding: 15px;
+border-radius: 5px;
+border: 2px solid #BC6868;
     
+    }
     .settings-card {
       background-color: #262626;
       padding: 15px;
@@ -746,6 +752,26 @@ flex-shrink: 0;
   cursor: grab;
   gap: 5px;
 }
+.user-tags {
+  gap: 5px;
+  padding-left: 2px;
+}
+
+.tag {
+  font-family: minecraft-five;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-shadow: 0 1px 0px rgba(0, 0, 0, 0.3);
+  margin-right: 4px;
+  
+}
+  .arabic-text {
+    font-size: 12px;
+    color: #777;
+    text-align: left;
+    font-family: Arial, sans-serif;
+  }
   </style>
 </head>
 <body>
@@ -797,53 +823,80 @@ flex-shrink: 0;
 <div class="settings-sections">
   <!-- Account Settings -->
   <div class="settings-card">
-    <div class="card-header">⚙️ Dev.Account Settings</div>
+    <div class="card-header">
+      ⚙️ Account Settings
+      <div class="arabic-text">إعدادات الحساب</div>
+    </div>
     <div class="card-content">
-      <!-- Language Select
       <div class="setting-item">
-        <span class="setting-label">Language</span>
-        <div class="language-switcher">
-          <button class="lang-btn active" id="englishBtn" data-lang="en">English</button>
-          <button class="lang-btn" id="arabicBtn" data-lang="ar">العربية</button>
+        <div class="label-wrapper">
+          <span class="setting-label">Dark Mode</span>
+          <div class="arabic-text">الوضع المظلم</div>
         </div>
-      </div>
-      --> 
-      <div class="setting-item">
-        <span class="setting-label">Dark Mode</span>
         <label class="toggle-switch">
           <input type="checkbox" id="darkModeToggle" checked>
           <span class="slider"></span>
         </label>
       </div>
+      
       <div class="setting-item">
-        <span class="setting-label">Notifications</span>
+        <div class="label-wrapper">
+          <span class="setting-label">Notifications</span>
+          <div class="arabic-text">الإشعارات</div>
+        </div>
         <label class="toggle-switch">
           <input type="checkbox" id="notificationsToggle" checked>
           <span class="slider"></span>
         </label>
       </div>
-       <div class="setting-item">
-        <span class="setting-label">Change the order of tags </span>
-        <button class="modal-btn"  id="editTagsOrderBtn" style="padding: 4px 8px;">Change</button>
-      </div>
+      
       <div class="setting-item">
-        <span class="setting-label">Change Password</span>
-        <button class="modal-btn" id="changePasswordBtn" style="padding: 4px 8px;">Change</button>
+        <div class="label-wrapper">
+          <span class="setting-label">Logged-in devices</span>
+          <div class="arabic-text">الأجهزة المتصلة</div>
+        </div>
+        <button class="modal-btn" id="showDevicesBtn">Show devices</button>
       </div>
+      
       <div class="setting-item">
-        <span class="setting-label">Change Email</span>
-        <button class="modal-btn" id="changeEmailBtn" style="padding: 4px 8px;">Change</button>
+        <div class="label-wrapper">
+          <span class="setting-label">Change the order of tags</span>
+          <div class="arabic-text">تغيير ترتيب الوسوم</div>
+        </div>
+        <button class="modal-btn" id="editTagsOrderBtn">Change</button>
+      </div>
+      
+      <div class="setting-item">
+        <div class="label-wrapper">
+          <span class="setting-label">Change Password</span>
+          <div class="arabic-text">تغيير كلمة المرور</div>
+        </div>
+        <button class="modal-btn" id="changePasswordBtn">Change</button>
+      </div>
+      
+      <div class="setting-item">
+        <div class="label-wrapper">
+          <span class="setting-label">Change Email</span>
+          <div class="arabic-text">تغيير البريد الإلكتروني</div>
+        </div>
+        <button class="modal-btn" id="changeEmailBtn">Change</button>
       </div>
     </div>
   </div>
-  
-  
+</div>
+
+
         
         <!-- Purchased Items -->
         <div class="settings-card">
-          <div class="card-header">🛒 Dev.Purchased Items</div>
+          <div class="card-header">🛒 Purchased Items
+          <div class="arabic-text"> العناصر المشتراة </div>
+          </div>
           <div class="card-content">
-            <div id="noItemsMessage" style="display: none;">You haven't purchased any items yet.</div>
+            <div id="noItemsMessage" style="display: none; color: #fff;">You haven't purchased any items yet.
+                  <div class="arabic-text">لم تقم بشراء أي سلع بعد.  </div>
+            </div>
+            
             <div class="purchased-items" id="purchasedItemsContainer">
               <!-- Items will be added here dynamically -->
             </div>
@@ -851,12 +904,16 @@ flex-shrink: 0;
         </div>
         
         <!-- Account Actions -->
-        <div class="settings-card">
-          <div class="card-header">⚠️ Dev.Account Actions</div>
+        <div class="risk_place">
+          <div class="card-header">⚠️ Dccount Actions
+                            <div class="arabic-text">إجراءات الحساب  </div>
+          </div>
           <div class="card-content">
      
             <div class="setting-item">
-              <span class="setting-label">Delete Account</span>
+              <span class="setting-label">Delete Account
+              <div class="arabic-text">حذف الحساب  </div>
+              </span>
               <div class="delete-account-btn" id="deleteAccountBtn"> 
               <img srcset="" src="../icons/trash.png" alt="">
               <span>Delete</span>
@@ -1025,7 +1082,10 @@ flex-shrink: 0;
 
 <div id="editTagsModal" class="modal">
   <div class="modal-content">
+    <div class="modal-header">
 <div class="modal-title">Sort tags </div>
+      <button class="close-modal" onclick="toggleModal('editTagsModal', false)">&times;</button>
+    </div>
 <div class="description"> 
     <ul id="tagsSortableList"></ul>
 </div>
@@ -1038,7 +1098,25 @@ flex-shrink: 0;
     </div>
   </div>
 </div>
+<!-- Devices Modal -->
+<div class="modal" id="devicesModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">📱 Logged-in Devices</div>
+      <button class="close-modal" id="closeDevicesModal">&times;</button>
+    </div>
+    <div class="card-content">
+      <div id="devicesList" style="max-height: 400px; overflow-y: auto;">
+        <!-- سيتم عرض الأجهزة هنا -->
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" id="closeDevicesModalBtn">Close</button>
+    </div>
+  </div>
+</div>
 
+  
 <script>
 
 
@@ -1585,6 +1663,107 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+document.getElementById('showDevicesBtn')?.addEventListener('click', async () => {
+  toggleModal('devicesModal', true);
+  await showUserDevices();
+});
+
+document.getElementById('closeDevicesModal')?.addEventListener('click', () => toggleModal('devicesModal', false));
+document.getElementById('closeDevicesModalBtn')?.addEventListener('click', () => toggleModal('devicesModal', false));
+async function showUserDevices() {
+  try {
+    const userId = localStorage.getItem("activeUser");
+    const container = document.getElementById('devicesList');
+    
+    if (!container) {
+      console.error('عنصر devicesList غير موجود في الصفحة');
+      return;
+    }
+    
+    container.innerHTML = '<p style="font-family: minecraft; color: white;">جاري تحميل الأجهزة...</p>';
+    
+    if (!userId) {
+      container.innerHTML = '<p style="font-family: minecraft; color: white;">لا يوجد مستخدم نشط</p>';
+      return;
+    }
+    
+    const userDocRef = doc(db, 'users', userId);
+    const userDoc = await getDoc(userDocRef);
+    
+    if (!userDoc.exists()) {
+      container.innerHTML = '<p style="font-family: minecraft; color: white;">المستخدم غير موجود</p>';
+      return;
+    }
+    
+    const userData = userDoc.data();
+    const devices = userData.devices || {};
+    const deviceList = Object.entries(devices);
+    
+    if (deviceList.length === 0) {
+      container.innerHTML = '<p style="font-family: minecraft; color: white;">لا توجد أجهزة مسجلة</p>';
+      return;
+    }
+    
+    let html = `
+      <style>
+        .devices-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-family: minecraft;
+        }
+        .devices-table th {
+          text-align: left;
+          font-size: 12px;
+          color: #aaa;
+          padding: 6px 10px;
+        }
+        .devices-table td {
+          font-size: 14px;
+          color: white;
+          padding: 8px 10px;
+          border-top: 1px solid #555;
+        }
+      </style>
+      <table class="devices-table">
+        <thead>
+          <tr>
+            <th>Device name </th>
+            <th>Android version  </th>
+            <th>Last login   </th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+    
+    deviceList.forEach(([deviceId, deviceInfo]) => {
+      const androidVersion = deviceInfo.androidVersion || 'غير معروف';
+      let loginDate = 'غير معروف';
+      
+      if (deviceInfo.loginTime) {
+        loginDate = new Date(deviceInfo.loginTime).toLocaleString();
+      }
+      
+      html += `
+        <tr>
+          <td>${deviceInfo.deviceName || 'جهاز غير معروف'}</td>
+          <td>${androidVersion}</td>
+          <td>${loginDate}</td>
+        </tr>
+      `;
+    });
+    
+    html += `</tbody></table>`;
+    container.innerHTML = html;
+  } catch (error) {
+    console.error("Error loading devices:", error);
+    const container = document.getElementById('devicesList');
+    if (container) {
+      container.innerHTML = `<p style="font-family: minecraft; color: #ff6b6b;">
+        حدث خطأ أثناء جلب الأجهزة: ${error.message}
+      </p>`;
+    }
+  }
+}
     // Initialize the page - load user data first
     document.addEventListener('DOMContentLoaded', () => {
       loadUserData();

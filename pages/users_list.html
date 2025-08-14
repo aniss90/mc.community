@@ -1,7 +1,7 @@
 <!DOCTYPE html>  <html lang="ar">  
 <head>  
   <meta charset="UTF-8" />  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
+<link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
   <link rel="stylesheet" href="../style/main.css" />  
   <link rel="stylesheet" href="../style/tags.css" />  
   <title>Users list</title>  
@@ -17,7 +17,7 @@
     @font-face {  
       font-family: minecraft-five;  
       src: url('../font/Minecraft-Five.ttf');  
-    }  
+    } 
     h2 { color: #333; }  
     table { width: 50%; margin: 20px auto; border-collapse: collapse; background: white; }  
     th, td { padding: 10px; border: 1px solid #ddd; }  
@@ -350,13 +350,13 @@ flex-direction: column;
 }
 
 .more-tags {
-background-color: #666;
-color: white;
-font-family: minecraft-five;
-font-size: 10px;
-padding: 2px 6px;
-border-radius: 3px;
-text-shadow: 0 1px 0px rgba(0, 0, 0, 0);
+         font-size: 10px;
+         padding: 2px 6px;
+         border-radius: 3px;
+         text-shadow: 0 1px 0px rgba(0, 0, 0, 0.3);
+         margin-right: 4px;
+         font-family: minecraft-five;
+         color: #C3C4C4;
 }  
 span.username {  
   color: #FFFFFF;  
@@ -454,7 +454,10 @@ th, td {
   </div>  
 </div>
 
-  </div>    <script>  
+  </div>   
+
+  
+  <script>  
     // دالة مبسطة لحفظ واسترجاع الصور باستخدام الرابط كمفتاح  
     function cacheImages() {  
       const images = document.querySelectorAll('img, [style*="background-image"]');  

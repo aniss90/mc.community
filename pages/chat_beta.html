@@ -2,7 +2,6 @@
 <html lang="ar" >
 <head>
     <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="../style/main.css">
   <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
     <title>الدردشة</title>
@@ -290,6 +289,36 @@
     height: 100%;
     object-fit: contain;
 }
+.message .heart-icon {
+    position: absolute;
+    bottom: -12px;
+    left: 10px;
+    font-size: 18px;
+    color: red;
+    transform: translateY(0);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.message.show-heart .heart-icon {
+    opacity: 1;
+    transform: translateY(-3px);
+}
+.message {
+    position: relative;
+}
+
+.message .heart-icon {
+    position: absolute;
+    bottom: -12px;
+    left: 10px;
+    font-size: 18px;
+    color: red;
+    opacity: 1; /* دائماً ظاهر إذا كان liked */
+    background-color: #454545;
+    border: 2px solid #6D6D6D;
+}
+
 </style>
 </head>
 <body>
@@ -301,6 +330,8 @@
         <div id="chatBox"><img class="lodinimg" src="../icons/loading_spinner.gif" height="20" /></div>
         
         <div class="input-area">
+    <button class="cancel-edit" id="cancelEditBtn">×</button>
+</div>
             <textarea id="message-input" placeholder="Message.." rows="1"></textarea>
             <div class="action-buttons">
                 <button id="sticker-btn"></button>
@@ -324,6 +355,7 @@
             no stickers right now.
         </div>
     </div>
+    
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
@@ -346,6 +378,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const storage = getStorage(app);
+        
 
         document.addEventListener("DOMContentLoaded", () => {
             // Get DOM elements
@@ -431,37 +464,30 @@
                     const formattedTime = timeSince(timestamp);
                     const fullDate = timestamp.toLocaleString("en-NM");
                     
-                    let contentHTML = `
-                        <div style="font-size: 12px; color: gray; margin-bottom: 5px;">
-                            ${fullDate} - ${formattedTime}
-                        </div>
-                    `;
+// بعد حساب fullDate كما عندك:
+
+messageElement.setAttribute("data-id", docSnap.id);
+messageElement.setAttribute("data-timestamp", fullDate); // نخزن التاريخ هنا (ليظهر في options)
+messageElement.setAttribute("data-type", data.type || "text"); // نخزن نوع الرسالة (text, image, sticker)
+
+// ثم نبني محتوى الرسالة بدون عرض التاريخ:
+let contentHTML = `<strong>${data.sender}:</strong><br>`;
+
+if (data.type === "image") {
+    contentHTML += `
+        <img src="${data.message}" style="max-width:100%;max-height:300px;border-radius:10px;" alt="صورة محادثة">
+    `;
+} else if (data.type === "sticker") {
+    contentHTML += `
+        <img src="${data.message}" style="max-width:150px;max-height:150px;" alt="ستيكر">
+    `;
+} else {
+    const escapedMessage = escapeHTML(data.message).replace(/\n/g, "<br>");
+    contentHTML += `<span class="message-text">${escapedMessage}</span>`;
+}
+
+messageElement.innerHTML = contentHTML;
                     
-                    if (data.type === "image") {
-                        contentHTML += `
-                            <strong>${data.sender}:</strong><br>
-                            <img 
-                                src="${data.message}" 
-                                style="max-width: 100%; max-height: 300px; border-radius: 10px;"
-                                onerror="this.src='../icons/image_error.gif';"
-                                alt="صورة محادثة"
-                            >
-                        `;
-                    } else if (data.type === "sticker") {
-                        contentHTML += `
-                            <strong>${data.sender}:</strong><br>
-                            <img 
-                                src="${data.message}" 
-                                style="max-width: 150px; max-height: 150px;"
-                                alt="ستيكر"
-                            >
-                        `;
-                    } else {
-                        const escapedMessage = escapeHTML(data.message).replace(/\n/g, "<br>");
-                        contentHTML += `<strong>${data.sender}:</strong><br>${escapedMessage}`;
-                    }
-                    
-                    messageElement.innerHTML = contentHTML;
                     
                     if (index === docs.length - 1) {
                         messageElement.classList.add("new-message");
@@ -469,7 +495,13 @@
                             messageElement.classList.remove("new-message");
                         }, 600);
                     }
-                    
+                    if (data.liked) {
+    const heart = document.createElement("div");
+    heart.className = "heart-icon";
+    heart.textContent = "❤";
+    messageElement.appendChild(heart);
+    messageElement.classList.add("show-heart");
+}
                     chatBox.appendChild(messageElement);
                 });
                 
@@ -671,45 +703,83 @@ function loadStickers() {
                 }
             }
 
-            function showOptions(messageElement, messageText) {
-                closeOptions();
-
-                document.body.classList.add("blur-background");
-                messageElement.classList.add("selected-message");
-
-                let optionsContainer = document.createElement("div");
-                optionsContainer.classList.add("message-options");
-
-                let copyBtn = document.createElement("button");
-                copyBtn.innerText = "copy";
-                copyBtn.classList.add("option-btn", "copy");
-                copyBtn.addEventListener("click", () => {
-                    navigator.clipboard.writeText(messageText);
-                    alert("copied ✅\n تم نسخ ✅");
-                    closeOptions();
-                });
-
-                let deleteBtn = document.createElement("button");
-                deleteBtn.innerText = "Delete";
-                deleteBtn.classList.add("option-btn", "delete");
-                deleteBtn.style.display = messageElement.classList.contains("myMessage") ? "block" : "none";
-                deleteBtn.addEventListener("click", async () => {
-                    if (confirm("   Are you sure or are you kidding?\n هل انت متاكد او تمزح? ")) {
-                        const docId = messageElement.getAttribute("data-id");
-                        await deleteMessage(docId, messageElement);
-                        closeOptions();
-                    }
-                });
-
-                optionsContainer.appendChild(copyBtn);
-                optionsContainer.appendChild(deleteBtn);
-                messageElement.appendChild(optionsContainer);
-                optionsContainer.style.display = "flex";
-
-                setTimeout(() => {
-                    document.addEventListener("click", closeOptions);
-                }, 100);
-            }
+        function showOptions(messageElement, messageText) {
+    closeOptions();
+    
+    document.body.classList.add("blur-background");
+    messageElement.classList.add("selected-message");
+    
+    const optionsContainer = document.createElement("div");
+    optionsContainer.classList.add("message-options");
+    
+    // --- زر عرض التاريخ (معطّل)
+    const timestamp = messageElement.getAttribute("data-timestamp");
+    if (timestamp) {
+        const dateBtn = document.createElement("button");
+        dateBtn.innerText = timestamp; // نص التاريخ (مثلاً: "9/8/2025, 12:00:00")
+        dateBtn.classList.add("option-btn");
+        dateBtn.disabled = true; // معطّل لوجوده فقط للعرض
+        dateBtn.style.backgroundColor = "#555";
+        dateBtn.style.color = "#fff";
+        optionsContainer.appendChild(dateBtn);
+    }
+    
+    // --- زر النسخ
+    let copyBtn = document.createElement("button");
+    copyBtn.innerText = "copy";
+    copyBtn.classList.add("option-btn", "copy");
+    copyBtn.addEventListener("click", () => {
+        // نسخ نص الرسالة الصافي (نختار .message-text لو متوفر)
+        const textEl = messageElement.querySelector('.message-text');
+        const textToCopy = textEl ? textEl.innerText : messageText;
+        navigator.clipboard.writeText(textToCopy);
+        alert("copied ✅\n تم نسخ ✅");
+        closeOptions();
+    });
+    optionsContainer.appendChild(copyBtn);
+    
+    // --- زر الحذف (مثل السابق)
+    let deleteBtn = document.createElement("button");
+    deleteBtn.innerText = "Delete";
+    deleteBtn.classList.add("option-btn", "delete");
+    deleteBtn.style.display = messageElement.classList.contains("myMessage") ? "block" : "none";
+    deleteBtn.addEventListener("click", async () => {
+        if (confirm("Are you sure or are you kidding?\nهل انت متاكد او تمزح?")) {
+            const docId = messageElement.getAttribute("data-id");
+            await deleteMessage(docId, messageElement);
+            closeOptions();
+        }
+    });
+    optionsContainer.appendChild(deleteBtn);
+    
+    // --- زر التعديل (يظهر فقط للرسائل النصية الخاصة بك)
+    const isMine = messageElement.classList.contains("myMessage");
+    const type = messageElement.getAttribute("data-type") || "text";
+    
+    let editBtn = document.createElement("button");
+    editBtn.innerText = "Edit";
+    editBtn.classList.add("option-btn");
+    editBtn.style.backgroundColor = "orange";
+    editBtn.style.color = "white";
+    
+    if (isMine && type === "text") {
+        editBtn.style.display = "block";
+        editBtn.addEventListener("click", () => {
+            startEditing(messageElement);
+            closeOptions();
+        });
+    } else {
+        editBtn.style.display = "none";
+    }
+    optionsContainer.appendChild(editBtn);
+    
+    messageElement.appendChild(optionsContainer);
+    optionsContainer.style.display = "flex";
+    
+    setTimeout(() => {
+        document.addEventListener("click", closeOptions);
+    }, 100);
+}
 
             function closeOptions() {
                 let options = document.querySelector(".message-options");
@@ -745,6 +815,34 @@ function loadStickers() {
             window.addEventListener('beforeunload', () => {
                 unsubscribe();
             });
+chatBox.addEventListener("dblclick", async function(e) {
+    const messageEl = e.target.closest(".message");
+    if (!messageEl) return;
+    
+    const docId = messageEl.getAttribute("data-id");
+    const isLiked = messageEl.classList.contains("show-heart");
+    
+    try {
+        const messageRef = doc(db, "messages", docId);
+        await updateDoc(messageRef, { liked: !isLiked });
+        
+        if (isLiked) {
+            // إزالة القلب
+            messageEl.classList.remove("show-heart");
+            const heart = messageEl.querySelector(".heart-icon");
+            if (heart) heart.remove();
+        } else {
+            // إضافة القلب
+            const heart = document.createElement("div");
+            heart.className = "heart-icon";
+            heart.textContent = "❤";
+            messageEl.appendChild(heart);
+            messageEl.classList.add("show-heart");
+        }
+    } catch (error) {
+        console.error("خطأ أثناء تحديث الإعجاب:", error);
+    }
+});
         });
     </script>
     <script>

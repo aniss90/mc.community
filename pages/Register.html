@@ -2,7 +2,6 @@
 <html>  
 <head>  
   <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1">  
   <title>Register page</title>  
   <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">  
   <link rel="stylesheet" href="../style/main.css">    
@@ -69,6 +68,7 @@
     
     .input-group {
       position: relative;
+      margin-bottom: 20px;
     }
     
     .input-group input {
@@ -98,7 +98,6 @@
       color: #999999;
     }
     
-    /* التنسيق الجديد للشاشات الكبيرة */
     .register-container {
       display: flex;
       flex-direction: row;
@@ -142,100 +141,239 @@
         width: 100%;
       }
     }
-    /* إضافة أنماط التحقق من الصحة */
-.input-group input.valid {
-  border: 2px solid #4CAF50 !important; /* أخضر للبيانات الصحيحة */
-  box-shadow: 0 2px 0 rgba(27, 160, 0, 1);
-}
-
-.input-group input.invalid {
-  border: 2px solid #f44336 !important; /* أحمر للبيانات الخاطئة */
-  box-shadow: 0 2px 0 rgba(160, 0, 0, 1);
-}
-
-.input-group input {
-  transition: border 0.3s ease;
-  border: 2px solid #313131D1 !important; /* اللون الافتراضي */
-}
-.sticky-header.sticky {
-  position: fixed;
-  top: 0;
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0.9; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-} 
-.header {
-  background-color: #222222;
-  padding: 10px 0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    
+    /* أنماط التحقق من الصحة */
+    .input-group input.valid {
+      border: 2px solid #4CAF50 !important;
+    
+    }
+    
+    .input-group input.invalid {
+      border: 2px solid #f44336 !important;
+    
+    }
+    
+    .input-group input {
+      transition: border 0.3s ease;
+      border: 2px solid #313131D1 !important;
+    }
+    
+    .error-message {
+      color: #f44336;
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+    
+    .sticky-header.sticky {
+      position: fixed;
+      top: 0;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0.9; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    } 
+    
+    .header {
+      background-color: #222222;
+      padding: 10px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+     
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+    }
+    
+    /* أنماط جديدة تشبه فيسبوك */
+    .profile-upload-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    
+    .profile-image-label {
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .profile-image-preview {
+      width: 150px;
+      height: 150px;
+      border-radius: 25px;
+      overflow: hidden;
+      border: 2px solid #727272;
+      background-color: #F5F5F500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.3s;
+    }
+    
+    .profile-image-preview:hover {
+      border-color: #CDCDCD;
+    }
+    
+    .profile-image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .upload-icon {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background-color: #474747;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: bold;
+      border: 2px solid #BFBFBF;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+    
+    .input-error {
+      border: 2px solid #f44336 !important;
+      animation: shake 0.3s;
+    }
+    
+    .password-container.input-error {
+      animation: shake 0.3s;
+    }
+    
+    /* أنماط الخطوات */
+    .step {
+      display: none;
+    }
+    
+    .step.active {
+      display: block;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    .greenButton:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background-color: #066903;
+      transform: translateY(var(--border-2x-thickness));
+      box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 5px;
+      background-color: #444;
+      box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
+      margin-bottom: 20px;
+    }
+    
+    .progress {
+      height: 100%;
+      background-color: #057D00;
+      box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
+      transition: width 0.3s;
+    }
+    
+    .action-btn {
+      display: flex;
+      gap: 8px;
+    }
+    
+    /* أنماط مرحلة سياسة الخصوصية */
+    .privacy-container {
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 15px;
+      background-color: #222;
+      border: 2px solid #444;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      color: #E7E7EA;
+    }
+    
+    .privacy-content {
+      white-space: pre-line;
+      line-height: 1.5;
+      color: #E7E7EA;
+    }
+    
+    .privacy-content.rtl {
+      direction: rtl;
+      text-align: right;
+      color: #E7E7EA;
+    }
+    
+    .privacy-content.ltr {
+      direction: ltr;
+      text-align: left;
+      color: #E7E7EA;
+    }
+    
+    .language-switcher {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 15px;
+      gap: 10px;
+    }
+    
+    .language-btn {
+      background-color: #444;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    .language-btn.active {
+      background-color: #057D00;
+    }
+    
+    .agree-check {
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+      margin-bottom: 15px;
+      box-shadow: none;
+      border: none;
+      padding: 1px;
+      color: #E7E7EA;
+    }
+    
+    .agree-check input {
+      margin-right: 10px;
+      box-shadow: none;
+      border: none;
+      padding: 1px;
+    }
   
-  /* احتفظ بباقي خصائص التصميم الحالية */
-}
-     .sticky-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  width: 100%;
-  
-}
-  /* أنماط جديدة تشبهفيسبوك */
-  .profile-upload-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .profile-image-label {
+  /* تغيير حجم المربع */
+  #agreeCheck {
+    width: 20px;
+    height: 20px;
     cursor: pointer;
-    position: relative;
   }
-  
-  .profile-image-preview {
-    width: 150px;
-    height: 150px;
-    border-radius: 25px;
-    overflow: hidden;
-    border: 2px solid #727272;
-    background-color: #F5F5F500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    transition: all 0.3s;
-  }
-  
-  .profile-image-preview:hover {
-    border-color: #CDCDCD; /* لون أزرق مشابه لفيسبوك */
-  }
-  
-  .profile-image-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .upload-icon {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    background-color: #474747;
-    color: white;
-    width: 30px;
-    height: 30px;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: bold;
-    border: 2px solid #BFBFBF;
-  }
-  
 
-
+  /* تغيير لون عند التحديد */
+  #agreeCheck:checked {
+    accent-color: green; /* يدعم بعض المتصفحات */
+  }
   </style> 
 </head>  
 <body>  
@@ -248,261 +386,528 @@
   <div class="content">
     <div class="register-container">
       <div class="register-box">  
-        <form id="loginForm">  
+        <form id="registerForm">  
+          <div class="progress-bar">
+            <div class="progress" id="progressBar"></div>
+          </div>
           
           <div class="description">
-          <div class="title">register box <img src="../icons/gif_test-83efe.gif" height="15"> </div>Fill all fields correctly.
-          
-          <!-- دائرة الصورة الشخصية القابلة للنقر -->
-          <div class="profile-upload-container">
-            <label for="profileImage" class="profile-image-label">
-              <div class="profile-image-preview" id="profilePreview">
-                <img id="previewImage" src="../icons/player-head-128-052ba.png" alt="Profile Preview">
-                <div class="upload-icon">+</div>
+            <div class="title">register box  <img src="../icons/gif_test-83efe.gif" height="15"> </div>
+            
+            <!-- الخطوة 1: اسم المستخدم -->
+            <div class="step active" id="step1">
+              <p>Enter your desired username</p>
+              
+              <div class="input-group">
+                <input type="text" id="username" placeholder=" " required>  
+                <label for="username">Username</label>
+                <div class="error-message" id="usernameError"></div>
               </div>
-            </label>
-            <input type="file" id="profileImage" accept="image/*" style="display: none;">
-          </div>
-          
-          <div class="input-group">
-            <input type="text" id="username" placeholder=" " required>  
-            <label for="username">Username</label>
-            <span class="icon"></span>
-          </div>
-        
-          <div class="password-container">
-            <div class="input-group password-container">
-              <input type="password" id="password" placeholder="" required>
-              <label for="password">Password</label>
-              <span class="toggle-password">️🙉</span> 
+              
+              <button type="button" class="greenButton" id="nextBtn1" disabled>Next </button>
+            </div>
+            
+            <!-- الخطوة 2: كلمة المرور والبريد الإلكتروني -->
+            <div class="step" id="step2">
+              <p>Complete your registration details</p>
+              
+              <div class="profile-upload-container">
+                <label for="profileImage" class="profile-image-label">
+                  <div class="profile-image-preview" id="profilePreview">
+                    <img id="previewImage" src="../icons/player-head-128-052ba.png" alt="Profile Preview">
+                    <div class="upload-icon">+</div>
+                  </div>
+                </label>
+                <input type="file" id="profileImage" accept="image/*" style="display: none;">
+                <div class="error-message" id="imageError"></div>
+              </div>
+              
+              <div class="password-container">
+                <div class="input-group">
+                  <input type="password" id="password" placeholder="" required>
+                  <label for="password">Password</label>
+                  <span class="toggle-password">️🙉</span>
+                  <div class="error-message" id="passwordError"></div>
+                </div>
+              </div>
+              
+              <div class="input-group">
+                <input type="password" id="confirmPassword" placeholder="" required>
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="error-message" id="confirmPasswordError"></div>
+              </div>
+              
+              <div class="input-group">
+                <input type="email" id="email" placeholder=" " required>  
+                <label for="email">Your email</label>
+                <div class="error-message" id="emailError"></div>
+              </div>
+              <div class=action-btn> 
+              <button type="button" class="greenButton" id="backBtn1">Back</button>
+              <button type="button" class="greenButton" id="nextBtn2">Next</button>
+              </div>
+            </div>
+            
+            <!-- الخطوة 3: سياسة الخصوصية -->
+            <div class="step" id="step3">
+              <p>Please read and accept our Privacy Policy</p>
+              
+              <div class="language-switcher">
+                <button type="button" class="language-btn active" id="englishBtn">English</button>
+                <button type="button" class="language-btn" id="arabicBtn">العربية</button>
+              </div>
+              
+              <div class="privacy-container">
+                <div class="privacy-content ltr" id="privacyContent"></div>
+              </div>
+              
+              <div class="agree-check">
+                <input type="checkbox" id="agreeCheck">
+                <label for="agreeCheck" style=" color: #fff; ">I have read and agree to the Privacy Policy</label>
+              </div>
+              
+              <div class="action-btn">
+                <button type="button" class="greenButton" id="backBtn2">Back</button>
+                <button type="button" class="greenButton" id="registerBtn" disabled><img src="../icons/Save-72f24.png" height="20"> Register</button>
+              </div>
             </div>
           </div>
-          
-          <div class="input-group">
-            <input type="email" id="email" placeholder=" " required>  
-            <label for="email">Your email</label>
-            <span class="icon"></span>
-          </div>
-          <br>   
-          </div>
-        <div> 
-          <div class="description"> Click the button to save you're account information.
-              <button type="button" id="whiteButton"> Register <img src="../icons/add-player@0.5x.icon-2f437.png" height="15"></button> 
-          </div>
-        </div>
-       </form>
+        </form>
       </div>
       <div class="register-image">
         <div class="description"> 
-      <img src="../icons/no-worlds-yet-art-446b1.png" alt="Register Image">
-      </div>
+          <img src="../icons/no-worlds-yet-art-446b1.png" alt="Register Image">
+        </div>
       </div>
     </div>
   </div>    
-  
 
-<script>
-  window.onload = function() {
-  const emailField = document.getElementById("email");
-  const usernameField = document.getElementById("username");
-  
-  const savedEmail = localStorage.getItem("googleEmailForRegister");
-  
-  if (savedEmail) {
-    emailField.value = savedEmail;
-    usernameField.value = savedEmail.split('@')[0];
-    localStorage.removeItem("googleEmailForRegister");
-  }
-};
-</script>
-<script type="module">
-  import { db } from '../scripts/main.js';
-  import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-  
-  // عناصر DOM
-  const togglePassword = document.querySelector('.toggle-password');
-  const passwordInput = document.getElementById('password');
-  const usernameInput = document.getElementById('username');
-  const emailInput = document.getElementById('email');
-  const profileImageInput = document.getElementById('profileImage');
-  const previewImage = document.getElementById('previewImage');
-  const registerButton = document.getElementById('whiteButton');
-  
-  // وظائف التحقق من الصحة
-  function validateUsername(username) {
-    return username.length >= 3 && /^[a-zA-Z0-9_]+$/.test(username);
-  }
-  
-  function validatePassword(password) {
-    return password.length >= 6;
-  }
-  
-  function validateEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
-  
-  // تحويل الصورة إلى Base64
-  function convertImageToBase64(file, callback) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      callback(e.target.result);
-    };
-    reader.onerror = function(error) {
-      console.error('Error converting image:', error);
-      callback(null);
-    };
-    reader.readAsDataURL(file);
-  }
-  
-  // تحديث حالة زر التسجيل
-  function updateRegisterButton() {
-    const isUsernameValid = validateUsername(usernameInput.value.trim());
-    const isPasswordValid = validatePassword(passwordInput.value.trim());
-    const isEmailValid = validateEmail(emailInput.value.trim());
-    
-    registerButton.disabled = !(isUsernameValid && isPasswordValid && isEmailValid);
-  }
-  
-profileImageInput.addEventListener('change', function() {
-  const file = this.files[0];
-  if (file) {
-    if (file.size > 2 * 1024 * 1024) {
-      alert('حجم الصورة كبير جداً. الحد الأقصى 2MB');
-      this.value = '';
-      return;
-    }
-    
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      previewImage.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-});
-  // إضافة مستمعين للأحداث
-  togglePassword.addEventListener('click', function() {
-    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordInput.setAttribute('type', type);
-    this.textContent = type === 'password' ? '️🙈' : '️🙉';
-  });
-  
-  usernameInput.addEventListener('input', function() {
-    this.classList.toggle('valid', validateUsername(this.value));
-    this.classList.toggle('invalid', !validateUsername(this.value));
-    updateRegisterButton();
-  });
-  
-  passwordInput.addEventListener('input', function() {
-    this.classList.toggle('valid', validatePassword(this.value));
-    this.classList.toggle('invalid', !validatePassword(this.value));
-    updateRegisterButton();
-  });
-  
-  emailInput.addEventListener('input', function() {
-    this.classList.toggle('valid', validateEmail(this.value));
-    this.classList.toggle('invalid', !validateEmail(this.value));
-    updateRegisterButton();
-  });
-  
-  // حدث تسجيل الحساب
-  registerButton.addEventListener('click', async function() {
-    const username = usernameInput.value.trim();
-    const password = passwordInput.value.trim();
-    const email = emailInput.value.trim();
-    const profileImage = profileImageInput.files[0];
-let photoURL = '';
-let photoBase64 = '';
-
-// إذا تم رفع صورة يدويًا
-if (profileImage) {
-  const base64String = await new Promise((resolve) => {
-    convertImageToBase64(profileImage, resolve);
-  });
-  
-  if (base64String) {
-    photoURL = base64String;
-    photoBase64 = base64String.split(',')[1];
-  }
-}
-    
-    // التحقق من الصحة قبل الإرسال
-    const isUsernameValid = validateUsername(username);
-    const isPasswordValid = validatePassword(password);
-    const isEmailValid = validateEmail(email);
-    
-    if (!isUsernameValid || !isPasswordValid || !isEmailValid) {
-      alert('Please fill in all fields correctly💡\nمن فضلك املء جميع الحقول بطريقة صحيحة 💡', 'error');
-      return;
-    }
-    
-    try {
-      const userDocRef = doc(db, 'users', username);
-      const userDoc = await getDoc(userDocRef);
-      
-      if (userDoc.exists()) {
-        alert('Username already exists ❌', 'error');
-        return;
-      }
-      
-      // بيانات المستخدم الأساسية
-      const userData = {
-  password,
-  email,
-  points: 0,
-  fallTokens: 0,
-  status: 'online',
-  hasRated: false,
-  notification: { read: true },
-  photoURL: '',
-  photoBase64: '', 
-  lastSeenMessages: {}
-  
-};
-      // إذا تم اختيار صورة
-      if (profileImage) {
-        // تحويل الصورة إلى Base64
-        const base64String = await new Promise((resolve) => {
-          convertImageToBase64(profileImage, resolve);
-        });
+  <script>  
+    window.onload = function() {  
+      const emailField = document.getElementById("email");  
+      const usernameField = document.getElementById("username");  
         
-        if (base64String) {
-          userData.photoURL = base64String; // يمكن استخدامها كرابط مؤقت
-          userData.photoBase64 = base64String.split(',')[1]; // تخزين الجزء المهم فقط
-        }
+      const savedEmail = localStorage.getItem("googleEmailForRegister");  
+        
+      if (savedEmail) {  
+        emailField.value = savedEmail;  
+        usernameField.value = savedEmail.split('@')[0];  
+        localStorage.removeItem("googleEmailForRegister");  
+      }  
+    };  
+  </script>  
+
+  <script type="module">  
+    import { db } from '../scripts/main.js';  
+    import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";  
+    import { updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";  
+      
+    // متغيرات حالة التطبيق  
+    let currentStep = 1;  
+    const totalSteps = 3;  
+      
+    // عناصر DOM  
+    const togglePassword = document.querySelector('.toggle-password');  
+    const passwordInput = document.getElementById('password');  
+    const confirmPasswordInput = document.getElementById('confirmPassword');  
+    const usernameInput = document.getElementById('username');  
+    const emailInput = document.getElementById('email');  
+    const profileImageInput = document.getElementById('profileImage');  
+    const previewImage = document.getElementById('previewImage');  
+    const nextBtn1 = document.getElementById('nextBtn1');  
+    const backBtn1 = document.getElementById('backBtn1');  
+    const nextBtn2 = document.getElementById('nextBtn2');  
+    const backBtn2 = document.getElementById('backBtn2');  
+    const registerBtn = document.getElementById('registerBtn');  
+    const progressBar = document.getElementById('progressBar');  
+    const step1 = document.getElementById('step1');  
+    const step2 = document.getElementById('step2');  
+    const step3 = document.getElementById('step3');  
+    const englishBtn = document.getElementById('englishBtn');  
+    const arabicBtn = document.getElementById('arabicBtn');  
+    const privacyContent = document.getElementById('privacyContent');  
+    const agreeCheck = document.getElementById('agreeCheck');  
+      
+    // تهيئة شريط التقدم  
+    progressBar.style.width = `${(currentStep / totalSteps) * 100}%`;  
+      
+    // تحميل سياسة الخصوصية
+    async function loadPrivacyPolicy(lang) {
+      try {
+        const response = await fetch(`../privacy_document/privacy_${lang}.txt`);
+        if (!response.ok) throw new Error('Failed to load privacy policy');
+        const text = await response.text();
+        privacyContent.textContent = text;
+        privacyContent.className = `privacy-content ${lang === 'ar' ? 'rtl' : 'ltr'}`;
+      } catch (error) {
+        console.error('Error loading privacy policy:', error);
+        privacyContent.textContent = 'Failed to load privacy policy. Please try again later.';
+      }
+    }
+    
+    // تهيئة الصفحة بتحميل سياسة الخصوصية الإنجليزية أولاً
+    loadPrivacyPolicy('en');
+    
+    // أحداث التبديل بين اللغات
+    englishBtn.addEventListener('click', function() {
+      englishBtn.classList.add('active');
+      arabicBtn.classList.remove('active');
+      loadPrivacyPolicy('en');
+    });
+    
+    arabicBtn.addEventListener('click', function() {
+      arabicBtn.classList.add('active');
+      englishBtn.classList.remove('active');
+      loadPrivacyPolicy('ar');
+    });
+    
+    // حدث الموافقة على السياسة
+    agreeCheck.addEventListener('change', function() {
+      registerBtn.disabled = !this.checked;
+    });
+      
+    // وظائف التحقق من الصحة  
+    // دالة لتغيير حالة الحقول
+    function setInputStatus(input, isValid) {
+      input.classList.remove("valid", "invalid");
+      if (isValid) {
+        input.classList.add("valid");
+      } else {
+        input.classList.add("invalid");
+      }
+    }
+
+    // التحقق من اسم المستخدم
+    function validateUsername(username) {
+      let isValid = true;
+      
+      if (username.length < 5) {
+        usernameError.textContent = "Username must be at least 5 characters";
+        usernameError.style.display = "block";
+        isValid = false;
+      } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+        usernameError.textContent = "Only letters, numbers and underscore allowed";
+        usernameError.style.display = "block";
+        isValid = false;
+      } else if (/[^\x00-\x7F]/.test(username)) {
+        usernameError.textContent = "English characters only";
+        usernameError.style.display = "block";
+        isValid = false;
+      } else {
+        usernameError.style.display = "none";
       }
       
-      // حفظ بيانات المستخدم في Firestore
-      await setDoc(userDocRef, userData);
-      
-      localStorage.setItem('activeUser', username);
-      alert(`Account created successfully ✅, welcome ${username}.✨`, 'success');
-      
-      setTimeout(() => {
-        window.location.href = 'general.html';
-      }, 500);
-      
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred. Please try again.', 'error');
+      setInputStatus(usernameInput, isValid);
+      return isValid;
     }
-  });
-</script>
-    <script>
-window.addEventListener('scroll', function() {
-  const header = document.querySelector('.sticky-header');
-  if (window.scrollY > 0) {
-    header.classList.add('sticky');
-  } else {
-    header.classList.remove('sticky');
-  }
-});
-</script>
+
+    // التحقق من كلمة المرور
+    function validatePassword(password) {
+      let isValid = true;
+      
+      if (password.length < 6) {
+        passwordError.textContent = "Password must be at least 6 characters";
+        passwordError.style.display = "block";
+        isValid = false;
+      } else if (!/\d/.test(password)) {
+        passwordError.textContent = "Password must contain at least one number";
+        passwordError.style.display = "block";
+        isValid = false;
+      } else {
+        passwordError.style.display = "none";
+      }
+      
+      setInputStatus(passwordInput, isValid);
+      return isValid;
+    }
+
+    // التحقق من تأكيد كلمة المرور
+    function validateConfirmPassword(password, confirmPassword) {
+      let isValid = password === confirmPassword;
+      
+      if (!isValid) {
+        confirmPasswordError.textContent = "Passwords do not match";
+        confirmPasswordError.style.display = "block";
+      } else {
+        confirmPasswordError.style.display = "none";
+      }
+      
+      setInputStatus(confirmPasswordInput, isValid);
+      return isValid;
+    }
+
+    // التحقق من البريد الإلكتروني
+    function validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      let isValid = emailRegex.test(email);
+      
+      if (!isValid) {
+        emailError.textContent = "Please enter a valid email address";
+        emailError.style.display = "block";
+      } else {
+        emailError.style.display = "none";
+      }
+      
+      setInputStatus(emailInput, isValid);
+      return isValid;
+    }
+          
+    function validateImage(file) {  
+      if (file) {  
+        if (file.size > 2 * 1024 * 1024) {  
+          imageError.textContent = "Image size must be less than 2MB";  
+          imageError.style.display = "block";  
+          return false;  
+        }  
+          
+        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];  
+        if (!validTypes.includes(file.type)) {  
+          imageError.textContent = "Only JPEG, PNG or GIF images allowed";  
+          imageError.style.display = "block";  
+          return false;  
+        }  
+      }  
+        
+      imageError.style.display = "none";  
+      return true;  
+    }  
+      
+    // تحويل الصورة إلى Base64  
+    function convertImageToBase64(file) {  
+      return new Promise((resolve, reject) => {  
+        const reader = new FileReader();  
+        reader.onload = () => resolve(reader.result);  
+        reader.onerror = error => reject(error);  
+        reader.readAsDataURL(file);  
+      });  
+    }  
+      
+    // التحقق من اسم المستخدم في قاعدة البيانات  
+    async function checkUsernameAvailability(username) {  
+      try {  
+        const userDocRef = doc(db, "users", username);  
+        const userDoc = await getDoc(userDocRef);  
+          
+        if (userDoc.exists()) {  
+          usernameError.textContent = "Username already exists";  
+          usernameError.style.display = "block";  
+          return false;  
+        }  
+          
+        return true;  
+      } catch (error) {  
+        console.error("Error checking username:", error);  
+        usernameError.textContent = "Error checking username availability";  
+        usernameError.style.display = "block";  
+        return false;  
+      }  
+    }  
+      
+    // تغيير الخطوة  
+    function goToStep(step) {  
+      // إخفاء جميع الخطوات  
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));  
+        
+      // إظهار الخطوة المطلوبة  
+      if (step === 1) {  
+        step1.classList.add('active');  
+        currentStep = 1;  
+      } else if (step === 2) {  
+        step2.classList.add('active');  
+        currentStep = 2;  
+      } else if (step === 3) {  
+        step3.classList.add('active');  
+        currentStep = 3;  
+      }  
+        
+      // تحديث شريط التقدم  
+      progressBar.style.width = `${(currentStep / totalSteps) * 100}%`;  
+    }  
+      
+    // حفظ بيانات الجهاز  
+    async function saveCurrentDevice(userId) {  
+      const userAgent = navigator.userAgent;  
+      const modelMatch = userAgent.match(/SM-[A-Z0-9]+/i);  
+      const deviceName = modelMatch ? modelMatch[0] : "Unknown";  
+      const androidVersionMatch = userAgent.match(/Android\s([\d\.]+)/i);  
+      const androidVersion = androidVersionMatch ? androidVersionMatch[1] : "Unknown";  
+      const deviceId = `${deviceName}-${androidVersion}`;  
+        
+      const userRef = doc(db, "users", userId);  
+        
+      await updateDoc(userRef, {  
+        [`devices.${deviceId}`]: {  
+          androidVersion: androidVersion,  
+          deviceName: deviceName,  
+          loginTime: new Date().toISOString()  
+        }  
+      });  
+    }  
+      
+    // أحداث المستخدم  
+    usernameInput.addEventListener('input', async function() {  
+      const isValid = validateUsername(this.value);  
+        
+      if (isValid) {  
+        const isAvailable = await checkUsernameAvailability(this.value);  
+        nextBtn1.disabled = !isAvailable;  
+      } else {  
+        nextBtn1.disabled = true;  
+      }  
+    });  
+      
+    passwordInput.addEventListener('input', function() {  
+      validatePassword(this.value);  
+      validateConfirmPassword(this.value, confirmPasswordInput.value);  
+      updateNextButton2();  
+    });  
+      
+    confirmPasswordInput.addEventListener('input', function() {  
+      validateConfirmPassword(passwordInput.value, this.value);  
+      updateNextButton2();  
+    });  
+      
+    emailInput.addEventListener('input', function() {  
+      validateEmail(this.value);  
+      updateNextButton2();  
+    });  
+      
+    profileImageInput.addEventListener('change', function() {  
+      const file = this.files[0];  
+      validateImage(file);  
+        
+      if (file) {  
+        const reader = new FileReader();  
+        reader.onload = function(e) {  
+          previewImage.src = e.target.result;  
+        };  
+        reader.readAsDataURL(file);  
+      }  
+    });  
+      
+    togglePassword.addEventListener('click', function() {  
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';  
+      passwordInput.setAttribute('type', type);  
+      confirmPasswordInput.setAttribute('type', type);  
+      this.textContent = type === 'password' ? '️🙈' : '️🙉';  
+    });  
+      
+    nextBtn1.addEventListener('click', function() {  
+      goToStep(2);  
+    });  
+      
+    backBtn1.addEventListener('click', function() {  
+      goToStep(1);  
+    });  
+    
+    nextBtn2.addEventListener('click', function() {
+      goToStep(3);
+    });
+    
+    backBtn2.addEventListener('click', function() {
+      goToStep(2);
+    });
+      
+    // تحديث حالة زر التالي للخطوة 2
+    function updateNextButton2() {  
+      const isPasswordValid = validatePassword(passwordInput.value);  
+      const isConfirmPasswordValid = validateConfirmPassword(passwordInput.value, confirmPasswordInput.value);  
+      const isEmailValid = validateEmail(emailInput.value);  
+        
+      nextBtn2.disabled = !(isPasswordValid && isConfirmPasswordValid && isEmailValid);  
+    }  
+      
+    // حدث تسجيل الحساب  
+    registerBtn.addEventListener('click', async function() {  
+      const username = usernameInput.value.trim();  
+      const password = passwordInput.value.trim();  
+      const email = emailInput.value.trim();  
+      const profileImage = profileImageInput.files[0];  
+        
+      // التحقق النهائي من الصحة  
+      const isUsernameValid = validateUsername(username);  
+      const isPasswordValid = validatePassword(password);  
+      const isConfirmPasswordValid = validateConfirmPassword(password, confirmPasswordInput.value);  
+      const isEmailValid = validateEmail(email);  
+      const isImageValid = profileImage ? validateImage(profileImage) : true;  
+        
+      if (!isUsernameValid || !isPasswordValid || !isConfirmPasswordValid || !isEmailValid || !isImageValid) {  
+        alert('Please correct all errors before submitting');  
+        return;  
+      }  
+        
+      try {  
+        let photoURL = '';  
+        let photoBase64 = '';  
+          
+        // إذا تم رفع صورة  
+        if (profileImage) {  
+          const base64String = await convertImageToBase64(profileImage);  
+          photoURL = base64String;  
+          photoBase64 = base64String.split(',')[1];  
+        }  
+          
+        // بيانات المستخدم  
+        const userData = {  
+          password,  
+          email,  
+          points: 500,  
+          fallTokens: 0,  
+          hasRated: false,  
+          notification: {  
+            from: null,  
+            amount: 0,  
+            currency: 'points',  
+            read: true  
+          },  
+          photoURL: photoURL || '',  
+          photoBase64: photoBase64 || '',   
+          lastSeenMessages: {},
+          privacy_policy: 'readed'  
+        };  
+          
+        // حفظ بيانات المستخدم  
+        const userDocRef = doc(db, 'users', username);  
+        await setDoc(userDocRef, userData);  
+          
+        // حفظ بيانات الجهاز  
+        await saveCurrentDevice(username);  
+          
+        // حفظ حالة تسجيل الدخول  
+        localStorage.setItem('activeUser', username);  
+          
+        // رسالة نجاح  
+        alert(`Account created successfully ✅, welcome ${username}.✨`, 'success');  
+          
+        // الانتقال إلى الصفحة الرئيسية  
+        setTimeout(() => {  
+          window.location.href = 'general.html';  
+        }, 500);  
+          
+      } catch (error) {  
+        console.error('Error:', error);  
+        alert('An error occurred. Please try again.', 'error');  
+      }  
+    });  
+  </script>   
+  
+  <script>
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('.sticky-header');
+      if (window.scrollY > 0) {
+        header.classList.add('sticky');
+      } else {
+        header.classList.remove('sticky');
+      }
+    });
+  </script>
+  
   <script>
     function goBack() {
       if (window.history.length > 1) {
         window.history.back();
       } else {
-        window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
+        window.location.href = '/';
       }
     }
   </script>

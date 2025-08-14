@@ -1,97 +1,319 @@
 .user-tags {  
-   gap: 5px;  
-   padding-left: 2px;  
+  gap: 5px;  
+  padding-left: 2px;  
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }  
 
 .tag {  
-   font-family: minecraft-five;  
-   font-size: 10px;  
-   padding: 2px 6px;  
-   border-radius: 3px;  
-   text-shadow: 0 1px 0px rgba(0, 0, 0, 0.3);  
-   margin-right: 4px;  
-  
+  font-family: minecraft-five, sans-serif;
+  font-size: 12px;           
+  line-height: 1.4;
+  padding: 0.02em 0.1em;
+  border-radius: 4px;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+  margin-right: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  white-space: nowrap;
+  min-height: 14px;
+  border: 1px solid #ccc;
 }
 
-
-/* style/tags.css */
+/* ADMIN */
 .tag-admin {
    background-color: #FF5555;
    color: white;
    border: 1px solid #FF0000;
-   
 }
+.tag-admin::before { content: "ADMIN"; }
 
-.tag-admin::before {
-   content: "ADMIN";
-}
-
+/* MODERATOR */
 .tag-moderator {
    background-color: #55AAFF;
    color: white;
    border: 1px solid #0088FF;
 }
+.tag-moderator::before { content: "MOD"; }
 
-.tag-moderator::before {
-   content: "MOD";
-}
-
-.tag-vip {
-   background-color: #FFAA00;
-   color: white;
-   border: 1px solid #FF8800;
-}
-
-.tag-vip::before {
-   content: "VIP";
-}
-
+/* BUILDER */
 .tag-builder {
    background-color: #55FF55;
    color: black;
    border: 1px solid #00AA00;
 }
+.tag-builder::before { content: "BUILDER"; }
 
-.tag-builder::before {
-   content: "BUILDER";
-}
-
+/* FRIEND */
 .tag-friend {
-   background-color: #FF55FF;
-   color: white;
-   border: 1px solid #CC00CC;
+    display: inline-block;
+    padding: 8px 18px;
+    background: linear-gradient(135deg, #13b8b1, #1ed6d1);
+    color: white;
+    border: 1.5px solid #0fa89a;
+    border-radius: 24px;
+    font-family: 'Arial', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    box-shadow: 0 3px 15px rgba(27, 187, 176, 0.35);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    animation: softPulse 5s infinite ease-in-out;
 }
 
 .tag-friend::before {
-   content: "FRIEND";
+    content: "FRIEND";
+    position: relative;
+    z-index: 2;
 }
 
+/* حركة طفو ناعمة عند التحويم */
+.tag-friend:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(27, 187, 176, 0.55);
+}
+
+/* تأثير وميض متحرك */
+.tag-friend::after {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: -60%;
+    width: 40%;
+    height: 180%;
+    background: linear-gradient(60deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: rotate(25deg);
+    transition: none;
+    animation: shimmer 3s infinite;
+    z-index: 1;
+}
+
+/* أنيميشن الشيمر */
+@keyframes shimmer {
+    0% {
+        left: -60%;
+        opacity: 0;
+    }
+    50% {
+        left: 110%;
+        opacity: 0.6;
+    }
+    100% {
+        left: 110%;
+        opacity: 0;
+    }
+}
+
+/* حركة تنفس ناعمة */
+@keyframes softPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 3px 15px rgba(27, 187, 176, 0.35);
+    }
+    50% {
+        transform: scale(1.03);
+        box-shadow: 0 6px 25px rgba(27, 187, 176, 0.5);
+    }
+}
+
+/* LEGEND */
 .tag-legend {
    background: linear-gradient(135deg, #FFAA00, #FF5555);
    color: white;
    border: 1px solid #FF0000;
 }
+.tag-legend::before { content: "LEGEND"; }
 
-.tag-legend::before {
-   content: "LEGEND";
+/* MVP */
+.tag-mvp {
+   background-color: #E7A641;
+   color: #FFE5B4;
+   border: 1px solid #FFCF9B;
+   box-shadow: 0 1px 0 #774A05;
+   border-radius: 4px;
+}
+.tag-mvp::before { content: "MVP"; }
+
+/* VIP */
+.tag-vip {
+   background-color: transparent;
+   border: 1px solid #FF8800;
+   position: relative;
+   padding: 0.02em 0.1em;
+   font-weight: bold;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   overflow: hidden;
+   white-space: nowrap;
+   min-height: 14px;
+}
+.tag-vip::before {
+   content: "VIP";
+   background: linear-gradient(90deg, #fff, #ffffaa, #fff);
+   background-size: 200% auto;
+   -webkit-background-clip: text;
+   background-clip: text;
+   color: transparent;
+   animation: shine-text 2s linear infinite;
+}
+.tag-vip::after {
+   content: "";
+   position: absolute;
+   top: -1px;
+   left: -1px;
+   right: -1px;
+   bottom: -1px;
+   border-radius: inherit;
+   border: 1px solid transparent;
+   animation: shine-border 2s linear infinite;
 }
 
+/* أنيميشن VIP */
+@keyframes shine-text {
+   0% { background-position: 200% center; }
+   100% { background-position: 0% center; }
+}
+@keyframes shine-border {
+   0% { box-shadow: 0 0 5px #FF8800, inset 0 0 5px #FF8800; }
+   50% { box-shadow: 0 0 10px #FFD700, inset 0 0 10px #FFD700; }
+   100% { box-shadow: 0 0 5px #FF8800, inset 0 0 5px #FF8800; }
+}
+
+/* YOUTUBER */
 .tag-youtuber {
-   background-color: #FF0000;
-   color: white;
-   border: 1px solid #CC0000;
+   background-color: #fff;
+   border: 1px solid #cc0000;
+   padding: 0.02em 0.1em;
+   font-weight: bold;
+   line-height: 1.2;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   position: relative;
+   overflow: hidden;
+   white-space: nowrap;
+   min-height: 14px;
 }
-
 .tag-youtuber::before {
    content: "YOUTUBER";
+   background: repeating-linear-gradient(
+      90deg,
+      #ff0000 0%,
+      #ff0000 45%,
+      white 45%,
+      white 55%,
+      #ff0000 55%,
+      #ff0000 100%
+   );
+   background-size: 200% auto;
+   -webkit-background-clip: text;
+   background-clip: text;
+   color: transparent;
+   animation: youtuber-shine 3s linear infinite;
 }
-.tag-mvp {
-   background-color: #E74141;
-   color: #979797;
+
+/* أنيميشن YOUTUBER */
+@keyframes youtuber-shine {
+   0% { background-position: 200% center; }
+   100% { background-position: 0% center; }
+}
+
+/* OWNER */
+.tag-owner {
+   position: relative;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   background: linear-gradient(35deg, #A31A1A, #E92626);
+   color: #FFFFFF;
+   border: 1px solid #E33939;
+   border-radius: 10px;
+   padding: 0.02em 0.1em;
+   font-weight: bold;
+   overflow: hidden;
+   box-sizing: border-box;
+   white-space: nowrap;
+   min-height: 14px;
+}
+.tag-owner::before {
+   content: "OWNER";
+   position: relative;
+   z-index: 2;
+}
+.tag-owner::after {
+   content: "";
+   position: absolute;
+   top: 0;
+   left: -150%;
+   width: 250%;
+   height: 100%;
+   background: linear-gradient(
+      45deg, 
+      rgba(255,255,255,0) 48%, 
+      rgba(255,255,255,0.5) 50%, 
+      rgba(255,255,255,0) 52%
+   );
+   animation: owner-shine 2.5s infinite ease-in-out;
+   z-index: 1;
+}
+
+/* أنيميشن OWNER */
+@keyframes owner-shine {
+   0% { left: -150%; }
+   100% { left: 150%; }
+}
+
+/* HIRA_USER */
+.tag-hira_user {
+   background: linear-gradient(90deg, #FFB4C4,#FFB4C4,#A4284E);
+   color: #A4284E;
    border: 1px solid #FF9B9B;
-   box-shadow: 0 2px 0 #771F05;
-   border-radius: none;
+   border-radius: 4px;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 5px;
+   font-weight: bold;
+   padding: 0.02em 0.1em;
+   box-sizing: border-box;
+   position: relative;
+   overflow: hidden;
+   white-space: nowrap;
+   min-height: 14px;
 }
-.tag-mvp::before {
-   content: "MVP";
+.tag-hira_user::before {
+   content: "🌸";
+   display: inline-block;
+   margin-right: 3px;
+   animation: spin-pause 2s infinite ease-in-out;
 }
+.tag-hira_user::after {
+   content: "hira";
+   display: inline-block;
+   background: linear-gradient(90deg, #A4284E, #ff6f9c, #A4284E);
+   background-size: 200% auto;
+   color: transparent;
+   -webkit-background-clip: text;
+   background-clip: text;
+   animation: hira-shine 2s linear infinite;
+}
+
+/* أنيميشن HIRA_USER */
+@keyframes spin-pause {
+   0%   { transform: rotate(0deg); }
+   10%  { transform: rotate(-20deg); }
+   40%  { transform: rotate(360deg); }
+   100% { transform: rotate(360deg); }
+}
+@keyframes hira-shine {
+   0% { background-position: 200% center; }
+   100% { background-position: 0% center; }
+} 

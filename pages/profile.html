@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/x-icon" href="../web/ytlogo.png">
   <link rel="stylesheet" href="../style/main.css">
   <link rel="stylesheet" href="../style/tags.css">
   <title>User Profile</title>
@@ -290,11 +290,25 @@
 #userTagsContainer {
   flex-wrap: wrap;
   justify-content: center;
-  gap: 5px;
+  gap: 3px;
   max-width: 100%;
   overflow-wrap: break-word;
   word-break: break-word;
 }
+.user-tags {  
+   gap: 5px;  
+   padding-left: 2px;  
+}  
+
+.tag {  
+   font-family: minecraft-five;  
+   font-size: 10px;  
+   padding: 2px 6px;  
+   border-radius:3px;
+   text-shadow: 0 1px 0px rgba(0, 0, 0, 0.3);  
+   margin-right: 4px;  
+  
+} 
   </style>
 </head>
 <body>
@@ -353,6 +367,7 @@
     </div>
   </div>
 
+  
   <script type="module">
     import { db } from '../scripts/main.js';
     import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, increment } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";

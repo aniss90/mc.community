@@ -1,0 +1,28 @@
+1-More than 60% of the website's UI has been updated, making it better and more beautiful than before.  
+تم تحديث أكثر من 60% من واجهة المستخدم للموقع، مما يجعله أفضل وأجمل من ذي قبل. 
+2-Login using the email address saved in the account has been added in case you forget your username.
+تمت إضافة تسجيل الدخول باستخدام عنوان البريد الإلكتروني المحفوظ في الحساب في حالة نسيان اسم المستخدم الخاص بك. 
+3-You can get tags for your account and the way to get them is to contact one of the admins or the owner of the site.
+يمكنك الحصول على الوسوم لحسابك وطريقة الحصول عليها هي التواصل مع أحد المشرفين أو مالك الموقع.
+4-You can share your account via the link or QR code that you can get in the settings. 
+بإمكانك مشاركة حسابك عبر الرابط أو رمز الاستجابة السريعة الذي يمكنك الحصول عليه في الإعدادات. 
+5-Adding a new currency, which is Fall Token. You can find the way to convert currencies to it on the market page.
+ تمت إضافة عملة جديدة، وهي Fall Token. يمكنك معرفة كيفية تحويل العملات إليها في صفحة السوق. 
+6-You can get your account password if you forget it. 
+يمكنك الحصول على كلمة المرور الخاصة بحسابك إذا نسيتها. 
+7-Added the ability to change the color of the field borders on the login page depending on whether they are true or false. 
+تمت إضافة إمكانية تغيير لون حدود الحقل في صفحة تسجيل الدخول اعتمادًا على ما إذا كانت صحيحة أم خاطئة. 
+8-A shape has been added when you open a box on the marketplace page. Try it and enjoy. 
+تمت إضافة شكل عند فتح صندوق في صفحة السوق(marketplace). جرّبه واستمتع. 
+9-Updated Pages (login, general, profile settings, users list, other user profile, chat, marketplace, forget password) 
+الصفحات المحدثة (login, general, profile settings, users list, other user profile, chat, marketplace, forget password) 
+10-New Pages (forget username) 
+الصفحات الجديدة(forget username) 
+11-To know about developers and polytheists, Go to the About Developers page . 
+للتعرف على المطورين والمشركين اذهب إلى صفحة حول المطورين . 
+
+
+
+  
+bug fixed....
+  اصلاح لبعض الاخطاء...

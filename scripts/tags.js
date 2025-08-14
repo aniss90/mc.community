@@ -8,6 +8,8 @@ export const tagNames = {
   'legend': 'LEGEND',
   'youtuber': 'YOUTUBER',
   'mvp': 'MVP',
+  "owner": 'OWNER', 
+  'hira_user': '🌸'
 };
 
 export function getTagName(tagId) {
