@@ -498,13 +498,17 @@ togglePassword.addEventListener('click', function() {
 });
 
 // ✅ إعادة توجيه المستخدم إذا كان مسجل دخول
-window.onload = function() {
+window.onload = async function() {
   const activeUser = localStorage.getItem("activeUser");
   if (activeUser) {
-    window.location.href = "Homepage.html";
+    const isBanned = await checkBanStatus(activeUser);
+    if (!isBanned) {
+      window.location.href = "Homepage.html";
+    } else {
+      localStorage.removeItem("activeUser"); // إزالة المستخدم المبند
+    }
   }
 };
-
 // ✅ إظهار تنبيه مخصص
 function showCustomAlert(title, message, imageUrl) {
   const alertElement = document.getElementById('customAlert');
