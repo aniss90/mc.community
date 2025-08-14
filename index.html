@@ -24,27 +24,13 @@
 <meta property="twitter:image" content="https://aniss90.github.io/mc.community/web/ytlogo.png">
     <link rel="stylesheet" href="style/main.css">  
     <link rel="icon" type="image/x-icon" href="web/ytlogo.png">  
-    <div class="onesignal-customlink-container"></div>
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
   OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
       appId: "e6e464e9-9945-4adc-89ce-8baf51e51d11",
-      promptOptions: {
-        customlink: {
-          enabled: true,
-          text: {
-            subscribe: "🔔 اشترك في الإشعارات",
-            unsubscribe: "🚫 إلغاء الاشتراك"
-          },
-          unsubscribeEnabled: true
-        }
-      }
     });
-    
-    // حتى لو فيه زر، يطلب الاشتراك أول الدخول
-    OneSignal.showSlidedownPrompt();
   });
 </script>
     <!-- Google tag (gtag.js) -->  
@@ -394,6 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mc co a public site that includes all people. Its features include collecting coins and purchasing items from the store or sending them to others. It also provides a chat feature and allows you to communicate with other users and interact with them.
 
   </div>
+  
   <div class='onesignal-customlink-container'></div>
   <div class="description">   
     <div class="title"> login / create an account </div>   
