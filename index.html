@@ -2,24 +2,24 @@
 <html lang="ar">  
 <head>  
     <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+      <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <meta name="google-site-verification" content="37SxDUkBU_VsVbMTrgTKLy858nIOzRB9ToWFKYdjWj8" />
     <link rel="manifest" href="manifest.json">
     <title>mc co</title>  
     <!-- Meta Description -->
-<meta name="description" content="MC CO هو موقع عام يتيح لك جمع العملات، شراء الأدوات، الدردشة مع المستخدمين، والتفاعل معهم بطريقة ممتعة!">
+<meta name="description" content="mcco هو موقع عام يتيح لك جمع العملات، شراء الأدوات، الدردشة مع المستخدمين، والتفاعل معهم بطريقة ممتعة!">
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://aniss90.github.io/mc.community/">
-<meta property="og:title" content="MC CO - تواصل، اشتري أدوات، وتحدى الأصدقاء!">
+<meta property="og:title" content="mcco - تواصل، اشتري أدوات، وتحدى الأصدقاء!">
 <meta property="og:description" content="موقع شامل للتفاعل، جمع العملات، وشراء الأدوات والدردشة مع المستخدمين الآخرين. انضم الآن!">
 <meta property="og:image" content="https://aniss90.github.io/mc.community/web/ytlogo.png">
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://aniss90.github.io/mc.community/">
-<meta property="twitter:title" content="MC CO - تواصل، اشتري أدوات، وتحدى الأصدقاء!">
+<meta property="twitter:title" content="mcco - تواصل، اشتري أدوات، وتحدى الأصدقاء!">
 <meta property="twitter:description" content="موقع شامل للتفاعل، جمع العملات، وشراء الأدوات والدردشة مع المستخدمين الآخرين. انضم الآن!">
 <meta property="twitter:image" content="https://aniss90.github.io/mc.community/web/ytlogo.png">
     <link rel="stylesheet" href="style/main.css">  
@@ -32,6 +32,15 @@
       gtag('js', new Date());  
       gtag('config', 'F18SFG2LMZ');  
     </script>  
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "e6e464e9-9945-4adc-89ce-8baf51e51d11",
+    });
+  });
+</script>
     <style>  
         @font-face {  
             font-family: minecraft;  
@@ -368,9 +377,10 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
     <div class="description">
     <div class="title"> <img src="icons/notepad_gif.gif" height="15">what's mc co ? <img src="icons/icon_panda.png" height="14"></div>
-    Mc co a public site that includes all people. Its features include collecting coins and purchasing items from the store or sending them to others. It also provides a chat feature and allows you to communicate with other users and interact with them.
+    mc co a public site that includes all people. Its features include collecting coins and purchasing items from the store or sending them to others. It also provides a chat feature and allows you to communicate with other users and interact with them.
 
   </div>
+  <div class='onesignal-customlink-container'></div>
   <div class="description">   
     <div class="title"> login / create an account </div>   
     Click at gold button to Login or Create an account.  
