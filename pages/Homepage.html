@@ -1188,186 +1188,480 @@ Homepage
 <script type="module">
 import { db } from '../scripts/main.js';   
 import {  
-  doc,  
-  getDoc,  
-  setDoc,  
-  updateDoc,  
-  collection,  
-  getDocs,  
-  onSnapshot,  
-  query,  
-  where,  
-  orderBy,  
-  addDoc, 
-  increment // أضف هذه الدالة  
+  doc, getDoc, updateDoc, collection, onSnapshot, query, where, orderBy, increment, addDoc
 } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";  
-      
-    import {  
-      GoogleAuthProvider,  
-      signInWithPopup,  
-      signInAnonymously,  
-      onAuthStateChanged,  
-      signOut  
-    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";  
-        
+
+import {  
+  GoogleAuthProvider, signInWithPopup, signInAnonymously, onAuthStateChanged, signOut
+} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";  
+
 const activeUser = localStorage.getItem('activeUser');  
-  
 
 if (!activeUser) {  
-  alert('Please log in first!');  
-  window.location.href = 'login.html';  
-}  
+  alert('Please log in first!');
+  window.location.href = 'login.html';
+}
 
-
-// دالة لجلب بيانات المستخدم
+// ==================== دالة لجلب بيانات المستخدم ====================
 async function getUserData() {
-  const userDocRef = doc(db, 'users', activeUser);
-  const snap = await getDoc(userDocRef);
-  
-  if (!snap.exists()) {
-    console.warn("المستخدم غير موجود في قاعدة البيانات");
-    return; // إيقاف التنفيذ إذا ما فيه بيانات
-  }
-  
-  const user = snap.data();
-  
-  // عرض الرسالة
-  const welcomeElement = document.getElementById('welcomeMessage');
-  welcomeElement.style.opacity = '1';
-  welcomeElement.style.transform = 'translateY(0)';
-  await smoothTypeWriter(`Welcome ${activeUser}!`, welcomeElement, 80);
-  
-  // عرض النقاط
-  formatPoints(user.points ?? 0, document.getElementById('points'));
-  formatPoints(user.fallTokens ?? 0, document.getElementById('fallTokens'));
-}
+  try {
+    const userDocRef = doc(db, 'users', activeUser);
+    const snap = await getDoc(userDocRef);
 
-// عند تحميل الصفحة، تحقق من حالة التقييم  
-document.addEventListener('DOMContentLoaded', function() {  
-  checkRatingStatus();  
-});  
-// كود التحقق من قراءة سياسة الخصوصية
-function checkPrivacyPolicyRead() {
-  // تحقق مما إذا كان المستخدم مسجل الدخول
-  const activeUser = localStorage.getItem('activeUser');
-  
-  if (activeUser) {
-    // إذا كان مسجل الدخول، تحقق من قاعدة البيانات
-    checkDatabaseForPrivacyPolicy(activeUser);
-  } else {
-    // إذا لم يكن مسجل الدخول، تحقق من localStorage
-    const privacyRead = localStorage.getItem('privacyPolicyRead');
-    
-    if (privacyRead !== 'true') {
-      showPrivacyButton();
+    if (!snap.exists()) {
+      console.warn("المستخدم غير موجود في قاعدة البيانات");
+      return;
     }
+
+    const user = snap.data();
+    const welcomeElement = document.getElementById('welcomeMessage');
+    const pointsElement = document.getElementById('points');
+    const fallTokensElement = document.getElementById('fallTokens');
+
+    if (!welcomeElement || !pointsElement || !fallTokensElement) return;
+
+    welcomeElement.style.opacity = '1';
+    welcomeElement.style.transform = 'translateY(0)';
+    smoothTypeWriter(`Welcome ${activeUser}!`, welcomeElement, 80);
+
+    formatPoints(user.points ?? 0, pointsElement);
+    formatPoints(user.fallTokens ?? 0, fallTokensElement);
+
+  } catch (error) {
+    console.error("Error fetching user data:", error);
   }
 }
 
-// دالة للتحقق من قاعدة البيانات (للمستخدمين المسجلين)
+// ==================== دالة الكتابة السلسة ====================
+async function smoothTypeWriter(text, element, speed = 80) {
+  element.innerHTML = "";
+  element.classList.add('smooth-typing');
+  for (const char of text) {
+    element.innerHTML += char;
+    await new Promise(resolve => setTimeout(resolve, speed));
+    if (char === ' ') await new Promise(resolve => setTimeout(resolve, speed*1.5));
+  }
+  element.classList.remove('smooth-typing');
+  element.classList.add('typing-complete');
+}
+
+// ==================== دالة عرض النقاط مع العد ====================
+function formatPoints(num, element) {
+  if (!element) return;
+
+  const currentText = element.textContent.replace(/[^\d.]/g, '');
+  const current = currentText ? parseFloat(currentText) : 0;
+  const target = num;
+  const duration = 800;
+  const startTime = performance.now();
+
+  function updateCounter(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed/duration,1);
+    let value = current + (target - current) * progress;
+
+    let formattedValue;
+    if (value >= 1_000_000_000_000) formattedValue = (value/1_000_000_000_000).toFixed(1).replace(/\.0$/,'')+'T';
+    else if (value >= 1_000_000_000) formattedValue = (value/1_000_000_000).toFixed(1).replace(/\.0$/,'')+'B';
+    else if (value >= 1_000_000) formattedValue = (value/1_000_000).toFixed(1).replace(/\.0$/,'')+'M';
+    else if (value >= 1_000) formattedValue = (value/1_000).toFixed(1).replace(/\.0$/,'')+'K';
+    else formattedValue = value.toFixed(5).replace(/\.?0+$/,'');
+
+    element.textContent = formattedValue;
+
+    if(progress<1) requestAnimationFrame(updateCounter);
+  }
+
+  requestAnimationFrame(updateCounter);
+}
+
+// ==================== سياسة الخصوصية ====================
+function checkPrivacyPolicyRead() {
+  const activeUser = localStorage.getItem('activeUser');
+  if(activeUser) checkDatabaseForPrivacyPolicy(activeUser);
+  else if(localStorage.getItem('privacyPolicyRead')!=='true') showPrivacyButton();
+}
+
 async function checkDatabaseForPrivacyPolicy(username) {
   try {
     const userDoc = await getDoc(doc(db, "users", username));
-    
-    if (userDoc.exists()) {
-      const userData = userDoc.data();
-      
-      if (userData.privacy_policy !== 'readed') {
-        showPrivacyButton();
-      }
-    }
-  } catch (error) {
-    console.error("Error checking privacy policy status:", error);
-    // في حالة الخطأ، نعرض الزر كإجراء احترازي
-    showPrivacyButton();
-  }
+    if(userDoc.exists() && userDoc.data().privacy_policy!=='readed') showPrivacyButton();
+  } catch(e) { console.error(e); showPrivacyButton(); }
 }
 
-// دالة لعرض زر سياسة الخصوصية
-// تعريف أنميشن الدخول من اليمين
 const style = document.createElement('style');
 style.textContent = `
-  @keyframes slideInRight {
-    0% {
-      opacity: 0;
-      transform: translateX(100%);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  .slide-in-right {
-    animation: slideInRight 1s ease forwards;
-  }
+  @keyframes slideInRight {0% {opacity:0; transform:translateX(100%);} 100% {opacity:1; transform:translateX(0);}}
+  .slide-in-right {animation: slideInRight 1s ease forwards;}
 `;
 document.head.appendChild(style);
 
 function showPrivacyButton() {
-  if (!document.getElementById('privacyPolicyBtn')) {
-    const privacyBtn = document.createElement('button');
-    privacyBtn.id = 'privacyPolicyBtn';
-    privacyBtn.textContent = ' Please read the privacy policy. ';
-    privacyBtn.style.position = 'fixed';
-    privacyBtn.style.bottom = '20px';
-    privacyBtn.style.right = '20px';
-    privacyBtn.style.zIndex = '1000';
-    privacyBtn.style.padding = '10px 15px';
-    privacyBtn.style.backgroundColor = '#069F00';
-    privacyBtn.style.color = 'white';
-    privacyBtn.style.border = '2px solid #59CC5D';
-    privacyBtn.style.cursor = 'pointer';
-
-    // إضافة كلاس الأنميشن
-    privacyBtn.classList.add('slide-in-right');
-
-    privacyBtn.addEventListener('click', openPrivacyPolicy);
-
-    document.body.appendChild(privacyBtn);
-  }
+  if(document.getElementById('privacyPolicyBtn')) return;
+  const btn = document.createElement('button');
+  btn.id='privacyPolicyBtn';
+  btn.textContent='Please read the privacy policy.';
+  btn.style.position='fixed';
+  btn.style.bottom='20px';
+  btn.style.right='20px';
+  btn.style.zIndex='1000';
+  btn.style.padding='10px 15px';
+  btn.style.backgroundColor='#069F00';
+  btn.style.color='white';
+  btn.style.border='2px solid #59CC5D';
+  btn.style.cursor='pointer';
+  btn.classList.add('slide-in-right');
+  btn.addEventListener('click', openPrivacyPolicy);
+  document.body.appendChild(btn);
 }
 
-// دالة لفتح صفحة سياسة الخصوصية
 function openPrivacyPolicy() {
-  const privacyUrl = '../privacy_policy.html'; // أو أي صفحة تريدها
-  // بدلاً من window.open نستخدم window.location.href للتنقل في نفس الصفحة
-  window.location.href = privacyUrl;
-  
-  // عند قراءة السياسة، قم بتحديث الحالة
+  window.location.href='../privacy_policy.html';
   markPrivacyAsRead();
 }
 
-// دالة لتحديد أن السياسة قد تمت قراءتها
 function markPrivacyAsRead() {
   const activeUser = localStorage.getItem('activeUser');
-  
-  if (activeUser) {
-    // للمستخدمين المسجلين - تحديث في قاعدة البيانات
-    updateDoc(doc(db, "users", activeUser), {
-      privacy_policy: 'readed',
-      last_privacy_read: new Date().toISOString()
-    }).then(() => {
-      removePrivacyButton();
-    });
+  if(activeUser) {
+    updateDoc(doc(db,'users',activeUser),{
+      privacy_policy:'readed',
+      last_privacy_read:new Date().toISOString()
+    }).then(removePrivacyButton);
   } else {
-    // للزوار - حفظ في localStorage
-    localStorage.setItem('privacyPolicyRead', 'true');
+    localStorage.setItem('privacyPolicyRead','true');
     removePrivacyButton();
   }
 }
 
-// دالة لإزالة زر السياسة
 function removePrivacyButton() {
-  const privacyBtn = document.getElementById('privacyPolicyBtn');
-  if (privacyBtn) {
-    privacyBtn.remove();
+  const btn=document.getElementById('privacyPolicyBtn');
+  if(btn) btn.remove();
+}
+
+// ==================== إشعارات الرسائل ====================
+let lastMessageTimestamp = null;
+
+async function setupMessageListener() {
+  const userDocRef = doc(db,'users',activeUser);
+  const messagesRef = collection(db,"messages");
+
+  try {
+    const userDoc = await getDoc(userDocRef);
+    if(!userDoc.exists()) return;
+
+    const lastSeenData = userDoc.data().lastSeenMessages||{};
+    const messagesQuery = query(messagesRef, where("receiver","==",activeUser), orderBy("timestamp","desc"));
+
+    const unsubscribe = onSnapshot(messagesQuery, snapshot=>{
+      snapshot.docChanges().forEach(change=>{
+        if(change.type==="added"){
+          const message=change.doc.data();
+          const lastSeen=lastSeenData[message.sender];
+          if(lastSeen && message.timestamp.toDate()<=new Date(lastSeen)) return;
+          if(message.sender===activeUser) return;
+
+          if(document.visibilityState!=='visible') showBrowserNotification(message.sender,message.message);
+          showMessageNotification(message.sender,message.message,message.type);
+        }
+      });
+    });
+
+    window.addEventListener('beforeunload', unsubscribe);
+  } catch(e){ console.error(e);}
+}
+
+function showBrowserNotification(sender,message){
+  if(!("Notification" in window)) return;
+  if(Notification.permission==="granted"){
+    new Notification(`New message from ${sender}`,{body: message.length>50?message.substring(0,50)+'...':message,icon:"../icons/player-head-128-052ba.png"});
+  } else if(Notification.permission!=="denied"){
+    Notification.requestPermission().then(p=>{if(p==="granted") new Notification(`New message from ${sender}`,{body:message,icon:"../icons/player-head-128-052ba.png"});});
   }
 }
 
-// تشغيل التحقق عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', checkPrivacyPolicyRead);
+function showMessageNotification(sender,message,type){
+  const container=document.getElementById('notificationContainer');
+  const notif=document.createElement('div');
+  notif.className='notification';
+  let displayContent = type==="image"?`<img src="${message}" style="max-width:100px; max-height:100px;">`:`<div class="notification-message">${message.length>30?message.substring(0,30)+'...':message}</div>`;
+  notif.innerHTML=`
+    <div class="notification-content">
+      <div class="notification-title">New message from: ${sender}</div>
+      <div style="width:100%;height:1px;background-color:white;margin:10px 0;"></div>
+      ${displayContent}
+    </div>
+    <img src="../icons/player-head-128-052ba.png" alt="${sender}">
+  `;
+  notif.addEventListener('click',()=>{window.location.href=`chat_beta.html?user=${sender}`; notif.remove();});
+  container.appendChild(notif);
+  setTimeout(()=>notif.remove(),9000);
+}
+
+// ==================== إضافة النقاط ====================
+document.getElementById('whiteButton').addEventListener('click', async ()=>{
+  const userDocRef = doc(db,'users',activeUser);
+  const userDoc = await getDoc(userDocRef);
+
+  if(userDoc.exists()){
+    const user = userDoc.data();
+    const chance = Math.random();
+    const earnedPoints = chance<=0.05?Math.floor(Math.random()*11)+50:Math.floor(Math.random()*29)+1;
+
+    showPointsAddedEffect(earnedPoints);
+    await updateDoc(userDocRef,{points: user.points+earnedPoints});
+    formatPoints(user.points+earnedPoints, document.getElementById('points'));
+  } else alert('المستخدم غير موجود!');
+});
+
+function showPointsAddedEffect(points){
+  const pointsContainer=document.querySelector('.points');
+  if(!pointsContainer) return;
+  const addedElement=document.createElement('div');
+  addedElement.className='points-added';
+  addedElement.textContent=`+${points}`;
+  addedElement.style.right='0';
+  addedElement.style.top='0';
+  pointsContainer.appendChild(addedElement);
+  setTimeout(()=>addedElement.remove(),2000);
+}
+
+// ==================== إرسال النقاط ====================
+const currencyToggle = document.getElementById('currencyToggle');
+const currencyDropdown = document.getElementById('currencyDropdown');
+const currencyIcon = document.getElementById('currencyIcon');
+let selectedCurrency = 'points';
+
+currencyToggle.addEventListener('click', e=>{e.stopPropagation(); currencyDropdown.classList.toggle('show');});
+window.addEventListener('click', ()=>currencyDropdown.classList.remove('show'));
+
+document.querySelectorAll('.currency-option').forEach(option=>{
+  option.addEventListener('click', function(){
+    selectedCurrency=this.getAttribute('data-currency');
+    currencyIcon.src=this.getAttribute('data-icon');
+    currencyDropdown.classList.remove('show');
+    const amountInput=document.getElementById('sendPointsAmount');
+    if(selectedCurrency==='fallTokens'){ amountInput.step='0.00001'; amountInput.min='0.00001'; }
+    else{ amountInput.step='1'; amountInput.min='1'; }
+  });
+});
+
+// ==================== تنبيه مخصص ====================
+function showCustomAlert(points,from=null){
+  const overlay=document.getElementById('customAlert');
+  const box=document.getElementById('customAlertBox');
+  const pointsDisplay=document.getElementById('customAlertPoints');
+  pointsDisplay.textContent=from?`${points} coins from ${from}`:`${points} coins.`;
+
+  if(points<=10){ box.style.backgroundColor='silver'; box.style.boxShadow='0 0 15px rgba(123,123,123,1)'; box.style.color='#000'; }
+  else if(points<=30){ box.style.backgroundColor='#FFD700'; box.style.boxShadow='0 0 15px rgba(255,205,106,1)'; box.style.color='#000'; }
+  else if(points<=50){ box.style.backgroundColor='#C50DD8'; box.style.boxShadow='0 0 15px rgba(255,106,255,1)'; box.style.color='#fff'; }
+
+  overlay.style.display='flex';
+  setTimeout(()=>overlay.style.display='none',2000);
+}
+
+// ==================== تشغيل الصفحة ====================
+document.addEventListener('DOMContentLoaded', ()=>{
+  getUserData();
+  setupMessageListener();
+  checkPrivacyPolicyRead();
+  if("Notification" in window) Notification.requestPermission();
+});
+</script>
+<script>
+  // دالة لإرسال النقاط المعدلة
+document.getElementById('redButton').addEventListener('click', async function() {
+      const sender = activeUser;
+      const receiver = document.getElementById('receiverUsername').value.trim();
+      const amount = document.getElementById('sendPointsAmount').value.trim();
+      
+      if (!receiver || !amount) {
+        alert('Please fill all fields!');
+        return;
+      }
+      
+      const amountValue = parseFloat(amount);
+      
+      if (isNaN(amountValue)) {
+          alert('Please enter a valid amount!');
+          return;
+        }
+        
+        if (selectedCurrency === 'points' && !Number.isInteger(amountValue)) {
+          alert('Coins must be whole numbers!');
+          return;
+        }
+        
+        if (amountValue <= 0) {
+          alert('Amount must be greater than 0!');
+          return;
+        }
+        
+        if (selectedCurrency === 'fallTokens' && amountValue < 0.00001) {
+          alert('Minimum Fall Tokens amount is 0.00001!');
+          return;
+        }
+        
+        if (receiver === sender) {
+          alert('You cannot send to yourself!');
+          return;
+        }
+        
+        const senderDocRef = doc(db, 'users', sender);
+        const receiverDocRef = doc(db, 'users', receiver);
+        
+        const [senderDocSnap, receiverDocSnap] = await Promise.all([
+          getDoc(senderDocRef),
+          getDoc(receiverDocRef)
+        ]);
+        
+        if (!receiverDocSnap.exists()) {
+          alert('Recipient username does not exist!');
+          return;
+        }
+        
+        const senderData = senderDocSnap.data();
+        const senderBalance = senderData[selectedCurrency] || 0;
+        
+        if (senderBalance < amountValue) {
+          const currencyName = selectedCurrency === 'points' ? 'Coins' : 'Fall Tokens';
+          alert(`You don't have enough ${currencyName}!`);
+          return;
+        }
+        
+        // تنفيذ عملية التحويل
+        try {
+          const updateData = {};
+          updateData[selectedCurrency] = increment(-amountValue);
+          
+          await updateDoc(senderDocRef, updateData);
+          
+          const receiverUpdateData = {};
+          receiverUpdateData[selectedCurrency] = increment(amountValue);
+          receiverUpdateData.notification = {
+            from: sender,
+            amount: amountValue,
+            currency: selectedCurrency,
+            read: false
+          };
+          
+          await updateDoc(receiverDocRef, receiverUpdateData);
+          
+          // تحديث العرض للمستخدم
+          const pointsElement = document.getElementById(selectedCurrency === 'points' ? 'points' : 'fallTokens');
+          formatPoints(senderBalance - amountValue, pointsElement);
+          
+          const floatContainer = document.getElementById('points-float');
+          const floatPoints = document.createElement('div');
+          floatPoints.textContent = `-${amountValue.toLocaleString()}`;
+          floatPoints.style.position = 'absolute';
+          floatPoints.style.color = 'red';
+          floatPoints.style.fontWeight = 'bold';
+          floatPoints.style.fontSize = '1.2em';
+          floatPoints.style.right = '0';
+          floatPoints.style.top = '0';
+          floatPoints.style.opacity = '1';
+          floatPoints.style.transition = 'all 1s ease-out';
+          floatPoints.style.pointerEvents = 'none';
+          
+          floatContainer.appendChild(floatPoints);
+          
+          setTimeout(() => {
+            floatPoints.style.top = '-20px';
+            floatPoints.style.opacity = '0';
+          }, 50);
+          
+          setTimeout(() => {
+            floatPoints.remove();
+          }, 2500);
+          
+          const currencyName = selectedCurrency === 'points' ? 'Coins' : 'Fall Tokens';
+          alert(`Successfully sent ${amountValue} ${currencyName} to ${receiver}!`);
+          
+          // إعادة تعيين الحقول
+          document.getElementById('receiverUsername').value = '';
+          document.getElementById('sendPointsAmount').value = '';
+          
+        } catch (error) {
+          console.error('Error sending currency:', error);
+          alert('An error occurred while sending. Please try again.');
+        }
+      });
+const receiverInput = document.getElementById('receiverUsername');
+const dropdown = document.getElementById('usernameDropdown');
+
+let usernames = [];
+let dropdownOpen = false;
+
+// فتح القائمة عند التركيز
+receiverInput.addEventListener('focus', showDropdown);
+receiverInput.addEventListener('click', showDropdown);
+
+// إغلاق عند النقر بالخارج
+document.addEventListener('click', (e) => {
+  if (!receiverInput.contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.style.display = 'none';
+    dropdownOpen = false;
+  }
+});
+
+// عند الكتابة: تصفية المستخدمين وعرضهم
+receiverInput.addEventListener('input', () => {
+  const term = receiverInput.value.toLowerCase();
+  const filtered = usernames.filter(name => name.toLowerCase().includes(term));
+  updateDropdown(filtered);
+});
+
+// دالة إظهار القائمة وتحميل المستخدمين عند أول مرة
+async function showDropdown() {
+  if (dropdownOpen) return;
   
-// تحقق من حالة التقييم (من localStorage وقاعدة البيانات)  
+  dropdownOpen = true;
+  dropdown.style.display = 'block';
+  dropdown.innerHTML = '<div class="dropdown-item">Loading users...</div>';
+  
+  try {
+    if (usernames.length === 0) {
+      const snapshot = await getDocs(collection(db, 'users'));
+      usernames = snapshot.docs
+        .map(doc => doc.id)
+        .filter(name => name !== activeUser);
+    }
+    
+    updateDropdown(usernames);
+  } catch (err) {
+    console.error('Error loading users:', err);
+    dropdown.innerHTML = '<div class="dropdown-item">❌ Failed to load users</div>';
+  }
+}
+
+// تحديث العناصر داخل القائمة
+function updateDropdown(list) {
+  dropdown.innerHTML = '';
+  
+  if (list.length === 0) {
+    const noUser = document.createElement('div');
+    noUser.className = 'dropdown-item';
+    noUser.textContent = 'No users found';
+    dropdown.appendChild(noUser);
+    return;
+  }
+  
+  list.slice(0, 100).forEach(username => {
+    const item = document.createElement('div');
+    item.className = 'dropdown-item';
+    item.textContent = username;
+    item.addEventListener('click', () => {
+      receiverInput.value = username;
+      dropdown.style.display = 'none';
+      dropdownOpen = false;
+    });
+    dropdown.appendChild(item);
+  });
+}
+</script>
+<script>
+  // تحقق من حالة التقييم (من localStorage وقاعدة البيانات)  
 async function checkRatingStatus() {  
   const rateButton = document.getElementById('rateButton');  
     
@@ -1492,547 +1786,6 @@ async function checkUserRating() {
   }
 }
 
-let lastMessageTimestamp = null;
-
-// دالة لتنسيق عدد النقاط مع تأثير العد
-function formatPoints(num, element) {
-  if (!element) element = document.getElementById('points');
-  
-  const currentText = element.textContent.replace(/[^\d.]/g, '');
-  const current = currentText ? parseFloat(currentText) : 0;
-  const target = num;
-  const duration = 800;
-  const startTime = performance.now();
-  
-  if (target < current) {
-    element.classList.add('counting-down');
-    setTimeout(() => {
-      element.classList.remove('counting-down');
-    }, 800);
-  }
-  
-  function updateCounter(currentTime) {
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    
-    let value;
-    if (target > current) {
-      value = current + (target - current) * progress;
-    } else {
-      value = current - (current - target) * progress;
-    }
-    
-    let formattedValue;
-    if (value >= 1_000_000_000_000) {
-      formattedValue = (value / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 'T';
-    } else if (value >= 1_000_000_000) {
-      formattedValue = (value / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
-    } else if (value >= 1_000_000) {
-      formattedValue = (value / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
-    } else if (value >= 1_000) {
-      formattedValue = (value / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
-    } else {
-      // لعرض الكسور لـ Fall Tokens
-      formattedValue = value.toFixed(5).replace(/\.?0+$/, '');
-    }
-    
-    element.textContent = formattedValue;
-    
-    if (target > current) {
-      element.classList.add('counting');
-      setTimeout(() => {
-        element.classList.remove('counting');
-      }, 300);
-    }
-    
-    if (progress < 1) {
-      requestAnimationFrame(updateCounter);
-    }
-  }
-  
-  requestAnimationFrame(updateCounter);
-} 
-
-// دالة للاستماع للرسائل الجديدة
-async function setupMessageListener() {
-  const userDocRef = doc(db, 'users', activeUser);
-  const messagesRef = collection(db, "messages");
-  
-  try {
-    const userDoc = await getDoc(userDocRef);
-    
-    if (!userDoc.exists()) {
-      console.warn('⛔ User doc does not exist while setting up message listener.');
-      return; // أوقف التنفيذ حتى لا يسبب أخطاء
-    }
-    
-    const lastSeenData = userDoc.data().lastSeenMessages || {};
-    
-    const messagesQuery = query(
-      messagesRef,
-      where("receiver", "==", activeUser),
-      orderBy("timestamp", "desc")
-    );
-    
-    const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          const message = change.doc.data();
-          
-          const lastSeen = lastSeenData[message.sender];
-          if (lastSeen && message.timestamp.toDate() <= new Date(lastSeen)) return;
-          if (message.sender === activeUser) return;
-          
-          if (document.visibilityState !== 'visible') {
-            showBrowserNotification(message.sender, message.message);
-          }
-          
-          showMessageNotification(message.sender, message.message, message.type);
-        }
-      });
-    });
-    
-    window.addEventListener('beforeunload', unsubscribe);
-    
-  } catch (error) {
-    console.error("🔥 Error in setupMessageListener:", error);
-  }
-}
-
-// دالة لعرض إشعارات المتصفح
-// دالة لعرض إشعارات المتصفح
-function showBrowserNotification(sender, message) {
-    if (!("Notification" in window)) return;
-
-    if (Notification.permission === "granted") {
-        new Notification(`  new message from ${sender}`, {
-            body: message.length > 50 ? message.substring(0, 50) + "..." : message,
-            icon: "../icons/player-head-128-052ba.png"
-        });
-    } else if (Notification.permission !== "denied") {
-        Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                new Notification(`  new message from ${sender}`, {
-                    body: message.length > 50 ? message.substring(0, 50) + "..." : message,
-                    icon: "../icons/player-head-128-052ba.png"
-                });
-            }
-        });
-    }
-}
-
-// دالة لعرض إشعار التطبيق
-function showMessageNotification(sender, message, type) {
-  const notificationContainer = document.getElementById('notificationContainer');
-  
-  const notification = document.createElement('div');
-  notification.className = 'notification';
-  
-  let displayContent;
-  if (type === "image") {
-    // إذا كانت الصورة بصيغة Base64
-    displayContent = `<img src="${message}" style="max-width: 100px; max-height: 100px; border-radius: 4px;">`;
-  } else {
-    // إذا كانت رسالة نصية
-    let displayMessage = message;
-    if (displayMessage.length > 30) {
-      displayMessage = displayMessage.substring(0, 30) + "...";
-    }
-    displayContent = `<div class="notification-message"><div class="img2"><img src="../icons/arrow_right.png"loading="lazy">${displayMessage}</div></div>`;
-  }
-  
-  notification.innerHTML = `
-        <div class="notification-content">
-            <div class="notification-title">⚪|<r>New message from:</r> ${sender}</div>
-            <div style="width: 100%; height: 1px; background-color: white; margin: 10px 0;"></div>  
-            ${displayContent}
-        </div>
-        <img src="../icons/player-head-128-052ba.png"loading="lazy" alt="${sender}">
-    `;
-  
-  notification.addEventListener('click', () => {
-    window.location.href = `chat_beta.html?user=${sender}`;
-    notification.remove();
-  });
-  
-  notificationContainer.appendChild(notification);
-  
-  setTimeout(() => {
-    notification.remove();
-  }, 9000);
-}
-
-
-
-// دالة الكتابة السلسة المعدلة
-async function smoothTypeWriter(text, element, speed = 80) {
-  element.innerHTML = "";
-  element.classList.add('smooth-typing');
-  
-  // نستخدم حلقة for-of مع await لتحقيق تأثير أكثر سلاسة
-  for (const char of text) {
-    element.innerHTML += char;
-    await new Promise(resolve => setTimeout(resolve, speed));
-    
-    // تأثير متغير للسرعة (أبطأ قليلاً عند المسافات)
-    if (char === ' ') {
-      await new Promise(resolve => setTimeout(resolve, speed * 1.5));
-    }
-  }
-  
-  element.classList.remove('smooth-typing');
-  element.classList.add('typing-complete');
-}
-
-// دالة لإضافة النقاط
-document.getElementById('whiteButton').addEventListener('click', async function () {
-  const userDocRef = doc(db, 'users', activeUser);
-  const userDoc = await getDoc(userDocRef);
-
-  if (userDoc.exists()) {
-    const user = userDoc.data();
-    let earnedPoints;
-
-    const chance = Math.random();
-    if (chance <= 0.05) {
-      earnedPoints = Math.floor(Math.random() * 11) + 50;
-    } else {
-      earnedPoints = Math.floor(Math.random() * 29) + 1;
-    }
-
-    // عرض التأثير قبل تحديث النقاط
-    showPointsAddedEffect(earnedPoints);
-    
-    // تحديث النقاط في قاعدة البيانات
-    await updateDoc(userDocRef, { 
-      points: user.points + earnedPoints 
-    });
-    
-    // تحديث العداد
-    formatPoints(user.points + earnedPoints);
-    
-    // عرض التنبيه المخصص (اختياري)
-  
-  } else {
-    alert('المستخدم غير موجود!');
-  }
-});
-
-// دالة لعرض تأثير إضافة النقاط
-function showPointsAddedEffect(points) {
-  const pointsContainer = document.querySelector('.points');
-  const addedElement = document.createElement('div');
-  addedElement.className = 'points-added';
-  addedElement.textContent = `+${points}`;
-  
-  // وضع العنصر في المكان المناسب
-  addedElement.style.right = '0';
-  addedElement.style.top = '0';
-  
-  pointsContainer.appendChild(addedElement);
-  
-  // إزالة العنصر بعد انتهاء الأنيميشن
-  setTimeout(() => {
-    addedElement.remove();
-  }, 2000);
-}
-// دالة لإرسال النقاط
-// اختيار العملة
-const currencyToggle = document.getElementById('currencyToggle');
-const currencyDropdown = document.getElementById('currencyDropdown');
-const currencyIcon = document.getElementById('currencyIcon');
-let selectedCurrency = 'points';
-
-// إظهار/إخفاء قائمة العملات
-currencyToggle.addEventListener('click', function(e) {
-  e.stopPropagation();
-  currencyDropdown.classList.toggle('show');
-});
-
-// اختيار عملة من القائمة
-document.querySelectorAll('.currency-option').forEach(option => {
-  option.addEventListener('click', function() {
-    selectedCurrency = this.getAttribute('data-currency');
-    currencyIcon.src = this.getAttribute('data-icon');
-    currencyDropdown.classList.remove('show');
-    
-    // تحديث الخطوة بناءً على نوع العملة
-    const amountInput = document.getElementById('sendPointsAmount');
-    if (selectedCurrency === 'fallTokens') {
-      amountInput.step = '0.00001';
-      amountInput.min = '0.00001';
-    } else {
-      amountInput.step = '1';
-      amountInput.min = '1';
-    }
-  });
-});
-
-// إغلاق القائمة عند النقر خارجها
-window.addEventListener('click', function() {
-  currencyDropdown.classList.remove('show');
-});
-
-// دالة لإرسال النقاط المعدلة
-document.getElementById('redButton').addEventListener('click', async function() {
-      const sender = activeUser;
-      const receiver = document.getElementById('receiverUsername').value.trim();
-      const amount = document.getElementById('sendPointsAmount').value.trim();
-      
-      if (!receiver || !amount) {
-        alert('Please fill all fields!');
-        return;
-      }
-      
-      const amountValue = parseFloat(amount);
-      
-      if (isNaN(amountValue)) {
-          alert('Please enter a valid amount!');
-          return;
-        }
-        
-        if (selectedCurrency === 'points' && !Number.isInteger(amountValue)) {
-          alert('Coins must be whole numbers!');
-          return;
-        }
-        
-        if (amountValue <= 0) {
-          alert('Amount must be greater than 0!');
-          return;
-        }
-        
-        if (selectedCurrency === 'fallTokens' && amountValue < 0.00001) {
-          alert('Minimum Fall Tokens amount is 0.00001!');
-          return;
-        }
-        
-        if (receiver === sender) {
-          alert('You cannot send to yourself!');
-          return;
-        }
-        
-        const senderDocRef = doc(db, 'users', sender);
-        const receiverDocRef = doc(db, 'users', receiver);
-        
-        const [senderDocSnap, receiverDocSnap] = await Promise.all([
-          getDoc(senderDocRef),
-          getDoc(receiverDocRef)
-        ]);
-        
-        if (!receiverDocSnap.exists()) {
-          alert('Recipient username does not exist!');
-          return;
-        }
-        
-        const senderData = senderDocSnap.data();
-        const senderBalance = senderData[selectedCurrency] || 0;
-        
-        if (senderBalance < amountValue) {
-          const currencyName = selectedCurrency === 'points' ? 'Coins' : 'Fall Tokens';
-          alert(`You don't have enough ${currencyName}!`);
-          return;
-        }
-        
-        // تنفيذ عملية التحويل
-        try {
-          const updateData = {};
-          updateData[selectedCurrency] = increment(-amountValue);
-          
-          await updateDoc(senderDocRef, updateData);
-          
-          const receiverUpdateData = {};
-          receiverUpdateData[selectedCurrency] = increment(amountValue);
-          receiverUpdateData.notification = {
-            from: sender,
-            amount: amountValue,
-            currency: selectedCurrency,
-            read: false
-          };
-          
-          await updateDoc(receiverDocRef, receiverUpdateData);
-          
-          // تحديث العرض للمستخدم
-          const pointsElement = document.getElementById(selectedCurrency === 'points' ? 'points' : 'fallTokens');
-          formatPoints(senderBalance - amountValue, pointsElement);
-          
-          const floatContainer = document.getElementById('points-float');
-          const floatPoints = document.createElement('div');
-          floatPoints.textContent = `-${amountValue.toLocaleString()}`;
-          floatPoints.style.position = 'absolute';
-          floatPoints.style.color = 'red';
-          floatPoints.style.fontWeight = 'bold';
-          floatPoints.style.fontSize = '1.2em';
-          floatPoints.style.right = '0';
-          floatPoints.style.top = '0';
-          floatPoints.style.opacity = '1';
-          floatPoints.style.transition = 'all 1s ease-out';
-          floatPoints.style.pointerEvents = 'none';
-          
-          floatContainer.appendChild(floatPoints);
-          
-          setTimeout(() => {
-            floatPoints.style.top = '-20px';
-            floatPoints.style.opacity = '0';
-          }, 50);
-          
-          setTimeout(() => {
-            floatPoints.remove();
-          }, 2500);
-          
-          const currencyName = selectedCurrency === 'points' ? 'Coins' : 'Fall Tokens';
-          alert(`Successfully sent ${amountValue} ${currencyName} to ${receiver}!`);
-          
-          // إعادة تعيين الحقول
-          document.getElementById('receiverUsername').value = '';
-          document.getElementById('sendPointsAmount').value = '';
-          
-        } catch (error) {
-          console.error('Error sending currency:', error);
-          alert('An error occurred while sending. Please try again.');
-        }
-      });
-
-// دالة لعرض التنبيه المخصص
-function showCustomAlert(points, from = null) {
-  const overlay = document.getElementById('customAlert');
-  const box = document.getElementById('customAlertBox');
-  const pointsDisplay = document.getElementById('customAlertPoints');
-
-  if (from) {
-    pointsDisplay.textContent = `${points} coins from ${from}`;
-  } else {
-    pointsDisplay.textContent = `${points} coins.`;
-  }
-
-  if (points <= 10) {
-    box.style.backgroundColor = 'silver';
-    box.style.boxShadow = '0 0 15px rgba(123, 123, 123, 1)';
-    box.style.color = '#000';
-  } else if (points <= 30) {
-    box.style.backgroundColor = '#FFD700';
-    box.style.boxShadow = '0 0 15px rgba(255, 205, 106, 1)';
-    box.style.color = '#000';
-  } else if (points <= 50) {
-    box.style.backgroundColor = '#C50DD8';
-    box.style.boxShadow = '0 0 15px rgba(255, 106, 255, 1)';
-    box.style.color = '#fff';
-  }
-
-  overlay.style.display = 'flex';
-
-  setTimeout(() => {
-    overlay.style.display = 'none';
-  }, 2000);
-}
-
-// تهيئة الصفحة
-document.addEventListener('DOMContentLoaded', () => {
-  getUserData();
-  setupMessageListener();
-  
-  if ("Notification" in window) {
-    Notification.requestPermission();
-  }
-  
-  window.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
-      lastMessageTimestamp = null;
-    }
-  });
-});
-
-// إدارة حالة المستخدم
-async function setUserStatus(status) {
-  const userDocRef = doc(db, 'users', activeUser);
-  await updateDoc(userDocRef, {
-    status: status,
-    ...(status === 'offline' && { lastSeen: new Date().toISOString() })
-  });
-}
-
-window.addEventListener('load', () => {
-  document.querySelector('.header').style.opacity = '1';
-  setUserStatus('online');
-});
-
-window.addEventListener('beforeunload', () => {
-  setUserStatus('offline');
-});
-
-// إدارة قائمة أسماء المستخدمين
-// إدارة قائمة أسماء المستخدمين - النسخة المحسنة
-const receiverInput = document.getElementById('receiverUsername');
-const dropdown = document.getElementById('usernameDropdown');
-
-let usernames = [];
-let dropdownOpen = false;
-
-// فتح القائمة عند التركيز
-receiverInput.addEventListener('focus', showDropdown);
-receiverInput.addEventListener('click', showDropdown);
-
-// إغلاق عند النقر بالخارج
-document.addEventListener('click', (e) => {
-  if (!receiverInput.contains(e.target) && !dropdown.contains(e.target)) {
-    dropdown.style.display = 'none';
-    dropdownOpen = false;
-  }
-});
-
-// عند الكتابة: تصفية المستخدمين وعرضهم
-receiverInput.addEventListener('input', () => {
-  const term = receiverInput.value.toLowerCase();
-  const filtered = usernames.filter(name => name.toLowerCase().includes(term));
-  updateDropdown(filtered);
-});
-
-// دالة إظهار القائمة وتحميل المستخدمين عند أول مرة
-async function showDropdown() {
-  if (dropdownOpen) return;
-  
-  dropdownOpen = true;
-  dropdown.style.display = 'block';
-  dropdown.innerHTML = '<div class="dropdown-item">Loading users...</div>';
-  
-  try {
-    if (usernames.length === 0) {
-      const snapshot = await getDocs(collection(db, 'users'));
-      usernames = snapshot.docs
-        .map(doc => doc.id)
-        .filter(name => name !== activeUser);
-    }
-    
-    updateDropdown(usernames);
-  } catch (err) {
-    console.error('Error loading users:', err);
-    dropdown.innerHTML = '<div class="dropdown-item">❌ Failed to load users</div>';
-  }
-}
-
-// تحديث العناصر داخل القائمة
-function updateDropdown(list) {
-  dropdown.innerHTML = '';
-  
-  if (list.length === 0) {
-    const noUser = document.createElement('div');
-    noUser.className = 'dropdown-item';
-    noUser.textContent = 'No users found';
-    dropdown.appendChild(noUser);
-    return;
-  }
-  
-  list.slice(0, 100).forEach(username => {
-    const item = document.createElement('div');
-    item.className = 'dropdown-item';
-    item.textContent = username;
-    item.addEventListener('click', () => {
-      receiverInput.value = username;
-      dropdown.style.display = 'none';
-      dropdownOpen = false;
-    });
-    dropdown.appendChild(item);
-  });
-}
 </script>
 
 <script>
