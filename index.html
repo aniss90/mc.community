@@ -30,7 +30,13 @@
   OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
       appId: "0eeeb673-ff9f-4b67-8f63-e14e7945ed5f",
+      serviceWorkerParam: { scope: '/mc.community/' },
+      serviceWorkerPath: 'OneSignalSDKWorker.js',
+      serviceWorkerUpdaterPath: 'OneSignalSDKUpdaterWorker.js'
     });
+    
+    // طلب الإذن مباشرة عند فتح الصفحة
+    OneSignal.showSlidedownPrompt();
   });
 </script>
     <!-- Google tag (gtag.js) -->  
