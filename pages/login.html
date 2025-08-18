@@ -503,12 +503,52 @@ window.onload = async function() {
   if (activeUser) {
     const isBanned = await checkBanStatus(activeUser);
     if (!isBanned) {
+      // 🔹 تحديث تاريخ آخر تسجيل دخول للجهاز قبل التوجيه
+      try {
+        const userDocRef = doc(db, 'users', activeUser);
+        const userDoc = await getDoc(userDocRef);
+        
+        if (userDoc.exists()) {
+          const userAgent = navigator.userAgent;
+          let deviceName = "غير معروف";
+          let androidVersion = "غير معروف";
+          
+          const match = userAgent.match(/Android\s([\d.]+);?\s?(.*?)(?:Build|\))/i);
+          if (match) {
+            androidVersion = match[1];
+            deviceName = match[2]?.trim() || "غير معروف";
+          }
+          
+          const deviceId = `${deviceName}-${androidVersion}`.replace(/\s+/g, '_');
+          const devices = userDoc.data().devices || {};
+          
+          const updatedDevices = {
+            ...devices,
+            [deviceId]: {
+              deviceName,
+              androidVersion,
+              loginTime: new Date().toISOString()
+            }
+          };
+          
+          await setDoc(userDocRef, {
+            devices: updatedDevices,
+            lastLogin: serverTimestamp()
+          }, { merge: true });
+          
+          console.log("تم تحديث تاريخ تسجيل الدخول التلقائي:", updatedDevices[deviceId]);
+        }
+      } catch (error) {
+        console.error("خطأ أثناء تحديث تاريخ الدخول التلقائي:", error);
+      }
+      
+      // 🔹 التوجيه بعد التحديث
       window.location.href = "Homepage.html";
     } else {
       localStorage.removeItem("activeUser"); // إزالة المستخدم المبند
     }
   }
-};
+};;
 // ✅ إظهار تنبيه مخصص
 function showCustomAlert(title, message, imageUrl) {
   const alertElement = document.getElementById('customAlert');
