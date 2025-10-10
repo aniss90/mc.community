@@ -1,0 +1,41 @@
+<script type="module" src="https://unpkg.com/chessboard-element?module"></script>
+<script type="module">
+    import { Chess } from "https://cdn.jsdelivr.net/npm/chess.js@1.0.0/+esm"
+    
+    const chess = new Chess()
+    const board = document.querySelector("chess-board")
+    
+    // منع تحريك القطع إلا إذا انتهت اللعبة
+    board.addEventListener("drag-start", (e) => {
+        if (chess.isGameOver()) {
+            e.preventDefault()
+            return
+        }
+    })
+    
+    // تنفيذ حركة اللاعب
+    board.addEventListener("drop", (e) => {
+        const { source, target } = e.detail
+        const move = chess.move({ from: source, to: target, promotion: "q" })
+        
+        // إذا الحركة غير قانونية -> إرجاع القطعة
+        if (move === null) {
+            e.preventDefault()
+            return
+        }
+        
+        // تحديث اللوحة
+        board.setAttribute("position", chess.fen())
+        
+        // تحقق من نهاية اللعبة
+        if (chess.isGameOver()) {
+            let result = "تعادل!"
+            if (chess.isCheckmate()) {
+                result = chess.turn() === "w" ? "فاز الأسود!" : "فاز الأبيض!"
+            }
+            alert("انتهت اللعبة: " + result)
+        }
+    })
+</script>
+
+<chess-board draggable-pieces position="start"></chess-board>

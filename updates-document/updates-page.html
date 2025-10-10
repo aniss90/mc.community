@@ -1,14 +1,134 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updates page</title>
+    <link rel="stylesheet" href="../style/main.css">
+    <link rel="icon" type="image/x-icon" href="web/mcco-logo.png">
+    <style>
+        @font-face {
+            font-family: minecraft;
+            src: url('font/Minecraft-Default.otf');
+        }
 
-<body>
+        @font-face {
+            font-family: minecraft-ten;
+            src: url('font/Minecraft-Ten.ttf');
+        }
+
+        @font-face {
+            font-family: minecraft-five;
+            src: url('font/Minecraft-Five.ttf');
+        }
+
+      
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding-bottom: 80px;
+            flex-grow: 1;
+            padding-bottom: 20px;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .content {
     
-</body>
+            padding-top: 40px;
+            
+        }
 
+
+    
+    </style>
+</head>
+<body>
+     
+   
+
+    <div class="header">
+        Privacy policy <img src="icons/gavel_gif.gif" height="20">
+        <button class="back" id="backButton" type="button" onclick="goBack()"><</button>
+    </div>
+
+    <div class="content">
+        <div class="title"> Change lang
+        <div class="description"> 
+        Change the language of the privacy policy text 
+<button id="translate-btn" class="greenButton">ترجم إلى العربية</button>
+        </div>
+<div id="privacy-text" style="white-space: pre-wrap; color: #fff; background-color: #4B4B4B; padding: 20px; border-radius: 8px; width: 100%; box-sizing: border-box; overflow-wrap: break-word;"></div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025/2026 mc co. All rights reserved.</p>
+        <p>We have no relationship with Mojang Studio or Minecraft. We are independent of them. </p>
+    </footer>
+
+    <script>
+const privacyTextEl = document.getElementById('privacy-text');
+const translateBtn = document.getElementById('translate-btn');
+
+let currentLang = 'en';
+async function loadPrivacyText(lang) {
+    const filePath = `privacy_document/privacy_${lang}.txt`;
+    try {
+        const response = await fetch(filePath);
+        if (!response.ok) throw new Error('Failed to load file');
+        const text = await response.text();
+        privacyTextEl.textContent = text;
+        document.documentElement.lang = lang;  // اللغة تبقى محدثة لكن اتجاه الصفحة لا يتغير
+        
+if (lang === 'ar') {
+    privacyTextEl.style.direction = 'rtl';
+    privacyTextEl.style.textAlign = 'right';
+    translateBtn.textContent = "To English";
+} else {
+    privacyTextEl.style.direction = 'ltr';
+    privacyTextEl.style.textAlign = 'left';
+    translateBtn.textContent = "ترجم إلى العربية";
+}
+    } catch (error) {
+        privacyTextEl.textContent = 'Error loading privacy policy.';
+        console.error(error);
+    }
+}
+
+translateBtn.addEventListener('click', () => {
+    currentLang = currentLang === 'en' ? 'ar' : 'en';
+    loadPrivacyText(currentLang);
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    loadPrivacyText(currentLang);
+});
+    </script>
+      <script>
+  function goBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/'; // يمكنك تغيير الرابط إلى الصفحة الرئيسية لموقعك
+    }
+  }
+</script>
+</body>
 </html>

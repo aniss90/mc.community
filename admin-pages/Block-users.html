@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/main.css">
+  <link rel="icon" type="image/x-icon" href="../web/mcco-logo.png">
+  
+  <title>User Management</title>
+  <style>
+    @font-face {    
+      font-family: minecraft;    
+      src: url('../font/Minecraft-Default.otf');    
+    }    
+    @font-face {    
+      font-family: minecraft-ten;    
+      src: url('../font/Minecraft-Ten.ttf');    
+    }    
+    @font-face {    
+      font-family: minecraft-five;    
+      src: url('../font/Minecraft-Five.ttf');    
+    }   
+    @font-face {    
+      font-family: MinecraftFive-Regular;    
+      src: url('../font/MinecraftFive-Regular.ttf');    
+    }  
+    * {
+      color: #FFFFFF;
+    }
+    .admin-container {
+      padding: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .user-list, .ban-history-list {
+      margin-top: 20px;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+    }
+    .user-card, .ban-history-card {
+      background-color: #2A2A2A;
+      border: 1px solid #444;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 3px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .user-card:hover, .ban-history-card:hover {
+      background-color: #3A3A3A;
+    }
+    .user-info, .ban-info {
+      flex: 1;
+      min-width: 200px;
+    }
+    .user-name, .ban-username {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .user-stats {
+      margin-left: 20px;
+      text-align: right;
+    }
+    .ban-controls {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+    .ban-btn, .unban-btn, .history-btn, .reban-btn {
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+    }
+    .ban-btn {
+      background-color: #FF3D3D;
+      border: 1px solid #FF6B6B;
+    }
+    .unban-btn {
+      background-color: #4CAF50;
+      border: 1px solid #6BFF6B;
+    }
+    .history-btn {
+      background-color: #3D7AFF;
+      border: 1px solid #6BA1FF;
+    }
+    .reban-btn {
+      background-color: #FF8C3D;
+      border: 1px solid #FFB06B;
+    }
+    .ban-dialog {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .ban-dialog-content {
+      background-color: #262626;
+      border: 3px solid #E0BA31;
+      padding: 20px;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 2px;
+    }
+    .ban-options {
+      margin: 15px 0;
+    }
+    .ban-option {
+      margin: 10px 0;
+    }
+    .ban-reason-input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      background-color: #333;
+      border: 1px solid #444;
+      color: white;
+    }
+    .dialog-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .banned-badge {
+      background-color: #FF3D3D;
+      padding: 3px 6px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+    .active-badge {
+      background-color: #4CAF50;
+      padding: 3px 6px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+    .tab-buttons {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #444;
+    }
+    .tab-btn {
+      padding: 10px 20px;
+      background-color: #333;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+    }
+    .tab-btn.active {
+      background-color: #444;
+      border-bottom: 3px solid #FFFB00;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<div class="sticky-header"> 
+  <div class="header">  
+    <button class="back" id="backButton" type="button" onclick="goBack()"><</button>   
+    User Management <img src="../icons/gif_test-83efe.gif" height="30">  
+  </div>  
+</div>
+
+<div class="content">
+  <div class="admin-container">
+    <div class="tab-buttons">
+      <button class="tab-btn active" data-tab="users-tab">Users</button>
+      <button class="tab-btn" data-tab="ban-history-tab">Ban History</button>
+    </div>
+    
+    <div id="users-tab" class="tab-content active">
+      <h2>User Management</h2>
+      <div class="user-list" id="usersList">
+        <!-- سيتم ملؤها بالجافاسكريبت -->
+      </div>
+    </div>
+    
+    <div id="ban-history-tab" class="tab-content">
+      <h2>Ban History</h2>
+      <div class="ban-history-list" id="banHistoryList">
+        <!-- سيتم ملؤها بالجافاسكريبت -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- حوار الحظر -->
+<div id="banDialog" class="ban-dialog">
+  <div class="ban-dialog-content">
+    <h3>Ban User: <span id="banUsername"></span></h3>
+    
+    <div class="ban-options">
+      <div class="ban-option">
+        <input type="radio" id="permanentBan" name="banDuration" value="permanent" checked>
+        <label for="permanentBan">Permanent Ban</label>
+      </div>
+      
+      <div class="ban-option">
+        <input type="radio" id="temporaryBan" name="banDuration" value="temporary">
+        <label for="temporaryBan">Temporary Ban</label>
+        <input type="number" id="banDays" min="1" value="7" style="display: none; width: 50px; margin-left: 10px;"> days
+      </div>
+    </div>
+    
+    <div>
+      <label for="banReason">Reason:</label>
+      <textarea id="banReason" class="ban-reason-input" rows="3" placeholder="Enter ban reason..."></textarea>
+    </div>
+    
+    <div class="dialog-buttons">
+      <button id="cancelBanBtn">Cancel</button>
+      <button id="confirmBanBtn" class="ban-btn">Confirm Ban</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { db, auth } from '../scripts/main.js';
+import { 
+  collection, 
+  getDocs, 
+  doc, 
+  updateDoc,
+  setDoc,
+  serverTimestamp,
+  query,
+  orderBy,
+  where,
+  limit
+} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+let selectedUserId = null;
+let currentAdmin = null;
+
+// الحصول على معلومات المدير الحالي
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    currentAdmin = user.email || user.uid;
+  }
+});
+
+// عرض جميع المستخدمين
+async function loadUsers() {
+  const usersList = document.getElementById('usersList');
+  usersList.innerHTML = '<div>Loading users...</div>';
+  
+  try {
+    const querySnapshot = await getDocs(collection(db, 'users'));
+    usersList.innerHTML = '';
+    
+    if (querySnapshot.empty) {
+      usersList.innerHTML = '<div>No users found</div>';
+      return;
+    }
+    
+    const userPromises = querySnapshot.docs.map(async (doc) => {
+      const userData = doc.data();
+      const lastLogin = userData.lastLogin ? 
+        new Date(userData.lastLogin.toDate()).toLocaleString() : 'Never';
+      
+      const isBanned = userData.banInfo && userData.banInfo.isBanned;
+      const banDuration = isBanned ? 
+        (userData.banInfo.duration === 'permanent' ? 
+          'Permanent' : 
+          `${userData.banInfo.duration} days`) : '';
+      
+      // Count ban history
+      const banHistoryQuery = query(
+        collection(db, 'banHistory'),
+        where('username', '==', doc.id)
+      );
+      const banHistorySnapshot = await getDocs(banHistoryQuery);
+      const banCount = banHistorySnapshot.size;
+      const activeBanCount = banHistorySnapshot.docs.filter(doc => !doc.data().unbanned).length;
+      
+      const card = document.createElement('div');
+      card.className = 'user-card';
+      card.innerHTML = `
+        <div class="user-info">
+          <div class="user-name">${doc.id}</div>
+          <div class="ban-controls">
+            ${isBanned ? 
+              `<button class="unban-btn" data-userid="${doc.id}">Unban</button>` : 
+              `<button class="ban-btn" data-userid="${doc.id}">Ban</button>`}
+            <button class="history-btn" data-userid="${doc.id}" onclick="viewBanHistory('${doc.id}')">History</button>
+          </div>
+        </div>
+        <div class="user-stats">
+          <div>Status: ${isBanned ? 
+            `<span class="banned-badge">Banned (${banDuration})</span>` : 
+            `<span class="active-badge">Active</span>`}</div>
+          <div>Last Login: ${lastLogin}</div>
+          <div>Total Bans: ${banCount}</div>
+          <div>Active Bans: ${activeBanCount}</div>
+        </div>
+      `;
+      return card;
+    });
+    
+    const cards = await Promise.all(userPromises);
+    cards.forEach(card => usersList.appendChild(card));
+    
+    // إضافة مستمعي الأحداث للأزرار
+    document.querySelectorAll('.ban-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        selectedUserId = e.target.getAttribute('data-userid');
+        showBanDialog(selectedUserId);
+      });
+    });
+    
+    document.querySelectorAll('.unban-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const userId = e.target.getAttribute('data-userid');
+        if (confirm(`Are you sure you want to unban ${userId}?`)) {
+          await unbanUser(userId);
+          loadUsers();
+          loadBanHistory();
+        }
+      });
+    });
+    
+  } catch (error) {
+    console.error('Error loading users:', error);
+    usersList.innerHTML = '<div>Error loading users</div>';
+  }
+}
+
+// عرض سجل الحظر
+async function loadBanHistory() {
+  const historyList = document.getElementById('banHistoryList');
+  historyList.innerHTML = '<div>Loading ban history...</div>';
+  
+  try {
+    const q = query(collection(db, 'banHistory'), orderBy('bannedAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    historyList.innerHTML = '';
+    
+    if (querySnapshot.empty) {
+      historyList.innerHTML = '<div>No ban history found</div>';
+      return;
+    }
+    
+    querySnapshot.forEach((doc) => {
+      const historyData = doc.data();
+      const banDate = historyData.bannedAt ? 
+        new Date(historyData.bannedAt.toDate()).toLocaleString() : 'N/A';
+      
+      const duration = historyData.duration === 'permanent' ? 
+        'Permanent' : `${historyData.duration} days`;
+      
+      const status = historyData.unbanned ? 
+        `<span class="active-badge">Unbanned</span>` : 
+        `<span class="banned-badge">Active</span>`;
+      
+      const card = document.createElement('div');
+      card.className = 'ban-history-card';
+      card.innerHTML = `
+        <div class="ban-info">
+          <div class="ban-username">${historyData.username}</div>
+          <div style="font-family:MinecraftFive-Regular; color:#C18E3F;">Reason: ${historyData.reason}</div>
+          <div>Ban Date: ${banDate}</div>
+          <div>Duration: ${duration}</div>
+          <div>Banned By: ${historyData.bannedBy}</div>
+          <div>Status: ${status}</div>
+        </div>
+        <div>
+          ${historyData.unbanned ? 
+            `<button class="reban-btn" data-id="${doc.id}" data-username="${historyData.username}" 
+             data-duration="${historyData.duration}" data-reason="${historyData.reason}">Re-ban</button>` : ''}
+        </div>
+      `;
+      historyList.appendChild(card);
+    });
+    
+    // إضافة مستمعي الأحداث لأزرار إعادة الحظر
+    document.querySelectorAll('.reban-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const username = e.target.getAttribute('data-username');
+        const duration = e.target.getAttribute('data-duration');
+        const reason = e.target.getAttribute('data-reason');
+        
+        // تحسين نافذة التأكيد لعرض السبب ومدة الحظر
+        if (confirm(`هل أنت متأكد من إعادة حظر ${username}؟\nالسبب: ${reason}\nالمدة: ${duration === 'permanent' ? 'دائم' : duration + ' يوم'}`)) {
+          const success = await banUser(username, duration, reason);
+          if (success) {
+            alert(`تم إعادة حظر ${username} بنجاح`);
+            loadUsers();
+            loadBanHistory();
+          } else {
+            alert('خطأ أثناء إعادة الحظر');
+          }
+        }
+      });
+    });
+    
+  } catch (error) {
+    console.error('Error loading ban history:', error);
+    historyList.innerHTML = '<div>Error loading ban history</div>';
+  }
+}
+
+// عرض حوار الحظر
+function showBanDialog(username) {
+  const dialog = document.getElementById('banDialog');
+  document.getElementById('banUsername').textContent = username;
+  dialog.style.display = 'flex';
+  
+  // إظهار/إخفاء حقل الأيام
+  document.getElementById('temporaryBan').addEventListener('change', function() {
+    document.getElementById('banDays').style.display = this.checked ? 'inline-block' : 'none';
+  });
+  
+  document.getElementById('permanentBan').addEventListener('change', function() {
+    document.getElementById('banDays').style.display = this.checked ? 'none' : 'inline-block';
+  });
+}
+
+// حظر المستخدم
+async function banUser(userId, duration, reason) {
+  try {
+    const userRef = doc(db, 'users', userId);
+    let banData = {
+      isBanned: true,
+      reason: reason,
+      bannedAt: serverTimestamp(),
+      bannedBy: currentAdmin,
+      duration: duration === 'permanent' ? 'permanent' : parseInt(duration)
+    };
+    
+    if (duration !== 'permanent') {
+      const days = parseInt(duration);
+      const endDate = new Date();
+      endDate.setDate(endDate.getDate() + days);
+      banData.endDate = endDate;
+    }
+    
+    await updateDoc(userRef, {
+      banInfo: banData
+    });
+    
+    const banHistoryRef = doc(collection(db, 'banHistory'));
+    await setDoc(banHistoryRef, {
+      username: userId,
+      ...banData,
+      unbanned: false,
+      unbannedAt: null,
+      unbannedBy: null
+    });
+    
+    return true;
+  } catch (error) {
+    console.error('Error banning user:', error);
+    return false;
+  }
+}
+
+// إلغاء حظر المستخدم
+async function unbanUser(userId) {
+  try {
+    const userRef = doc(db, 'users', userId);
+    
+    await updateDoc(userRef, {
+      'banInfo.isBanned': false,
+      'banInfo.unbannedAt': serverTimestamp(),
+      'banInfo.unbannedBy': currentAdmin
+    });
+    
+    const q = query(
+      collection(db, 'banHistory'),
+      orderBy('bannedAt', 'desc'),
+      where('username', '==', userId),
+      where('unbanned', '==', false),
+      limit(1)
+    );
+    
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const banDoc = querySnapshot.docs[0];
+      await updateDoc(banDoc.ref, {
+        unbanned: true,
+        unbannedAt: serverTimestamp(),
+        unbannedBy: currentAdmin
+      });
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('Error unbanning user:', error);
+    return false;
+  }
+}
+
+// عرض سجل الحظر لمستخدم معين
+window.viewBanHistory = function(userId) {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.getAttribute('data-tab') === 'ban-history-tab') {
+      btn.classList.add('active');
+    }
+  });
+  
+  document.querySelectorAll('.tab-content').forEach(tab => {
+    tab.classList.remove('active');
+    if (tab.id === 'ban-history-tab') {
+      tab.classList.add('active');
+    }
+  });
+  
+  const cards = document.querySelectorAll('.ban-history-card');
+  cards.forEach(card => {
+    const usernameElement = card.querySelector('.ban-username');
+    if (usernameElement && usernameElement.textContent === userId) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+// تهيئة الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+  loadUsers();
+  loadBanHistory();
+  
+  document.getElementById('cancelBanBtn').addEventListener('click', () => {
+    document.getElementById('banDialog').style.display = 'none';
+  });
+  
+  document.getElementById('confirmBanBtn').addEventListener('click', async () => {
+    const duration = document.querySelector('input[name="banDuration"]:checked').value;
+    const days = document.getElementById('banDays').value;
+    const reason = document.getElementById('banReason').value.trim() || 'No reason specified';
+    
+    if (duration === 'temporary' && (!days || parseInt(days) <= 0)) {
+      alert('Please enter a valid number of days');
+      return;
+    }
+    
+    const finalDuration = duration === 'permanent' ? 'permanent' : days;
+    
+    const success = await banUser(selectedUserId, finalDuration, reason);
+    if (success) {
+      alert(`User ${selectedUserId} has been banned successfully`);
+      document.getElementById('banDialog').style.display = 'none';
+      loadUsers();
+      loadBanHistory();
+    } else {
+      alert('Error banning user');
+    }
+  });
+  
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabId = btn.getAttribute('data-tab');
+      
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.id === tabId) {
+          tab.classList.add('active');
+        }
+      });
+      
+      // Reset ban history view when switching tabs
+      if (tabId === 'ban-history-tab') {
+        loadBanHistory();
+      }
+    });
+  });
+});
+
+function goBack() {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    window.location.href = '/';
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>mc co-create account</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="../web/mcco-logo.png">
+  <link rel="stylesheet" href="../style/main.css">
+  <!-- إضافة مكتبة EmailJS -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function(){
+      emailjs.init("XJZUq8LRFG1aasSHu"); // استبدل YOUR_PUBLIC_KEY بمفتاحك العام من EmailJS
+    })();
+  </script>
+  <style>
+    @font-face {
+      font-family: minecraft;
+      src: url('../font/Minecraft-Default.otf');
+    }
+    @font-face {
+      font-family: minecraft-ten;
+      src: url('../font/Minecraft-Ten.ttf');
+    }
+    @font-face {
+      font-family: minecraft-five;
+      src: url('../font/Minecraft-Five.ttf');
+    }
+    p {
+      color: #FFFFFF;
+    }
+    .password-container {
+      position: relative;
+      margin: 10px 0;
+    }
+    .toggle-password {
+      position: absolute;
+      margin-top: 11px;
+      transform: translateY(-50%);
+      transform: translateX(-150%);
+      cursor: pointer;
+      user-select: none;
+      opacity: 0.7;
+    }
+    .toggle-password:hover {
+      opacity: 1;
+    }
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .input-group input {
+      outline: none;
+      font-size: 16px;
+    }
+    .input-group label {
+      position: absolute;
+      top: 12px;
+      left: 20%;
+      color: #989898;
+      font-family: minecraft;
+      transition: all 0.4s;
+      pointer-events: none;
+      background-color: transparent;
+      padding: 0 5px;
+    }
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+      top: -10px;
+      border-radius: 10px;
+      left: 20%;
+      font-size: 14px;
+      background-color: rgba(38, 38, 38);
+      color: #999999;
+    }
+    .register-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+      padding: 20px;
+    }
+    .register-box {
+      flex: 1;
+      max-width: 400px;
+    }
+    .register-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .register-image img {
+      max-width: 100%;
+      height: auto;
+    }
+    /* تنسيق الجوال */
+    @media (max-width: 768px) {
+      .register-container {
+        flex-direction: column;
+        gap: 20px;
+      }
+      .register-image {
+        order: 2;
+        margin-top: 20px;
+      }
+      .register-box {
+        order: 1;
+        width: 100%;
+      }
+    }
+    /* أنماط التحقق من الصحة */
+    .input-group input.valid {
+      border: 2px solid #4CAF50 !important;
+    }
+    .input-group input.invalid {
+      border: 2px solid #f44336 !important;
+    }
+    .input-group input {
+      transition: border 0.3s ease;
+      border: 2px solid #313131D1 !important;
+    }
+    .error-message {
+      color: #f44336;
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+    .sticky-header.sticky {
+      position: fixed;
+      top: 0;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0.9; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .header {
+      background-color: #222222;
+      padding: 10px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+    }
+    /* أنماط جديدة تشبه فيسبوك */
+    .profile-upload-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .profile-image-label {
+      cursor: pointer;
+      position: relative;
+    }
+    .profile-image-preview {
+      width: 150px;
+      height: 150px;
+      border-radius: 25px;
+      overflow: hidden;
+      border: 2px solid #727272;
+      background-color: #F5F5F500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.3s;
+    }
+    .profile-image-preview:hover {
+      border-color: #CDCDCD;
+    }
+    .profile-image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .upload-icon {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background-color: #474747;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: bold;
+      border: 2px solid #BFBFBF;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+    .input-error {
+      border: 2px solid #f44336 !important;
+      animation: shake 0.3s;
+    }
+    .password-container.input-error {
+      animation: shake 0.3s;
+    }
+    /* أنماط الخطوات */
+    .step {
+      display: none;
+    }
+    .step.active {
+      display: block;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    .greenButton:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background-color: #066903;
+      transform: translateY(var(--border-2x-thickness));
+      box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 5px;
+      background-color: #444;
+      box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    .progress {
+      height: 100%;
+      border-radius: 8px;
+      background-color: #057D00;
+      box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
+      transition: width 0.3s;
+    }
+    .action-btn {
+      display: flex;
+      gap: 8px;
+    }
+    /* أنماط مرحلة سياسة الخصوصية */
+    .privacy-container {
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 15px;
+      background-color: #5E5E5E;
+      color: #fff;
+      box-sizing: border-box;
+      border: 4px solid #737373;
+      box-shadow: 0px var(--border-2x-thickness) 0px #4A4A4A,
+                  0 0 0 var(--border-thickness) #1a1a1b,
+                  0 var(--border-2x-thickness) 0 var(--border-thickness) #1a1a1b;
+    }
+    .privacy-content {
+      white-space: pre-line;
+      line-height: 1.5;
+      color: #E7E7EA;
+    }
+    .privacy-content.rtl {
+      direction: rtl;
+      text-align: right;
+      color: #E7E7EA;
+    }
+    .privacy-content.ltr {
+      direction: ltr;
+      text-align: left;
+      color: #E7E7EA;
+    }
+    .language-switcher {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 15px;
+      gap: 10px;
+    }
+    .language-btn {
+      background-color: #444;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .language-btn.active {
+      background-color: #057D00;
+    }
+    .agree-check {
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+      margin-bottom: 15px;
+      box-shadow: none;
+      border: none;
+      padding: 1px;
+      color: #E7E7EA;
+    }
+    .agree-check input {
+      margin-right: 10px;
+      box-shadow: none;
+      border: none;
+      padding: 1px;
+    }
+    #agreeCheck {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+    /* أنماط مربعات رمز التحقق */
+    .verification-code-container {
+      margin: 20px 0;
+      text-align: center;
+    }
+    .code-inputs {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      padding: 10px;
+    }
+    .code-box {
+      width: 48px;
+      height: 56px;
+      text-align: center;
+      font-size: 24px;
+      font-family: minecraft;
+      border: 2px solid #313131D1;
+      border-radius: 8px;
+      background-color: #2a2a2a;
+      color: #ffffff;
+      outline: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .code-box:focus {
+      border-color: #057D00;
+      box-shadow: 0 0 8px rgba(5, 125, 0, 0.5);
+      transform: scale(1.05);
+    }
+    .code-box.valid {
+      border-color: #4CAF50;
+      background-color: #1a3c1a;
+    }
+    .code-box.invalid {
+      border-color: #f44336;
+      animation: shake 0.3s;
+    }
+    .code-box::-webkit-inner-spin-button,
+    .code-box::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .code-box:invalid {
+      border-color: #f44336;
+    }
+    .resend-container {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .resend-btn {
+      background-color: #444;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: minecraft;
+      transition: background-color 0.3s;
+    }
+    .resend-btn:hover:not(:disabled) {
+      background-color: #057D00;
+    }
+    .resend-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .resend-timer {
+      color: #E7E7EA;
+      font-size: 14px;
+      font-family: minecraft;
+    }
+    /* تحسين التوافق مع الأجهزة المحمولة */
+    @media (max-width: 768px) {
+      .code-box {
+        width: 40px;
+        height: 48px;
+        font-size: 20px;
+      }
+      .code-inputs {
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="sticky-header">
+  <div class="header">register
+    <img src="../icons/crafting.gif" height="20">
+    <button class="back" id="backButton" type="button" onclick="goBack()"><</button>
+  </div>
+</div>
+<div class="content">
+  <div class="register-container">
+    <div class="register-box">
+      <form id="registerForm">
+        <div class="progress-bar">
+          <div class="progress" id="progressBar"></div>
+        </div>
+        <div class="description">
+          <div class="title">register box <img src="../icons/gif_test-83efe.gif" height="15"></div>
+          <!-- الخطوة 1: اسم المستخدم -->
+          <div class="step active" id="step1">
+            <p>Enter your desired username</p>
+            <div class="input-group">
+              <input type="text" id="username" placeholder=" " required>
+              <label for="username">Username</label>
+              <div class="error-message" id="usernameError"></div>
+            </div>
+            <button type="button" class="greenButton" id="nextBtn1" disabled>Next</button>
+          </div>
+          <!-- الخطوة 2: كلمة المرور والبريد الإلكتروني -->
+          <div class="step" id="step2">
+            <p>Complete your registration details</p>
+            <div class="profile-upload-container">
+              <label for="profileImage" class="profile-image-label">
+                <div class="profile-image-preview" id="profilePreview">
+                  <img id="previewImage" src="../icons/player-head-128-052ba.png" alt="Profile Preview">
+                  <div class="upload-icon">+</div>
+                </div>
+              </label>
+              <input type="file" id="profileImage" accept="image/*" style="display: none;">
+              <div class="error-message" id="imageError"></div>
+            </div>
+            <div class="password-container">
+              <div class="input-group">
+                <input type="password" id="password" placeholder="" required>
+                <label for="password">Password</label>
+                <span class="toggle-password">🙉</span>
+                <div class="error-message" id="passwordError"></div>
+              </div>
+            </div>
+            <div class="input-group">
+              <input type="password" id="confirmPassword" placeholder="" required>
+              <label for="confirmPassword">Confirm Password</label>
+              <div class="error-message" id="confirmPasswordError"></div>
+            </div>
+            <div class="input-group">
+              <input type="email" id="email" placeholder=" " required>
+              <label for="email">Your email</label>
+              <div class="error-message" id="emailError"></div>
+            </div>
+            <div class="action-btn">
+              <button type="button" class="greenButton" id="backBtn1">Back</button>
+              <button type="button" class="greenButton" id="nextBtn2">Next</button>
+            </div>
+          </div>
+          <!-- الخطوة 3: سياسة الخصوصية -->
+          <div class="step" id="step3">
+            <p>Please read and accept our Privacy Policy</p>
+            <div class="language-switcher">
+              <button type="button" class="language-btn active" id="englishBtn">English</button>
+              <button type="button" class="language-btn" id="arabicBtn">العربية</button>
+            </div>
+            <div class="privacy-container">
+              <div class="privacy-content ltr" id="privacyContent"></div>
+            </div>
+            <div class="agree-check">
+              <input type="checkbox" id="agreeCheck">
+              <label for="agreeCheck" style="color: #fff;">I have read and agree to the Privacy Policy</label>
+            </div>
+            <div class="action-btn">
+              <button type="button" class="greenButton" id="backBtn2">Back</button>
+              <button type="button" class="greenButton" id="nextBtn3" disabled>Next</button>
+            </div>
+          </div>
+          <!-- الخطوة 4: إدخال رمز التحقق -->
+          <div class="step" id="step4">
+            <p>Enter the 6-digit code sent to your email</p>
+            <div class="verification-code-container">
+              <div class="code-inputs" role="group" aria-label="Verification code input">
+                <input type="text" class="code-box" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit 1">
+                <input type="text" class="code-box" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit 2">
+                <input type="text" class="code-box" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit 3">
+                <input type="text" class="code-box" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit 4">
+                <input type="text" class="code-box" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit 5">
+                <input type="text" class="code-box" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit 6">
+              </div>
+              <div class="error-message" id="codeError" role="alert"></div>
+              <div class="resend-container">
+                <button type="button" class="resend-btn" id="resendBtn" disabled>Resend Code</button>
+                <span class="resend-timer" id="resendTimer"></span>
+              </div>
+            </div>
+            <div class="action-btn">
+              <button type="button" class="greenButton" id="backBtn3">Back</button>
+              <button type="button" class="greenButton" id="verifyBtn" disabled>Verify</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="register-image">
+      <div class="description">
+        <img src="../icons/no-worlds-yet-art-446b1.png" alt="Register Image">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.onload = function() {
+    const emailField = document.getElementById("email");
+    const usernameField = document.getElementById("username");
+    const savedEmail = localStorage.getItem("googleEmailForRegister");
+    if (savedEmail) {
+      emailField.value = savedEmail;
+      usernameField.value = savedEmail.split('@')[0];
+      localStorage.removeItem("googleEmailForRegister");
+    }
+  };
+</script>
+<script type="module">
+  import { db } from '../scripts/main.js';
+  import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+  // متغيرات حالة التطبيق
+  let currentStep = 1;
+  const totalSteps = 4;
+  let verificationCode = '';
+  let resendTimeout = null;
+  let resendInterval = null;
+  const RESEND_COOLDOWN = 60; // 60 ثانية للانتظار قبل إعادة الإرسال
+  let resendAttempts = 0;
+  const MAX_RESEND_ATTEMPTS = 3;
+
+  // عناصر DOM
+  const togglePassword = document.querySelector('.toggle-password');
+  const passwordInput = document.getElementById('password');
+  const confirmPasswordInput = document.getElementById('confirmPassword');
+  const usernameInput = document.getElementById('username');
+  const emailInput = document.getElementById('email');
+  const profileImageInput = document.getElementById('profileImage');
+  const previewImage = document.getElementById('previewImage');
+  const nextBtn1 = document.getElementById('nextBtn1');
+  const backBtn1 = document.getElementById('backBtn1');
+  const nextBtn2 = document.getElementById('nextBtn2');
+  const backBtn2 = document.getElementById('backBtn2');
+  const nextBtn3 = document.getElementById('nextBtn3');
+  const backBtn3 = document.getElementById('backBtn3');
+  const verifyBtn = document.getElementById('verifyBtn');
+  const resendBtn = document.getElementById('resendBtn');
+  const resendTimer = document.getElementById('resendTimer');
+  const progressBar = document.getElementById('progressBar');
+  const step1 = document.getElementById('step1');
+  const step2 = document.getElementById('step2');
+  const step3 = document.getElementById('step3');
+  const step4 = document.getElementById('step4');
+  const englishBtn = document.getElementById('englishBtn');
+  const arabicBtn = document.getElementById('arabicBtn');
+  const privacyContent = document.getElementById('privacyContent');
+  const agreeCheck = document.getElementById('agreeCheck');
+  const codeInputs = document.querySelectorAll('.code-box');
+  const codeError = document.getElementById('codeError');
+
+  // تهيئة شريط التقدم
+  progressBar.style.width = `${(currentStep / totalSteps) * 100}%`;
+
+  // تحميل سياسة الخصوصية
+  async function loadPrivacyPolicy(lang) {
+    try {
+      const response = await fetch(`../privacy_document/privacy_${lang}.txt`);
+      if (!response.ok) throw new Error('Failed to load privacy policy');
+      const text = await response.text();
+      privacyContent.textContent = text;
+      privacyContent.className = `privacy-content ${lang === 'ar' ? 'rtl' : 'ltr'}`;
+    } catch (error) {
+      console.error('Error loading privacy policy:', error);
+      privacyContent.textContent = 'Failed to load privacy policy. Please try again later.';
+    }
+  }
+
+  // تهيئة الصفحة بتحميل سياسة الخصوصية الإنجليزية أولاً
+  loadPrivacyPolicy('en');
+
+  // أحداث التبديل بين اللغات
+  englishBtn.addEventListener('click', function() {
+    englishBtn.classList.add('active');
+    arabicBtn.classList.remove('active');
+    loadPrivacyPolicy('en');
+  });
+
+  arabicBtn.addEventListener('click', function() {
+    arabicBtn.classList.add('active');
+    englishBtn.classList.remove('active');
+    loadPrivacyPolicy('ar');
+  });
+
+  // حدث الموافقة على السياسة
+  agreeCheck.addEventListener('change', function() {
+    nextBtn3.disabled = !this.checked;
+  });
+
+  // دالة إنشاء رمز تحقق
+  function generateVerificationCode() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  }
+
+  // دالة إرسال البريد الإلكتروني باستخدام EmailJS
+  async function sendVerificationEmail(email, code) {
+    try {
+      await emailjs.send("service_y3lbl2i", "template_zfk7ziq", {
+        to_name: usernameInput.value.trim(),
+        to_email: email,
+        verification_code: code
+      });
+      console.log("Verification email sent successfully");
+      return true;
+    } catch (error) {
+      console.error("Error sending verification email:", error);
+      codeError.textContent = "Failed to send verification code. Please try again.";
+      codeError.style.display = "block";
+      return false;
+    }
+  }
+
+  // إدارة مؤقت إعادة الإرسال
+  function startResendTimer() {
+    let timeLeft = RESEND_COOLDOWN;
+    resendBtn.disabled = true;
+    resendTimer.textContent = `Wait ${timeLeft}s to resend`;
+    resendInterval = setInterval(() => {
+      timeLeft--;
+      resendTimer.textContent = `Wait ${timeLeft}s to resend`;
+      if (timeLeft <= 0) {
+        clearInterval(resendInterval);
+        resendTimer.textContent = '';
+        resendBtn.disabled = resendAttempts >= MAX_RESEND_ATTEMPTS;
+        if (resendAttempts >= MAX_RESEND_ATTEMPTS) {
+          resendBtn.textContent = 'Max attempts reached';
+        }
+      }
+    }, 1000);
+  }
+
+  // وظائف التحقق من الصحة
+  function setInputStatus(input, isValid) {
+    input.classList.remove("valid", "invalid");
+    if (isValid) {
+      input.classList.add("valid");
+    } else {
+      input.classList.add("invalid");
+    }
+  }
+
+  function validateUsername(username) {
+    let isValid = true;
+    if (username.length < 5) {
+      usernameError.textContent = "Username must be at least 5 characters";
+      usernameError.style.color = "#f44336";
+      usernameError.style.display = "block";
+      isValid = false;
+    } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      usernameError.textContent = "Only letters, numbers and underscore allowed";
+      usernameError.style.display = "block";
+      isValid = false;
+    } else if (/[^\x00-\x7F]/.test(username)) {
+      usernameError.textContent = "English characters only";
+      usernameError.style.display = "block";
+      isValid = false;
+    } else {
+      usernameError.style.display = "none";
+    }
+    setInputStatus(usernameInput, isValid);
+    return isValid;
+  }
+
+  function validatePassword(password) {
+    let isValid = true;
+    if (password.length < 6) {
+      passwordError.textContent = "Password must be at least 6 characters";
+      passwordError.style.display = "block";
+      isValid = false;
+    } else if (!/\d/.test(password)) {
+      passwordError.textContent = "Password must contain at least one number";
+      passwordError.style.display = "block";
+      isValid = false;
+    } else {
+      passwordError.style.display = "none";
+    }
+    setInputStatus(passwordInput, isValid);
+    return isValid;
+  }
+
+  function validateConfirmPassword(password, confirmPassword) {
+    let isValid = password === confirmPassword;
+    if (!isValid) {
+      confirmPasswordError.textContent = "Passwords do not match";
+      confirmPasswordError.style.display = "block";
+    } else {
+      confirmPasswordError.style.display = "none";
+    }
+    setInputStatus(confirmPasswordInput, isValid);
+    return isValid;
+  }
+
+  function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let isValid = emailRegex.test(email);
+    if (!isValid) {
+      emailError.textContent = "Please enter a valid email address";
+      emailError.style.display = "block";
+    } else {
+      emailError.style.display = "none";
+    }
+    setInputStatus(emailInput, isValid);
+    return isValid;
+  }
+
+  function validateImage(file) {
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        imageError.textContent = "Image size must be less than 2MB";
+        imageError.style.display = "block";
+        return false;
+      }
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      if (!validTypes.includes(file.type)) {
+        imageError.textContent = "Only JPEG, PNG or GIF images allowed";
+        imageError.style.display = "block";
+        return false;
+      }
+    }
+    imageError.style.display = "none";
+    return true;
+  }
+
+  function validateCodeInputs() {
+    const code = Array.from(codeInputs).map(input => input.value).join('');
+    const isValid = code.length === 6 && code === verificationCode;
+    
+    codeInputs.forEach(input => {
+      input.classList.remove('valid', 'invalid');
+      if (code.length === 6) {
+        input.classList.add(isValid ? 'valid' : 'invalid');
+      }
+    });
+
+    if (code.length === 6 && !isValid) {
+      codeError.textContent = "Invalid verification code";
+      codeError.style.display = "block";
+    } else {
+      codeError.style.display = "none";
+    }
+
+    verifyBtn.disabled = !isValid;
+    return isValid;
+  }
+
+  function convertImageToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function checkUsernameAvailability(username) {
+    try {
+      const userDocRef = doc(db, "users", username);
+      const userDoc = await getDoc(userDocRef);
+      if (userDoc.exists()) {
+        usernameError.textContent = "Username already exists";
+        usernameError.style.display = "block";
+        usernameError.style.color = "#f44336";
+        setInputStatus(usernameInput, false);
+        return false;
+      } else {
+        usernameError.textContent = "Username is available!";
+        usernameError.style.display = "block";
+        usernameError.style.color = "#4CAF50";
+        setInputStatus(usernameInput, true);
+        return true;
+      }
+    } catch (error) {
+      console.error("Error checking username:", error);
+      usernameError.textContent = "Error checking username availability";
+      usernameError.style.display = "block";
+      usernameError.style.color = "#f44336";
+      setInputStatus(usernameInput, false);
+      return false;
+    }
+  }
+
+  function goToStep(step) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    if (step === 1) {
+      step1.classList.add('active');
+      currentStep = 1;
+    } else if (step === 2) {
+      step2.classList.add('active');
+      currentStep = 2;
+    } else if (step === 3) {
+      step3.classList.add('active');
+      currentStep = 3;
+    } else if (step === 4) {
+      step4.classList.add('active');
+      currentStep = 4;
+      codeInputs[0].focus(); // التركيز على المربع الأول عند الدخول إلى الخطوة
+      startResendTimer(); // بدء المؤقت عند الدخول إلى الخطوة
+    }
+    progressBar.style.width = `${(currentStep / totalSteps) * 100}%`;
+  }
+
+  async function saveCurrentDevice(userId) {
+    const userAgent = navigator.userAgent;
+    const modelMatch = userAgent.match(/SM-[A-Z0-9]+/i);
+    const deviceName = modelMatch ? modelMatch[0] : "Unknown";
+    const androidVersionMatch = userAgent.match(/Android\s([\d\.]+)/i);
+    const androidVersion = androidVersionMatch ? androidVersionMatch[1] : "Unknown";
+    const deviceId = `${deviceName}-${androidVersion}`;
+    const userRef = doc(db, "users", userId);
+    await updateDoc(userRef, {
+      [`devices.${deviceId}`]: {
+        androidVersion: androidVersion,
+        deviceName: deviceName,
+        loginTime: new Date().toISOString()
+      }
+    });
+  }
+
+  // أحداث مربعات رمز التحقق
+  codeInputs.forEach((input, index) => {
+    input.addEventListener('input', (e) => {
+      // تنظيف الإدخال للسماح بالأرقام فقط
+      const value = e.target.value.replace(/[^0-9]/g, '');
+      e.target.value = value;
+      
+      // الانتقال إلى المربع التالي إذا تم إدخال رقم
+      if (value && index < codeInputs.length - 1) {
+        codeInputs[index + 1].focus();
+      }
+      
+      validateCodeInputs();
+    });
+
+    // التعامل مع الضغط على Backspace
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !input.value && index > 0) {
+        codeInputs[index - 1].focus();
+      }
+    });
+
+    // التركيز على أول مربع فارغ عند النقر
+    input.addEventListener('click', () => {
+      const firstEmpty = Array.from(codeInputs).find(inp => !inp.value);
+      (firstEmpty || codeInputs[0]).focus();
+    });
+
+    // التعامل مع اللصق
+    input.addEventListener('paste', (e) => {
+      e.preventDefault();
+      const pastedData = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+      
+      // إذا كان اللصق في المربع الأول، وزّع الأرقام على جميع المربعات
+      if (index === 0 && pastedData.length >= 6) {
+        const digits = pastedData.slice(0, 6).split('');
+        codeInputs.forEach((input, i) => {
+          input.value = digits[i] || '';
+        });
+        codeInputs[codeInputs.length - 1].focus();
+        validateCodeInputs();
+      } else if (pastedData.length === 6) {
+        // إذا تم اللصق في مربع آخر، وزّع الأرقام من المربع الأول
+        codeInputs.forEach((input, i) => {
+          input.value = pastedData[i] || '';
+        });
+        codeInputs[codeInputs.length - 1].focus();
+        validateCodeInputs();
+      } else {
+        codeError.textContent = "Please paste a 6-digit code";
+        codeError.style.display = "block";
+      }
+    });
+  });
+
+  // أحداث المستخدم
+  usernameInput.addEventListener('input', async function() {
+    const isValid = validateUsername(this.value);
+    if (isValid) {
+      const isAvailable = await checkUsernameAvailability(this.value);
+      nextBtn1.disabled = !isAvailable;
+    } else {
+      nextBtn1.disabled = true;
+    }
+  });
+
+  passwordInput.addEventListener('input', function() {
+    validatePassword(this.value);
+    validateConfirmPassword(this.value, confirmPasswordInput.value);
+    updateNextButton2();
+  });
+
+  confirmPasswordInput.addEventListener('input', function() {
+    validateConfirmPassword(passwordInput.value, this.value);
+    updateNextButton2();
+  });
+
+  emailInput.addEventListener('input', function() {
+    validateEmail(this.value);
+    updateNextButton2();
+  });
+
+  profileImageInput.addEventListener('change', function() {
+    const file = this.files[0];
+    validateImage(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImage.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+    updateNextButton2();
+  });
+
+  togglePassword.addEventListener('click', function() {
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+    confirmPasswordInput.setAttribute('type', type);
+    this.textContent = type === 'password' ? '🙈' : '🙉';
+  });
+
+  nextBtn1.addEventListener('click', function() {
+    goToStep(2);
+  });
+
+  backBtn1.addEventListener('click', function() {
+    goToStep(1);
+  });
+
+  function updateNextButton2() {
+    const isPasswordValid = validatePassword(passwordInput.value);
+    const isConfirmPasswordValid = validateConfirmPassword(passwordInput.value, confirmPasswordInput.value);
+    const isEmailValid = validateEmail(emailInput.value);
+    const isImageValid = profileImageInput.files.length === 0 || validateImage(profileImageInput.files[0]);
+    nextBtn2.disabled = !(isPasswordValid && isConfirmPasswordValid && isEmailValid && isImageValid);
+  }
+
+  nextBtn2.addEventListener('click', function() {
+    goToStep(3);
+  });
+
+  backBtn2.addEventListener('click', function() {
+    goToStep(2);
+  });
+
+  nextBtn3.addEventListener('click', async function() {
+    if (resendAttempts < MAX_RESEND_ATTEMPTS) {
+      verificationCode = generateVerificationCode();
+      const emailSent = await sendVerificationEmail(emailInput.value, verificationCode);
+      if (emailSent) {
+        resendAttempts++;
+        goToStep(4);
+      }
+    } else {
+      codeError.textContent = "Maximum resend attempts reached";
+      codeError.style.display = "block";
+    }
+  });
+
+  backBtn3.addEventListener('click', function() {
+    clearInterval(resendInterval);
+    resendTimer.textContent = '';
+    resendBtn.disabled = resendAttempts >= MAX_RESEND_ATTEMPTS;
+    goToStep(3);
+  });
+
+  resendBtn.addEventListener('click', async function() {
+    if (resendAttempts < MAX_RESEND_ATTEMPTS) {
+      verificationCode = generateVerificationCode();
+      const emailSent = await sendVerificationEmail(emailInput.value, verificationCode);
+      if (emailSent) {
+        resendAttempts++;
+        startResendTimer();
+        codeInputs.forEach(input => input.value = ''); // إعادة تعيين المربعات
+        validateCodeInputs();
+      }
+    } else {
+      resendBtn.textContent = 'Max attempts reached';
+      resendBtn.disabled = true;
+    }
+  });
+
+  verifyBtn.addEventListener('click', async function() {
+    const code = Array.from(codeInputs).map(input => input.value).join('');
+    if (validateCodeInputs()) {
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value.trim();
+      const email = emailInput.value.trim();
+      const profileImage = profileImageInput.files[0];
+
+      const isUsernameValid = validateUsername(username);
+      const isPasswordValid = validatePassword(password);
+      const isConfirmPasswordValid = validateConfirmPassword(password, confirmPasswordInput.value);
+      const isEmailValid = validateEmail(email);
+      const isImageValid = profileImage ? validateImage(profileImage) : true;
+
+      if (!isUsernameValid || !isPasswordValid || !isConfirmPasswordValid || !isEmailValid || !isImageValid) {
+        alert('Please correct all errors before submitting');
+        return;
+      }
+
+      try {
+        let photoURL = '';
+        let photoBase64 = '';
+        if (profileImage) {
+          const base64String = await convertImageToBase64(profileImage);
+          photoURL = base64String;
+          photoBase64 = base64String.split(',')[1];
+        }
+
+        const userData = {
+          password,
+          email,
+          points: 500,
+          fallTokens: 0,
+          hasRated: false,
+          notification: {
+            from: null,
+            amount: 0,
+            currency: 'points',
+            read: true
+          },
+          photoURL: photoURL || '',
+          photoBase64: photoBase64 || '',
+          lastSeenMessages: {},
+          privacy_policy: 'readed',
+          emailVerified: true
+        };
+
+        const userDocRef = doc(db, 'users', username);
+        await setDoc(userDocRef, userData);
+        await saveCurrentDevice(username);
+        localStorage.setItem('activeUser', username);
+        clearInterval(resendInterval);
+        alert(`Account created successfully ✅, welcome ${username}.✨`, 'success');
+        setTimeout(() => {
+          window.location.href = 'Homepage.html';
+        }, 500);
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.', 'error');
+      }
+    }
+  });
+
+  // إضافة مستمع لمنع إدخال أحرف غير رقمية
+  codeInputs.forEach(input => {
+    input.addEventListener('keypress', (e) => {
+      if (!/[0-9]/.test(e.key)) {
+        e.preventDefault();
+      }
+    });
+  });
+</script>
+<script>
+  window.addEventListener('scroll', function() {
+    const header = document.querySelector('.sticky-header');
+    if (window.scrollY > 0) {
+      header.classList.add('sticky');
+    } else {
+      header.classList.remove('sticky');
+    }
+  });
+
+  function goBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/';
+    }
+  }
+</script>
+</body>
+</html>

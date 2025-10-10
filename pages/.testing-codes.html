@@ -1,349 +1,105 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!doctype html>
+<html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ثقب أسود ثلاثي الأبعاد</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background-color: #000;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
-        canvas {
-            display: block;
-        }
-        #info {
-            position: absolute;
-            top: 10px;
-            width: 100%;
-            text-align: center;
-            z-index: 100;
-            display: block;
-        }
-        #controls {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 5px;
-        }
-        button {
-            background: #333;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            margin: 5px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #555;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <title>ثقب أسود 3D</title>
+  <style>
+    body { margin:0; overflow:hidden; background:black; }
+    #btns {
+      position:absolute; top:10px; left:10px;
+      display:flex; flex-direction:column; gap:8px;
+    }
+    button {
+      padding:8px 12px; border:none; border-radius:6px;
+      background:rgba(255,255,255,0.85); cursor:pointer;
+    }
+  </style>
 </head>
 <body>
-    <div id="info">ثقب أسود ثلاثي الأبعاد - استخدم الفأرة للتحريك وعجلة التكبير/التصغير</div>
-    <div id="controls">
-        <button id="addPlanet">إضافة كوكب</button>
-        <button id="toggleJets">تبديل النفاثات</button>
-        <button id="toggleLensing">تبديل انحناء الضوء</button>
-    </div>
+  <div id="btns">
+    <button id="toggleWarp">إظهار/إخفاء تشوه الزمكان</button>
+    <button id="toggleDisk">إظهار/إخفاء قرص التراكم</button>
+  </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.min.js"></script>
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
 
-    <script>
-        // المشهد الأساسي
-        const scene = new THREE.Scene();
-        
-        // الكاميرا
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 10;
-        
-        // العارض
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.toneMapping = THREE.ReinhardToneMapping;
-        renderer.toneMappingExposure = 1;
-        document.body.appendChild(renderer.domElement);
-        
-        // التحكم بالمشهد
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.screenSpacePanning = false;
-        controls.maxPolarAngle = Math.PI;
-        controls.minDistance = 3;
-        controls.maxDistance = 50;
-        
-        // تأثيرات ما بعد المعالجة
-        const bloomParams = {
-            exposure: 1,
-            bloomStrength: 1.5,
-            bloomThreshold: 0,
-            bloomRadius: 0.5
-        };
-        
-        const renderScene = new THREE.RenderPass(scene, camera);
-        const bloomPass = new THREE.UnrealBloomPass(
-            new THREE.Vector2(window.innerWidth, window.innerHeight),
-            bloomParams.bloomStrength,
-            bloomParams.bloomRadius,
-            bloomParams.bloomThreshold
-        );
-        
-        const composer = new THREE.EffectComposer(renderer);
-        composer.addPass(renderScene);
-        composer.addPass(bloomPass);
-        
-        // إضاءة
-        const ambientLight = new THREE.AmbientLight(0x404040);
-        scene.add(ambientLight);
-        
-        const pointLight = new THREE.PointLight(0xffffff, 1, 100);
-        pointLight.position.set(10, 10, 10);
-        scene.add(pointLight);
-        
-        // خلفية النجوم
-        const createStars = () => {
-            const starsGeometry = new THREE.BufferGeometry();
-            const starsMaterial = new THREE.PointsMaterial({
-                color: 0xffffff,
-                size: 0.1,
-                transparent: true
-            });
-            
-            const starsVertices = [];
-            for (let i = 0; i < 10000; i++) {
-                const x = (Math.random() - 0.5) * 2000;
-                const y = (Math.random() - 0.5) * 2000;
-                const z = (Math.random() - 0.5) * 2000;
-                starsVertices.push(x, y, z);
-            }
-            
-            starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
-            const stars = new THREE.Points(starsGeometry, starsMaterial);
-            scene.add(stars);
-        };
-        
-        createStars();
-        
-        // ثقب أسود (أفق الحدث)
-        const createBlackHole = () => {
-            const geometry = new THREE.SphereGeometry(1, 64, 64);
-            const material = new THREE.MeshBasicMaterial({ 
-                color: 0x000000,
-                side: THREE.DoubleSide
-            });
-            const blackHole = new THREE.Mesh(geometry, material);
-            blackHole.name = "blackHole";
-            scene.add(blackHole);
-            return blackHole;
-        };
-        
-        const blackHole = createBlackHole();
-        
-        // قرص التراكم
-        const createAccretionDisk = () => {
-            const geometry = new THREE.TorusGeometry(1.5, 0.5, 64, 64);
-            const material = new THREE.MeshStandardMaterial({
-                color: 0x5500ff,
-                emissive: 0xff00ff,
-                emissiveIntensity: 2,
-                side: THREE.DoubleSide,
-                transparent: true,
-                opacity: 0.8
-            });
-            const disk = new THREE.Mesh(geometry, material);
-            disk.rotation.x = Math.PI / 2;
-            disk.name = "accretionDisk";
-            scene.add(disk);
-            return disk;
-        };
-        
-        const accretionDisk = createAccretionDisk();
-        
-        // تأثير انحناء الضوء (محاكاة بسيطة)
-        const createLensingEffect = () => {
-            const lensingGroup = new THREE.Group();
-            lensingGroup.name = "lensingEffect";
-            
-            // حلقة الضوء
-            const ringGeometry = new THREE.TorusGeometry(1.2, 0.1, 64, 64);
-            const ringMaterial = new THREE.MeshBasicMaterial({
-                color: 0xffffff,
-                side: THREE.DoubleSide,
-                transparent: true,
-                opacity: 0.7
-            });
-            const lightRing = new THREE.Mesh(ringGeometry, ringMaterial);
-            lightRing.rotation.x = Math.PI / 2;
-            lensingGroup.add(lightRing);
-            
-            // تأثير التوهج
-            const glowGeometry = new THREE.SphereGeometry(1.3, 64, 64);
-            const glowMaterial = new THREE.MeshBasicMaterial({
-                color: 0x4444ff,
-                side: THREE.BackSide,
-                transparent: true,
-                opacity: 0.3
-            });
-            const glow = new THREE.Mesh(glowGeometry, glowMaterial);
-            lensingGroup.add(glow);
-            
-            scene.add(lensingGroup);
-            return lensingGroup;
-        };
-        
-        let lensingEffect = createLensingEffect();
-        let lensingEnabled = true;
-        
-        // النفاثات المغناطيسية
-        const createJets = () => {
-            const jetGroup = new THREE.Group();
-            jetGroup.name = "jets";
-            
-            // النفاثة العلوية
-            const topJetGeometry = new THREE.ConeGeometry(0.1, 3, 32);
-            const topJetMaterial = new THREE.MeshBasicMaterial({
-                color: 0x00ffff,
-                transparent: true,
-                opacity: 0.7,
-                side: THREE.DoubleSide
-            });
-            const topJet = new THREE.Mesh(topJetGeometry, topJetMaterial);
-            topJet.position.y = 2;
-            topJet.rotation.x = Math.PI;
-            jetGroup.add(topJet);
-            
-            // النفاثة السفلية
-            const bottomJetGeometry = new THREE.ConeGeometry(0.1, 3, 32);
-            const bottomJetMaterial = new THREE.MeshBasicMaterial({
-                color: 0x00ffff,
-                transparent: true,
-                opacity: 0.7,
-                side: THREE.DoubleSide
-            });
-            const bottomJet = new THREE.Mesh(bottomJetGeometry, bottomJetMaterial);
-            bottomJet.position.y = -2;
-            jetGroup.add(bottomJet);
-            
-            scene.add(jetGroup);
-            return jetGroup;
-        };
-        
-        let jets = createJets();
-        let jetsEnabled = true;
-        
-        // إضافة الكواكب
-        const planets = [];
-        const createPlanet = (distance) => {
-            const size = Math.random() * 0.3 + 0.1;
-            const geometry = new THREE.SphereGeometry(size, 32, 32);
-            
-            // ألوان عشوائية للكواكب
-            const colors = [0x3498db, 0x2ecc71, 0xe74c3c, 0xf39c12, 0x9b59b6];
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            
-            const material = new THREE.MeshStandardMaterial({
-                color: color,
-                roughness: 0.8,
-                metalness: 0.2
-            });
-            
-            const planet = new THREE.Mesh(geometry, material);
-            
-            // وضع الكوكب في مدار عشوائي
-            const angle = Math.random() * Math.PI * 2;
-            planet.position.x = Math.cos(angle) * distance;
-            planet.position.z = Math.sin(angle) * distance;
-            
-            // سرعة الدوران
-            planet.userData = {
-                speed: (Math.random() * 0.5 + 0.1) / distance,
-                distance: distance,
-                angle: angle
-            };
-            
-            scene.add(planet);
-            planets.push(planet);
-            return planet;
-        };
-        
-        // إدارة الأحداث
-        document.getElementById('addPlanet').addEventListener('click', () => {
-            const distance = Math.random() * 5 + 5;
-            createPlanet(distance);
-        });
-        
-        document.getElementById('toggleJets').addEventListener('click', () => {
-            jetsEnabled = !jetsEnabled;
-            jets.visible = jetsEnabled;
-        });
-        
-        document.getElementById('toggleLensing').addEventListener('click', () => {
-            lensingEnabled = !lensingEnabled;
-            lensingEffect.visible = lensingEnabled;
-        });
-        
-        // التحكم بحجم النافذة
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            composer.setSize(window.innerWidth, window.innerHeight);
-        });
-        
-        // حركة العناصر
-        const clock = new THREE.Clock();
-        
-        const animate = () => {
-            requestAnimationFrame(animate);
-            
-            const delta = clock.getDelta();
-            const time = clock.getElapsedTime();
-            
-            // دوران قرص التراكم
-            if (accretionDisk) {
-                accretionDisk.rotation.y += 0.02 * delta;
-            }
-            
-            // حركة النفاثات (تأثير النبض)
-            if (jetsEnabled && jets) {
-                jets.children[0].scale.y = 1 + Math.sin(time * 3) * 0.2;
-                jets.children[1].scale.y = 1 + Math.sin(time * 3) * 0.2;
-            }
-            
-            // حركة الكواكب في مداراتها
-            planets.forEach(planet => {
-                planet.userData.angle += planet.userData.speed * delta;
-                planet.position.x = Math.cos(planet.userData.angle) * planet.userData.distance;
-                planet.position.z = Math.sin(planet.userData.angle) * planet.userData.distance;
-                planet.rotation.y += 0.01 * delta;
-            });
-            
-            // تأثير انحناء الضوء (تأثير النبض)
-            if (lensingEnabled && lensingEffect) {
-                const scale = 1 + Math.sin(time * 2) * 0.05;
-                lensingEffect.scale.set(scale, scale, scale);
-            }
-            
-            controls.update();
-            composer.render();
-        };
-        
-        animate();
-    </script>
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 1000);
+    camera.position.set(0,2,6);
+
+    const renderer = new THREE.WebGLRenderer({antialias:true});
+    renderer.setSize(innerWidth, innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    // ثقب أسود
+    const bh = new THREE.Mesh(
+      new THREE.SphereGeometry(1,64,64),
+      new THREE.MeshBasicMaterial({color:0x000000})
+    );
+    scene.add(bh);
+
+    // قرص التراكم
+    const disk = new THREE.Mesh(
+      new THREE.TorusGeometry(2,0.3,32,128),
+      new THREE.MeshBasicMaterial({color:0xffaa44, transparent:true, opacity:0.6, side:THREE.DoubleSide})
+    );
+    disk.rotation.x = Math.PI/2;
+    scene.add(disk);
+
+    // نجوم
+    const starsGeo = new THREE.BufferGeometry();
+    const starCount = 2000;
+    const pos = [];
+    for(let i=0;i<starCount;i++){
+      pos.push((Math.random()-0.5)*2000);
+      pos.push((Math.random()-0.5)*2000);
+      pos.push((Math.random()-0.5)*2000);
+    }
+    starsGeo.setAttribute("position", new THREE.Float32BufferAttribute(pos,3));
+    const stars = new THREE.Points(starsGeo,new THREE.PointsMaterial({color:0xffffff, size:1}));
+    scene.add(stars);
+
+    // شبكة تشوه
+    function makeWarp(strength=2){
+      const geo = new THREE.PlaneGeometry(12,12,80,80);
+      const pos = geo.attributes.position;
+      for(let i=0;i<pos.count;i++){
+        const x=pos.getX(i), y=pos.getY(i);
+        const r=Math.sqrt(x*x+y*y);
+        const z=-strength/(r+0.2);
+        pos.setZ(i,z);
+      }
+      const wire = new THREE.WireframeGeometry(geo);
+      return new THREE.LineSegments(wire,new THREE.LineBasicMaterial({color:0x00ffff}));
+    }
+    const warp = makeWarp(2);
+    warp.rotation.x = -Math.PI/2;
+    warp.visible = false;
+    scene.add(warp);
+
+    // أزرار
+    document.getElementById("toggleWarp").onclick=()=>warp.visible=!warp.visible;
+    document.getElementById("toggleDisk").onclick=()=>disk.visible=!disk.visible;
+
+    // أنيميشن
+    function animate(){
+      requestAnimationFrame(animate);
+      disk.rotation.z += 0.01;
+      controls.update();
+      renderer.render(scene,camera);
+    }
+    animate();
+
+    window.addEventListener("resize",()=>{
+      camera.aspect=innerWidth/innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth,innerHeight);
+    });
+  </script>
 </body>
 </html>

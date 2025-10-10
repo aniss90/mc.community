@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المطورون</title>
+    <link rel="stylesheet" href="../style/main.css">
+    <link rel="icon" type="image/x-icon" href="../web/mcco-logo.png">
+    <style>
+        @font-face {
+            font-family: minecraft;
+            src: url('../font/Minecraft-Default.otf');
+        }
+
+        @font-face {
+            font-family: minecraft-ten;
+            src: url('../font/Minecraft-Ten.ttf');
+        }
+
+        @font-face {
+            font-family: minecraft-five;
+            src: url('../font/Minecraft-Five.ttf');
+        }
+        
+        .about_Dev {
+            color: #D5D5D5;
+            text-align: right;
+            overflow: auto;
+        }
+        
+        a.link {
+            color: #4164DE;
+            text-decoration-line: underline;
+        }
+        
+        a.link:hover {
+            color: #2945AA;
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="header">المطورون 
+        <img src="../icons/article_gif.gif" height="25">
+        <button class="back" id="backButton" type="button" onclick="goBack()"><</button>
+    </div>
+    
+    <div class="content">
+        <div class="title"> المطورون والمصممون
+            <div class="description">من هم المطورون والمصممون:
+                <br>
+                • <a href="https://www.instagram.com/vnis1_/profilecard/?igsh=c2k1dDM5ZGVqNTht" target="_blank" class="link">anis</a>
+                <font style="color: firebrick;">(المالك)</font>
+                <img src="../icons/trophy_gif.gif" height="15">
+                <pre class="about_Dev">
+- إعادة تصميم واجهة المستخدم (الأزرار، حقول الإدخال، الترويسة، الخلفية، النصوص...)
+- تصميم الأزرار والعناصر الأخرى
+- برمجة النظام (العملات، السوق، الدردشة، وظائف الحسابات...)
+- استضافة الموقع
+- تطوير تطبيق الويب
+- إصلاح الأخطاء والمشاكل
+- تطوير الموقع
+                </pre>
+                <br>
+                
+                • <a href="https://www.youtube.com/@T1M0THYYT" target="_blank" class="link">TIMOTHY</a>
+                <font style="color: darkgreen;">(التصميم الأول)</font>
+                <img src="../icons/medal_silver_gif.gif" height="15">
+                <pre class="about_Dev">
+- التصميم الأول لواجهة المستخدم (الأزرار، الترويسة، الخلفية...)
+                </pre>
+                
+                • <a href="https://www.youtube.com/@MinecraftBedrockArabic" target="_blank" class="link">minato</a>
+                <font style="color: goldenrod;">(شكر خاص)</font>
+                <img src="../icons/star.gif" height="15">
+                <pre class="about_Dev">
+- تصميم واجهة مستخدم جديدة (تصميم الأزرار والحركات)
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openWebsite(url) {
+            window.open(url, "_blank");
+        }
+        
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '../'; // العودة إلى الصفحة الرئيسية
+            }
+        }
+    </script>
+    
+    <script type="module" src="../scripts/main.js"></script>
+</body>
+</html>

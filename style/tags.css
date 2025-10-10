@@ -1,3 +1,8 @@
+:root {
+    --border-thickness: 2px;
+    --border-2x-thickness: calc(2 * var(--border-thickness));
+    --button-font-size: 20px;
+}  
 .user-tags {  
   gap: 5px;  
   padding-left: 2px;  
@@ -21,15 +26,13 @@
   white-space: nowrap;
   min-height: 14px;
   border: 1px solid #ccc;
+  transition: all 0.6s;
 }
-
-/* ADMIN */
-.tag-admin {
-   background-color: #FF5555;
-   color: white;
-   border: 1px solid #FF0000;
+.tag:hover{
+    
+    box-shadow: 0 2px 10px #5F5F5F;
+    transform: translateY(-2px);
 }
-.tag-admin::before { content: "ADMIN"; }
 
 /* MODERATOR */
 .tag-moderator {
@@ -47,90 +50,61 @@
 }
 .tag-builder::before { content: "BUILDER"; }
 
-/* FRIEND */
-.tag-friend {
-    display: inline-block;
-    padding: 8px 18px;
-    background: linear-gradient(135deg, #13b8b1, #1ed6d1);
-    color: white;
-    border: 1.5px solid #0fa89a;
-    border-radius: 24px;
-    font-family: 'Arial', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    position: relative;
-    overflow: hidden;
-    cursor: default;
-    box-shadow: 0 3px 15px rgba(27, 187, 176, 0.35);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    animation: softPulse 5s infinite ease-in-out;
-}
 
-.tag-friend::before {
-    content: "FRIEND";
-    position: relative;
-    z-index: 2;
-}
-
-/* حركة طفو ناعمة عند التحويم */
-.tag-friend:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(27, 187, 176, 0.55);
-}
-
-/* تأثير وميض متحرك */
-.tag-friend::after {
-    content: '';
-    position: absolute;
-    top: -40%;
-    left: -60%;
-    width: 40%;
-    height: 180%;
-    background: linear-gradient(60deg, transparent, rgba(255,255,255,0.3), transparent);
-    transform: rotate(25deg);
-    transition: none;
-    animation: shimmer 3s infinite;
-    z-index: 1;
-}
-
-/* أنيميشن الشيمر */
-@keyframes shimmer {
-    0% {
-        left: -60%;
-        opacity: 0;
-    }
-    50% {
-        left: 110%;
-        opacity: 0.6;
-    }
-    100% {
-        left: 110%;
-        opacity: 0;
-    }
-}
-
-/* حركة تنفس ناعمة */
-@keyframes softPulse {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 3px 15px rgba(27, 187, 176, 0.35);
-    }
-    50% {
-        transform: scale(1.03);
-        box-shadow: 0 6px 25px rgba(27, 187, 176, 0.5);
-    }
-}
 
 /* LEGEND */
 .tag-legend {
-   background: linear-gradient(135deg, #FFAA00, #FF5555);
-   color: white;
-   border: 1px solid #FF0000;
+  position: relative;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #ffaa00, #ff5500, #ff0000);
+  border: 1px solid #cc0000;
+  border-radius: 4px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 5px;
+font-weight: bold;
+padding: 0.02em 0.1em;
+box-sizing: border-box;
+position: relative;
+overflow: hidden;
+white-space: nowrap;
+min-height: 14px;
 }
-.tag-legend::before { content: "LEGEND"; }
 
+.tag-legend::before {
+  content: "LEGEND";
+  position: relative;
+  z-index: 2;
+}
+
+.tag-legend::after {
+  content: "🔥";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(2.2);
+  opacity: 0.15;
+  font-size: 22px;
+  z-index: 1;
+  pointer-events: none;
+  animation: firePulse 2s infinite ease-in-out;
+}
+
+/* وهج ناري حول التاغ */
+@keyframes firePulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(2.2);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(2.6);
+    opacity: 0.25;
+  }
+}
 /* MVP */
 .tag-mvp {
    background-color: #E7A641;
@@ -235,7 +209,7 @@
    background: linear-gradient(35deg, #A31A1A, #E92626);
    color: #FFFFFF;
    border: 1px solid #E33939;
-   border-radius: 10px;
+   
    padding: 0.02em 0.1em;
    font-weight: bold;
    overflow: hidden;
@@ -317,3 +291,179 @@
    0% { background-position: 200% center; }
    100% { background-position: 0% center; }
 } 
+/* ADMIN */
+.tag-admin {
+  position: relative;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  border: 1px solid #aa0000;
+  border-radius: 4px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 5px;
+font-weight: bold;
+padding: 0.02em 0.1em;
+box-sizing: border-box;
+position: relative;
+overflow: hidden;
+white-space: nowrap;
+min-height: 14px;
+  overflow: hidden;
+}
+
+.tag-admin::before {
+  content: "ADMIN";
+  position: relative;
+  z-index: 2;
+}
+
+.tag-admin::after {
+  content: "★";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(2);
+  font-size: 20px;
+  color: rgba(255, 215, 0, 0.25); 
+  z-index: 1;
+  pointer-events: none;
+  -webkit-animation-timing-function: ease-in;
+  -moz-animation-timing-function: ease-in;
+  -o-animation-timing-function: ease-in;
+  animation-timing-function: ease-in;on: shine 4s infinite linear;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.6), 0 0 10px rgba(255, 50, 50, 0.5);
+  }
+  to {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.9), 0 0 25px rgba(255, 50, 50, 0.8);
+  }
+}
+
+@keyframes shine {
+  0% { transform: translate(-50%, -50%) scale(2) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) scale(2) rotate(360deg); }
+}
+/* FRIEND */
+.tag-friend {
+    display: inline-block;
+    padding: 8px 18px;
+    background: linear-gradient(135deg, #13b8b1, #1ed6d1);
+    color: white;
+    border: 1.5px solid #0fa89a;
+    border-radius: 4px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 5px;
+font-weight: bold;
+padding: 0.02em 0.1em;
+box-sizing: border-box;
+position: relative;
+overflow: hidden;
+white-space: nowrap;
+min-height: 14px;
+    overflow: hidden;
+    cursor: default;
+    box-shadow: 0 3px 15px rgba(27, 187, 176, 0.35);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    animation: softPulse 5s infinite ease-in-out;
+}
+
+.tag-friend::before {
+    content: "FRIEND";
+    position: relative;
+    z-index: 2;
+}
+
+/* حركة طفو ناعمة عند التحويم */
+.tag-friend:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(27, 187, 176, 0.55);
+}
+
+/* تأثير وميض متحرك */
+.tag-friend::after {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: -60%;
+    width: 40%;
+    height: 180%;
+    background: linear-gradient(60deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: rotate(25deg);
+    transition: none;
+    animation: shimmer 3s infinite;
+    z-index: 1;
+}
+
+/* أنيميشن الشيمر */
+@keyframes shimmer {
+    0% {
+        left: -60%;
+        opacity: 0;
+    }
+    50% {
+        left: 110%;
+        opacity: 0.6;
+    }
+    100% {
+        left: 110%;
+        opacity: 0;
+    }
+}
+
+/* حركة تنفس ناعمة */
+@keyframes softPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 3px 15px rgba(27, 187, 176, 0.35);
+    }
+    50% {
+        transform: scale(1.03);
+        box-shadow: 0 6px 25px rgba(27, 187, 176, 0.5);
+    }
+}
+.tag-support {
+    position: relative;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #00aaff, #0055ff);
+    border: 1px solid #0033aa;
+    border-radius: 4px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 5px;
+font-weight: bold;
+padding: 0.02em 0.1em;
+box-sizing: border-box;
+position: relative;
+overflow: hidden;
+white-space: nowrap;
+min-height: 14px;
+    box-shadow: 0 0 10px rgba(0, 100, 255, 0.6);
+}
+
+.tag-support::before {
+    content: "SUPPORT";
+    position: relative;
+    z-index: 2;
+}
+
+.tag-support::after {
+    content: "🛠️";
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.8;
+}

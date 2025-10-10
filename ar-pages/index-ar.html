@@ -1,0 +1,446 @@
+<!DOCTYPE html>  
+<html lang="ar" dir="rtl">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <meta name="google-site-verification" content="37SxDUkBU_VsVbMTrgTKLy858nIOzRB9ToWFKYdjWj8" />
+    <link rel="manifest" href="manifest.json">
+    <title>إم سي كو</title>  
+    <!-- وصف الموقع -->
+    <meta name="description" content="إم سي كو هو موقع عام يتيح لك جمع العملات، شراء الأدوات، الدردشة مع المستخدمين، والتفاعل معهم بطريقة ممتعة!">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://aniss90.github.io/mc.community/">
+    <meta property="og:title" content="إم سي كو - تواصل، اشتري أدوات، وتحدى الأصدقاء!">
+    <meta property="og:description" content="موقع شامل للتفاعل، جمع العملات، وشراء الأدوات والدردشة مع المستخدمين الآخرين. انضم الآن!">
+    <meta property="og:image" content="https://aniss90.github.io/mc.community/web/mcco-logo.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://aniss90.github.io/mc.community/">
+    <meta property="twitter:title" content="إم سي كو - تواصل، اشتري أدوات، وتحدى الأصدقاء!">
+    <meta property="twitter:description" content="موقع شامل للتفاعل، جمع العملات، وشراء الأدوات والدردشة مع المستخدمين الآخرين. انضم الآن!">
+    <meta property="twitter:image" content="https://aniss90.github.io/mc.community/web/mcco-logo.png">
+    <link rel="stylesheet" href="../style/main.css">  
+    <link rel="icon" type="image/x-icon" href="web/mcco-logo.png">  
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({
+          appId: "0eeeb673-ff9f-4b67-8f63-e14e7945ed5f",
+          serviceWorkerParam: { scope: '/mc.community/' },
+          serviceWorkerPath: 'OneSignalSDKWorker.js',
+          serviceWorkerUpdaterPath: 'OneSignalSDKUpdaterWorker.js'
+        });
+        
+        // طلب الإذن مباشرة عند فتح الصفحة
+        OneSignal.showSlidedownPrompt();
+      });
+    </script>
+    <!-- Google tag (gtag.js) -->  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=F18SFG2LMZ"></script>  
+    <script>  
+      window.dataLayer = window.dataLayer || [];  
+      function gtag(){dataLayer.push(arguments);}  
+      gtag('js', new Date());  
+      gtag('config', 'F18SFG2LMZ');  
+    </script>  
+    <style>  
+        @font-face {  
+            font-family: minecraft;  
+            src: url('../font/Minecraft-Default.otf');  
+        }  
+        @font-face {  
+            font-family: minecraft-ten;  
+            src: url('../font/Minecraft-Ten.ttf');  
+        }  
+        @font-face {  
+            font-family: minecraft-five;  
+            src: url('../font/Minecraft-Five.ttf');  
+        }  
+        .description{  
+          font-size: 12px;  
+        }  
+          
+        /* أنماط تقييم الموقع */  
+        .header-rating {  
+          background-color: #2E2100;  
+          border: 2px solid #8C6A15;  
+          padding: 8px 15px;  
+          text-align: center;  
+          font-family: minecraft-five;  
+          color: #FFD952;  
+          border-radius: 5px;  
+          margin: 10px auto;  
+          max-width: 300px;  
+          box-shadow: 0px 3px 0px rgba(43, 30, 0, 1);  
+        }  
+          
+        .site-rating {  
+          display: flex;  
+          align-items: center;  
+          justify-content: center;  
+          gap: 5px;  
+          flex-wrap: wrap;  
+        }  
+          
+        .stars {  
+          display: inline-flex;  
+          font-size: 18px;  
+        }  
+          
+        .stars span {  
+          color: #555;  
+          text-shadow: 0px 1px 0px #000;  
+        }  
+          
+        .stars span.active {  
+          color: #FFD700;  
+          text-shadow: 0 0 5px rgba(255, 215, 0, 0.7);  
+        }  
+          
+        #ratingAverage {  
+          font-weight: bold;  
+          color: #FFD952;  
+        }  
+          
+        #ratingCount {  
+          color: #FFFFFF;  
+        }  
+          
+        .news {  
+          position: absolute;  
+          border: none;  
+          top: 20px;  
+          left: 10px;  
+          cursor: pointer;  
+          padding: 10px;  
+          background: url(../icons/News.png);  
+          background-size: contain;  
+          background-position: center;  
+          background-repeat: no-repeat;  
+          z-index: 9999;  
+        }  
+          
+        /* تصميم زر التحميل البسيط */
+        .download-btn {
+          display: block;
+          margin: 20px auto;
+          padding: 12px 20px;
+          width: 220px;
+          border: none;
+          border-radius: 8px;
+          background: linear-gradient(to bottom, #FFD700, #FFA500);
+          color: #2E2100;
+          font-family: minecraft-five;
+          font-size: 16px;
+          font-weight: bold;
+          text-align: center;
+          text-decoration: none;
+          cursor: pointer;
+          box-shadow: 0 4px 0 #8C6A15;
+          transition: all 0.2s ease;
+        }
+        
+        .download-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 0 #8C6A15;
+        }
+        
+        .download-btn:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 0 #8C6A15;
+        }
+        
+        .download-btn img {
+          vertical-align: middle;
+          margin-right: 8px;
+          height: 24px;
+        }
+
+        .social-container {
+          display: flex;
+          justify-content: center;
+          gap: 12px;
+          padding: 20px;
+          flex-wrap: wrap;
+        }
+
+        .social-btn {
+          display: flex;
+          align-items: center;
+          max-width: 20px;
+          overflow: hidden;
+          padding: 8px 12px;
+          border-radius: 6px;
+          gap: 8px;
+          text-decoration: none;
+          cursor:pointer;
+          color: white;
+          font-family: sans-serif;
+          font-weight: bold;
+          transition: max-width 0.4s ease, background-color 0.3s;
+        }
+
+        .social-btn img {
+          width: 20px;
+          height: 20px;
+          filter: invert(100%);
+          flex-shrink: 0;
+        }
+
+        .social-btn span {
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          white-space: nowrap;
+          color: #FFFFFF;
+        }
+
+        .social-btn:hover {
+          max-width: 150px;
+          color: #FFFFFF;
+        }
+
+        .social-btn:hover span {
+          opacity: 1;
+        }
+
+        /* ألوان المنصات */
+        .youtube   { background: #FF0000;border: 2px solid #FF3A3A; }
+        .facebook  { background: #1877F2;border: 2px solid #5BA2FF; }
+        .telegram  { background: #26A5E4;border: 2px solid #7CCDF5; }
+        .sticky-header.sticky {
+          position: fixed;
+          top: 0;
+          animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0.9; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        } 
+        .header {
+          background-color: #222222;
+          padding: 10px 0;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        .sticky-header {
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+          width: 100%;
+        }
+    </style>  
+</head>  
+
+<body>  
+
+<script>
+  // دالة إنشاء بصمة فريدة للنص
+  function generateHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash |= 0;
+    }
+    return hash.toString();
+  }
+  
+  // نظام التتبع الذكي للتحديثات
+  async function checkUpdates() {
+    try {
+      // 1. جلب التحديثات
+      const updateResponse = await fetch("../pages/update.txt?t=" + Date.now());
+      if (!updateResponse.ok) return;
+      const updateText = await updateResponse.text();
+      const updateHash = generateHash(updateText);
+
+      // 2. جلب الأدوات
+      const itemsResponse = await fetch("../scripts/items.js?t=" + Date.now());
+      if (!itemsResponse.ok) return;
+      const itemsText = await itemsResponse.text();
+      const itemsHash = generateHash(itemsText);
+
+      // 3. إذا اختلف أي منهما عن آخر مرة في السيرفر → أظهر التنبيه مباشرة
+      const lastUpdateHash = localStorage.getItem("updateHash");
+      const lastItemsHash = localStorage.getItem("itemsHash");
+
+      if (updateHash !== lastUpdateHash || itemsHash !== lastItemsHash) {
+        let message = "🔄 أخبار جديدة!\n\n";
+
+        // تحديث النص
+        if (updateHash !== lastUpdateHash) {
+          message += `📝 محتوى التحديث:\n${updateText}\n\n`;
+          localStorage.setItem("updateText", updateText);
+        }
+
+        // تحديث الأسعار
+        if (itemsHash !== lastItemsHash) {
+          const oldItems = JSON.parse(localStorage.getItem("shopItems")) || [];
+          const newItems = extractItemsFromText(itemsText);
+          if (newItems) {
+            const priceChanges = comparePrices(oldItems, newItems);
+            if (priceChanges.length > 0) {
+              message += "💰 تغييرات الأسعار:\n";
+              priceChanges.forEach(change => {
+                const dir = change.change > 0 ? "↑" : "↓";
+                message += `• ${change.name}: ${change.oldPrice} → ${change.newPrice} ${dir}\n`;
+              });
+              localStorage.setItem("lastPriceChanges", JSON.stringify(priceChanges));
+            }
+            localStorage.setItem("shopItems", JSON.stringify(newItems));
+          }
+        }
+
+        // حفظ الهاشات الجديدة
+        localStorage.setItem("updateHash", updateHash);
+        localStorage.setItem("itemsHash", itemsHash);
+
+        // عرض التنبيه فورًا
+        alert(message);
+      }
+    } catch (error) {
+      console.error("خطأ في نظام التحديثات:", error);
+    }
+  }
+  
+  // دالة مساعدة لاستخراج الأدوات من النص
+  function extractItemsFromText(text) {
+    try {
+      const match = text.match(/export const shopItems = (\[.*?\])/s);
+      return match ? eval(match[1]) : null;
+    } catch {
+      return null;
+    }
+  }
+  
+  // دالة مقارنة الأسعار
+  function comparePrices(oldItems, newItems) {
+    return newItems.filter(newItem => {
+      const oldItem = oldItems.find(item => item.name === newItem.name);
+      return oldItem && oldItem.price !== newItem.price;
+    }).map(changedItem => {
+      const oldItem = oldItems.find(item => item.name === changedItem.name);
+      return {
+        name: changedItem.name,
+        oldPrice: oldItem.price,
+        newPrice: changedItem.price,
+        change: changedItem.price - oldItem.price
+      };
+    });
+  }
+  
+  // تشغيل النظام عند تحميل الصفحة
+  document.addEventListener('DOMContentLoaded', () => {
+    checkUpdates();
+  });
+</script>
+<script>
+  function showUpdates() {
+    const text = localStorage.getItem("updateText");
+    const priceChanges = localStorage.getItem("lastPriceChanges");
+    
+    let message = "";
+    
+    if (text) {
+      message += "✨ أخبار جديدة:\n\n" + text + "\n\n";
+    } else {
+      message += "لا يوجد أخبار حالياً.\n\n";
+    }
+    
+    if (priceChanges) {
+      const changes = JSON.parse(priceChanges);
+      if (changes.length > 0) {
+        message += "💰 تغييرات الأسعار:\n";
+        changes.forEach(change => {
+          const dir = change.change > 0 ? "↑" : "↓";
+          message += `• ${change.name}: ${change.oldPrice} → ${change.newPrice} ${dir}\n`;
+        });
+      }
+    }
+    
+    alert(message);
+  }
+</script>
+<div class="sticky-header"> 
+  <div class="header">إم سي كو   
+    <img src="../icons/panda.png" height="27">  
+    <button class="news" id="newsButton" type="button" onclick="showUpdates()"></button>  
+  </div>   
+</div>
+<div class="content">   
+  <a id="downloadBtn" style="display:none;" onclick="downloadApp()" class="download-btn">
+    <img src="../icons/icon_panda.png" alt="App Icon"> تحميل التطبيق
+  </a>
+  <div class="description">
+    <div class="title"> <img src="../icons/notepad_gif.gif" height="15">ما هو إم سي كو؟ <img src="../icons/icon_panda.png" height="14"></div>
+    إم سي كو موقع عام يشمل جميع المستخدمين. تتضمن مميزاته جمع العملات وشراء العناصر من المتجر أو إرسالها للآخرين. كما يوفر ميزة الدردشة ويتيح لك التواصل مع المستخدمين الآخرين والتفاعل معهم.
+  </div>
+  
+  <div class="description">   
+    <div class="title"> تسجيل الدخول / إنشاء حساب </div>   
+    انقر على الزر الذهبي لتسجيل الدخول أو إنشاء حساب جديد.  
+    <a href="pages/login-ar.html">  
+        <button id="goldButton" title="gegege2g"> تسجيل الدخول والتسجيل   </button>
+    </a>   
+  </div>  
+  
+  <div class="description">  
+    <div class="title">عن المطورين</div>
+    انقر للحصول على مزيد من المعلومات.  
+    <a href="Developers-ar.html">   
+        <button id="purpleButton"><img src="../icons/article_gif.gif" height="15"> عن المطورين</button>
+    </a>   
+  </div>  
+        
+  <div class="description">  
+    <div class="title"> سياسة الخصوصية </div>الرجاء قراءة هذا قبل استخدام الموقع.  
+    <a href="../privacy-policy.html">   
+        <button id="greenButton"><img src="../icons/gavel_gif.gif" height="15"> سياسة الخصوصية</button>
+    </a>   
+  </div>  
+  <div class="description">
+    <div class="title">حساباتنا</div>
+    تابعنا على حساباتنا للحصول على كل الأخبار الحديثة.
+    
+    <div class="social-container">
+      <a href="https://www.youtube.com/@mc-_-co-96" class="social-btn youtube" target="_blank">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/youtube.svg" alt="YouTube">
+        <span>يوتيوب</span>
+      </a>
+      
+      <a href="https://www.facebook.com/share/1CAawr3XAj/" class="social-btn facebook" target="_blank">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/facebook.svg" alt="Facebook">
+        <span>فيسبوك</span>
+      </a>
+      
+      <a href="https://t.me/mccocommunity" class="social-btn telegram" target="_blank">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/telegram.svg" alt="Telegram">
+        <span>تلغرام</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('scroll', function() {
+    const header = document.querySelector('.sticky-header');
+    if (window.scrollY > 0) {
+      header.classList.add('sticky');
+    } else {
+      header.classList.remove('sticky');
+    }
+  });
+</script>
+<!-- Firebase مكتبات -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script type="module" src="scripts/main.js"></script>  
+
+</body>  
+</html>

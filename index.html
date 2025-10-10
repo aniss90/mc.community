@@ -7,37 +7,29 @@
     <link rel="manifest" href="manifest.json">
     <title>mc co</title>  
     <!-- Meta Description -->
-<meta name="description" content="mcco هو موقع عام يتيح لك جمع العملات، شراء الأدوات، الدردشة مع المستخدمين، والتفاعل معهم بطريقة ممتعة!">
+<meta name="description" content="mcco is your ultimate hub to collect coins, unlock cool tools, chat, and have fun with friends and the community!">
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://aniss90.github.io/mc.community/">
-<meta property="og:title" content="mcco - تواصل، اشتري أدوات، وتحدى الأصدقاء!">
-<meta property="og:description" content="موقع شامل للتفاعل، جمع العملات، وشراء الأدوات والدردشة مع المستخدمين الآخرين. انضم الآن!">
-<meta property="og:image" content="https://aniss90.github.io/mc.community/web/ytlogo.png">
+<meta property="og:title" content="mcco - Play, Connect & Challenge Friends!">
+<meta property="og:description" content="Join mcco, the interactive platform where you can collect coins, buy unique tools, chat with others, and challenge your friends. Start the fun today!">
+<meta property="og:image" content="https://aniss90.github.io/mc.community/web/mcco-logo.png">
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://aniss90.github.io/mc.community/">
-<meta property="twitter:title" content="mcco - تواصل، اشتري أدوات، وتحدى الأصدقاء!">
-<meta property="twitter:description" content="موقع شامل للتفاعل، جمع العملات، وشراء الأدوات والدردشة مع المستخدمين الآخرين. انضم الآن!">
-<meta property="twitter:image" content="https://aniss90.github.io/mc.community/web/ytlogo.png">
+<meta property="twitter:title" content="mcco - Play, Connect & Challenge Friends!">
+<meta property="twitter:description" content="Discover mcco – a fun space to interact, collect coins, shop for tools, and chat with the community. Join now and start your adventure!">
+<meta property="twitter:image" content="https://aniss90.github.io/mc.community/web/mcco-logo.png">
     <link rel="stylesheet" href="style/main.css">  
-    <link rel="icon" type="image/x-icon" href="web/ytlogo.png">  
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="web/mcco-logo.png">  
+<!-- Vercel Analytics -->
+<script defer src="https://static.vercel-insights.com/v1/script.debug.js"></script>
 <script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "0eeeb673-ff9f-4b67-8f63-e14e7945ed5f",
-      serviceWorkerParam: { scope: '/mc.community/' },
-      serviceWorkerPath: 'OneSignalSDKWorker.js',
-      serviceWorkerUpdaterPath: 'OneSignalSDKUpdaterWorker.js'
-    });
-    
-    // طلب الإذن مباشرة عند فتح الصفحة
-    OneSignal.showSlidedownPrompt();
-  });
+  window.vercelAnalytics = window.vercelAnalytics || [];
+  window.vercelAnalytics.push(['projectId', 'YOUR_PROJECT_ID']);
+</script>
 </script>
     <!-- Google tag (gtag.js) -->  
     <script async src="https://www.googletagmanager.com/gtag/js?id=F18SFG2LMZ"></script>  
@@ -60,6 +52,10 @@
             font-family: minecraft-five;  
             src: url('font/Minecraft-Five.ttf');  
         }  
+            @font-face {    
+      font-family: MinecraftFive-Regular;    
+      src: url('../font/MinecraftFive-Regular.ttf');    
+    }  
         .description{  
           font-size: 12px;  
         }  
@@ -238,6 +234,76 @@
   width: 100%;
   
 }
+    .Elements-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      
+    }
+    
+    .Elements-left {
+      flex: 1;
+    }
+    
+    .Elements-right {
+flex: 1;
+    }
+    
+  
+      @media (max-width: 768px) {
+      .Elements-container {
+        flex-direction: column;
+  
+      }
+      
+      .Elements-right {
+        order: 1;
+      width: 100%;
+      }
+      
+      .Elements-left {
+        order: 2;
+        width: 100%;
+      }
+      
+      .custom-alert-content {
+        width: 90%;
+      }
+    }
+.logo-container {
+  position: relative;
+}
+
+.logo-img {
+  width: 100px;
+  border-radius: 18px;
+}
+
+.logo-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  opacity: 0;
+  transition: all 0.2s;
+  font-family: MinecraftFive-Regular;
+  pointer-events: none;
+  text-shadow: 0 0.9px 0 #0000006B;
+}
+
+.logo-img:active + .logo-text {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+nl}
+
+.logo-img:active {
+  opacity: 0.1;
+
+}
+
     </style>  
 </head>  
 
@@ -345,6 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <script>
+
   function showUpdates() {
     const text = localStorage.getItem("updateText");
     const priceChanges = localStorage.getItem("lastPriceChanges");
@@ -371,18 +438,21 @@ document.addEventListener('DOMContentLoaded', () => {
     alert(message);
   }
 </script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js");
+  }
+</script>
 <div class="sticky-header"> 
 <div class="header">MC CO   
-  <img src="icons/panda.png" height="27">  
   <button class="news" id="newsButton" type="button" onclick="showUpdates()"></button>  
 </div>   
 </div>
 <div class="content">   
-  <a id="downloadBtn" style="display:none;" onclick="downloadApp()" class="download-btn">
-    <img src="icons/icon_panda.png" alt="App Icon"> Download App
-  </a>
+<div class="Elements-container"> 
+  <div class="Elements-right"> 
     <div class="description">
-    <div class="title"> <img src="icons/notepad_gif.gif" height="15">what's mc co ? <img src="icons/icon_panda.png" height="14"></div>
+    <div class="title"> <img src="icons/notepad_gif.gif" height="15">what's mc co ?</div>
     mc co a public site that includes all people. Its features include collecting coins and purchasing items from the store or sending them to others. It also provides a chat feature and allows you to communicate with other users and interact with them.
 
   </div>
@@ -390,9 +460,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   <div class="description">   
     <div class="title"> login / create an account </div>   
-    Click at gold button to Login or Create an account.  
-    <a href="pages/login.html">  
-        <button id="goldButton" title="gegege2g"><img src="icons/add-player@0.5x.icon-2f437.png" height="15"> Login & Register</button>
+   Login or Create an account page.  
+    <a href="pages/login-page.html">  
+        <button id="goldButton" title="login/register page"> Login & Sign up</button>
     </a>   
   </div>  
   
@@ -400,7 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
          
   <div class="description">  
     <div class="title">about the developers</div>
-    Click to get more information .  
+    Click to get more informationa of developers .  
     <a href="Developers.html">   
         <button id="purpleButton"><img src="icons/article_gif.gif" height="15"> About the Developers</button>
     </a>   
@@ -408,11 +478,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
   <div class="description">  
     <div class="title"> privacy policy </div>Please read this before using the website.  
-    <a href="privacy_policy.html">   
+    <a href="privacy-policy.html">   
         <button id="greenButton"><img src="icons/gavel_gif.gif" height="15"> Privacy policy</button>
     </a>   
   </div>  
-<div class="description">
+  </div>
+<div class="description Elements-left">
   <div class="title">Our accounts</div>
   Follow us on our account to get all the latest news.
   
@@ -432,7 +503,14 @@ document.addEventListener('DOMContentLoaded', () => {
     <span>Telegram</span>
   </a>
 </div>
+<div class="logo-container">
+  <img src="web/mcco-logo.png" class="logo-img">
+  <span class="logo-text"><font style="color: gray; font-family: MinecraftFive-Regular; font-size: 24px;">MC</font> CO</span>
 </div>
+
+  
+</div>
+  
   </div>
 
 

@@ -4,8 +4,8 @@
   <meta charset="UTF-8">    
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../style/main.css">    
-  <link rel="icon" type="image/x-icon" href="../web/ytlogo.png">    
-  <title>Forgot Username</title>    
+  <link rel="icon" type="image/x-icon" href="../web/mcco-logo.png">    
+  <title>mc co-forgot Username</title>    
     
   <style>    
     @font-face {    
@@ -176,7 +176,7 @@
     .account-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 15px;
+      gap: 8px;
       margin-top: 15px;
     }
 
@@ -184,14 +184,14 @@
       width: 100px;
       max-height: 100px; 
       justify-self: center;
-      border: none;
-      background-color: #333333F7;
-      border-radius: 5px; 
       padding: 10px;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.3s;
-      font-family: minecraft;
+      border: 2px solid #313131D1;
+border-radius: 8px;
+background-color: #2a2a2a;
+color: #ffffff;
+outline: none;
+transition: all 0.3s ease;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
     .account-item .username {
       color: #C4C4C4;
@@ -199,13 +199,13 @@
     }
 
     .account-item:hover {
-      border-color: #FFFB00;
-      background-color: #444;
+      border-color: #535353CC;
+      background-color: #2E2E2E;
     }
 
     .account-item.selected {
-      border-color: #FFFB00;
-      background-color: #555;
+      border-color: #535353CC;
+      background-color: #414141;
     }
 
     .account-item img {
@@ -312,12 +312,19 @@
     #greenButton {
       font-family: MinecraftFive-Regular;
     }
+       .greenButton:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background-color: #066903;
+      transform: translateY(var(--border-2x-thickness));
+      box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
+    }
   </style>
 </head>    
 <body> 
 <div class="sticky-header"> 
   <div class="header">  
-    <button class="back" id="backButton" type="button" onclick="goBack()"></button>   
+    <button class="back" id="backButton" type="button" onclick="goBack()"><</button>   
     Forgot Username <img src="../icons/gif_test-83efe.gif" height="30">  
   </div>  
 </div>
@@ -326,6 +333,7 @@
       <div class="login-box">    
         <div id="step1" class="step active">
           <div class="title">Find Your Account</div>
+                    <div class="description">    
           <form id="emailForm">
             <div class="input-group"> 
               <input type="email" id="email" placeholder=" " required>  
@@ -334,25 +342,29 @@
             <br>
             <button type="submit" id="greenButton">Search</button>
           </form>
-          <div class="description">    
-            🔸Remember your username? <a href="login.html" class="link">Login here</a>     
-          </div>
+          <br />
+            🔸Remember your username? <a href="login-page.html" class="link">Login here</a>   
         </div>
-        
+        </div>
         <div id="step2" class="step">
           <div class="title">Select Your Account</div>
-          <div id="accountsList" class="account-grid">
+          <div class="description">    
+          <form>
+                      <div id="accountsList" class="account-grid">
             <!-- سيتم ملء الحسابات هنا جافاسكريبت -->
           </div>
           <br>
-          <button id="selectAccountBtn" class="custom-alert-button" disabled>Continue</button>
-          <div class="description">    
+          <form></form>
+          <button id="selectAccountBtn" class="greenButton" disabled>Continue</button>
+          </form>
+<br />
+          <br>
             🔸Not your accounts? <a href="#" id="tryAnotherEmail" class="link">Try another email</a>     
-          </div>
         </div>
-        
+        </div>
         <div id="step3" class="step">
           <div class="title">Enter Password</div>
+          <div class="description">    
           <form id="passwordForm">
             <div class="input-group password-container">  
               <input type="password" id="finalPassword" placeholder=" " required>  
@@ -362,12 +374,11 @@
             <br>
             <button type="submit" id="greenButton">Login</button>
           </form>
-          <div class="description">    
+          <br />
             🔸Forgot password? <a href="forget-password.html" class="link">Reset/get it</a>     
-          </div>
         </div>
       </div>
-     
+      </div>
       <div class="login-image"> 
         <div class="description">
           <img src="../icons/tutorial_end-fbdd6.png" alt="Login Image">

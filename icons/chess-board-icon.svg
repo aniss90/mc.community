@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="44.0" height="44.0" viewBox="0 0 32.0 32.0">
+  <g>
+    <path d="M 3.02 0 L 28.98 0 Q 32 0 32 3.02 L 32 28.98 Q 32 32 28.98 32 L 3.02 32 Q 0 32 0 28.98 L 0 3.02 Q 0 0 3.02 0 Z" fill="#B68860" />
+    <path d="M 23.11 1.78 H 30.22 V 8.89 H 23.11 V 1.78 Z" fill="#B68860" />
+    <path d="M 16 8.89 H 23.11 V 16 H 16 V 8.89 Z" fill="#B68860" />
+    <path d="M 8.89 1.78 H 16 V 8.89 H 8.89 V 1.78 Z" fill="#B68860" />
+    <path d="M 1.78 8.89 H 8.89 V 16 H 1.78 V 8.89 Z" fill="#B68860" />
+    <path d="M 8.89 16 H 16 V 23.11 H 8.89 V 16 Z" fill="#B68860" />
+    <path d="M 1.78 23.11 H 8.89 V 30.22 H 1.78 V 23.11 Z" fill="#B68860" />
+    <path d="M 23.11 16 H 30.22 V 23.11 H 23.11 V 16 Z" fill="#B68860" />
+    <path d="M 16 23.11 H 23.11 V 30.22 H 16 V 23.11 Z" fill="#B68860" />
+    <path d="M 16 1.78 H 23.11 V 8.89 H 16 V 1.78 Z" fill="#EBECD0" />
+    <path d="M 23.11 8.89 H 30.22 V 16 H 23.11 V 8.89 Z" fill="#EBECD0" />
+    <path d="M 1.78 1.78 H 8.89 V 8.89 H 1.78 V 1.78 Z" fill="#EBECD0" />
+    <path d="M 8.89 8.89 H 16 V 16 H 8.89 V 8.89 Z" fill="#EBECD0" />
+    <path d="M 1.78 16 H 8.89 V 23.11 H 1.78 V 16 Z" fill="#EBECD0" />
+    <path d="M 8.89 23.11 H 16 V 30.22 H 8.89 V 23.11 Z" fill="#EBECD0" />
+    <path d="M 16 16 H 23.11 V 23.11 H 16 V 16 Z" fill="#EBECD0" />
+    <path d="M 23.11 23.11 H 30.22 V 30.22 H 23.11 V 23.11 Z" fill="#EBECD0" />
+  </g>
+</svg>

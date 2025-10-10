@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, setDoc, increment } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, setDoc, increment, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; // أضفت getDocs هنا
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js"; // جديد
 
@@ -34,15 +34,14 @@ export function onClick() {
   audio.play();
 }
 
-
 export function closeAlert(button) {
   const alertBox = button.parentElement;
   alertBox.style.display = 'none';
   document.body.removeChild(alertBox);
 }
 
-export { db, auth, storage, collection, addDoc, onSnapshot, doc, updateDoc, setDoc };
+export { db, auth, storage, collection, addDoc, onSnapshot, doc, updateDoc, setDoc, getDocs }; // أضفت getDocs هنا
 // أضف هذا إذا لم يكن موجودًا في ملف main.js
 export const generateUserProfileLink = (userId) => {
-  return `${window.location.origin}/profile.html?user=${userId}`;
+  return `${window.location.origin}/selected-user-profile.html?user=${userId}`;
 };

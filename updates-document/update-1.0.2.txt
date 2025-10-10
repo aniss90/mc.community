@@ -1,0 +1,15 @@
++The like message has been added. How to use it: Double-click on the message you want to like. To remove the like, double-click again. 
+تمت إضافة رسالة الإعجاب. كيفية الاستخدام: انقر نقرًا مزدوجًا على الرسالة التي تريد الإعجاب بها. لإزالة الإعجاب، انقر نقرًا مزدوجًا مرة أخرى. 
+
++New tags have been added and the appearance of some has been updated. The method for obtaining them will be available very soon. 
+تمت إضافة علامات جديدة، وتم تحديث مظهر بعضها. ستكون طريقة الحصول عليها متاحة قريبًا جدًا.
+-The account creation method has been updated and its appearance has changed to become better and more practical. 
+تم تحديث طريقة إنشاء الحساب وتغير مظهره ليصبح أفضل وأكثر عملية. 
+
+
+
+
+
+
+bug fixed....
+  اصلاح لبعض الاخطاء...

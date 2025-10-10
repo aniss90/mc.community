@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../style/main.css">
+  <link rel="icon" type="image/x-icon" href="../icons/Setting_icon.png">
+    <link rel="stylesheet" href="../style/tags.css" />  
+  <title>mc co-profile settings</title>
+     <!-- Open Graph Meta Tags -->
+<!-- Dynamic Meta Tags -->
+<!-- Dynamic Meta Tags -->
+<meta property="og:type" content="profile">
+<meta property="og:url" content="">
+<meta property="og:title" content="">
+<meta property="og:description" content="">
+<meta property="og:image" content="">
+<meta property="og:site_name" content="mc co">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <style>
+    @font-face {
+      font-family: minecraft;
+      src: url('../font/Minecraft-Default.otf');
+    }
+    @font-face {
+      font-family: minecraft-ten;
+      src: url('../font/Minecraft-Ten.ttf');
+    }
+    @font-face {
+      font-family: minecraft-five;
+      src: url('../font/Minecraft-Five.ttf');
+    }
+    @font-face {
+      font-family: MinecraftFive-Regular;
+      src: url('../font/MinecraftFive-Regular.ttf');
+    }
+    
+  
+    
+    
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+.settings-container>* {
+  flex: 1 1 100%;
+}
+
+@media (min-width: 768px) {
+  .settings-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .settings-container>* {
+    flex: 1 1 45%;
+  }
+}
+    
+    .profile-section {
+      display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: center;
+align-items: flex-start;
+gap: 20px;
+background-color: #262626;
+padding: 20px;
+border-radius: 5px;
+border: 2px solid #4a4a4a;
+margin-bottom: 20px;
+    }
+    
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow:
+        0px 0px 14px #565656,
+        0 0 0 var(--border-thickness) #1a1a1b,
+        0 0 0 0 #1a1a1b;
+  
+      backdrop-filter: blur(2px);
+    }
+  
+    .profile-info {
+      text-align: center;
+    }
+    
+    .username {
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      font-size: 24px;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+    
+    .user-bio {
+      font-family: 'minecraft', sans-serif;
+      color: #FFFFFF;
+      font-size: 14px;
+      max-width: 300px;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    
+    .stat-item {
+      margin-top: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    
+    .stat-label {
+      font-family: 'minecraft', sans-serif;
+      color: #959595;
+      font-size: 12px;
+    }
+    
+    .edit-profile-btn {
+      background-color: hsla(0, 0%, 20%, 1);
+      border: 2px solid #474747;
+          box-shadow:
+        0px var(--border-2x-thickness) 0px #313131,
+        0 0 0 var(--border-thickness) #1a1a1b,
+        0 var(--border-2x-thickness) 0 var(--border-thickness) #1a1a1b;
+      border-radius: 8px;
+      color: white;
+      padding: 8px 15px;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+    
+    .edit-profile-btn:hover {
+     border: 2px solid #474747;
+      box-shadow:
+        0px 0px 14px #454545,
+        0 0 0 var(--border-thickness) #1a1a1b,
+        0 0 0 0 #1a1a1b;
+  
+    }
+    
+    .settings-sections {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .risk_place {
+/*background: linear-gradient(180deg, #9F0707A6, #6F0707AD);*/
+background-color: #D3332261; 
+padding: 15px;
+border-radius: 5px;
+border: 2px solid #BC6868;
+    
+    }
+    .settings-card {
+      background-color: #262626;
+      padding: 15px;
+      border-radius: 5px;
+      border: 2px solid #4a4a4a;
+    }
+    
+    .card-header {
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      color: #E0BA31;
+      font-size: 18px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .card-content {
+      font-family: 'minecraft', sans-serif;
+      color: #e0e0e0;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #4a4a4a;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: #2A9A2F;
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #3a3a3a;
+    }
+    
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+    
+    .setting-label {
+      font-family: 'minecraft', sans-serif;
+      color: #e0e0e0;
+    }
+    
+    .purchased-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .item-card {
+      background-color: #3a3a3a;
+      padding: 10px;
+      border-radius: 5px;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    
+    .item-icon {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+    
+    .item-name {
+      font-family: 'minecraft', sans-serif;
+      font-size: 10px;
+      color: #e0e0e0;
+      text-align: center;
+    }
+    
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      background-color: #262626;
+      border: 3px solid #E0BA31;
+      padding: 20px;
+      width: 85%;
+      box-shadow: 0px 3px 0px rgba(224, 155, 0, 1);
+      animation: fadeIn 0.3s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .modal-title {
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      color: #E0BA31;
+      font-size: 20px;
+    }
+    
+    .close-modal {
+      background: none;
+      border: none;
+      color: #e0e0e0;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-label {
+      display: block;
+      font-family: 'minecraft', sans-serif;
+      color: #e0e0e0;
+      margin-bottom: 5px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 10px 0 10px 0;
+      background-color: #3a3a3a;
+      border: 1px solid #4a4a4a;
+      color: #e0e0e0;
+      font-family: 'minecraft', sans-serif;
+    }
+    
+    .form-textarea {
+      height: 100px;
+      width: 100%;
+      background-color: #3a3a3a;
+      border: 1px solid #4a4a4a;
+      color: #e0e0e0;
+      font-family: 'minecraft', sans-serif;
+      resize: none;
+    }
+    
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .modal-btn {
+      padding: 8px 15px;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      color: #fff;
+      border-radius: 5px;
+      background-color: #45454500;
+      box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
+    }
+    .modal-btn:hover{
+      background-color: #3C3C3C;
+    }
+    .modal-btn.cancel {
+      background-color: #4A4A4A00;
+      color: #e0e0e0;
+      border: 2px solid #5A5A5A00;
+      border-radius: 8px;
+    }
+     .modal-btn.cancel:hover{
+       background-color: #4a4a4a;
+       border: 2px solid #5a5a5a;
+     }
+    .modal-btn.save {
+      background-color: #2A9A2F00;
+      border: 2px solid #47C24C00;
+      border-radius: 8px;
+      color: white;
+      border: 2px solid #47C24C;
+    }
+     .modal-btn.save:hover{
+       background: #2A9A2F;
+       border: 2px solid #47C24C;
+     }
+    .file-input-container {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+    
+    .file-input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    
+    .file-input-label {
+      display: block;
+      padding: 8px;
+      background-color: #3a3a3a;
+      border: 1px solid #4a4a4a;
+      color: #e0e0e0;
+      font-family: 'minecraft', sans-serif;
+      text-align: center;
+      cursor: pointer;
+    }
+    
+    .password-container {
+      position: relative;
+    }
+    
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      user-select: none;
+      opacity: 0.7;
+    }
+    
+    .toggle-password:hover {
+      opacity: 1;
+    }
+    
+    @media (max-width: 600px) {
+      .profile-section {
+        padding: 15px;
+      }
+      
+      .profile-pic {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .username {
+        font-size: 20px;
+      }
+      
+      .stats {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+    #userPoints{
+      text-shadow: 0px 1px 0px #3A2700;
+      background: #916204;
+      border: 2px solid #A6730F;
+      color: #FFD952;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+    #userItems{
+      text-shadow: 0px 1px 0px #000F3A;
+      background: #160491;
+      border: 2px solid #220FA6;
+      color: #5282FF;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+    
+/* التصميم الجديد حسب طلبك */
+#purchasedItemsContainer {
+    display: flex;
+flex-wrap: wrap;
+gap: 7px;
+justify-content: center;
+padding: 1px;
+margin-top: 30px;
+}
+
+.item-card {
+    width: auto; /* حجم متوسط */
+    background: #333333; /* رمادي غامق */
+    border-radius: 5px;
+    border: none;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
+}
+
+
+.item-image {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.item-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.
+
+.item-name {
+    color: white; /* أبيض */
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-price {
+    color: #FFD952;
+text-shadow:0px 1px 0px #3A2700;
+font-size: auto;
+}
+
+.item-warning {
+    color: #e74c3c;
+    font-size: 12px;
+}
+.back {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  z-index: 1001;
+}
+.sticky-header.sticky {
+  position: fixed;
+  top: 0;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0.9; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+} 
+.header {
+  background-color: #222222;
+  padding: 10px 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  
+  /* احتفظ بباقي خصائص التصميم الحالية */
+}
+     .sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  
+}
+    /* Share Profile Button */
+    .share-profile-btn  {
+      position: absolute;
+      right: 5%;
+      top: 5%;
+      background-color: #3B45B4;
+      z-index: 100;
+      display: flex;
+  max-width: 20px;
+  box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
+  overflow: hidden;
+  cursor:pointer;
+  padding: 4px 4px;
+  border-radius: 6px;
+  border: 2px solid #727EFF;
+  gap: 8px;
+  text-decoration: none;
+  color: white;
+  font-family: sans-serif;
+  font-weight: bold;
+  transition: max-width 0.4s ease, background-color 0.3s;
+  font-family: MinecraftFive-Regular;
+    }
+    
+    .share-profile-btn:hover {
+      max-width: 150px;
+color: #5C86FF;
+} 
+    .share-profile-btn:hover span{
+    color: #A9BAF2;
+  opacity: 1;
+  transition: all 0.5s ease-out;
+font-family: MinecraftFive-Regular;
+    }
+    .share-profile-btn img{
+      width: 20px;
+height: 20px;
+flex-shrink: 0;
+    }
+    .share-profile-btn span{
+      opacity: 0;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  color: #5A7EFF;
+  font-family: MinecraftFive-Regular;
+    }
+    /* QR Code Container */
+    #qrCodeContainer canvas {
+      border: 2px solid #C8C8C8;
+      border-radius: 5px;
+      padding: 5px;
+      background: white;
+    }
+    
+    .error-message {
+      color: #ff6b6b;
+      font-family: 'minecraft';
+      font-size: 12px;
+      text-align: center;
+    }
+    .user-handle {
+  color: #959595;
+  font-size: 14px;
+  font-family: 'minecraft', sans-serif;
+  margin: 2px 0;
+}
+    #userFallTokens {
+      text-shadow: 0px 1px 0px #3A1E00;
+      background: #915104;
+      border: 2px solid #A6500F;
+      color: #FFA752;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+        #userLikes {
+      text-shadow: 0px 1px 0px #3A0000;
+      background: #910404;
+      border: 2px solid #A60F0F;
+      color: #FF5252;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+      /*delete  account btn */
+        .delete-account-btn {
+      position: absolute;
+      background-color: #B43B3B;
+      right: 5%;
+      top: 5%;
+      cursor:pointer;
+      align-items: center;
+      display: flex;
+  max-width: 20px;
+  overflow: hidden;
+  padding: 3px 12px;
+  border-radius: 6px;
+  border: 2px solid #FF7272;
+  gap: 8px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  transition: max-width 0.4s ease, background-color 0.3s;
+  font-family: MinecraftFive-Regular;
+    }
+    
+    .delete-account-btn:hover {
+      max-width: 150px;
+color: #FF5C5C;
+} 
+  .delete-account-btn:hover span{
+    color: #F2A9A9;
+  opacity: 1;
+  transition: all 0.5s ease-out;
+  font-family: MinecraftFive-Regular;
+
+    }
+    .delete-account-btn img{
+      width: 20px;
+height: 20px;
+flex-shrink: 0;
+    }
+    .delete-account-btn span{
+      opacity: 0;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  color: #FF5A5A;
+  font-family: MinecraftFive-Regular;
+    }
+.language-switcher {
+  display: flex;
+  gap: 8px;
+}
+
+.lang-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#englishBtn {
+  background-color: #1a73e8;
+  color: white;
+}
+
+#arabicBtn {
+  background-color: #34a853;
+  color: white;
+}
+
+.lang-btn:not(.active) {
+  opacity: 0.6;
+  filter: grayscale(0.5);
+}
+
+.lang-btn.active {
+  opacity: 1;
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+} 
+#tagsSortableList {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.sortable-item {
+  margin-bottom: 8px;
+  cursor: grab;
+  gap: 5px;
+}
+.user-tags {
+  gap: 5px;
+  padding-left: 2px;
+}
+
+.tag {
+  font-family: minecraft-five;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-shadow: 0 1px 0px rgba(0, 0, 0, 0.3);
+  margin-right: 4px;
+  
+}
+  .arabic-text {
+    font-size: 12px;
+    color: #777;
+    text-align: left;
+    font-family: Arial, sans-serif;
+  }
+  </style>
+</head>
+<body>
+  <div class="sticky-header"> 
+  <div class="header">
+    <button class="back" id="backButton" type="button" onclick="goBack()"><</button>
+  Settings <img src="../icons/Setting_icon.png" height="24">
+  </div>
+  </div>
+  <div class="content">
+    <div class="settings-container">
+      <!-- Profile Section -->
+      
+      <div class="profile-section">
+        <img src="../icons/player-head-128-052ba.png" class="profile-pic" id="profilePic">      <div class="share-profile-btn" id="shareProfileBtn">
+        <img src="../icons/Share_logo.png">
+        <span>Share</span>
+      </div>
+        <div class="profile-info">
+          <div class="username" id="usernameDisplay">Loading...</div>
+  <div class="user-handle" id="userHandle">@username</div> 
+  <div class="user-tags-container" id="userTagsContainer" style="margin-top: 5px;"></div>
+  <div class="user-bio" id="userBio"></div>
+</div>
+        <div class="stats">
+          <div class="stat-item">
+            <div class="stat-value" id="userPoints">0</div>
+            <div class="stat-label">Coins</div>
+          </div>
+                    <div class="stat-item">
+            <div class="stat-value" id="userFallTokens">0</div>
+            <div class="stat-label">Fall Tokens</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="userItems">0</div>
+            <div class="stat-label">Items</div>
+          </div>
+        <div class="stat-item">
+          <div class="stat-value" id="userLikes">0</div>
+          <div class="stat-label">Likes</div>
+        </div>
+      
+        </div>
+        <button class="edit-profile-btn" id="editProfileBtn">Edit Profile</button>
+
+      </div>
+      
+      <!-- Settings Sections -->
+<div class="settings-sections">
+  <!-- Account Settings -->
+  <div class="settings-card">
+    <div class="card-header">
+      <img src="../icons/Setting_icon.png" height="16"> Account Settings
+      <div class="arabic-text">إعدادات الحساب</div>
+    </div>
+    <div class="card-content">
+      <div class="setting-item">
+  <div class="label-wrapper">
+    <span class="setting-label">Private Account</span>
+    <div class="arabic-text">الحساب الخاص</div>
+  </div>
+  <label class="toggle-switch">
+    <input type="checkbox" id="privateAccountToggle">
+    <span class="slider"></span>
+  </label>
+</div>
+      <div class="setting-item">
+        <div class="label-wrapper">
+          <span class="setting-label">Dark Mode</span>
+          <div class="arabic-text">الوضع المظلم</div>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="darkModeToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      
+      <div class="setting-item">
+        <div class="label-wrapper">
+          <span class="setting-label">Notifications</span>
+          <div class="arabic-text">الإشعارات</div>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="notificationsToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      
+      <div class="setting-item">
+        <div class="label-wrapper">
+          <span class="setting-label">Logged-in devices</span>
+          <div class="arabic-text">الأجهزة المتصلة</div>
+        </div>
+        <button class="modal-btn" id="showDevicesBtn">Show devices</button>
+      </div>
+      
+      <div class="setting-item">
+        <div class="label-wrapper">
+          <span class="setting-label">Change the order of tags</span>
+          <div class="arabic-text">تغيير ترتيب الوسوم</div>
+        </div>
+        <button class="modal-btn" id="editTagsOrderBtn">Change</button>
+      </div>
+      
+      <div class="setting-item">
+        <div class="label-wrapper">
+          <span class="setting-label">Change Password</span>
+          <div class="arabic-text">تغيير كلمة المرور</div>
+        </div>
+        <button class="modal-btn" id="changePasswordBtn">Change</button>
+      </div>
+      
+      <div class="setting-item">
+        <div class="label-wrapper">
+          <span class="setting-label">Change Email</span>
+          <div class="arabic-text">تغيير البريد الإلكتروني</div>
+        </div>
+        <button class="modal-btn" id="changeEmailBtn">Change</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+        
+        <!-- Purchased Items -->
+        <div class="settings-card">
+          <div class="card-header"><img src="../icons/Marketplace_new_logo.png" width="15px"> Purchased Items
+          <div class="arabic-text"> العناصر المشتراة </div>
+          </div>
+          <div class="card-content">
+            <div id="noItemsMessage" style="display: none; color: #fff;">You haven't purchased any items yet.
+                  <div class="arabic-text">لم تقم بشراء أي سلع بعد.  </div>
+            </div>
+            
+            <div class="purchased-items" id="purchasedItemsContainer">
+              <!-- Items will be added here dynamically -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Account Actions -->
+        <div class="risk_place">
+          <div class="card-header"><img src="../icons/stop_sign.gif" width="15px">Account Actions
+                            <div class="arabic-text">إجراءات الحساب  </div>
+          </div>
+          <div class="card-content">
+     
+            <div class="setting-item">
+              <span class="setting-label">Delete Account
+              <div class="arabic-text">حذف الحساب  </div>
+              </span>
+              <div class="delete-account-btn" id="deleteAccountBtn"> 
+              <img srcset="" src="../icons/delete-icon.svg" alt="">
+              <span>Delete</span>
+              </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Edit Profile Modal -->
+  <div class="modal" id="editProfileModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Edit Profile</div>
+        <button class="close-modal" id="closeEditModal">&times;</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Profile Picture</label>
+        <div class="arabic-text"> صورة الملف الشخصي  </div>
+        <div class="file-input-container">
+          <input type="file" id="profilePicInput" class="file-input" accept="image/*">
+          
+          <label for="profilePicInput" class="file-input-label">Choose Image</label>
+        </div>
+        <div id="selectedFileName" style="font-family: 'minecraft'; color: #959595; font-size: 12px; margin-top: 5px;"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <div class="arabic-text">  اسم المستخدم </div>
+        <p style="color: wheat;">you canalsouse icons in your username.</p>
+        <input type="text" id="editUsername" class="form-input" maxlength="20">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bio</label>
+        <div class="arabic-text"> السيرة الذاتية  </div>
+        <textarea id="editBio" class="form-textarea" maxlength="150"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" id="cancelEditBtn">Cancel</button>
+        <button class="modal-btn save" id="saveProfileBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Change Password Modal -->
+  <div class="modal" id="changePasswordModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Change Password
+        <div class="arabic-text">تغيير كلمة المرور     </div>
+        </div>
+        <button class="close-modal" id="closePasswordModal">&times;</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Current Password</label>
+            <div class="arabic-text"> كلمة المرور الحالية    </div>
+        <div class="password-container">
+          <input type="password" id="currentPassword" class="form-input">
+<span class="toggle-password" onclick="togglePasswordVisibility('currentPassword')">️<img src="../icons/show.svg" width="20px"></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">New Password</label>
+        <div class="arabic-text"> كلمة المرور الجديدة    </div>
+        <div class="password-container">
+          <input type="password" id="newPassword" class="form-input">
+            <span class="toggle-password" onclick="togglePasswordVisibility('newPassword')">️<img src="../icons/show.svg" width="20px"></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirm New Password</label>
+        <div class="arabic-text">  تأكيد كلمة المرور الجديدة   </div>
+        <div class="password-container">
+          <input type="password" id="confirmPassword" class="form-input">
+            <span class="toggle-password" onclick="togglePasswordVisibility('confirmPassword')">️<img src="../icons/show.svg" width="20px"></span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" id="cancelPasswordBtn">Cancel</button>
+        <button class="modal-btn save" id="savePasswordBtn">Change Password</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Change Email Modal -->
+  <div class="modal" id="changeEmailModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Change Email<div class="arabic-text">  تغيير البريد الإلكتروني  </div></div>
+        <button class="close-modal" id="closeEmailModal">&times;</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Current Email</label>
+        <div class="arabic-text">  البريد الإلكتروني الحالي </div>
+        <input type="email" id="currentEmail" class="form-input" disabled>
+      </div>
+      <div class="form-group">
+        <label class="form-label">New Email           <div class="arabic-text">  بريد إلكتروني جديد  </div></label>
+        <input type="email" id="newEmail" class="form-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirm New Email<div class="arabic-text">  تأكيد البريد الإلكتروني الجديد  </div></label>
+        <input type="email" id="confirmEmail" class="form-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Current Password</label>
+            <div class="arabic-text"> كلمة المرور الحالية   </div>
+        <div class="password-container">
+          <input type="password" id="emailCurrentPassword" class="form-input">
+          <span class="toggle-password" onclick="togglePasswordVisibility('emailCurrentPassword')">👁️</span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" id="cancelEmailBtn">Cancel</button>
+        <button class="modal-btn save" id="saveEmailBtn">Change Email</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Delete Account Modal -->
+  <div class="modal" id="deleteAccountModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">⚠️ Delete Account</div>
+        <button class="close-modal" id="closeDeleteModal">&times;</button>
+      </div>
+      <div class="card-content">
+        <p style="font-family: 'minecraft'; color: #e0e0e0; margin-bottom: 15px;">
+          Are you sure you want to delete your account? This action cannot be undone. All your data will be permanently removed.
+              <div class="arabic-text">     هل أنت متأكد من رغبتك في حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع بياناتك نهائيًا.   </div>
+        </p>
+        <div class="form-group">
+          <label class="form-label">Enter your password to confirm    <div class="arabic-text"> أدخل كلمة المرور الخاصة بك للتأكيد   </div></label>
+          <div class="password-container">
+            <input type="password" id="deleteAccountPassword" class="form-input">
+            <span class="toggle-password" onclick="togglePasswordVisibility('deleteAccountPassword')">️<img src="../icons/show.svg" width="20px"></span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" id="cancelDeleteBtn">Cancel</button>
+        <button class="modal-btn" style="background-color: #d32f2f; border: 2px solid #f44336;" id="confirmDeleteBtn">Delete Account</button>
+      </div>
+    </div>
+  </div>
+  <!-- Share Profile Modal -->
+  <div class="modal" id="shareProfileModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Share Your Profile</div>
+        <button class="close-modal" id="closeShareModal">&times;</button>
+      </div>
+      <div class="card-content">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div id="qrCodeContainer" style="margin: 0 auto; width: 150px; height: 150px;"></div>
+          <div id="qrCodeError" class="error-message" style="display: none;"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Profile Link</label>
+          <div style="display: flex; gap: 5px;">
+            <input type="text" id="profileLink" class="form-input" readonly>
+            <button class="modal-btn" id="copyLinkBtn" style="padding: 8px 12px;">Copy</button>
+          </div>
+        </div>
+        <div style="font-family: 'minecraft'; color: #959595; font-size: 12px; margin-top: 10px; text-align: center;">
+          Share this link or QR code to let others view your profile
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" id="closeShareModalBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+
+<div id="editTagsModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+<div class="modal-title">Sort tags </div>
+      <button class="close-modal" onclick="toggleModal('editTagsModal', false)">&times;</button>
+    </div>
+<div class="description"> 
+    <ul id="tagsSortableList"></ul>
+</div>
+            <div style="font-family: 'minecraft'; color: #959595; font-size: 12px; margin-top: 10px; text-align: center;">
+          Long press on the tag and move it to the up and down. After modifying them, click on save changes. 
+        </div>
+        <div class="arabic-text"> اضغط لفترة طويلة على العلامة ونقلها إلى أعلى وهبوط. بعد تعديلها ، انقر فوق حفظ التغييرات.  </div>
+    <div class="modal-actions">
+    <button class="modal-btn cancel" onclick="toggleModal('editTagsModal', false)">Close</button> 
+    <button class="modal-btn save" id="saveTagsOrderBtn">Save order </button>
+    </div>
+  </div>
+</div>
+<!-- Devices Modal -->
+<div class="modal" id="devicesModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">📱 Logged-in Devices</div>
+      <button class="close-modal" id="closeDevicesModal">&times;</button>
+    </div>
+    <div class="card-content">
+      <div id="devicesList" style="max-height: 400px; overflow-y: auto;">
+        <!-- سيتم عرض الأجهزة هنا -->
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" id="closeDevicesModalBtn">Close</button>
+    </div>
+  </div>
+</div>
+
+  
+<script>
+
+
+  // دالة مبسطة لحفظ واسترجاع الصور باستخدام الرابط كمفتاح
+  function cacheImages() {
+    // تحديد جميع الصور في الصفحة
+    const images = document.querySelectorAll('img, [style*="background-image"]');
+    
+    images.forEach(element => {
+      let imageUrl;
+      
+      // الحصول على رابط الصورة سواء من src أو من background-image
+      if (element.tagName === 'IMG') {
+        imageUrl = element.src;
+      } else {
+        const style = window.getComputedStyle(element);
+        imageUrl = style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+      }
+      
+      // تخطي الروابط الفارغة أو روابط البيانات (data URLs)
+      if (!imageUrl || imageUrl.startsWith('data:')) return;
+      
+      // التحقق مما إذا كانت الصورة مخزنة مسبقاً
+      const cachedImage = localStorage.getItem(imageUrl);
+      
+      if (cachedImage) {
+        // إذا كانت الصورة مخزنة، نستخدمها مباشرة
+        if (element.tagName === 'IMG') {
+          element.src = cachedImage;
+        } else {
+          element.style.backgroundImage = `url(${cachedImage})`;
+        }
+      } else {
+        // إذا لم تكن مخزنة، نحملها ونخزنها
+        fetch(imageUrl)
+          .then(response => response.blob())
+          .then(blob => {
+            const reader = new FileReader();
+            reader.onload = function() {
+              localStorage.setItem(imageUrl, this.result);
+              if (element.tagName === 'IMG') {
+                element.src = this.result;
+              } else {
+                element.style.backgroundImage = `url(${this.result})`;
+              }
+            };
+            reader.readAsDataURL(blob);
+          })
+          .catch(error => {
+            console.error('Error caching image:', error);
+          });
+      }
+    });
+  }
+  
+  // تشغيل الدالة عند تحميل الصفحة
+  window.addEventListener('DOMContentLoaded', cacheImages);
+</script>
+<script type="module">
+    import { db, auth } from '../scripts/main.js';
+    import { 
+      doc, 
+      getDoc, 
+      setDoc,
+      updateDoc,
+      deleteDoc,
+      collection,
+      query,
+      where,
+      getDocs,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+    import { shopItems } from '../scripts/items.js';
+    import { getTagName } from '../scripts/tags.js';
+    import {
+      GoogleAuthProvider,
+      signInWithPopup,
+      signInAnonymously,
+      onAuthStateChanged,
+      signOut,
+      updatePassword,
+      updateEmail,
+      reauthenticateWithCredential,
+      EmailAuthProvider,
+      deleteUser
+    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+    
+    // Get current user data
+    const user = auth.currentUser;
+    let currentUserData = {};
+    
+    function formatNumber(num) {
+        if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
+        if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+        if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+        if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+        return num.toString();
+    }
+
+const currentUserId = localStorage.getItem("activeUser");
+const privateToggle = document.getElementById("privateAccountToggle");
+
+if (currentUserId && privateToggle) {
+  const userDocRef = doc(db, "users", currentUserId);
+  
+  // تحميل الإعداد من قاعدة البيانات
+  getDoc(userDocRef).then(docSnap => {
+    if (docSnap.exists()) {
+      const userData = docSnap.data();
+      privateToggle.checked = userData["private-account"] === "on";
+    }
+  });
+  
+  // عند التغيير → تحديث Firestore
+  privateToggle.addEventListener("change", async () => {
+    try {
+      await updateDoc(userDocRef, {
+        "private-account": privateToggle.checked ? "on" : "off"
+      });
+      console.log("Private account updated:", privateToggle.checked);
+    } catch (error) {
+      console.error("Error updating private account:", error);
+      alert("⚠️ حدث خطأ أثناء تحديث إعداد الحساب الخاص");
+    }
+  });
+}
+    // Load user data from localStorage or Firestore
+    async function loadUserData() {
+      try {
+        const userId = localStorage.getItem("activeUser");
+        if (!userId) {
+          console.warn("No user logged in");
+          window.location.href = "login-page.html";
+          return;
+        }
+        
+        const userDocRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userDocRef);
+        
+        if (!userDoc.exists()) {
+          throw new Error("User document not found");
+        }
+        
+        currentUserData = userDoc.data();
+        displayUserData(currentUserData);
+        
+ if (currentUserData.areatags && currentUserData.areatags.length > 0) {
+  const tagsContainer = document.getElementById('userTagsContainer');
+  tagsContainer.innerHTML = '';
+  
+  currentUserData.areatags.forEach(tag => {
+    const tagElement = document.createElement('span');
+    tagElement.className = `tag tag-${tag}`;
+    tagElement.textContent = '';
+    tagsContainer.appendChild(tagElement);
+  });
+}
+        // Display purchased items
+        const purchasedItems = currentUserData.purchasedItems || [];
+        if (purchasedItems.length > 0) {
+          displayPurchasedItems(purchasedItems);
+        } else {
+          document.getElementById('noItemsMessage').style.display = 'block';
+        }
+        
+      } catch (error) {
+        console.error("Error details:", {
+          message: error.message,
+          stack: error.stack,
+          name: error.name
+        });
+        alert("⚠️ Error loading data. Please try again later.");
+      }
+    }
+    
+    // Display user data in the UI
+    function displayUserData(userData) {
+      const userId = localStorage.getItem("activeUser");
+      
+      document.getElementById('usernameDisplay').textContent = userData.displayName || userData.username || "User";
+      document.getElementById('userHandle').textContent = "@" + userId;
+      document.getElementById('userBio').textContent = userData.bio || "No bio yet";
+      document.getElementById('userPoints').textContent = userData.points || 0;
+      document.getElementById('userFallTokens').textContent = formatNumber(userData.fallTokens || 0);
+      document.getElementById('userLikes').textContent = formatNumber(userData.likes || 0);
+      // Set profile picture if available
+      if (userData.photoURL) {
+        document.getElementById('profilePic').src = userData.photoURL;
+      }
+      
+      // Set member since year
+      if (userData.createdAt) {
+        const date = userData.createdAt.toDate();
+        document.getElementById('userSince').textContent = date.getFullYear();
+      }
+      
+      // Set purchased items count
+      if (userData.purchasedItems) {
+        document.getElementById('userItems').textContent = userData.purchasedItems.length;
+      }
+      
+      // Set current email if available
+      if (userData.email) {
+        document.getElementById('currentEmail').value = userData.email;
+      }
+    }
+
+    // Display purchased items
+    function displayPurchasedItems(purchasedItemNames) {
+      const container = document.getElementById('purchasedItemsContainer');
+      container.innerHTML = '';
+      
+      if (!purchasedItemNames || purchasedItemNames.length === 0) {
+        document.getElementById('noItemsMessage').style.display = 'block';
+        return;
+      }
+      
+      purchasedItemNames.forEach(itemName => {
+        const itemData = shopItems.find(item =>
+          item.name.trim().toLowerCase() === itemName.trim().toLowerCase()
+        );
+        
+        const itemCard = document.createElement('div');
+        itemCard.className = 'item-card';
+        
+        if (itemData) {
+          itemCard.innerHTML = `
+            <div class="item-image">
+                <img src="${itemData.imageUrl}" alt="${itemData.name}"
+                     onerror="this.src='../icons/default_item.png'">
+            </div>
+            <div class="item-info">
+                <div class="item-name">${itemData.name}</div>
+                <div class="item-price">${formatNumber(itemData.price)}<img src="../icons/coinss_gif.gif"loading="lazy" height="15"></div>
+            </div>
+          `;
+        } else {
+          itemCard.innerHTML = `
+            <div class="item-image">
+                <img src="../icons/default_item.png" alt="${itemName}">
+            </div>
+            <div class="item-info">
+                <div class="item-name">${itemName}</div>
+                <div class="item-warning"> Not available</div>
+            </div>
+          `;
+        }
+        
+        container.appendChild(itemCard);
+      });
+    }
+    
+    // Modal toggle functions
+    function toggleModal(modalId, show) {
+      const modal = document.getElementById(modalId);
+      modal.style.display = show ? 'flex' : 'none';
+    }
+    
+    // Event listeners for modals
+    document.getElementById('editProfileBtn').addEventListener('click', () => {
+      document.getElementById('editUsername').value = currentUserData.displayName || currentUserData.username || "";
+      document.getElementById('editBio').value = currentUserData.bio || "";
+      toggleModal('editProfileModal', true);
+    });
+    
+    document.getElementById('changePasswordBtn').addEventListener('click', () => {
+      toggleModal('changePasswordModal', true);
+    });
+    
+    document.getElementById('changeEmailBtn').addEventListener('click', () => {
+      toggleModal('changeEmailModal', true);
+    });
+    
+    document.getElementById('deleteAccountBtn').addEventListener('click', () => {
+      toggleModal('deleteAccountModal', true);
+    });
+    
+    // Close modals
+    document.getElementById('closeEditModal').addEventListener('click', () => toggleModal('editProfileModal', false));
+    document.getElementById('closePasswordModal').addEventListener('click', () => toggleModal('changePasswordModal', false));
+    document.getElementById('closeEmailModal').addEventListener('click', () => toggleModal('changeEmailModal', false));
+    document.getElementById('closeDeleteModal').addEventListener('click', () => toggleModal('deleteAccountModal', false));
+    document.getElementById('cancelEditBtn').addEventListener('click', () => toggleModal('editProfileModal', false));
+    document.getElementById('cancelPasswordBtn').addEventListener('click', () => toggleModal('changePasswordModal', false));
+    document.getElementById('cancelEmailBtn').addEventListener('click', () => toggleModal('changeEmailModal', false));
+    document.getElementById('cancelDeleteBtn').addEventListener('click', () => toggleModal('deleteAccountModal', false));
+    
+    // Profile picture upload
+    document.getElementById('profilePicInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById('selectedFileName').textContent = `Selected: ${file.name}`;
+        
+        // Preview the image
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          document.getElementById('profilePic').src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+    
+    // Save profile changes
+    document.getElementById('saveProfileBtn').addEventListener('click', async () => {
+      const newUsername = document.getElementById('editUsername').value.trim();
+      const newBio = document.getElementById('editBio').value.trim();
+      const fileInput = document.getElementById('profilePicInput');
+      
+      if (!newUsername) {
+        alert('🚫 Username cannot be empty');
+        return;
+      }
+      
+      try {
+        const userId = localStorage.getItem("activeUser");
+        const userDocRef = doc(db, 'users', userId);
+        
+        const updateData = {
+          displayName: newUsername,
+          bio: newBio,
+          updatedAt: serverTimestamp()
+        };
+        
+        // Handle profile picture upload
+        if (fileInput.files.length > 0) {
+          const file = fileInput.files[0];
+          const reader = new FileReader();
+          reader.onload = async function(event) {
+            updateData.photoURL = event.target.result;
+            await updateDoc(userDocRef, updateData);
+            currentUserData = { ...currentUserData, ...updateData };
+            displayUserData(currentUserData);
+            toggleModal('editProfileModal', false);
+            alert('✅ Profile updated successfully!');
+          };
+          reader.readAsDataURL(file);
+        } else {
+          await updateDoc(userDocRef, updateData);
+          currentUserData = { ...currentUserData, ...updateData };
+          displayUserData(currentUserData);
+          toggleModal('editProfileModal', false);
+          alert('✅ Profile updated successfully!');
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        alert("⚠️ Failed to update profile. Please try again.");
+      }
+    });
+    
+    // Change password
+    document.getElementById('savePasswordBtn').addEventListener('click', async () => {
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        alert('🚫 Please fill all fields');
+        return;
+      }
+      
+      if (newPassword !== confirmPassword) {
+        alert('🔒 New passwords do not match');
+        return;
+      }
+      
+      if (newPassword.length < 6) {
+        alert('🔐 Password must be at least 6 characters');
+        return;
+      }
+      
+      try {
+        const userId = localStorage.getItem("activeUser");
+        const userDocRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userDocRef);
+        
+        if (!userDoc.exists()) {
+          alert('👤 User not found');
+          return;
+        }
+        
+        const userData = userDoc.data();
+        if (userData.password !== currentPassword) {
+          alert('❌ Current password is incorrect');
+          return;
+        }
+        
+        await updateDoc(userDocRef, { password: newPassword });
+        
+        alert('🔑 Password changed successfully!');
+        toggleModal('changePasswordModal', false);
+      } catch (error) {
+        console.error("Error changing password:", error);
+        alert("⚠️ Failed to change password. Please try again.");
+      }
+    });
+    
+    // Change email
+    document.getElementById('saveEmailBtn').addEventListener('click', async () => {
+      const newEmail = document.getElementById('newEmail').value.trim();
+      const confirmEmail = document.getElementById('confirmEmail').value.trim();
+      const currentPassword = document.getElementById('emailCurrentPassword').value;
+      
+      if (!newEmail || !confirmEmail || !currentPassword) {
+        alert('🚫 Please fill all fields');
+        return;
+      }
+      
+      if (newEmail !== confirmEmail) {
+        alert('📧 Emails do not match');
+        return;
+      }
+      
+      try {
+        const userId = localStorage.getItem("activeUser");
+        const userDocRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userDocRef);
+        
+        if (!userDoc.exists()) {
+          alert('👤 User not found');
+          return;
+        }
+        
+        const userData = userDoc.data();
+        if (userData.password !== currentPassword) {
+          alert('❌ Current password is incorrect');
+          return;
+        }
+        
+        await updateDoc(userDocRef, { email: newEmail });
+        
+        alert('📧 Email changed successfully!');
+        toggleModal('changeEmailModal', false);
+        document.getElementById('currentEmail').value = newEmail;
+      } catch (error) {
+        console.error("Error changing email:", error);
+        alert("⚠️ Failed to change email. Please try again.");
+      }
+    });
+    
+    // Delete account
+    document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
+      const password = document.getElementById('deleteAccountPassword').value;
+      
+      if (!password) {
+        alert('🚫 Please enter your password');
+        return;
+      }
+      
+      if (!confirm('❗❗ Are you absolutely sure you want to delete your account? This cannot be undone.')) {
+        return;
+      }
+      
+      try {
+        const userId = localStorage.getItem("activeUser");
+        const userDocRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userDocRef);
+        
+        if (!userDoc.exists()) {
+          alert('👤 User not found');
+          return;
+        }
+        
+        const userData = userDoc.data();
+        if (userData.password !== password) {
+          alert('❌ Password is incorrect');
+          return;
+        }
+        
+        await deleteDoc(userDocRef);
+        
+        localStorage.removeItem("activeUser");
+        
+        alert('🗑️ Account deleted successfully. You will be redirected to the home page.');
+        window.location.href = "login-page.html";
+      } catch (error) {
+        console.error("Error deleting account:", error);
+        alert("⚠️ Failed to delete account. Please try again.");
+      }
+    });
+    
+    // Dark mode toggle
+    document.getElementById('darkModeToggle').addEventListener('change', function() {
+      document.body.classList.toggle('dark-mode', this.checked);
+      localStorage.setItem('darkMode', this.checked);
+    });
+    
+    // Check for saved dark mode preference
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.getElementById('darkModeToggle').checked = true;
+      document.body.classList.add('dark-mode');
+    }
+    
+    // Password visibility toggle
+    window.togglePasswordVisibility = function(inputId) {
+      const input = document.getElementById(inputId);
+      const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+      input.setAttribute('type', type);
+      
+      const eyeIcon = input.nextElementSibling.querySelector('i');
+      if (eyeIcon) {
+        eyeIcon.classList.toggle('fa-eye');
+        eyeIcon.classList.toggle('fa-eye-slash');
+      }
+    };
+function renderUserTags(tags) {
+  const tagsContainer = document.getElementById('userTagsContainer');
+  tagsContainer.innerHTML = '';
+  
+  tags.forEach(tag => {
+    const tagElement = document.createElement('span');
+    tagElement.className = `tag tag-${tag}`;
+    tagElement.textContent = ''; // ← لا نكتب الاسم
+    tagsContainer.appendChild(tagElement);
+  });
+}
+document.addEventListener('DOMContentLoaded', () => {
+  // تفعيل السحب
+  new Sortable(document.getElementById('tagsSortableList'), {
+    animation: 150
+  });
+  
+  // فتح نافذة الترتيب
+  document.getElementById('editTagsOrderBtn').addEventListener('click', () => {
+    if (!currentUserData || !currentUserData.areatags) {
+      alert("⚠️ لم يتم تحميل بيانات المستخدم بعد");
+      return;
+    }
+    
+    const list = document.getElementById('tagsSortableList');
+    list.innerHTML = '';
+    
+    currentUserData.areatags.forEach(tag => {
+      const li = document.createElement('li');
+      li.className = 'sortable-item';
+      
+      const tagSpan = document.createElement('span');
+      tagSpan.className = `tag tag-${tag}`;
+      tagSpan.textContent = '';
+      
+      li.dataset.tag = tag;
+      li.appendChild(tagSpan);
+      list.appendChild(li);
+    });
+    
+    toggleModal('editTagsModal', true);
+  });
+  
+  // حفظ الترتيب وتحديث التاغات
+  document.getElementById('saveTagsOrderBtn').addEventListener('click', async () => {
+    const newTagsOrder = Array.from(document.querySelectorAll('#tagsSortableList li'))
+      .map(li => li.dataset.tag);
+    
+    try {
+      const userId = localStorage.getItem("activeUser");
+      const userDocRef = doc(db, 'users', userId);
+      
+      await updateDoc(userDocRef, {
+        areatags: newTagsOrder
+      });
+      
+      currentUserData.areatags = newTagsOrder;
+      
+      // تحديث العرض مباشرة
+      renderUserTags(newTagsOrder);
+      
+      toggleModal('editTagsModal', false);
+      alert('✅ تم حفظ الترتيب الجديد للتاغات');
+    } catch (err) {
+      console.error("Error updating tags order:", err);
+      alert("⚠️ فشل في حفظ الترتيب");
+    }
+  });
+});
+document.getElementById('showDevicesBtn')?.addEventListener('click', async () => {
+  toggleModal('devicesModal', true);
+  await showUserDevices();
+});
+
+document.getElementById('closeDevicesModal')?.addEventListener('click', () => toggleModal('devicesModal', false));
+document.getElementById('closeDevicesModalBtn')?.addEventListener('click', () => toggleModal('devicesModal', false));
+async function showUserDevices() {
+  try {
+    const userId = localStorage.getItem("activeUser");
+    const container = document.getElementById('devicesList');
+    
+    if (!container) {
+      console.error('عنصر devicesList غير موجود في الصفحة');
+      return;
+    }
+    
+    container.innerHTML = '<p style="font-family: minecraft; color: white;">جاري تحميل الأجهزة...</p>';
+    
+    if (!userId) {
+      container.innerHTML = '<p style="font-family: minecraft; color: white;">لا يوجد مستخدم نشط</p>';
+      return;
+    }
+    
+    const userDocRef = doc(db, 'users', userId);
+    const userDoc = await getDoc(userDocRef);
+    
+    if (!userDoc.exists()) {
+      container.innerHTML = '<p style="font-family: minecraft; color: white;">المستخدم غير موجود</p>';
+      return;
+    }
+    
+    const userData = userDoc.data();
+    const devices = userData.devices || {};
+    const deviceList = Object.entries(devices);
+    
+    if (deviceList.length === 0) {
+      container.innerHTML = '<p style="font-family: minecraft; color: white;">لا توجد أجهزة مسجلة</p>';
+      return;
+    }
+    
+    let html = `
+      <style>
+        .devices-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-family: minecraft;
+        }
+        .devices-table th {
+          text-align: left;
+          font-size: 12px;
+          color: #aaa;
+          padding: 6px 10px;
+        }
+        .devices-table td {
+          font-size: 14px;
+          color: white;
+          padding: 8px 10px;
+          border-top: 1px solid #555;
+        }
+      </style>
+      <table class="devices-table">
+        <thead>
+          <tr>
+            <th>Device name </th>
+            <th>Android version  </th>
+            <th>Last login   </th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+    
+    deviceList.forEach(([deviceId, deviceInfo]) => {
+      const androidVersion = deviceInfo.androidVersion || 'غير معروف';
+      let loginDate = 'غير معروف';
+      
+      if (deviceInfo.loginTime) {
+        loginDate = new Date(deviceInfo.loginTime).toLocaleString();
+      }
+      
+      html += `
+        <tr>
+          <td>${deviceInfo.deviceName || 'جهاز غير معروف'}</td>
+          <td>${androidVersion}</td>
+          <td>${loginDate}</td>
+        </tr>
+      `;
+    });
+    
+    html += `</tbody></table>`;
+    container.innerHTML = html;
+  } catch (error) {
+    console.error("Error loading devices:", error);
+    const container = document.getElementById('devicesList');
+    if (container) {
+      container.innerHTML = `<p style="font-family: minecraft; color: #ff6b6b;">
+        حدث خطأ أثناء جلب الأجهزة: ${error.message}
+      </p>`;
+    }
+  }
+}
+    // Initialize the page - load user data first
+    document.addEventListener('DOMContentLoaded', () => {
+      loadUserData();
+    });
+
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script>
+  // Enhanced QR Code generation with better error handling
+  async function generateQRCode(containerId, text, errorId) {
+    const container = document.getElementById(containerId);
+    const errorElement = document.getElementById(errorId);
+    
+    try {
+      container.innerHTML = '';
+      errorElement.style.display = 'none';
+      
+      if (!QRCode || typeof QRCode.toCanvas !== 'function') {
+        throw new Error('QRCode library not loaded correctly.');
+      }
+      
+      const canvas = document.createElement('canvas');
+      container.appendChild(canvas);
+      
+      await QRCode.toCanvas(canvas, text, {
+        width: 150,
+        errorCorrectionLevel: 'H',
+        margin: 1,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      });
+      
+      return true;
+    } catch (error) {
+      console.error('QR Code generation failed:', error);
+      errorElement.textContent = '⚠️ Failed to generate QR code. Displaying link instead.';
+      errorElement.style.display = 'block';
+      
+      container.innerHTML = `
+        <div style="word-break: break-all; font-family: 'minecraft'; 
+             font-size: 12px; color: white; padding: 10px; 
+             background: #333; border-radius: 5px;">
+          ${text}
+        </div>
+      `;
+      return false;
+    }
+  }
+  
+  // Share Profile functionality
+  document.getElementById('shareProfileBtn').addEventListener('click', async function() {
+    const userId = localStorage.getItem("activeUser");
+    if (!userId) {
+      alert('🔒 You need to be logged in to share your profile');
+      return;
+    }
+    
+    const profileLink = `${window.location.origin}/mc.community/pages/selected-user-profile.html?user=${userId}`;
+    document.getElementById('profileLink').value = profileLink;
+    
+    const btn = this;
+    btn.disabled = true;
+    const originalText = btn.textContent;
+    btn.textContent = '🔄 Generating...';
+    
+    try {
+      await generateQRCode('qrCodeContainer', profileLink, 'qrCodeError');
+      toggleModal('shareProfileModal', true);
+    } catch (error) {
+      console.error('QR code generation completely failed:', error);
+      alert('⚠️ Failed to generate shareable content. Please try again later.');
+    } finally {
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
+  });
+  
+  // Copy link functionality
+  document.getElementById('copyLinkBtn').addEventListener('click', function() {
+    const profileLink = document.getElementById('profileLink');
+    profileLink.select();
+    document.execCommand('copy');
+    
+    const originalText = this.textContent;
+    this.textContent = '✅ Copied!';
+    setTimeout(() => {
+      this.textContent = originalText;
+    }, 2000);
+  });
+  
+  // Modal functions
+  function toggleModal(modalId, show) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.style.display = show ? 'flex' : 'none';
+    } else {
+      console.error('Modal not found:', modalId);
+    }
+  }
+
+  // Close share modal
+  document.getElementById('closeShareModal').addEventListener('click', () => toggleModal('shareProfileModal', false));
+  document.getElementById('closeShareModalBtn').addEventListener('click', () => toggleModal('shareProfileModal', false));
+</script>
+
+  <!-- باقي السكريبتات تبقى كما هي -->
+
+      <script>
+window.addEventListener('scroll', function() {
+  const header = document.querySelector('.sticky-header');
+  if (window.scrollY > 0) {
+    header.classList.add('sticky');
+  } else {
+    header.classList.remove('sticky');
+  }
+});
+</script>
+      <script>  
+        function goBack() {  
+            if (window.history.length > 1) {  
+                window.history.back();  
+            } else {  
+                window.location.href = '/';
+            }  
+        }  
+    </script>
+</body>

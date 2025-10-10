@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="../web/mcco-logo.png">
+  <link rel="stylesheet" href="../style/main.css" />
+  <link rel="stylesheet" href="../style/tags.css" />
+  <title>mc co-friends Management</title>
+  <style>
+    @font-face {
+      font-family: minecraft;
+      src: url('../font/Minecraft-Default.otf');
+    }
+    @font-face {
+      font-family: minecraft-ten;
+      src: url('../font/Minecraft-Ten.ttf');
+    }
+    @font-face {
+      font-family: minecraft-five;
+      src: url('../font/Minecraft-Five.ttf');
+    }
+
+    body {
+      background-color: #222222;
+      color: white;
+      font-family: minecraft-five;
+    }
+
+    /* تنسيقات الحقول */
+    .user-container {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: #333333;
+      border-radius: 8px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .user-container:hover {
+      background-color: rgba(185, 185, 185, 0.07);
+    }
+
+    .user-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-avatar {
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border: 2px solid #4A4A4A;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .user-details {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .user-name {
+      font-weight: bold;
+      font-size: 16px;
+      color: #FFFFFF; /* الاسم باللون الأبيض */
+    }
+
+    .user-info-right {
+      text-align: right;
+    }
+
+    .points, .fall-tokens {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      margin: 5px 0;
+    }
+
+    .points img, .fall-tokens img {
+      margin-right: 5px;
+    }
+
+    .fall-tokens {
+      color: #E29A2B;
+    }
+
+    .user-bio {
+      font-size: 12px;
+      color: #AAAAAA; /* لون رمادي للسيرة الذاتية */
+      margin-top: 5px;
+      max-width: 200px;
+      word-wrap: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2; /* تقصير إلى سطرين */
+      -webkit-box-orient: vertical;
+      white-space: normal;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-family: minecraft-five;
+      transition: all 0.3s;
+    }
+
+    .btn-add {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .btn-add:hover {
+      background-color: #45a049;
+    }
+
+    .btn-unfollow {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .btn-unfollow:hover {
+      background-color: #da190b;
+    }
+
+    .btn-pending {
+      background-color: #FFA500;
+      color: white;
+      cursor: not-allowed;
+    }
+
+    .btn-accept {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .btn-reject {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .btn-cancel {
+      background-color: #FF9800;
+      color: white;
+    }
+
+    .btn-cancel:hover {
+      background-color: #F57C00;
+    }
+
+    /* تنسيقات تبويب طلبات الصداقة */
+    .request-container {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: #333333;
+      border-radius: 8px;
+    }
+
+    .request-time {
+      font-size: 12px;
+      color: #AAAAAA;
+      margin-top: 5px;
+    }
+
+    .request-actions {
+      display: flex;
+      gap: 5px;
+    }
+
+    /* تنسيقات التبويبات */
+    .tabs {
+      display: flex;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #3D3D3D;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      color: #A6A6A6;
+      transition: all 0.3s;
+    }
+
+    .tab.active {
+      color: #FFFFFF;
+      font-size: 15px;
+      border-bottom: 3px solid #929292;
+    }
+
+    .tab-badge {
+      position: absolute;
+      top: -5px;
+      right: 5px;
+      background-color: #FF5555;
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+
+    .no-results {
+      color: #FF5555;
+      padding: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    /* تنسيقات Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 4px;
+      z-index: 10000;
+      font-family: minecraft-five;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      display: none;
+      min-width: 200px;
+      text-align: center;
+    }
+
+    .toast.error {
+      background-color: #f44336;
+    }
+
+    .toast.show {
+      display: block;
+      animation: fadeInOut 3s ease-in-out;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateX(100%); }
+      10% { opacity: 1; transform: translateX(0); }
+      90% { opacity: 1; transform: translateX(0); }
+      100% { opacity: 0; transform: translateX(100%); }
+    }
+
+    /* تنسيقات أفضل المستخدمين */
+    .top-users-container {
+      background-color: #22222200;
+      border: 2px solid #3D3D3D;
+      padding: 15px;
+      margin-bottom: 20px;
+      width: 80%;
+      text-align: center;
+    }
+
+    .top-users-title {
+      color: #FFBC13;
+      font-size: 18px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .top-user {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px;
+      margin: 5px 0;
+      background-color: #333333;
+    }
+
+    .top-user.rank-1 {
+      background-color: #FFD700;
+      border: 2px solid #FFED8C;
+      color: black;
+    }
+
+    .top-user.rank-2 {
+      background-color: #C0C0C0;
+      border: 2px solid #D9D9D9;
+      color: black;
+    }
+
+    .top-user.rank-3 {
+      background-color: #CD7F32;
+      border: 2px solid #E9A664;
+      color: black;
+    }
+
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+    }
+
+    .header {
+      background-color: #222222;
+      padding: 10px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .sticky-header.sticky {
+      position: fixed;
+      top: 0;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0.9; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="sticky-header">
+    <div class="header">
+      <button class="back" id="backButton" type="button" onclick="goBack()"><</button>
+      Friends Management
+      <img src="../icons/friends-9e435.png" height="20">
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <div class="content">
+    <div class="content-wrapper">
+      <div class="left-content">
+        <!-- تبويبات الصفحة -->
+        <div class="tabs">
+          <div class="tab active" data-tab="friends">My Friends</div>
+          <div class="tab" data-tab="add-friends">Add Friends</div>
+          <div class="tab" data-tab="requests">
+            Friend Requests
+            <span class="tab-badge" id="requestsCount">0</span>
+          </div>
+        </div>
+
+        <!-- تبويب الأصدقاء -->
+        <div class="tab-content active" id="friends-tab">
+          <div class="search-container">
+            <input type="text" id="friendsSearch" placeholder="Search your friends..." onkeyup="searchFriends()" />
+          </div>
+          <div id="friendsList">
+            <div style="color: white;padding: 5px;"><img src="../icons/loading_spinner.gif" height="15" loading="lazy" /> Loading friends...</div>
+          </div>
+        </div>
+
+        <!-- تبويب إضافة أصدقاء -->
+        <div class="tab-content" id="add-friends-tab">
+          <div class="search-container">
+            <input type="text" id="usersSearch" placeholder="Search for users..." onkeyup="searchUsers()" />
+          </div>
+          <div id="usersList">
+            <div style="color: white;padding: 5px;"><img src="../icons/loading_spinner.gif" height="15" loading="lazy" /> Loading users...</div>
+          </div>
+        </div>
+
+        <!-- تبويب طلبات الصداقة -->
+        <div class="tab-content" id="requests-tab">
+          <div id="requestsList">
+            <div style="color: white;padding: 5px;"><img src="../icons/loading_spinner.gif" height="15" loading="lazy" /> Loading requests...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="description">
+        <div class="right-image">
+          <div id="topUsersContainer" class="top-users-container" style="display: none;">
+            <div class="top-users-title">Top Users <img src="../icons/Top1.gif" height="16" loading="lazy"></div>
+            <div id="topUsersList"></div>
+          </div>
+          <img src="../icons/Sign-in_Prompts_Launch Animated-fdbda.gif" width="40%" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, doc, updateDoc, arrayUnion, arrayRemove, setDoc, getDoc, serverTimestamp, deleteDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
+      authDomain: "minecraft-community-4fd3d.firebaseapp.com",
+      projectId: "minecraft-community-4fd3d",
+      storageBucket: "minecraft-community-4fd3d.appspot.com",
+      messagingSenderId: "550140131027",
+      appId: "1:550140131027:web:a5186726cf5372e138c626",
+      measurementId: "G-F18SFG2LMZ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.activeUser = localStorage.getItem("activeUser");
+    window.allUsers = [];
+    window.friends = [];
+    window.friendsData = [];
+    window.friendRequests = [];
+    window.db = db;
+    window.batchSize = 20;
+    window.currentDisplayIndex = 0;
+    window.currentFriendsDisplayIndex = 0;
+
+    // دالة لعرض Toast Notification
+    window.showToast = function(message, isError = false) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast ${isError ? 'error' : ''} show`;
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    };
+
+    // دالة لإلغاء طلب الصداقة
+    window.cancelFriendRequest = async function(requestId, toUsername) {
+      if (!confirm(`Cancel friend request to ${toUsername}?`)) return;
+      try {
+        await deleteDoc(doc(window.db, "friendRequests", requestId));
+        window.showToast(`Request to ${toUsername} canceled successfully`);
+        window.loadAllUsers();
+        window.loadFriendRequests();
+        window.updateRequestsCount();
+      } catch (error) {
+        console.error("Error canceling friend request:", error);
+        window.showToast("Failed to cancel request", true);
+      }
+    };
+
+    window.formatPoints = function(num) {
+      if (num >= 1_000_000_000_000) return (num / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 'T';
+      if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
+      if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+      if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
+      return num.toString();
+    };
+
+    window.sendFriendRequest = async function(toUsername) {
+      try {
+        const requestId = `${window.activeUser}_${toUsername}`;
+        await setDoc(doc(window.db, "friendRequests", requestId), {
+          from: window.activeUser,
+          to: toUsername,
+          status: 'pending',
+          timestamp: serverTimestamp()
+        });
+
+        window.showToast(`Friend request sent to ${toUsername}`);
+        window.loadAllUsers();
+        window.loadFriendRequests();
+        window.updateRequestsCount();
+      } catch (error) {
+        console.error("Error sending friend request:", error);
+        window.showToast("Failed to send friend request", true);
+      }
+    };
+
+    window.respondToRequest = async function(requestId, response) {
+      try {
+        await updateDoc(doc(window.db, "friendRequests", requestId), {
+          status: response
+        });
+
+        let message = response === 'accepted' ? 'Request accepted' : 'Request rejected';
+        if (response === 'accepted') {
+          const requestDoc = await getDoc(doc(window.db, "friendRequests", requestId));
+          if (requestDoc.exists()) {
+            const requestData = requestDoc.data();
+            const fromUser = requestData.from;
+            const toUser = requestData.to;
+
+            await updateDoc(doc(window.db, "users", fromUser), {
+              friends: arrayUnion(toUser)
+            });
+
+            await updateDoc(doc(window.db, "users", toUser), {
+              friends: arrayUnion(fromUser)
+            });
+          }
+        }
+
+        window.showToast(message);
+        window.loadFriendRequests();
+        if (document.getElementById('friends-tab').classList.contains('active')) {
+          window.loadFriends();
+        }
+      } catch (error) {
+        console.error("Error responding to friend request:", error);
+        window.showToast("Failed to process request", true);
+      }
+    };
+
+    window.unfollow = async function(username) {
+      if (!confirm(`Unfollow ${username}?`)) return;
+      try {
+        await updateDoc(doc(window.db, "users", window.activeUser), {
+          friends: arrayRemove(username)
+        });
+        await updateDoc(doc(window.db, "users", username), {
+          friends: arrayRemove(window.activeUser)
+        });
+        window.showToast("Unfollowed successfully");
+        window.loadFriends();
+        window.loadAllUsers();
+      } catch (error) {
+        console.error("Error unfollowing:", error);
+        window.showToast("Failed to unfollow", true);
+      }
+    };
+
+    window.viewProfile = function(username) {
+      window.location.href = `selected-user-profile.html?user=${encodeURIComponent(username)}`;
+    };
+
+    window.searchFriends = function() {
+      const input = document.getElementById("friendsSearch");
+      const filter = input.value.toUpperCase();
+      const containers = document.querySelectorAll("#friendsList .user-container");
+      let found = false;
+
+      containers.forEach(container => {
+        const username = container.querySelector('.user-name').textContent;
+        const bio = container.querySelector('.user-bio').textContent;
+        if (username.toUpperCase().indexOf(filter) > -1 || bio.toUpperCase().indexOf(filter) > -1) {
+          container.style.display = "";
+          found = true;
+        } else {
+          container.style.display = "none";
+        }
+      });
+
+      const noResults = document.querySelector(".no-results");
+      if (!found) {
+        if (!noResults) {
+          const msg = document.createElement("div");
+          msg.className = "no-results";
+          msg.textContent = "No matching friends found";
+          document.getElementById("friendsList").appendChild(msg);
+        }
+      } else if (noResults) {
+        noResults.remove();
+      }
+    };
+
+    window.searchUsers = function() {
+      const input = document.getElementById("usersSearch");
+      const filter = input.value.toUpperCase();
+      const containers = document.querySelectorAll("#usersList .user-container");
+      let found = false;
+
+      containers.forEach(container => {
+        const username = container.querySelector('.user-name').textContent;
+        const bio = container.querySelector('.user-bio').textContent;
+        if (username.toUpperCase().indexOf(filter) > -1 || bio.toUpperCase().indexOf(filter) > -1) {
+          container.style.display = "";
+          found = true;
+        } else {
+          container.style.display = "none";
+        }
+      });
+
+      const noResults = document.querySelector(".no-results");
+      if (!found) {
+        if (!noResults) {
+          const msg = document.createElement("div");
+          msg.className = "no-results";
+          msg.textContent = "No matching users found";
+          document.getElementById("usersList").appendChild(msg);
+        }
+      } else if (noResults) {
+        noResults.remove();
+      }
+    };
+
+    window.loadFriends = async function() {
+      const friendsList = document.getElementById("friendsList");
+      friendsList.innerHTML = '<div style="color: white;padding: 5px;"><img src="../icons/loading_spinner.gif" height="15" loading="lazy" /> Loading friends...</div>';
+
+      try {
+        const userDoc = await getDoc(doc(window.db, "users", window.activeUser));
+        if (userDoc.exists()) {
+          window.friends = userDoc.data().friends || [];
+
+          if (window.friends.length === 0) {
+            friendsList.innerHTML = '<div style="color: yellow;padding: 5px;">You don\'t have any friends yet.</div>';
+            return;
+          }
+
+          window.friendsData = [];
+          for (const friendUsername of window.friends) {
+            const friendDoc = await getDoc(doc(window.db, "users", friendUsername));
+            if (friendDoc.exists()) {
+              const friendData = friendDoc.data();
+              let bio = friendData.bio || 'No bio available';
+              if (bio.length > 100) {
+                bio = bio.substring(0, 100) + '...';
+              }
+              window.friendsData.push({
+                username: friendUsername,
+                points: friendData.points || 0,
+                fallTokens: friendData.fallTokens || 0,
+                photoURL: friendData.photoURL,
+                tags: friendData.tags || [],
+                bio: bio
+              });
+            }
+          }
+
+          window.friendsData.sort((a, b) => b.points - a.points);
+          friendsList.innerHTML = '';
+          window.currentFriendsDisplayIndex = 0;
+          window.displayNextFriendsBatch();
+        }
+      } catch (error) {
+        console.error("Error loading friends:", error);
+        friendsList.innerHTML = '<div style="color: red;padding: 5px;">Error loading friends.</div>';
+        window.showToast("Error loading friends", true);
+      }
+    };
+
+    window.displayNextFriendsBatch = function() {
+      const end = Math.min(window.currentFriendsDisplayIndex + window.batchSize, window.friendsData.length);
+      for (let i = window.currentFriendsDisplayIndex; i < end; i++) {
+        const friend = window.friendsData[i];
+        window.displayFriend(friend.username, friend.points, friend.fallTokens, friend.photoURL, friend.tags, friend.bio);
+      }
+      window.currentFriendsDisplayIndex = end;
+    };
+
+    window.displayFriend = function(username, points, fallTokens, photoURL, tags = [], bio) {
+      const formattedPoints = window.formatPoints(points);
+      const formattedFallTokens = window.formatPoints(fallTokens || 0);
+      const userImage = photoURL || '../icons/player-head-128-052ba.png';
+
+      let tagsHTML = '';
+      if (tags && tags.length > 0) {
+        const visibleTags = tags.slice(0, 3);
+        const extraCount = tags.length - 3;
+        tagsHTML = '<div class="user-tags">';
+        visibleTags.forEach(tag => {
+          tagsHTML += `<span class="tag tag-${tag}"></span>`;
+        });
+        if (extraCount > 0) {
+          tagsHTML += `<span class="tag more-tags">+${extraCount}</span>`;
+        }
+        tagsHTML += '</div>';
+      }
+
+      const container = `
+        <div class="user-container" onclick="viewProfile('${username}')">
+          <div class="user-header">
+            <img src="${userImage}" alt="${username}" class="user-avatar" loading="lazy">
+            <div class="user-details">
+              <div>
+                <div class="user-name">${username}${tagsHTML}</div>
+              </div>
+              <div class="user-info-right">
+                <div class="points"><img src="../icons/coinss_gif.gif" height="12" loading="lazy"> ${formattedPoints}</div>
+                <div class="fall-tokens"><img src="../icons/fall_token.png" height="12" loading="lazy"> ${formattedFallTokens}</div>
+                <div class="user-bio">${bio}</div>
+              </div>
+            </div>
+          </div>
+          <div class="action-buttons">
+            <button class="btn btn-unfollow" onclick="event.stopPropagation(); unfollow('${username}')">Unfollow</button>
+          </div>
+        </div>`;
+      document.getElementById("friendsList").innerHTML += container;
+    };
+
+    window.loadAllUsers = function() {
+      const usersList = document.getElementById("usersList");
+      usersList.innerHTML = '<div style="color: white;padding: 5px;"><img src="../icons/loading_spinner.gif" height="15" loading="lazy" /> Loading users...</div>';
+
+      onSnapshot(collection(window.db, "users"), (snapshot) => {
+        usersList.innerHTML = '';
+        window.allUsers = [];
+
+        if (snapshot.empty) {
+          usersList.innerHTML = '<div style="color: white;padding: 5px;">No users found</div>';
+        } else {
+          snapshot.forEach((doc) => {
+            const username = doc.id;
+            const data = doc.data();
+            const privateAccount = data.privateAccount || 'off';
+            const hasPendingRequestFromThem = window.friendRequests.some(req =>
+              req.from === username && req.to === window.activeUser && req.status === 'pending'
+            );
+
+            if (username !== window.activeUser &&
+                !window.friends.includes(username) &&
+                (privateAccount === 'off' || hasPendingRequestFromThem)) {
+              const points = data.points || 0;
+              const photoURL = data.photoURL;
+              const tags = data.tags || [];
+              let bio = data.bio || 'No bio available';
+              if (bio.length > 100) {
+                bio = bio.substring(0, 100) + '...';
+              }
+              window.allUsers.push({ username, points, photoURL, tags, bio });
+            }
+          });
+
+          window.allUsers.sort((a, b) => b.points - a.points);
+          window.currentDisplayIndex = 0;
+          window.displayNextBatch();
+        }
+      });
+    };
+
+    window.displayNextBatch = function() {
+      const end = Math.min(window.currentDisplayIndex + window.batchSize, window.allUsers.length);
+      for (let i = window.currentDisplayIndex; i < end; i++) {
+        window.displayUserForAdding(window.allUsers[i].username, window.allUsers[i].points, window.allUsers[i].photoURL, window.allUsers[i].tags, window.allUsers[i].bio);
+      }
+      window.currentDisplayIndex = end;
+    };
+
+    window.displayUserForAdding = function(username, points, photoURL, tags = [], bio) {
+      const formattedPoints = window.formatPoints(points);
+      const userImage = photoURL || '../icons/player-head-128-052ba.png';
+
+      let tagsHTML = '';
+      if (tags && tags.length > 0) {
+        const visibleTags = tags.slice(0, 3);
+        const extraCount = tags.length - 3;
+        tagsHTML = '<div class="user-tags">';
+        visibleTags.forEach(tag => {
+          tagsHTML += `<span class="tag tag-${tag}"></span>`;
+        });
+        if (extraCount > 0) {
+          tagsHTML += `<span class="tag more-tags">+${extraCount}</span>`;
+        }
+        tagsHTML += '</div>';
+      }
+
+      const hasPendingRequest = window.friendRequests.some(req =>
+        req.from === window.activeUser && req.to === username && req.status === 'pending'
+      );
+
+      const actionButton = hasPendingRequest
+        ? `<button class="btn btn-pending" disabled>Pending</button>`
+        : `<button class="btn btn-add" onclick="event.stopPropagation(); sendFriendRequest('${username}')">Add</button>`;
+
+      const container = `
+        <div class="user-container" onclick="viewProfile('${username}')">
+          <div class="user-header">
+            <img src="${userImage}" alt="${username}" class="user-avatar" loading="lazy">
+            <div class="user-details">
+              <div>
+                <div class="user-name">${username}${tagsHTML}</div>
+              </div>
+              <div class="user-info-right">
+                <div class="points"><img src="../icons/coinss_gif.gif" height="12" loading="lazy"> ${formattedPoints}</div>
+                <div class="user-bio">${bio}</div>
+              </div>
+            </div>
+          </div>
+          <div class="action-buttons">
+            ${actionButton}
+          </div>
+        </div>`;
+      document.getElementById("usersList").innerHTML += container;
+    };
+
+    window.loadFriendRequests = function() {
+      const requestsList = document.getElementById("requestsList");
+      requestsList.innerHTML = '<div style="color: white;padding: 5px;"><img src="../icons/loading_spinner.gif" height="15" loading="lazy" /> Loading requests...</div>';
+
+      onSnapshot(collection(window.db, "friendRequests"), (snapshot) => {
+        requestsList.innerHTML = '';
+        window.friendRequests = [];
+        let incomingRequests = 0;
+        let outgoingRequests = 0;
+
+        snapshot.forEach((doc) => {
+          const request = doc.data();
+          request.id = doc.id;
+          window.friendRequests.push(request);
+
+          if (request.to === window.activeUser && request.status === 'pending') {
+            incomingRequests++;
+            window.displayFriendRequest(request, 'incoming');
+          } else if (request.from === window.activeUser && request.status === 'pending') {
+            outgoingRequests++;
+            window.displayFriendRequest(request, 'outgoing');
+          }
+        });
+
+        document.getElementById("requestsCount").textContent = incomingRequests;
+
+        if (incomingRequests === 0 && outgoingRequests === 0) {
+          requestsList.innerHTML = '<div style="color: white;padding: 5px;">No pending friend requests</div>';
+        }
+      });
+    };
+
+    window.displayFriendRequest = async function(request, type) {
+      const userToShow = type === 'incoming' ? request.from : request.to;
+      const userDoc = await getDoc(doc(window.db, "users", userToShow));
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const userImage = userData.photoURL || '../icons/player-head-128-052ba.png';
+        const requestTime = request.timestamp ? new Date(request.timestamp.toDate()).toLocaleString() : 'Recently';
+        let bio = userData.bio || 'No bio available';
+        if (bio.length > 100) {
+          bio = bio.substring(0, 100) + '...';
+        }
+
+        const actions = type === 'incoming'
+          ? `
+            <div class="request-actions">
+              <button class="btn btn-accept" onclick="event.stopPropagation(); respondToRequest('${request.id}', 'accepted')">✓</button>
+              <button class="btn btn-reject" onclick="event.stopPropagation(); respondToRequest('${request.id}', 'rejected')">✘</button>
+            </div>`
+          : `<button class="btn btn-cancel" onclick="event.stopPropagation(); cancelFriendRequest('${request.id}', '${userToShow}')">Cancel</button>`;
+
+        const container = `
+          <div class="request-container" onclick="viewProfile('${userToShow}')">
+            <div class="user-header">
+              <img src="${userImage}" alt="${userToShow}" class="user-avatar" loading="lazy">
+              <div class="user-details">
+                <div>
+                  <div class="user-name">${userToShow}</div>
+                  <div class="request-time">${type === 'incoming' ? 'Received' : 'Sent'}: ${requestTime}</div>
+                  <div class="user-bio">${bio}</div>
+                </div>
+              </div>
+            </div>
+            <div class="action-buttons">
+              ${actions}
+            </div>
+          </div>`;
+        document.getElementById("requestsList").innerHTML += container;
+      }
+    };
+
+    window.listenForFriendRequests = function() {
+      onSnapshot(collection(window.db, "friendRequests"), (snapshot) => {
+        let incomingRequests = 0;
+
+        snapshot.forEach((doc) => {
+          const request = doc.data();
+          if (request.to === window.activeUser && request.status === 'pending') {
+            incomingRequests++;
+          }
+        });
+
+        document.getElementById("requestsCount").textContent = incomingRequests;
+      });
+    };
+
+    window.updateRequestsCount = function() {
+      let incomingRequests = 0;
+      window.friendRequests.forEach(req => {
+        if (req.to === window.activeUser && req.status === 'pending') {
+          incomingRequests++;
+        }
+      });
+      document.getElementById("requestsCount").textContent = incomingRequests;
+    };
+
+    window.checkIfNeedMore = function() {
+      if (document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight - 200) {
+        const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
+        if (activeTab === 'add-friends') {
+          window.displayNextBatch();
+        } else if (activeTab === 'friends') {
+          window.displayNextFriendsBatch();
+        }
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      if (!window.activeUser) {
+        window.showToast("يجب تسجيل الدخول أولاً!", true);
+        window.location.href = "login-page.html";
+        return;
+      }
+
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+          tab.classList.add('active');
+          const tabId = tab.getAttribute('data-tab');
+          document.getElementById(`${tabId}-tab`).classList.add('active');
+
+          if (tabId === 'friends') {
+            window.loadFriends();
+          } else if (tabId === 'add-friends') {
+            window.loadAllUsers();
+          } else if (tabId === 'requests') {
+            window.loadFriendRequests();
+          }
+        });
+      });
+
+      window.addEventListener('scroll', window.checkIfNeedMore);
+
+      await window.loadFriends();
+      window.loadAllUsers();
+      window.loadFriendRequests();
+      window.listenForFriendRequests();
+    });
+  </script>
+
+  <script>
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '/';
+      }
+    }
+
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(function() {
+        const header = document.querySelector('.sticky-header');
+        if (window.scrollY > 10) {
+          header.classList.add('sticky');
+        } else {
+          header.classList.remove('sticky');
+        }
+      }, 15);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>mc co-chess</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/main.css">    
+    <link rel="stylesheet" href="../style/chess-style.css">
+    <style>
+        @font-face {
+            font-family: minecraft;
+            src: url('../font/Minecraft-Default.otf');
+        }
+        @font-face {
+            font-family: minecraft-ten;
+            src: url('../font/Minecraft-Ten.ttf');
+        }
+        @font-face {
+            font-family: minecraft-five;
+            src: url('../font/Minecraft-Five.ttf');
+        }
+        @font-face {
+            font-family: MinecraftFive-Regular;
+            src: url('../font/MinecraftFive-Regular.ttf');
+        }
+        body {
+            background-color: #3D2A1B;
+            color: #CCB18D;
+            font-family: minecraft;
+        }
+        #content, #description {
+            background-color: #3D2A16;
+            border-bottom: 2px solid #A06E3B;
+            color: #CCB18D;
+        }
+        #title {
+            color: #CCB18D;
+        }
+        b {
+            color: wheat;
+        }
+        .header {
+            background-color: #222222;
+            padding: 10px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .Elements-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+        .Elements-left, .Elements-right {
+            flex: 1;
+        }
+        @media (max-width: 768px) {
+            .Elements-container {
+                flex-direction: column;
+            }
+            .Elements-right, .Elements-left {
+                order: unset;
+                width: 100%;
+            }
+        }
+        .back {
+            color: #CCB18D;
+        }
+        #header {
+            background-color: #402D1A;
+            border-bottom: 2px solid #674425;
+            border: 3px solid #AA8149;
+            text-shadow: 0 2px 16px #674425;
+            color: #CCB18D;
+            box-shadow: 0px var(--border-2x-thickness) 0px #674425;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .timer-container {
+            display: flex;
+            align-items: center;
+        }
+        .first-move-timer {
+            font-size: 18px;
+            margin-left: 10px;
+            color: #FF5555;
+        }
+        #friendsList {
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 10px 0;
+            background-color: #402D1A;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #5A3C22;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .user-container:hover {
+            background-color: #6A4C32;
+        }
+        .btn-play {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-play:hover {
+            background-color: #45a049;
+        }
+        #gameInviteNotif {
+            display: none;
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #402D1A;
+            border: 2px solid #A06E3B;
+            padding: 10px;
+            z-index: 101;
+            color: #CCB18D;
+            border-radius: 5px;
+            transition: opacity 0.3s;
+        }
+        #gameInviteNotif.show {
+            display: flex;
+            opacity: 1;
+        }
+        #gameInviteNotif.hide {
+            opacity: 0;
+        }
+        #inviteText {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .invite-buttons button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .accept-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .reject-btn {
+            background-color: #FF5555;
+            color: white;
+        }
+        #surrenderBtn {
+            display: none;
+            padding: 8px 16px;
+            margin: 10px;
+            background-color: #FF5555;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #surrenderBtn:hover {
+            background-color: #CC4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="sticky-header">
+        <div id="header" class="header">
+            <button class="back" id="backButton" type="button" onclick="goBack()"><</button>
+            Chess board <img src="../icons/chess-board-icon.svg" width="20">
+        </div>
+    </div>
+    <div class="content" id="content">
+        <div class="Elements-container">
+            <div class="Elements-left">
+                <div class="description" id="description">
+                    <div class="title" id="title">Chess board</div>
+                    <div id="opponentInfo" class="user-info"></div>
+                    <div class="timer-container">
+                        <div id="blackTime" class="timer">10:00</div>
+                    </div>
+                    <section id="board"></section>
+                    <div class="timer-container">
+                        <div id="whiteTime" class="timer">10:00</div>
+                        <div id="firstMoveTimer" class="first-move-timer"></div>
+                    </div>
+                    <div id="playerInfo" class="user-info"></div>
+                    <button id="surrenderBtn" onclick="surrenderGame()">Surrender</button>
+                </div>
+            </div>
+            <div class="Elements-right">
+                <div class="description" id="description">
+                    <div class="title">Move History</div>
+                    <div id="moveNotation"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="gameInviteNotif">
+        <img id="inviteAvatar" src="" width="40" height="40" style="border-radius: 50%; margin-right: 10px;">
+        <div id="inviteText"></div>
+        <div class="invite-buttons">
+            <button class="accept-btn" onclick="acceptInvite()">✓</button>
+            <button class="reject-btn" onclick="rejectInvite()">✘</button>
+        </div>
+    </div>
+    <div id="toast" class="toast"></div>
+<script type="text/javascript" src="../scripts/Chess-borde.js" ty></script>
+    <script> 
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.sticky-header');
+            if (window.scrollY > 0) {
+                header.classList.add('sticky');
+            } else {
+                header.classList.remove('sticky');
+            }
+        });
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

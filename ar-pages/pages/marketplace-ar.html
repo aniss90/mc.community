@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en"  dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace</title>
+    <link rel="stylesheet" href="../../style/main.css">
+    <link rel="icon" type="image/x-icon" href="../../icons/Marketplace_new_logo.png">
+    <style>
+        @font-face {
+            font-family: minecraft;
+            src: url('../../font/Minecraft-Default.otf');
+        }
+        @font-face {
+            font-family: minecraft-ten;
+            src: url('../../font/MinecraftTen.ttf');
+        }
+        @font-face {
+            font-family: minecraft-five;
+            src: url('../../font/Minecraft-Five.ttf');
+        }
+        @font-face {
+            font-family: MinecraftFive-Regular;
+            src: url('../../font/MinecraftFive-Regular.ttf');
+        }
+        body {
+            overflow-x: hidden;
+        }
+        #points {
+            color: #FFBC13;
+            font-size: 15px;
+        }
+        #welcomeMessage {
+            color: #FFFFFF;
+            font-size: 15px;
+            font-family: minecraft-five;
+        }
+        .shop {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            justify-content: center;
+            padding: 1px;
+            margin-top: 30px;
+        }
+        .shop-item {
+            background: #222;
+            border: 2px solid #FFBC13;
+            border-radius: 2px;
+            text-align: center;
+            color: white;
+            width: auto;
+            padding-left: 5px;
+            padding-right: 5px;
+            padding-top: 5px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+        .shop-item:hover {
+            transform: translateY(-2px);
+            z-index: 10;
+        }
+        .img-shop img {
+            width: auto;
+            height: 50px;
+            border-radius: 5px;
+            loading: lazy;
+        }
+        .shop-item button {
+            background: #FFBC13;
+            color: black;
+            border: 2px solid #FFCB48;
+            padding: 3px;
+            cursor: pointer;
+            font-weight: bold;
+            height: 24px;
+            margin-left: 3px;
+            transition: all 0.3s;
+        }
+        .shop-item button:hover {
+            background: #e6a800;
+            transform: scale(1.05);
+        }
+        .header {
+            color: #FFD952;
+            text-shadow: 0px 3px 0px #9D6F16;
+        }
+        .description {
+            text-align: center;
+            text-shadow: #A3A3A3;
+        }
+        .item-name {
+            color: #FFFFFF;
+            font-size: auto;
+            text-shadow: 0px 1px 0px #000000;
+        }
+        .itemPrice {
+            color: #FFD952;
+            text-shadow: 0px 1px 0px #3A2700;
+            font-size: auto;
+            animation: colorCycle 4s ease-in-out infinite;
+        }
+        @keyframes colorCycle {
+            0%   { color: #FFD952; }
+            50%  { color: #FFD18A; }
+            100% { color: #FFD952; }
+        }
+        .price-label {
+            color: #FFFFFF;
+        }
+        .loot-boxes {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-common {
+            height: auto;
+            width: 100%;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            padding: 10px;
+            color: #FFFFFF;
+            margin: auto;
+            transition: all 0.5s;
+            font-size: 16px;
+            box-shadow: 0px 3px 0px rgba(0, 0, 0, 1);
+        }
+        .silverButton {
+            text-shadow: 1px 1px 0.9px #7A7A7A;
+            background-color: #222222;
+            border: 2px solid #7B7B7B;
+        }
+        .silverButton:hover {
+            border: 2px solid #D3D3D3;
+            transform: scale(1.05);
+            box-shadow: 5px 0 15px #B6B6B6;
+        }
+        .purpleButton {
+            text-shadow: 1px 1px 0.9px rgba(157, 0, 157, 1);
+            background-color: #230026;
+            border: 2px solid #64046A;
+        }
+        .purpleButton:hover {
+            border: 2px solid #F553FF;
+            transform: scale(1.05);
+            box-shadow: 5px 0 25px #BC04C7;
+        }
+        .goldeButton {
+            text-shadow: 1px 1px 0.9px rgba(180, 125, 0, 1);
+            background-color: #2E2100;
+            border: 2px solid #8C6A15;
+        }
+        .goldeButton:hover {
+            border: 2px solid #FFD15E;
+            transform: scale(1.05);
+            box-shadow: 5px 0 18px #BF9837;
+        }
+        .tooltip {
+            position: fixed;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #FFFFFF00;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(90px);
+            color: #FFFFFF;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 999;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            border: 2px solid #FFBC13;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            width: 107%;
+            max-width: 80vw;
+            white-space: normal;
+            text-align: left;
+        }
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+        }
+        .tooltip img {
+            float: left;
+            margin-right: 10px;
+            margin-bottom: 5px;
+            width: auto;
+            height: 40px;
+            border-radius: 5px;
+            loading: lazy;
+        }
+        .shop-item:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .sellButton {
+            background: #FF0000 !important;
+            color: white !important;
+            border: 2px solid #D84444 !important;
+        }
+        .sellButton:hover {
+            background: #DE1010 !important;
+            transform: scale(1.05);
+        }
+        span {
+            color: blanchedalmond;
+            text-shadow: 0 1px 0 #202020;
+            font-family: minecraft-five;
+        }
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .header {
+            background-color: #222222;
+            padding: 10px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        .back {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            z-index: 1001;
+        }
+        .sticky-header.sticky {
+            position: fixed;
+            top: 0;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0.9; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h3 {
+            color: #1DFF00;
+            font-family: minecraft-five;
+        }
+        #pointsToConvert {
+            outline: none;
+            background-color: #ECECEC00;
+            transform: none;
+            width: auto;
+            box-shadow: none;
+            transition: all 0.5s;
+            background-image: url('../../icons/coinss_gif.gif');
+            background-repeat: no-repeat;
+            background-position: right 5px center;
+            background-size: 15px;
+        }
+        #pointsToConvert:hover {
+            border: 2px solid #5F5F5F;
+            box-shadow: 0 2px 10px #5F5F5F;
+        }
+        #convertBtn {
+            border: 2px solid #FFBF68;
+            background-color: #FFA200;
+            color: #FFFFFF;
+            box-shadow: 0px 3px 0px #78571E;
+            border-radius: 8px;
+            width: 100%;
+            height: auto;
+            font-size: 16px;
+            padding: 10px;
+            text-shadow: 1px 1px 0.9px #9D5B00;
+            transition: all 0.5s;
+        }
+        #convertBtn:hover {
+            background-color: #9D5B00;
+            box-shadow: 0 0 0 1px #1a1a1b;
+            transform: translateY(3px);
+        }
+        .new-badge {
+            position: absolute;
+            top: -10px;
+            right: -13px;
+            width: 18px;
+            height: 18px;
+            background: url(../../icons/icon_new_item.png);
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            font-size: 9px;
+            padding: 2px 5px;
+            border-radius: 3px;
+            z-index: 1;
+        }
+        .shop-item {
+            position: relative;
+        }
+        .particle {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            background-color: #FFC208;
+            animation: riseUp 3s ease-out forwards;
+            pointer-events: none;
+            box-shadow: 2px 1px 13px 2px rgba(255, 194, 8, 0.92);
+            z-index: 1;
+        }
+        @keyframes riseUp {
+            0% {
+                transform: translateY(0) scale(1.3);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-60px) scale(0.5);
+                opacity: 0;
+            }
+        }
+        #header {
+            width: 100%;
+            background-color: #FFFEBDBF;
+            backdrop-filter: blur(8px);
+            border: 2px solid #FFC208;
+            box-shadow: 0 4px 0 #6D511F;
+            transition: all 0.5s;
+            color: goldenrod;
+            text-shadow: 0 2px 0 #946F1A;
+        }
+        .custom-alert {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            pointer-events: all;
+        }
+        .custom-alert * {
+            pointer-events: none;
+        }
+        .custom-alert-content,
+        .custom-alert-content * {
+            pointer-events: auto;
+        }
+        .custom-alert-content {
+            background-color: #262626;
+            border: 3px solid #E0BA31;
+            padding: 20px;
+            width: 80%;
+            border-radius: 2px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0px 3px 0px rgba(224, 155, 0, 1);
+            animation: fadeIn 0.3s;
+            font-family: 'MinecraftFive-Regular', sans-serif;
+        }
+        .custom-alert-title {
+            color: gold;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .custom-alert-message {
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .custom-alert-button {
+            transition: all 0.5s;
+            height: auto;
+            width: 100%;
+            border: 2px solid #FFFB8D;
+            background-color: #FFFB00;
+            text-shadow: 1px 1px 2px #B9B600;
+            box-shadow: 0px 3px 0px rgba(224, 155, 0, 1);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px;
+            color: #000000;
+            margin: auto;
+        }
+        .custom-alert-button:hover {
+            background-color: #9D5F00;
+            transform: scale(1.05);
+        }
+        .custom-alert-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            border: 2px solid #EA9E27;
+            border-radius: 5px;
+            loading: lazy;
+        }
+        @media (max-width: 600px) {
+            .shop-item {
+                width: 45%;
+            }
+            .tooltip {
+                max-width: 90vw;
+                font-size: 12px;
+            }
+            .header {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sticky-header">
+        <div class="marketplace-container">
+            <div class="header" id="header">
+                <button class="back" id="backButton" type="button" onclick="goBack()"><</button>
+                Marketplace
+                <img src="../../icons/Marketplace_new_logo.png" loading="lazy" height="20">
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <span id="welcomeMessage"></span>
+        <div class="points">
+            <div class="title">
+                محفظتك: <span id="points">
+                    <img class="lodinimg" src="../../icons/loading_spinner.gif" height="13" />
+                </span>
+                <span id="points-float" style="display: inline-block; position: relative;"></span>
+                <img src="../../icons/coinss_gif.gif" loading="lazy" height="15"> |
+                <span id="fallTokens">
+                    <img class="lodinimg" src="../../icons/loading_spinner.gif" height="13" />
+                </span>
+                <img src="../../icons/fall_token.png" alt="Fall Token" height="15">
+            </div>
+        </div>
+        <div class="description">
+            <div class="title">تحويل العملات</div>
+            <img src="../../icons/coinss_gif.gif" alt="Coin" height="15"> ➡️ <img src="../../icons/fall_token.png" alt="Fall Token" height="15">
+            <div class="input-group">
+                <label for="pointsToConvert" style="color: white;">النقاط للتحويل:</label>
+                <input type="number" id="pointsToConvert" min="1" step="1" placeholder="أدخل النقاط 1×××">
+            </div>
+            <div class="conversion-rate"></div>
+            <br>
+            <div class="result-group">
+                <label style="color: wheat;">ستحصل على:</label>
+                <span id="tokensResult" style="color: orange;">0</span>
+                <img src="../../icons/fall_token.png" alt="Fall Token" height="15">
+            </div>
+            <br>
+            <button id="convertBtn" class="convert-button">تحويل</button>
+        </div>
+        <div class="title">الصناديق</div>
+        <div class="description">
+            اشترِ أي صندوق هنا.
+            <div class="loot-boxes">
+                <div class="description">
+                    <div class="title">صندوق فضي <img src="../../icons/crate_mythical.png" height="13"></div>
+                    يمكنك الحصول على 1 إلى 1000 عملة.
+                    <button class="button-common silverButton" id="cheapBox" onclick="openLootBox('cheap')">صندوق فضي (199 <img src="../../icons/coinss_gif.gif" alt="Coin" height="14">)</button>
+                </div>
+                <div class="description">
+                    <div class="title">صندوق ذهبي <img src="../../icons/crate_rare.png" height="13"></div>
+                    يمكنك الحصول على 99 إلى 3000 عملة.
+                    <button class="button-common goldeButton" id="mediumBox" onclick="openLootBox('medium')">صندوق ذهبي (2000 <img src="../../icons/coinss_gif.gif" alt="Coin" height="14">)</button>
+                </div>
+                <div class="description">
+                    <div class="title">صندوق ملحمي <img src="../../icons/crate_epic.png" height="15"></div>
+                    يمكنك الحصول على 1 إلى 90 ألف عملة.
+                    <button class="button-common purpleButton" id="expensiveBox" onclick="openLootBox('expensive')">صندوق ملحمي (10.1 ألف <img src="../../icons/Alot_of_coins.gif" alt="Coin" height="14">)</button>
+                </div>
+            </div>
+        </div>
+        <div class="title">متجر العناصر <img src="../../icons/sparkles_gif.gif" height="15"></div>
+        <div class="shop"></div>
+    </div>
+    <div class="custom-alert" id="customAlert">
+        <div class="custom-alert-content">
+            <img class="custom-alert-icon" id="alertIcon" src="" alt="">
+            <div class="custom-alert-title" id="alertTitle"></div>
+            <div class="custom-alert-message" id="alertMessage"></div>
+            <button class="custom-alert-button" onclick="closeCustomAlert()">موافق</button>
+        </div>
+    </div>
+    <script>
+        const button = document.getElementById('header');
+        const container = document.querySelector('.marketplace-container');
+
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            const padding = 10;
+            const randomX = Math.random() * (button.offsetWidth + padding * 2) - padding;
+            const randomY = Math.random() * (button.offsetHeight + padding * 2) - padding;
+            particle.style.left = `${randomX}px`;
+            particle.style.top = `${randomY}px`;
+            container.appendChild(particle);
+            setTimeout(() => particle.remove(), 3000);
+        }
+
+        setInterval(createParticle, 300);
+
+        function showCustomAlert({ icon, title, message }) {
+            document.getElementById('alertIcon').src = icon;
+            document.getElementById('alertTitle').innerText = title;
+            document.getElementById('alertMessage').innerHTML = message;
+            document.getElementById('customAlert').style.display = 'flex';
+        }
+
+        function closeCustomAlert() {
+            document.getElementById('customAlert').style.display = 'none';
+        }
+    </script>
+    <script type="module">
+        import { db } from '../../scripts/main.js';
+        import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { shopItems } from '../../scripts/items.js';
+
+        const activeUser = localStorage.getItem('activeUser');
+        const CONSTANTS = {
+            CONVERSION_RATE: 100000,
+            BOX_PRICES: {
+                cheap: 199,
+                medium: 2000,
+                expensive: 10100
+            }
+        };
+
+        if (!activeUser) {
+            showCustomAlert({
+                icon: '../../icons/error.png',
+                title: 'خطأ',
+                message: 'يرجى تسجيل الدخول أولاً!'
+            });
+            window.location.href = 'login-page.html';
+        }
+
+        function formatNumber(num) {
+            const thresholds = [
+                { limit: 1e12, suffix: 'T' },
+                { limit: 1e9, suffix: 'B' },
+                { limit: 1e6, suffix: 'M' },
+                { limit: 1e3, suffix: 'K' }
+            ];
+            for (const { limit, suffix } of thresholds) {
+                if (num >= limit) return (num / limit).toFixed(1) + suffix;
+            }
+            return num.toString();
+        }
+
+        async function getUserData() {
+            const welcomeMsg = document.getElementById('welcomeMessage');
+            const pointsElem = document.getElementById('points');
+            const fallTokensElem = document.getElementById('fallTokens');
+
+            if (!welcomeMsg || !pointsElem || !fallTokensElem) {
+                console.error("العناصر غير موجودة!");
+                return;
+            }
+
+            pointsElem.innerHTML = '<span>جارٍ التحميل...</span>';
+            fallTokensElem.innerHTML = '<span>جارٍ التحميل...</span>';
+
+            try {
+                const userDocRef = doc(db, 'users', activeUser);
+                const userDoc = await getDoc(userDocRef);
+
+                if (userDoc.exists()) {
+                    const user = userDoc.data();
+                    welcomeMsg.innerText = `مرحبًا ${activeUser}!`;
+                    pointsElem.innerText = formatNumber(user.points);
+                    fallTokensElem.innerText = user.fallTokens ? formatNumber(user.fallTokens) : '0';
+
+                    const purchasedItems = user.purchasedItems || [];
+                    document.querySelectorAll('.shop-item').forEach(item => {
+                        const itemName = item.querySelector('.item-name').innerText;
+                        const buyButton = item.querySelector('.buyButton');
+                        const sellButton = item.querySelector('.sellButton');
+
+                        if (purchasedItems.includes(itemName)) {
+                            buyButton.innerText = "تم الشراء ";
+                            let img = document.createElement("img");
+                            img.src = "../../icons/check.png";
+                            img.width = 10;
+                            img.height = 10;
+                            img.loading = "lazy";
+                            buyButton.appendChild(img);
+                            buyButton.disabled = true;
+                            if (sellButton) {
+                                sellButton.style.display = 'inline-block';
+                                const fullPrice = item.querySelector('.itemPrice').dataset.fullPrice;
+                                const sellPrice = Math.floor(fullPrice / 2);
+                                sellButton.dataset.sellPrice = sellPrice;
+                                sellButton.dataset.itemName = itemName;
+                                sellButton.innerHTML = `بيع ${formatNumber(sellPrice)}<img src="../../icons/coinss_gif.gif" height="12">`;
+                            }
+                        } else if (sellButton) {
+                            sellButton.style.display = 'none';
+                        }
+                    });
+                } else {
+                    showCustomAlert({
+                        icon: '../../icons/error.png',
+                        title: 'خطأ',
+                        message: 'المستخدم غير موجود في قاعدة البيانات!'
+                    });
+                    window.location.href = 'login-page.html';
+                }
+            } catch (error) {
+                console.error('خطأ في جلب بيانات المستخدم:', error);
+                showCustomAlert({
+                    icon: '../../icons/error.png',
+                    title: 'خطأ',
+                    message: 'فشل في تحميل بيانات المستخدم. حاول مرة أخرى لاحقًا.'
+                });
+            }
+        }
+
+        function createShopItems() {
+            const shopContainer = document.querySelector('.shop');
+            const fragment = document.createDocumentFragment();
+            shopItems.sort((a, b) => b.price - a.price);
+            const viewedItems = JSON.parse(localStorage.getItem('viewedShopItems')) || [];
+
+            shopItems.forEach(item => {
+                const shopItem = document.createElement('div');
+                shopItem.classList.add('shop-item');
+
+                const tooltip = document.createElement('div');
+                tooltip.classList.add('tooltip');
+                const tooltipImg = document.createElement('img');
+                tooltipImg.src = item.imageUrl;
+                tooltipImg.alt = item.name;
+                tooltipImg.loading = 'lazy';
+                tooltip.appendChild(tooltipImg);
+                const tooltipText = document.createElement('span');
+                tooltipText.textContent = item.description || "لا يوجد وصف متاح";
+                tooltip.appendChild(tooltipText);
+                shopItem.appendChild(tooltip);
+
+                const isNewItem = !viewedItems.includes(item.name);
+                if (isNewItem) {
+                    const newBadge = document.createElement('span');
+                    newBadge.classList.add('new-badge');
+                    newBadge.textContent = ' ';
+                    shopItem.appendChild(newBadge);
+                    shopItem.addEventListener('click', function() {
+                        if (!viewedItems.includes(item.name)) {
+                            viewedItems.push(item.name);
+                            localStorage.setItem('viewedShopItems', JSON.stringify(viewedItems));
+                            newBadge.style.display = 'none';
+                        }
+                    });
+                }
+
+                const imgShop = document.createElement('div');
+                imgShop.classList.add('img-shop');
+                const img = document.createElement('img');
+                img.src = item.imageUrl;
+                img.alt = item.name;
+                img.height = 50;
+                img.loading = "lazy";
+                imgShop.appendChild(img);
+
+                const itemName = document.createElement('p');
+                itemName.classList.add('item-name');
+                itemName.innerText = item.name;
+
+                const priceLabel = document.createElement('p');
+                priceLabel.classList.add('price-label');
+                priceLabel.innerHTML = `السعر: <span class="itemPrice" data-full-price="${item.price}">${formatNumber(item.price)}</span><img src="../../icons/coinss_gif.gif" alt="Coin" height="12">`;
+
+                const buyButton = document.createElement('button');
+                buyButton.classList.add('buyButton');
+                buyButton.innerText = "شراء";
+                buyButton.setAttribute('aria-label', `شراء ${item.name} مقابل ${item.price} عملة`);
+
+                const sellButton = document.createElement('button');
+                sellButton.classList.add('sellButton');
+                sellButton.style.display = 'none';
+                sellButton.innerHTML = `بيع ${formatNumber(Math.floor(item.price / 2))}<img src="../../icons/coinss_gif.gif" height="12">`;
+                sellButton.dataset.sellPrice = Math.floor(item.price / 2);
+                sellButton.dataset.itemName = item.name;
+
+                buyButton.addEventListener('click', async function() {
+                    const itemPrice = item.price;
+                    const userDocRef = doc(db, 'users', activeUser);
+                    try {
+                        const userDoc = await getDoc(userDocRef);
+                        if (userDoc.exists()) {
+                            let user = userDoc.data();
+                            let purchasedItems = user.purchasedItems || [];
+
+                            if (purchasedItems.includes(item.name)) {
+                                showCustomAlert({
+                                    icon: '../../icons/error.png',
+                                    title: 'تم الشراء مسبقًا',
+                                    message: 'لقد اشتريت هذا العنصر بالفعل!'
+                                });
+                                return;
+                            }
+
+                            if (user.points >= itemPrice) {
+                                user.points -= itemPrice;
+                                purchasedItems.push(item.name);
+                                await updateDoc(userDocRef, {
+                                    points: user.points,
+                                    purchasedItems: purchasedItems
+                                });
+
+                                const purchaseSound = new Audio("../../sounds/purchase_confirmation.ogg");
+                                purchaseSound.play();
+
+                                document.getElementById('points').innerText = formatNumber(user.points);
+                                this.innerText = "تم الشراء ";
+                                let img = document.createElement("img");
+                                img.src = "../../icons/check.png";
+                                img.width = 10;
+                                img.height = 10;
+                                img.loading = "lazy";
+                                this.appendChild(img);
+                                this.disabled = true;
+                                sellButton.style.display = 'inline-block';
+
+                                showCustomAlert({
+                                    icon: item.imageUrl,
+                                    title: `اشتريت ${item.name}`,
+                                    message: `<p style="color: orange;">${formatNumber(itemPrice)} تم إنفاق العملات</p><p style="color: white;">${item.description || "لا يوجد وصف متاح"}</p>`
+                                });
+                            } else {
+                                showCustomAlert({
+                                    icon: '../../icons/error.png',
+                                    title: 'نقاط غير كافية',
+                                    message: `تحتاج إلى ${formatNumber(itemPrice - user.points)} عملة إضافية لشراء هذا العنصر.`
+                                });
+                            }
+                        }
+                    } catch (error) {
+                        console.error('خطأ في شراء العنصر:', error);
+                        showCustomAlert({
+                            icon: '../../icons/error.png',
+                            title: 'خطأ',
+                            message: 'فشل في معالجة الشراء. حاول مرة أخرى لاحقًا.'
+                        });
+                    }
+                });
+
+                sellButton.addEventListener('click', async function() {
+                    const sellPrice = parseInt(this.dataset.sellPrice);
+                    const itemName = this.dataset.itemName;
+                    const userDocRef = doc(db, 'users', activeUser);
+                    try {
+                        const userDoc = await getDoc(userDocRef);
+                        if (userDoc.exists()) {
+                            let user = userDoc.data();
+                            let purchasedItems = user.purchasedItems || [];
+                            const itemIndex = purchasedItems.indexOf(itemName);
+                            if (itemIndex > -1) {
+                                purchasedItems.splice(itemIndex, 1);
+                                user.points += sellPrice;
+                                await updateDoc(userDocRef, {
+                                    points: user.points,
+                                    purchasedItems: purchasedItems
+                                });
+                                document.getElementById('points').innerText = formatNumber(user.points);
+                                buyButton.disabled = false;
+                                buyButton.innerText = "شراء";
+                                this.style.display = 'none';
+                                showCustomAlert({
+                                    icon: '../../icons/coinss_gif.gif',
+                                    title: 'تم البيع',
+                                    message: `لقد بعت ${itemName} مقابل ${formatNumber(sellPrice)} عملة!`
+                                });
+                            }
+                        }
+                    } catch (error) {
+                        console.error('خطأ في بيع العنصر:', error);
+                        showCustomAlert({
+                            icon: '../../icons/error.png',
+                            title: 'خطأ',
+                            message: 'فشل في معالجة البيع. حاول مرة أخرى لاحقًا.'
+                        });
+                    }
+                });
+
+                shopItem.appendChild(imgShop);
+                shopItem.appendChild(itemName);
+                shopItem.appendChild(priceLabel);
+                shopItem.appendChild(buyButton);
+                shopItem.appendChild(sellButton);
+                fragment.appendChild(shopItem);
+            });
+
+            shopContainer.appendChild(fragment);
+        }
+
+        window.openLootBox = async function(boxType) {
+            const userDocRef = doc(db, 'users', activeUser);
+            try {
+                const userDoc = await getDoc(userDocRef);
+                if (userDoc.exists()) {
+                    const user = userDoc.data();
+                    let boxPrice, minPoints, maxPoints;
+
+                    switch (boxType) {
+                        case 'cheap':
+                            boxPrice = CONSTANTS.BOX_PRICES.cheap;
+                            minPoints = 99;
+                            maxPoints = 800;
+                            break;
+                        case 'medium':
+                            boxPrice = CONSTANTS.BOX_PRICES.medium;
+                            minPoints = 250;
+                            maxPoints = 5000;
+                            break;
+                        case 'expensive':
+                            boxPrice = CONSTANTS.BOX_PRICES.expensive;
+                            minPoints = 100;
+                            maxPoints = 99999;
+                            break;
+                        default:
+                            showCustomAlert({
+                                icon: '../../icons/error.png',
+                                title: 'خطأ',
+                                message: 'نوع الصندوق غير صالح!'
+                            });
+                            return;
+                    }
+
+                    if (user.points >= boxPrice) {
+                        user.points -= boxPrice;
+                        let randomPoints;
+                        let randomChance = Math.random();
+
+                        if (boxType === 'cheap') {
+                            if (randomChance <= 0.25) {
+                                randomPoints = Math.floor(Math.random() * (800 - 500 + 1) + 900);
+                            } else if (randomChance <= 0.55) {
+                                randomPoints = Math.floor(Math.random() * 98) + 1;
+                            } else {
+                                randomPoints = Math.floor(Math.random() * (500 - 99 + 1) + 99);
+                            }
+                        } else if (boxType === 'medium') {
+                            if (randomChance <= 0.20) {
+                                randomPoints = Math.floor(Math.random() * 249) + 1;
+                            } else if (randomChance <= 0.80) {
+                                randomPoints = Math.floor(Math.random() * (2500 - 250 + 1) + 250);
+                            } else {
+                                randomPoints = Math.floor(Math.random() * (7000 - 2500 + 1) + 3000);
+                            }
+                        } else if (boxType === 'expensive') {
+                            if (randomChance <= 0.10) {
+                                randomPoints = Math.floor(Math.random() * (90000 - 9000 + 1) + 13000);
+                            } else if (randomChance <= 0.40) {
+                                randomPoints = Math.floor(Math.random() * 7000) + 100;
+                            } else {
+                                randomPoints = Math.floor(Math.random() * (17000 - 5000 + 1) + 7000);
+                            }
+                        }
+
+                        user.points += randomPoints;
+                        await updateDoc(userDocRef, { points: user.points });
+                        document.getElementById('points').innerText = formatNumber(user.points);
+
+                        let finalWin = randomPoints;
+                        let boxIcon = `../../icons/${boxType}_box.png`;
+                        let boxTitle = `${boxType.charAt(0).toUpperCase() + boxType.slice(1)} Box Result`;
+
+                        let displayElement = document.getElementById("alertMessage");
+                        let counter = 0;
+                        let duration = 1500;
+                        let intervalSpeed = 50;
+                        const startSound = new Audio('../../sounds/start.mp3');
+                        const rollingSound = new Audio('../../sounds/rolling.mp3');
+                        const winSound = new Audio('../../sounds/coin_fill_up.ogg');
+                        const loseSound = new Audio('../../sounds/lose.mp3');
+                        const neutralSound = new Audio('../../sounds/neutral.mp3');
+
+                        function startRollingEffect() {
+                            clearInterval(interval);
+                            startSound.play();
+                            document.querySelector('.custom-alert-button').style.display = 'none';
+                            document.getElementById('alertIcon').style.display = 'none';
+                            rollingSound.loop = true;
+                            rollingSound.play();
+
+                            let currentSpeed = 30;
+                            let slowdownFactor = 1.15;
+                            counter = 0;
+                            let randomDuration = 1000 + Math.random() * 1000;
+
+                            function rollingStep() {
+                                let fakeValue = Math.floor(Math.random() * maxPoints);
+                                displayElement.innerHTML = `
+                                    <p style="color: #fff; font-size: 26px;">
+                                        حصلت على: <font style="font-size: 26px; font-weight: bold; font-family: MinecraftFive-Regular; color: yellow;">
+                                        ${formatNumber(fakeValue)}
+                                        </font> عملة
+                                    </p>
+                                    <p style="font-size: 14px; color: #888">جارٍ اللف...</p>
+                                `;
+                                counter += currentSpeed;
+                                if (counter >= randomDuration) {
+                                    rollingSound.pause();
+                                    rollingSound.currentTime = 0;
+                                    showFinalResult();
+                                    return;
+                                }
+                                currentSpeed *= slowdownFactor;
+                                setTimeout(rollingStep, currentSpeed);
+                            }
+
+                            rollingStep();
+                        }
+
+                        function showFinalResult() {
+                            if (finalWin > boxPrice) winSound.play();
+                            else if (finalWin < boxPrice) loseSound.play();
+                            else neutralSound.play();
+
+                            let color = finalWin > boxPrice ? 'lawngreen' : (finalWin < boxPrice ? 'red' : 'gray');
+                            let diff = finalWin - boxPrice;
+                            let sign = diff > 0 ? '+' : (diff < 0 ? '-' : '');
+
+                            let messageHTML = `
+                                <p style="color: #fff; font-size: 26px;">
+                                    حصلت على: <font style="font-size: 26px; font-weight: bold; font-family: MinecraftFive-Regular; color: ${color};">
+                                    ${formatNumber(finalWin)}
+                                    </font> عملة
+                                </p>
+                                <p style="color: ${color}; font-weight: bold;">
+                                    ${diff === 0 ? 'لا ربح ولا خسارة' : `${sign}${formatNumber(Math.abs(diff))} عملة`}
+                                </p>
+                            `;
+
+                            showCustomAlert({
+                                icon: boxIcon,
+                                title: boxTitle,
+                                message: messageHTML
+                            });
+
+                            document.querySelector('.custom-alert-button').style.display = 'inline-block';
+                        }
+
+                        showCustomAlert({
+                            icon: boxIcon,
+                            title: boxTitle,
+                            message: '<p style="font-size: 24px;">جارٍ تجهيز المكافأة...</p>'
+                        });
+
+                        setTimeout(startRollingEffect, 100);
+                    } else {
+                        showCustomAlert({
+                            icon: '../../icons/error.png',
+                            title: 'نقاط غير كافية',
+                            message: `تحتاج إلى ${formatNumber(boxPrice - user.points)} عملة إضافية لشراء هذا الصندوق.`
+                        });
+                    }
+                } else {
+                    showCustomAlert({
+                        icon: '../../icons/error.png',
+                        title: 'خطأ',
+                        message: 'المستخدم غير موجود!'
+                    });
+                }
+            } catch (error) {
+                console.error("خطأ في جلب البيانات: ", error);
+                showCustomAlert({
+                    icon: '../../icons/error.png',
+                    title: 'خطأ',
+                    message: 'فشل في فتح الصندوق. حاول مرة أخرى لاحقًا.'
+                });
+            }
+        };
+
+        const pointsInput = document.getElementById('pointsToConvert');
+        const tokensResult = document.getElementById('tokensResult');
+        const convertBtn = document.getElementById('convertBtn');
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        pointsInput.addEventListener('input', debounce(updateConversionResult, 300));
+
+        convertBtn.addEventListener('click', convertPointsToTokens);
+
+        function updateConversionResult() {
+            const points = parseFloat(pointsInput.value) || 0;
+            const tokens = points / CONSTANTS.CONVERSION_RATE;
+            tokensResult.textContent = parseFloat(tokens.toFixed(5)).toString();
+        }
+
+        async function convertPointsToTokens() {
+            const pointsToConvert = parseInt(pointsInput.value);
+            if (!pointsToConvert || pointsToConvert < 1) {
+                showCustomAlert({
+                    icon: '../../icons/error.png',
+                    title: 'خطأ',
+                    message: 'يجب إدخال عدد صحيح من النقاط (1 كحد أدنى)'
+                });
+                return;
+            }
+
+            try {
+                const userDocRef = doc(db, 'users', activeUser);
+                const userDoc = await getDoc(userDocRef);
+                if (userDoc.exists()) {
+                    const user = userDoc.data();
+                    if (user.points < pointsToConvert) {
+                        showCustomAlert({
+                            icon: '../../icons/error.png',
+                            title: 'نقاط غير كافية',
+                            message: `تحتاج إلى ${formatNumber(pointsToConvert - user.points)} نقطة إضافية`
+                        });
+                        return;
+                    }
+
+                    const tokensToAdd = parseFloat((pointsToConvert / CONSTANTS.CONVERSION_RATE).toFixed(5));
+                    const currentTokens = parseFloat(user.fallTokens || 0);
+                    const newTokens = parseFloat((currentTokens + tokensToAdd).toFixed(5));
+
+                    await updateDoc(userDocRef, {
+                        points: user.points - pointsToConvert,
+                        fallTokens: newTokens
+                    });
+
+                    document.getElementById('points').innerText = formatNumber(user.points - pointsToConvert);
+                    document.getElementById('fallTokens').innerText = formatNumber(newTokens);
+                    pointsInput.value = '';
+                    tokensResult.textContent = '0';
+
+                    showCustomAlert({
+                        icon: '../../icons/fall_token.png',
+                        title: 'تم التحويل',
+                        message: `تم التحويل بنجاح!<br>${formatNumber(pointsToConvert)} نقطة → ${tokensToAdd} Fall Tokens`
+                    });
+                }
+            } catch (error) {
+                console.error('خطأ في تحويل النقاط:', error);
+                showCustomAlert({
+                    icon: '../../icons/error.png',
+                    title: 'خطأ',
+                    message: 'فشل في تحويل النقاط. حاول مرة أخرى لاحقًا.'
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createShopItems();
+            getUserData();
+        });
+
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.sticky-header');
+            if (window.scrollY > 0) {
+                header.classList.add('sticky');
+            } else {
+                header.classList.remove('sticky');
+            }
+        });
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '/';
+            }
+        }
+    </script>
+</body>
+</html>

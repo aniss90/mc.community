@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="../web/mcco-logo.png">
+  <link rel="stylesheet" href="../style/main.css" />
+  <link rel="stylesheet" href="../style/tags.css" />
+  <title>User Friends</title>
+  <style>
+    @font-face {
+      font-family: minecraft;
+      src: url('../font/Minecraft-Default.otf');
+    }
+    @font-face {
+      font-family: minecraft-ten;
+      src: url('../font/Minecraft-Ten.ttf');
+    }
+    @font-face {
+      font-family: minecraft-five;
+      src: url('../font/Minecraft-Five.ttf');
+    }
+
+    body {
+      background-color: #222222;
+      color: white;
+      font-family: minecraft-five;
+    }
+
+    /* تنسيقات الحقول */
+    .friend-container {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: #333333;
+      border-radius: 8px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .friend-container:hover {
+      background-color: rgba(185, 185, 185, 0.07);
+    }
+
+    .friend-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .friend-avatar {
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border: 2px solid #4A4A4A;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .friend-details {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .friend-name {
+      font-weight: bold;
+      font-size: 16px;
+      color: #FFFFFF; /* الاسم باللون الأبيض */
+    }
+
+    .friend-info-right {
+      text-align: right;
+    }
+
+    .points, .fall-tokens {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      margin: 5px 0;
+    }
+
+    .points img, .fall-tokens img {
+      margin-right: 5px;
+    }
+
+    .fall-tokens {
+      color: #E29A2B;
+    }
+
+    .friend-bio {
+      font-size: 12px;
+      color: #AAAAAA; /* لون رمادي للسيرة الذاتية */
+      margin-top: 5px;
+      max-width: 200px;
+      word-wrap: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2; /* تقصير إلى سطرين */
+      -webkit-box-orient: vertical;
+      white-space: normal;
+    }
+
+    .friends-count {
+      text-align: center;
+      margin: 10px 0;
+      color: #FFBC13;
+      font-family: minecraft-five;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+
+    .no-results {
+      color: #FF5555;
+      padding: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+    }
+
+    .header {
+      background-color: #222222;
+      padding: 10px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      font-family: minecraft-five;
+  
+    }
+
+
+
+    .sticky-header.sticky {
+      position: fixed;
+      top: 0;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0.9; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .user-tags {
+      gap: 5px;
+      padding-left: 2px;
+    }
+
+    .tag {
+      font-family: minecraft-five;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      text-shadow: 0 1px 0px rgba(0, 0, 0, 0.3);
+      margin-right: 4px;
+    }
+
+    .more-tags {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      text-shadow: 0 1px 0px rgba(0, 0, 0, 0.3);
+      margin-right: 4px;
+      color: #C3C4C4;
+    }
+
+    /* تنسيقات Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 4px;
+      z-index: 10000;
+      font-family: minecraft-five;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      display: none;
+      min-width: 200px;
+      text-align: center;
+    }
+
+    .toast.error {
+      background-color: #f44336;
+    }
+
+    .toast.show {
+      display: block;
+      animation: fadeInOut 3s ease-in-out;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateX(100%); }
+      10% { opacity: 1; transform: translateX(0); }
+      90% { opacity: 1; transform: translateX(0); }
+      100% { opacity: 0; transform: translateX(100%); }
+    }
+    #pageTitle {
+      font-size: 38px;
+      font-family: minecraft-ten;
+      color: #6D6D6D;
+    }
+  </style>
+</head>
+<body>
+  <div class="sticky-header">
+    <div class="header">
+      <button class="back" id="backButton" type="button" onclick="goBack()"><</button>
+      <span id="pageTitle">Friends</span>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <div class="content">
+    <div class="content-wrapper">
+      <div class="left-content">
+        <div class="friends-count" id="friendsCount">Loading...</div>
+        <div class="search-container">
+          <input type="text" id="searchInput" placeholder="Search friends..." onkeyup="searchFriends()" />
+        </div>
+        <div id="friendsList">
+          <div><img src="../icons/loading_spinner.gif" height="20" /> Loading friends...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
+      authDomain: "minecraft-community-4fd3d.firebaseapp.com",
+      projectId: "minecraft-community-4fd3d",
+      storageBucket: "minecraft-community-4fd3d.appspot.com",
+      messagingSenderId: "550140131027",
+      appId: "1:550140131027:web:a5186726cf5372e138c626",
+      measurementId: "G-F18SFG2LMZ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.friendsData = [];
+    window.batchSize = 20;
+    window.currentDisplayIndex = 0;
+
+    // دالة لعرض Toast Notification
+    window.showToast = function(message, isError = false) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast ${isError ? 'error' : ''} show`;
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    };
+
+    // دالة لتحميل الأصدقاء
+    async function loadFriends() {
+      const friendsList = document.getElementById("friendsList");
+      const friendsCountElement = document.getElementById("friendsCount");
+      friendsList.innerHTML = '<div><img src="../icons/loading_spinner.gif" height="20" /> Loading friends...</div>';
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const userId = urlParams.get('user');
+
+      if (!userId) {
+        window.showToast('User not specified', true);
+        window.location.href = 'Friends-management.html';
+        return;
+      }
+
+      try {
+        const userDoc = await getDoc(doc(db, "users", userId));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          const friends = userData.friends || [];
+
+          // تحديث عنوان الصفحة وعدد الأصدقاء
+          document.getElementById('pageTitle').textContent = `${userData.displayName || userId}'s Friends`;
+          friendsCountElement.textContent = `${friends.length} Friends`;
+
+          if (friends.length === 0) {
+            friendsList.innerHTML = '<div>This user has no friends yet.</div>';
+            return;
+          }
+
+          window.friendsData = [];
+          for (const friendUsername of friends) {
+            const friendDoc = await getDoc(doc(db, "users", friendUsername));
+            if (friendDoc.exists()) {
+              const friendData = friendDoc.data();
+              let bio = friendData.bio || 'No bio available';
+              if (bio.length > 100) {
+                bio = bio.substring(0, 100) + '...';
+              }
+              window.friendsData.push({
+                username: friendUsername,
+                points: friendData.points || 0,
+                fallTokens: friendData.fallTokens || 0,
+                photoURL: friendData.photoURL,
+                tags: friendData.tags || [],
+                bio: bio
+              });
+            } else {
+              window.friendsData.push({
+                username: friendUsername,
+                points: 0,
+                fallTokens: 0,
+                photoURL: '../icons/player-head-128-052ba.png',
+                tags: [],
+                bio: 'No bio available'
+              });
+            }
+          }
+
+          window.friendsData.sort((a, b) => b.points - a.points);
+          friendsList.innerHTML = '';
+          window.currentDisplayIndex = 0;
+          displayNextFriendsBatch();
+        } else {
+          friendsList.innerHTML = '<div>User not found.</div>';
+          window.showToast('User not found', true);
+        }
+      } catch (error) {
+        console.error("Error loading friends:", error);
+        friendsList.innerHTML = '<div>Error loading friends.</div>';
+        window.showToast('Error loading friends', true);
+      }
+    }
+
+    // دالة لعرض دفعة من الأصدقاء
+    window.displayNextFriendsBatch = function() {
+      const friendsList = document.getElementById("friendsList");
+      const end = Math.min(window.currentDisplayIndex + window.batchSize, window.friendsData.length);
+      for (let i = window.currentDisplayIndex; i < end; i++) {
+        const friend = window.friendsData[i];
+        displayFriend(friend.username, friend.points, friend.fallTokens, friend.photoURL, friend.tags, friend.bio);
+      }
+      window.currentDisplayIndex = end;
+    };
+
+    // دالة لعرض صديق في الحقل
+    window.displayFriend = function(username, points, fallTokens, photoURL, tags = [], bio) {
+      const formattedPoints = formatPoints(points);
+      const formattedFallTokens = formatPoints(fallTokens || 0);
+      const userImage = photoURL || '../icons/player-head-128-052ba.png';
+
+      let tagsHTML = '';
+      if (tags && tags.length > 0) {
+        const visibleTags = tags.slice(0, 3);
+        const extraCount = tags.length - 3;
+        tagsHTML = '<div class="user-tags">';
+        visibleTags.forEach(tag => {
+          tagsHTML += `<span class="tag tag-${tag}"></span>`;
+        });
+        if (extraCount > 0) {
+          tagsHTML += `<span class="tag more-tags">+${extraCount}</span>`;
+        }
+        tagsHTML += '</div>';
+      }
+
+      const container = `
+        <div class="friend-container" onclick="viewProfile('${username}')">
+          <div class="friend-header">
+            <img src="${userImage}" alt="${username}" class="friend-avatar" loading="lazy">
+            <div class="friend-details">
+              <div>
+                <div class="friend-name">${username}${tagsHTML}</div>
+              </div>
+              <div class="friend-info-right">
+                <div class="points"><img src="../icons/coinss_gif.gif" height="12" loading="lazy"> ${formattedPoints}</div>
+                <div class="fall-tokens"><img src="../icons/fall_token.png" height="12" loading="lazy"> ${formattedFallTokens}</div>
+                <div class="friend-bio">${bio}</div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      document.getElementById("friendsList").innerHTML += container;
+    };
+
+    // دالة لتنسيق الأرقام
+    window.formatPoints = function(num) {
+      if (num >= 1_000_000_000_000) return (num / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 'T';
+      if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
+      if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+      if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
+      return num.toString();
+    };
+
+    // دالة للبحث في الأصدقاء
+    window.searchFriends = function() {
+      const input = document.getElementById("searchInput");
+      const filter = input.value.toUpperCase();
+      const containers = document.querySelectorAll("#friendsList .friend-container");
+      let found = false;
+
+      containers.forEach(container => {
+        const username = container.querySelector('.friend-name').textContent;
+        const bio = container.querySelector('.friend-bio').textContent;
+        if (username.toUpperCase().indexOf(filter) > -1 || bio.toUpperCase().indexOf(filter) > -1) {
+          container.style.display = "";
+          found = true;
+        } else {
+          container.style.display = "none";
+        }
+      });
+
+      const noResults = document.querySelector(".no-results");
+      if (!found) {
+        if (!noResults) {
+          const msg = document.createElement("div");
+          msg.className = "no-results";
+          msg.textContent = "No matching friends found";
+          document.getElementById("friendsList").appendChild(msg);
+        }
+      } else if (noResults) {
+        noResults.remove();
+      }
+    };
+
+    // دالة لعرض الملف الشخصي
+    window.viewProfile = function(username) {
+      window.location.href = `selected-user-profile.html?user=${encodeURIComponent(username)}`;
+    };
+
+    // دالة للتحقق من الحاجة لتحميل المزيد
+    window.checkIfNeedMore = function() {
+      if (document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight - 200) {
+        window.displayNextFriendsBatch();
+      }
+    };
+
+    // تهيئة الصفحة
+    document.addEventListener('DOMContentLoaded', async function() {
+      await loadFriends();
+      window.addEventListener('scroll', window.checkIfNeedMore);
+    });
+  </script>
+
+  <script>
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '/';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="../web/mcco-logo.png">
+  <link rel="stylesheet" href="../style/main.css">
+  <link rel="stylesheet" href="../style/tags.css">
+  <title>mc co-user profile</title>
+  <!-- إضافة مكتبة hammer.js -->
+  <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+  <style>
+    @font-face {
+      font-family: minecraft;
+      src: url('../font/Minecraft-Default.otf');
+    }
+    @font-face {
+      font-family: minecraft-ten;
+      src: url('../font/Minecraft-Ten.ttf');
+    }
+    @font-face {
+      font-family: minecraft-five;
+      src: url('../font/Minecraft-Five.ttf');
+    }
+    @font-face {
+      font-family: MinecraftFive-Regular;
+      src: url('../font/MinecraftFive-Regular.ttf');
+    }
+
+    .container {
+      margin: 0 auto;
+      max-width: 900px;
+    }
+
+    .profile-section {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      background-color: #262626;
+      padding: 20px;
+      border-radius: 5px;
+      border: 2px solid #4a4a4a;
+      margin-bottom: 20px;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow: 0px 0px 14px #565656, 0 0 0 var(--border-thickness) #1a1a1b, 0 0 0 0 #1a1a1b;
+      backdrop-filter: blur(2px);
+      flex-shrink: 0;
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 300px;
+      flex: 1;
+    }
+
+    .username {
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      font-size: 24px;
+      color: #646464;
+      margin: 10px 0;
+    }
+
+    .user-bio {
+      color: #CCCCCC;
+      font-size: 14px;
+      max-width: 300px;
+      margin: 0 auto;
+      text-align: center;
+      word-break: break-word;
+      border: none;
+    }
+
+    .user-bio a {
+      color: #5282FF;
+      text-decoration: none;
+    }
+
+    .user-bio a:hover {
+      text-decoration: underline;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      overflow: none;
+    }
+
+    .stat-item {
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .stat-item:hover {
+      transform: scale(1.05);
+    }
+
+    .stat-value {
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    .stat-label {
+      color: #959595;
+      font-size: 12px;
+    }
+
+    .items-section {
+      background-color: #262626;
+      padding: 15px;
+      border-radius: 5px;
+      border: 2px solid #4a4a4a;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      color: #E0BA31;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .purchased-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .item-card {
+      background-color: #3a3a3a;
+      padding: 5px;
+      border-radius: 5px;
+      width: 80px;
+      text-align: center;
+      position: relative;
+    }
+
+    .item-icon {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+
+    .item-name {
+      color: #FFFFFF;
+      font-size: 10px;
+      margin-top: 5px;
+    }
+
+    #userPoints {
+      text-shadow: 0px 1px 0px #3A2700;
+      background: #916204;
+      border: 2px solid #A6730F;
+      color: #FFD952;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+
+    #userItems {
+      text-shadow: 0px 1px 0px #000F3A;
+      background: #160491;
+      border: 2px solid #220FA6;
+      color: #5282FF;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+
+    #userFallTokens {
+      text-shadow: 0px 1px 0px #3A1700;
+      background: #915104;
+      border: 2px solid #A6500F;
+      color: #FFA752;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+
+    #userFriends {
+      text-shadow: 0px 1px 0px #003A2F;
+      background: #04916E;
+      border: 2px solid #0FA67E;
+      color: #52FFD3;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+
+    #userLikes {
+      text-shadow: 0px 1px 0px #3A0000;
+      background: #910404;
+      border: 2px solid #A60F0F;
+      color: #FF5252;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+
+    .user-handle {
+      color: #D9D9D9;
+      text-shadow: 0px 1px 0px #838383;
+      border: none;
+      font-size: 14px;
+      font-family: 'minecraft', sans-serif;
+      margin: 2px 0;
+    }
+
+    .item-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .item-price {
+      color: #FFD700;
+      font-family: 'minecraft-five', sans-serif;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .chat-btn, .like-btn {
+      background-color: #1AB32C00;
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 15px;
+      font-family: 'minecraft';
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 5px;
+    }
+
+    .chat-btn:hover {
+      background-color: #FFFFFF;
+      color: #3A3A3A;
+      border-radius: 5px; 
+    }
+
+    .like-btn:hover {
+      background-color: #FF3E3E;
+      color: white;
+    }
+
+    .chat-btn img {
+      height: 14px;
+    }
+
+    .like-btn.liked {
+      background-color: #FF3E3E;
+      color: white;
+      border-color: #FF3E3E;
+    }
+
+    .rare-item-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(255, 0, 0, 0.7);
+      color: white;
+      font-size: 8px;
+      padding: 2px;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+
+
+
+    #userTagsContainer {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 3px;
+      max-width: 100%;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
+    .user-tags {  
+      gap: 5px;  
+      padding-left: 2px;  
+    }  
+
+    .tag {  
+      font-family: minecraft-five;  
+      font-size: 10px;  
+      padding: 2px 6px;  
+      border-radius: 3px;
+      text-shadow: 0 1px 0px rgba(0, 0, 0, 0.3);  
+      margin-right: 4px;  
+    } 
+
+    /* إضافات CSS الجديدة لعرض البيانات عبر data attributes */
+    #usernameDisplay::before {
+      content: attr(data-value);
+      color: #9A9A9A;
+      font-size: 35px;
+      font-family: Minecraft-ten;
+    }
+
+    #userHandle::before {
+      content: attr(data-value);
+      color: #D9D9D9;
+      text-shadow: 0px 1px 0px #838383;
+      font-size: 14px;
+      font-family: 'minecraft', sans-serif;
+    }
+
+    #userPoints::before {
+      content: attr(data-value);
+      color: #FFB74E;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+
+    #userFallTokens::before {
+      content: attr(data-value);
+      color: #FF924C;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+
+    #userItems::before {
+      content: attr(data-value);
+      color: #534EFF;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+
+    #userLikes::before {
+      content: attr(data-value);
+      color: #FF4E4E;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+
+    #userFriends::before {
+      content: attr(data-value);
+      color: #52FFD3;
+      border-radius: 3px;
+      font-size: 17px;
+      font-family: MinecraftFive-Regular;
+    }
+
+    /* لإخفاء أي نص أولي إذا وجد */
+    #usernameDisplay, #userHandle, #userPoints, #userFallTokens, #userItems, #userLikes, #userFriends {
+      display: inline-block; /* لضمان عمل ::before */
+    }
+    
+    .private-account-message {
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      font-size: 24px;
+      color: #818181;
+      text-align: center;
+      margin: 20px 0;
+      text-shadow: 0px 1px 0px #2F2F2FA1;
+    }
+    .arabic-text {
+      font-size: 19px;
+      color: #777;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+
+    /* CSS for enlarged image overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(15px); /* Increased blur effect */
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.5s ease, backdrop-filter 0.5s ease;
+    }
+
+    .overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .image-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      max-width: calc(100% - 40px); /* Ensure margins from screen edges */
+      height: calc(100% - 40px);
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .card {
+      position: relative;
+      perspective: 1000px;
+      width: 100%;
+      max-width: 80vw; /* Responsive max width */
+      max-height: 80vh; /* Responsive max height */
+      aspect-ratio: 1 / 1; /* Ensure square shape */
+      z-index: 2;
+    }
+
+    .inner-card {
+      transition: transform 0.8s ease-in-out; /* Smoother and longer transition */
+      transform-style: preserve-3d;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .inner-card.shake {
+      animation: shake 0.5s ease-in-out;
+    }
+
+    .front, .back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px; /* Smooth edges for both front and back */
+    }
+
+    
+
+    .inner-card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .enlarged-img {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 10px; /* Smooth edges for profile image */
+      object-fit: contain;
+      transform: scale(0);
+      transition: transform 0.5s ease-in-out;
+      cursor: pointer;
+    }
+
+    .overlay.active .enlarged-img {
+      transform: scale(1);
+    }
+
+    .enlarged-img.zoomed {
+      transform: scale(1.2); /* Zoom effect on click */
+    }
+
+    .qr-img {
+      width: 100%;
+      height: 100%;
+      max-width: calc(100% - 40px); /* Ensure padding inside square */
+      max-height: calc(100% - 40px);
+      object-fit: contain;
+      border-radius: 10px; /* Smooth edges for QR code */
+    }
+
+    .profile-buttons {
+      display: flex;
+      gap: 5px; /* Small gap between buttons */
+      justify-content: center;
+      width: 100%;
+      padding-bottom: 10px; /* Small margin from bottom */
+      transform: translateY(100px); /* Start below screen */
+      opacity: 0;
+      transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    }
+
+    .overlay.active .profile-buttons {
+      transform: translateY(0); /* Slide up animation */
+      opacity: 1;
+    }
+
+    .profile-btn {
+      border: 2px solid #313131D1;
+border-radius: 8px;
+background-color: #2a2a2a;
+color: #ffffff;
+outline: none;
+transition: all 0.3s ease;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      color: #fff;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-btn:hover {
+      background-color: #484747D6;
+    }
+
+    .profile-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: #fff;
+    }
+
+    /* Animation for image expansion from profile pic position */
+    @keyframes expandFromProfile {
+      0% {
+        transform: scale(0.2) translate(0, 0);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1) translate(0, 0);
+        opacity: 1;
+      }
+    }
+
+    /* Shake animation for closing */
+    @keyframes shake {
+      0% { transform: translateX(0) rotate(0deg); }
+      20% { transform: translateX(-10px) rotate(-2deg); }
+      40% { transform: translateX(10px) rotate(2deg); }
+      60% { transform: translateX(-5px) rotate(-1deg); }
+      80% { transform: translateX(5px) rotate(1deg); }
+      100% { transform: translateX(0) rotate(0deg); }
+    }
+
+       .back-btn {
+         position: absolute;
+         border: none;
+         background-color: transparent;
+         left: 10px;
+         cursor: pointer;
+         padding: 5px;
+         font-size: 25px;
+         z-index: 9999;
+         text-align: center;
+         transition: all 0.7s;
+         
+       }
+  </style>
+</head>
+<body>
+  <div class="sticky-header"> 
+  <div class="header">  
+    <button class="back-btn" id="backButton" type="button" onclick="goBack()"><</button>   
+    <div id="usernameDisplay" data-value="User"> </div>
+  </div>  
+
+  <div class="content">
+    <div class="container"> 
+      <div class="profile-section">
+        <img src="../icons/player-head-128-052ba.png" class="profile-pic" id="profilePic">
+        <div class="profile-info">
+          <div class="user-handle" id="userHandle" data-value="@username"> </div>
+          <div class="user-tags-container" id="userTagsContainer" style="margin-top: 5px;"></div>
+          <div class="user-bio" id="userBio"></div>
+        </div>
+        
+        <div class="stats">
+          <div class="stat-item">
+            <div class="stat-value" id="userPoints" data-value="0"> </div>
+            <div class="stat-label">Coins</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="userFallTokens" data-value="0"> </div>
+            <div class="stat-label">Fall Tokens</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="userItems" data-value="0"> </div>
+            <div class="stat-label">Items</div>
+          </div>
+          <div class="stat-item" id="friendsStat">
+            <div class="stat-value" id="userFriends" data-value="0"> </div>
+            <div class="stat-label">Friends</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="userLikes" data-value="0"> </div>
+            <div class="stat-label">Likes</div>
+          </div>
+        </div>
+        
+        <div class="private-account-message" id="privateAccountMessage" style="display: none;">
+          <img src="../icons/Lock-icon.png" width="15px"/>Private Account 
+          <div class="arabic-text"> حساب  خاص</div>
+        </div>
+        
+        <div class="profile-actions">
+          <button class="chat-btn" id="chatBtn">Message</button>
+          <button class="like-btn" id="likeBtn">Like</button>
+        </div>
+      </div>
+
+      <div class="tags-section" id="userTagsSection" style="display: none;">
+        <div class="section-title">User Tags</div>
+        <div class="user-tags-container" id="userTagsContainer"></div>
+      </div>
+      
+      <div class="items-section" id="itemsSection">
+        <div class="section-title">Purchased Items</div>
+        <div id="noItemsMessage" style="text-align: center; color: #959595;">This user hasn't purchased any items yet.</div>
+        <div class="purchased-items" id="purchasedItemsContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay for enlarged profile pic -->
+  <div id="overlay" class="overlay">
+    <div class="image-container">
+      <div class="card">
+        <div class="inner-card">
+          <div class="front">
+            <img id="enlargedImg" class="enlarged-img" src="">
+          </div>
+          <div class="back">
+            <img id="qrImg" class="qr-img" src="">
+          </div>
+        </div>
+      </div>
+      <div class="profile-buttons">
+        <button id="copyLinkBtn" class="profile-btn" title="Copy Link">
+<img src="../icons/copy-icon.svg" alt="" height="25px" />
+        </button>
+        <button id="qrCodeBtn" class="profile-btn" title="QR Code">
+<img src="../icons/qr-code-icon (1).svg" alt="" height="25px"/>
+        </button>
+        <button id="downloadBtn" class="profile-btn" title="Download">
+<img src="../icons/download-icon.svg" alt="" height="25px"/>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { db } from '../scripts/main.js';
+    import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+    import { shopItems } from '../scripts/items.js';
+    import { getTagName, getAllTagIds } from '../scripts/tags.js';
+    
+    // الحصول على معرف المستخدم من الرابط
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('user');
+    
+    if (!userId) {
+      alert('Please select a user to preview their profile.');
+      window.location.href = 'Friends-management.html';
+    }
+    
+    // الحصول على معرف المستخدم الحالي
+    const currentUserId = localStorage.getItem("activeUser");
+    
+    function formatNumber(num) {
+      if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
+      if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+      if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+      if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+      return num.toString();
+    }
+    
+    // دالة لتنسيق الروابط في السيرة الذاتية
+    function formatBioWithLinks(bio) {
+      if (!bio) return '';
+      
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+      return bio.replace(urlRegex, url => {
+        const displayUrl = url.length > 30 ? url.substring(0, 27) + '...' : url;
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${displayUrl}</a>`;
+      });
+    }
+    
+    // دالة للعد التدريجي مع easing (سريع في البداية، بطيء في النهاية للقيم الكبيرة)
+    function animateCount(element, targetValue, duration = 2000) {
+      const startValue = parseInt(element.dataset.value.replace(/\D/g, '')) || 0; // ابدأ من القيمة الحالية
+      const startTime = performance.now();
+      const isLarge = targetValue >= 10000; // افتراضياً، 5 أرقام أو أكثر
+
+      function easeOut(t) {
+        return 1 - Math.pow(1 - t, 3); // easeOutCubic: سريع في البداية، بطيء في النهاية
+      }
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        let easedProgress = isLarge ? easeOut(progress) : progress; // تطبيق easing فقط للكبيرة
+        const current = Math.floor(easedProgress * (targetValue - startValue) + startValue);
+        
+        element.dataset.value = formatNumber(current);
+        
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          element.dataset.value = formatNumber(targetValue); // ضمان القيمة النهائية
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+    
+    // دالة لتحميل ملف تعريف المستخدم في الوقت الفعلي
+    function loadUserProfile() {
+      const userDocRef = doc(db, 'users', userId);
+
+      onSnapshot(userDocRef, (userDoc) => {
+        if (!userDoc.exists()) {
+          document.getElementById('usernameDisplay').dataset.value = 'User Not Found';
+          return;
+        }
+
+        const userData = userDoc.data();
+
+        // التحقق من حالة private-account
+        const isPrivate = userData['private-account'] === 'on';
+
+        // إظهار/إخفاء العناصر بناءً على حالة الحساب
+        const privateAccountMessage = document.getElementById('privateAccountMessage');
+        const itemsSection = document.getElementById('itemsSection');
+        const profileActions = document.querySelector('.profile-actions');
+        const statsSection = document.querySelector('.stats');
+
+        if (isPrivate) {
+          // إخفاء الأزرار، الإحصائيات، وقسم العناصر
+          profileActions.style.display = 'none';
+          statsSection.style.display = 'none';
+          itemsSection.style.display = 'none';
+          privateAccountMessage.style.display = 'block';
+        } else {
+          // إظهار العناصر الطبيعية
+          profileActions.style.display = 'flex';
+          statsSection.style.display = 'flex';
+          itemsSection.style.display = 'block';
+          privateAccountMessage.style.display = 'none';
+
+          // عرض الأرقام مع animation إذا لم يكن الحساب خاصًا
+          const points = userData.points || 0;
+          const fallTokens = userData.fallTokens || 0;
+          const likes = userData.likes || 0;
+          const friendsCount = userData.friends ? userData.friends.length : 0;
+          let itemsCount = 0;
+
+          if (userData.purchasedItems && Array.isArray(userData.purchasedItems)) {
+            document.getElementById('noItemsMessage').style.display = 'none';
+            displayPurchasedItems(userData.purchasedItems);
+            itemsCount = userData.purchasedItems.length;
+          } else {
+            document.getElementById('noItemsMessage').style.display = 'block';
+          }
+
+          animateCount(document.getElementById('userPoints'), points);
+          animateCount(document.getElementById('userFallTokens'), fallTokens);
+          animateCount(document.getElementById('userItems'), itemsCount);
+          animateCount(document.getElementById('userLikes'), likes);
+          animateCount(document.getElementById('userFriends'), friendsCount);
+        }
+
+        // عرض البيانات الأساسية (تظهر دائمًا)
+        document.getElementById('usernameDisplay').dataset.value = userData.displayName || userData.username || "User";
+        document.getElementById('userHandle').dataset.value = "@" + userId;
+        document.getElementById('userBio').innerHTML = formatBioWithLinks(userData.bio || "");
+
+        // عرض الوسوم
+        const tagsContainer = document.getElementById('userTagsContainer');
+        tagsContainer.innerHTML = '';
+        if (userData.areatags && userData.areatags.length > 0) {
+          userData.areatags.forEach(tag => {
+            const tagElement = document.createElement('span');
+            tagElement.className = `tag tag-${tag}`;
+            tagsContainer.appendChild(tagElement);
+          });
+        }
+
+        if (userData.photoURL) {
+          document.getElementById('profilePic').src = userData.photoURL;
+        }
+
+        // إعداد زر الإعجاب إذا لم يكن الحساب خاصًا
+        if (!isPrivate && currentUserId && userData.likedBy && userData.likedBy.includes(currentUserId)) {
+          document.getElementById('likeBtn').classList.add('liked');
+          document.getElementById('likeBtn').textContent = 'Liked';
+          document.getElementById('likeBtn').disabled = true;
+        } else if (!isPrivate) {
+          document.getElementById('likeBtn').classList.remove('liked');
+          document.getElementById('likeBtn').textContent = 'Like';
+          document.getElementById('likeBtn').disabled = false;
+        }
+      }, (error) => {
+        console.error("Error loading profile:", error);
+        document.getElementById('usernameDisplay').dataset.value = 'Error Loading Profile';
+      });
+    }
+    
+    // إعداد زر المحادثة (خارج onSnapshot لأنه لا يتغير)
+    document.getElementById('chatBtn').addEventListener('click', () => {
+      if (!currentUserId) {
+        alert("Please login to start chatting");
+        window.location.href = "login-page.html";
+        return;
+      }
+      window.location.href = `chat-page.html?user=${userId}`;
+    });
+    
+    // إعداد زر الإعجاب (خارج onSnapshot)
+    document.getElementById('likeBtn').addEventListener('click', async () => {
+      if (!currentUserId) {
+        alert("Please login to like profiles");
+        window.location.href = "login-page.html";
+        return;
+      }
+      
+      if (currentUserId === userId) {
+        alert("You can't like your own profile");
+        return;
+      }
+      
+      const likeBtn = document.getElementById('likeBtn');
+      const userDocRef = doc(db, 'users', userId);
+      
+      try {
+        await updateDoc(userDocRef, {
+          likedBy: arrayUnion(currentUserId),
+          likes: increment(1)
+        });
+        
+        const currentUserRef = doc(db, 'users', currentUserId);
+        await updateDoc(currentUserRef, {
+          likedUsers: arrayUnion(userId)
+        });
+        
+        // التغيير سيتم التقاطه تلقائياً via onSnapshot
+        
+      } catch (error) {
+        console.error("Error updating like:", error);
+        alert("An error occurred while updating the like. Please try again.");
+      }
+    });
+    
+    // إعداد النقر على قسم الأصدقاء
+    document.getElementById('friendsStat').addEventListener('click', () => {
+      window.location.href = `friends.html?user=${userId}`;
+    });
+    
+    // دالة لعرض العناصر المشتراة
+    function displayPurchasedItems(purchasedItemNames) {
+      const container = document.getElementById('purchasedItemsContainer');
+      container.innerHTML = '';
+      
+      if (!purchasedItemNames || purchasedItemNames.length === 0) {
+        document.getElementById('noItemsMessage').style.display = 'block';
+        return;
+      }
+      
+      purchasedItemNames.forEach(itemName => {
+        const itemData = shopItems.find(item =>
+          item.name.trim().toLowerCase() === itemName.trim().toLowerCase()
+        );
+        
+        const itemCard = document.createElement('div');
+        itemCard.className = 'item-card';
+        
+        if (itemData) {
+          itemCard.innerHTML = `
+            <img src="${itemData.imageUrl}" class="item-icon" alt="${itemData.name}" 
+                 onerror="this.src='../icons/default_item.png'">
+            <div class="item-name">${itemData.name}</div>
+            <div class="item-price">${formatNumber(itemData.price)} <img src="../icons/coinss_gif.gif" height="12"></div>
+          `;
+        } else {
+          itemCard.innerHTML = `
+            <img src="../icons/default_item.png" class="item-icon" alt="${itemName}">
+            <div class="item-name">${itemName}</div>
+            <div class="rare-item-label">This item is so rare</div>
+          `;
+        }
+        
+        container.appendChild(itemCard);
+      });
+    }
+    
+    // تهيئة الصفحة عند التحميل
+    document.addEventListener('DOMContentLoaded', loadUserProfile);
+  </script>
+  
+  <script>
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '/';
+      }
+    }
+
+    // Script for profile pic enlargement and drag rotation
+    document.addEventListener('DOMContentLoaded', () => {
+      const profilePic = document.getElementById('profilePic');
+      const overlay = document.getElementById('overlay');
+      const enlargedImg = document.getElementById('enlargedImg');
+      const qrImg = document.getElementById('qrImg');
+      const innerCard = document.querySelector('.inner-card');
+      const imageContainer = document.querySelector('.image-container');
+      const copyLinkBtn = document.getElementById('copyLinkBtn');
+      const qrCodeBtn = document.getElementById('qrCodeBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      let isFlipped = false;
+      let rotation = 0;
+      let isDragging = false;
+      let startX = 0;
+      let velocity = 0;
+
+      // Initialize Hammer.js for drag gestures
+      const hammer = new Hammer(innerCard);
+
+      // Calculate initial position for animation
+      function startImageAnimation() {
+        const profilePicRect = profilePic.getBoundingClientRect();
+        const cardRect = innerCard.getBoundingClientRect();
+        const offsetX = profilePicRect.left + profilePicRect.width / 2 - cardRect.left - cardRect.width / 2;
+        const offsetY = profilePicRect.top + profilePicRect.height / 2 - cardRect.top - cardRect.height / 2;
+
+        innerCard.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(0.2)`;
+        setTimeout(() => {
+          innerCard.style.transition = 'transform 0.5s ease-in-out';
+          innerCard.style.transform = 'translate(0, 0) scale(1)';
+          overlay.classList.add('active');
+        }, 10);
+      }
+
+      // Open overlay with animation and push state
+      profilePic.addEventListener('click', () => {
+        enlargedImg.src = profilePic.src;
+        const profileUrl = encodeURIComponent(window.location.href);
+        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${profileUrl}`;
+        startImageAnimation();
+        history.pushState({overlay: true}, '', window.location.href);
+      });
+
+      // Zoom on image click
+      enlargedImg.addEventListener('click', () => {
+        enlargedImg.classList.toggle('zoomed');
+      });
+
+      // Close overlay on background click with shake animation
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          closeOverlay();
+        }
+      });
+
+      // Close overlay function
+      function closeOverlay() {
+        innerCard.classList.add('shake');
+        setTimeout(() => {
+          overlay.classList.remove('active');
+          innerCard.classList.remove('flipped', 'shake');
+          enlargedImg.classList.remove('zoomed');
+          isFlipped = false;
+          rotation = 0;
+          innerCard.style.transform = 'rotateY(0deg)';
+          qrImg.src = ''; // Reset QR to avoid reloading
+          innerCard.style.transition = 'transform 0.8s ease-in-out'; // Reset transition
+          if (history.state && history.state.overlay) {
+            history.back();
+          }
+        }, 500); // Match shake animation duration
+      }
+
+      // Handle back button (popstate)
+      window.addEventListener('popstate', (e) => {
+        if (overlay.classList.contains('active')) {
+          closeOverlay();
+        }
+      });
+
+      // Copy link to clipboard
+      copyLinkBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.href)
+          .then(() => alert('Link copied to clipboard!'))
+          .catch(err => console.error('Failed to copy: ', err));
+      });
+
+      // Toggle QR code on button click
+      qrCodeBtn.addEventListener('click', () => {
+        if (isFlipped) {
+          innerCard.classList.remove('flipped');
+          isFlipped = false;
+          rotation = 0;
+          innerCard.style.transform = `rotateY(0deg)`;
+        } else {
+          innerCard.classList.add('flipped');
+          isFlipped = true;
+          rotation = 180;
+          innerCard.style.transform = `rotateY(180deg)`;
+        }
+      });
+
+      // Download profile picture
+      downloadBtn.addEventListener('click', () => {
+        const a = document.createElement('a');
+        a.href = enlargedImg.src;
+        a.download = 'profile_pic.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      });
+
+      // Handle drag gestures with Hammer.js
+      hammer.on('panstart', (e) => {
+        isDragging = true;
+        startX = e.center.x;
+        velocity = 0;
+      });
+
+      hammer.on('panmove', (e) => {
+        if (!isDragging) return;
+
+        const deltaX = e.center.x - startX;
+        const sensitivity = 0.2; // Reduced sensitivity for smoother rotation
+        const newRotation = deltaX * sensitivity;
+        velocity = newRotation - rotation; // Calculate velocity
+        rotation = newRotation % 360; // Continuous rotation
+
+        // Apply rotation
+        innerCard.style.transform = `rotateY(${rotation}deg)`;
+
+        // Flip when rotation crosses threshold
+        if ((rotation >= 90 || rotation <= -90) && !isFlipped) {
+          innerCard.classList.add('flipped');
+          isFlipped = true;
+        } else if ((rotation > -90 && rotation < 90) && isFlipped) {
+          innerCard.classList.remove('flipped');
+          isFlipped = false;
+        }
+
+        startX = e.center.x; // Update startX for continuous rotation
+      });
+
+      hammer.on('panend', () => {
+        isDragging = false;
+        // Apply momentum based on velocity
+        const momentum = velocity * 10; // Amplify velocity for momentum effect
+        rotation += momentum;
+
+        // Snap to nearest 0 or 180 degrees
+        if (Math.abs(rotation % 360) >= 90) {
+          rotation = Math.round((rotation + momentum) / 180) * 180;
+          innerCard.classList.add('flipped');
+          isFlipped = true;
+        } else {
+          rotation = Math.round((rotation + momentum) / 180) * 180;
+          innerCard.classList.remove('flipped');
+          isFlipped = false;
+        }
+        innerCard.style.transition = 'transform 0.8s ease-in-out';
+        innerCard.style.transform = `rotateY(${rotation}deg)`;
+
+        // Reset transition after animation
+        setTimeout(() => {
+          innerCard.style.transition = 'transform 0.8s ease-in-out';
+        }, 800);
+      });
+    });
+  </script>
+</body>
+</html>

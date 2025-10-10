@@ -9,7 +9,8 @@ export const tagNames = {
   'youtuber': 'YOUTUBER',
   'mvp': 'MVP',
   "owner": 'OWNER', 
-  'hira_user': '🌸'
+  'hira_user': '🌸', 
+  'support': 'support', 
 };
 
 export function getTagName(tagId) {

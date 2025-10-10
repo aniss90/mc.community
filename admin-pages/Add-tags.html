@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة التاجات - لوحة التحكم</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../style/tags.css" />  
+  <style>
+    @font-face {    
+      font-family: minecraft;    
+      src: url('../font/Minecraft-Default.otf');    
+    }    
+    @font-face {    
+      font-family: minecraft-ten;    
+      src: url('../font/Minecraft-Ten.ttf');    
+    }    
+    @font-face {    
+      font-family: minecraft-five;    
+      src: url('../font/Minecraft-Five.ttf');    
+    }   
+    @font-face {    
+      font-family: MinecraftFive-Regular;    
+      src: url('../font/MinecraftFive-Regular.ttf');    
+    }
+    
+    * {
+      color: #FFFFFF;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+    }
+    
+    body {
+      background-color: #1A1A1A;
+    }
+    
+    .sticky-header {
+      background-color: #2A2A2A;
+      padding: 15px;
+      border-bottom: 3px solid #E0BA31;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      text-align: center;
+      font-size: 20px;
+    }
+    
+    .content {
+      padding: 20px;
+    }
+    
+    .card {
+      background-color: #262626;
+      border: 1px solid #444;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .card-header {
+      background-color: #333 !important;
+      border-bottom: 1px solid #444;
+      color: #FFFB00 !important;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      border-radius: 8px 8px 0 0;
+    }
+    
+    .form-control, .form-select {
+      background-color: #333;
+      border: 1px solid #444;
+      color: white;
+      border-radius: 6px;
+    }
+    
+    .form-control:focus, .form-select:focus {
+      background-color: #3A3A3A;
+      border-color: #E0BA31;
+      color: white;
+      box-shadow: 0 0 5px rgba(224, 186, 49, 0.5);
+    }
+    
+    .btn-primary {
+      background-color: #3D7AFF;
+      border: 1px solid #6BA1FF;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      background-color: #2B6BFF;
+      border-color: #5A91FF;
+    }
+    
+    .btn-outline-primary {
+      color: #3D7AFF;
+      border-color: #3D7AFF;
+      border-radius: 6px;
+    }
+    
+    .btn-outline-primary:hover {
+      background-color: #3D7AFF;
+      color: white;
+    }
+    
+    .tag-badge {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      text-shadow: 0 1px 0px rgba(0, 0, 0, 0.3);
+      margin: 4px;
+      font-family: minecraft-five;
+      transition: transform 0.2s ease;
+    }
+    
+    .tag-badge:hover {
+      transform: scale(1.05);
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #E0BA31;
+    }
+    
+    .search-box {
+      position: relative;
+    }
+    
+    .search-box i {
+      position: absolute;
+      left: 15px;
+      top: 12px;
+    }
+    
+    .tag-color-preview {
+      width: 30px;
+      height: 30px;
+      display: inline-block;
+      border-radius: 6px;
+      margin-right: 10px;
+      border: 2px solid #444;
+    }
+    
+    .table {
+      color: white;
+      border-color: #444;
+    }
+    
+    .table th {
+      background-color: #33333300;
+      color: #FFFB00;
+      border-color: #444;
+    }
+    
+    .table td {
+      background-color: #333333;
+      border-color: #44444400;
+      color: #B3B3B3;
+    }
+    
+    .table tr:nth-child(even) {
+      background-color: #2A2A2A;
+    }
+    
+    .table tr:hover {
+      background-color: #3A3A3A;
+    }
+    
+    .modal-content {
+      background-color: #262626;
+      border: 3px solid #E0BA31;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .modal-header {
+      border-bottom: 1px solid #444;
+      background-color: #333;
+      border-radius: 12px 12px 0 0;
+    }
+    
+    .modal-footer {
+      border-top: 1px solid #444;
+      background-color: #333;
+      border-radius: 0 0 12px 12px;
+    }
+    
+    .form-check-input:checked {
+      background-color: #3D7AFF;
+      border-color: #3D7AFF;
+    }
+
+    .text-tag {
+      display: inline-flex;
+      align-items: center;
+      background-color: #4A4A4A;
+      padding: 6px 12px;
+      border-radius: 20px;
+      margin: 4px;
+      font-size: 12px;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .text-tag:hover {
+      background-color: #5A5A5A;
+      transform: scale(1.03);
+    }
+
+    .delete-text-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      background-color: #FF5555;
+      color: white;
+      border-radius: 50%;
+      margin-right: 8px;
+      cursor: pointer;
+      font-size: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .delete-text-tag:hover {
+      background-color: #CC4444;
+    }
+  </style>
+</head>
+<body>
+  <div class="sticky-header">
+    <div class="header">  
+      <button class="btn btn-sm btn-outline-primary me-2" onclick="history.back()">رجوع</button>
+      إدارة التاجات
+    </div>  
+  </div>
+
+  <div class="content">
+    <div class="container py-3">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="card-title mb-0">إضافة تاج جديد</h5>
+            </div>
+            <div class="card-body">
+              <form id="addTagForm">
+                <div class="mb-3">
+                  <label for="tagName" class="form-label">اسم التاج (بالانجليزية)</label>
+                  <input type="text" class="form-control" id="tagName" required>
+                </div>
+                <div class="mb-3">
+                  <label for="tagDisplayName" class="form-label">الاسم المعروض</label>
+                  <input type="text" class="form-control" id="tagDisplayName" required>
+                </div>
+                <div class="mb-3">
+                  <label for="tagColor" class="form-label">لون الخلفية</label>
+                  <div class="d-flex align-items-center">
+                    <input type="color" class="form-control form-control-color" id="tagColor" value="#FF5555" required>
+                    <span class="tag-color-preview" id="colorPreview" style="background-color: #FF5555;"></span>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">إضافة التاج</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title mb-0">كل التاجات المتاحة</h5>
+            </div>
+            <div class="card-body">
+              <div id="allTagsList" class="d-flex flex-wrap"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-8">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="card-title mb-0">إدارة تاجات المستخدمين</h5>
+            </div>
+            <div class="card-body">
+              <div class="search-box mb-3">
+                <i class="fas fa-search text-muted"></i>
+                <input type="text" id="userSearch" class="form-control ps-5" placeholder="ابحث عن مستخدم...">
+              </div>
+              
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>المستخدم</th>
+                      <th>التاجات الحالية</th>
+                      <th>الإجراءات</th>
+                    </tr>
+                  </thead>
+                  <tbody id="usersList">
+                    <tr>
+                      <td colspan="3" class="text-center">جاري تحميل البيانات...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for managing user tags -->
+  <div class="modal fade" id="manageTagsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">إدارة تاجات المستخدم</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="currentUserInfo" class="mb-4"></div>
+          <div class="mb-4">
+            <label class="form-label fw-bold">اختر التاجات:</label>
+            <div id="availableTagsCheckboxes" class="d-flex flex-wrap"></div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-bold">التاغات النصية:</label>
+            <div id="textTagsList" class="d-flex flex-wrap"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+          <button type="button" id="saveTagsBtn" class="btn btn-primary">حفظ التغييرات</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script type="module">
+    import { getTagName, getAllTagIds } from '../scripts/tags.js';
+
+    // تهيئة Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
+      authDomain: "minecraft-community-4fd3d.firebaseapp.com",
+      projectId: "minecraft-community-4fd3d",
+      storageBucket: "minecraft-community-4fd3d.appspot.com",
+      messagingSenderId: "550140131027",
+      appId: "1:550140131027:web:a5186726cf5372e138c626"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    // متغيرات عامة
+    let currentEditingUserId = null;
+    const allTags = {};
+
+    // عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+      initColorPreview();
+      loadAllTags();
+      loadUsers();
+      
+      // استمع لتغيير لون التاج
+      document.getElementById('tagColor').addEventListener('input', function() {
+        document.getElementById('colorPreview').style.backgroundColor = this.value;
+      });
+      
+      // نموذج إضافة تاج جديد
+      document.getElementById('addTagForm').addEventListener('submit', addNewTag);
+      
+      // بحث المستخدمين
+      document.getElementById('userSearch').addEventListener('input', searchUsers);
+      
+      // زر حفظ التاجات في المودال
+      document.getElementById('saveTagsBtn').addEventListener('click', saveUserTags);
+    });
+
+    // معاينة اللون
+    function initColorPreview() {
+      const colorInput = document.getElementById('tagColor');
+      const preview = document.getElementById('colorPreview');
+      preview.style.backgroundColor = colorInput.value;
+    }
+
+    // تحميل جميع التاجات من Firestore
+    async function loadAllTags() {
+      const tagsRef = db.collection('tags');
+      tagsRef.onSnapshot(snapshot => {
+        for (const key in allTags) delete allTags[key];
+        
+        snapshot.forEach(doc => {
+          allTags[doc.id] = doc.data();
+        });
+        
+        getAllTagIds().forEach(tagId => {
+          if (!allTags[tagId]) {
+            allTags[tagId] = {
+              color: '#888',
+              displayName: getTagName(tagId)
+            };
+          } else {
+            allTags[tagId].displayName = getTagName(tagId);
+          }
+        });
+        
+        renderAllTags();
+      });
+    }
+
+    // عرض التاجات المتاحة
+    function renderAllTags() {
+      const container = document.getElementById('allTagsList');
+      container.innerHTML = '';
+      
+      const uniqueTags = new Set(Object.keys(allTags));
+      
+      uniqueTags.forEach(tagId => {
+        const badge = document.createElement('span');
+        badge.className = `tag-badge tag-${tagId}`;
+        container.appendChild(badge);
+      });
+    }
+
+    // إضافة تاج جديد
+    async function addNewTag(e) {
+      e.preventDefault();
+      
+      const tagName = document.getElementById('tagName').value.trim().toLowerCase();
+      const displayName = document.getElementById('tagDisplayName').value.trim();
+      const color = document.getElementById('tagColor').value;
+      
+      if (!tagName || !displayName) {
+        alert('الرجاء إدخال جميع البيانات المطلوبة');
+        return;
+      }
+      
+      try {
+        await db.collection('tags').doc(tagName).set({
+          displayName,
+          color,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        alert('تم إضافة التاج بنجاح!');
+        e.target.reset();
+      } catch (error) {
+        console.error('Error adding tag: ', error);
+        alert('حدث خطأ أثناء إضافة التاج');
+      }
+    }
+
+    // تحميل قائمة المستخدمين
+    async function loadUsers() {
+      const usersRef = db.collection('users');
+      usersRef.onSnapshot(snapshot => {
+        const usersList = document.getElementById('usersList');
+        usersList.innerHTML = '';
+        
+        snapshot.forEach(doc => {
+          const user = doc.data();
+          renderUserRow(doc.id, user);
+        });
+      });
+    }
+
+    // عرض مستخدم في الجدول
+    function renderUserRow(userId, user) {
+      const row = document.createElement('tr');
+      
+      const userCell = document.createElement('td');
+      userCell.innerHTML = `
+        <div class="d-flex align-items-center">
+          <img src="${user.photoURL || 'default-user.jpg'}" class="user-avatar me-3">
+          <span>${user.username || userId}</span>
+        </div>
+      `;
+      
+      const tagsCell = document.createElement('td');
+      const tagsContainer = document.createElement('div');
+      tagsContainer.className = 'd-flex flex-wrap';
+      
+      (user.areatags || []).forEach(tag => {
+        const tagData = allTags[tag];
+        const badge = document.createElement('span');
+        badge.className = 'badge tag-badge me-1 mb-1';
+        if (tagData) {
+          badge.style.backgroundColor = tagData.color;
+          badge.textContent = tagData.displayName;
+        } else {
+          badge.style.backgroundColor = '#4A4A4A';
+          badge.textContent = tag;
+        }
+        tagsContainer.appendChild(badge);
+      });
+      
+      tagsCell.appendChild(tagsContainer);
+      
+      const actionsCell = document.createElement('td');
+      actionsCell.innerHTML = `
+        <button class="btn btn-sm btn-outline-primary edit-tags-btn" data-user-id="${userId}">
+          <i class="fas fa-edit"></i> تعديل
+        </button>
+      `;
+      
+      row.appendChild(userCell);
+      row.appendChild(tagsCell);
+      row.appendChild(actionsCell);
+      document.getElementById('usersList').appendChild(row);
+      
+      row.querySelector('.edit-tags-btn').addEventListener('click', () => openManageTagsModal(userId, user));
+    }
+
+    // فتح مودال إدارة التاجات
+    function openManageTagsModal(userId, user) {
+      currentEditingUserId = userId;
+      const modal = new bootstrap.Modal(document.getElementById('manageTagsModal'));
+
+      // عرض معلومات المستخدم
+      document.getElementById('currentUserInfo').innerHTML = `
+        <div class="d-flex align-items-center">
+          <img src="${user.photoURL || 'default-user.jpg'}" class="user-avatar me-3">
+          <h6 class="mb-0">${user.username || userId}</h6>
+        </div>
+      `;
+
+      // إنشاء خانات اختيار التاغات المتاحة
+      const checkboxesContainer = document.getElementById('availableTagsCheckboxes');
+      checkboxesContainer.innerHTML = '';
+
+      for (const [tagId, tagData] of Object.entries(allTags)) {
+        const isChecked = user.areatags && user.areatags.includes(tagId);
+
+        const div = document.createElement('div');
+        div.className = 'form-check mb-2 me-3';
+
+        div.innerHTML = `
+          <input class="form-check-input" type="checkbox" id="tag-${tagId}" value="${tagId}" ${isChecked ? 'checked' : ''}>
+          <label class="form-check-label" for="tag-${tagId}">
+            <span class="badge tag-badge" style="background-color: ${tagData.color}">${tagData.displayName}</span>
+          </label>
+        `;
+
+        checkboxesContainer.appendChild(div);
+      }
+
+      // عرض التاغات النصية (غير المرتبطة بـ allTags)
+      const textTagsList = document.getElementById('textTagsList');
+      textTagsList.innerHTML = '';
+
+      if (user.areatags && user.areatags.length > 0) {
+        user.areatags.forEach(tag => {
+          if (!allTags[tag]) {
+            const tagElement = document.createElement('span');
+            tagElement.className = 'text-tag';
+            tagElement.innerHTML = `
+              ${tag}
+              <span class="delete-text-tag" data-tag="${tag}" data-user-id="${userId}">
+                <i class="fas fa-times"></i>
+              </span>
+            `;
+            textTagsList.appendChild(tagElement);
+          }
+        });
+      } else {
+        textTagsList.innerHTML = '<p class="text-muted">لا توجد تاغات نصية</p>';
+      }
+
+      // إضافة أحداث الحذف
+      textTagsList.querySelectorAll('.delete-text-tag').forEach(button => {
+        button.removeEventListener('click', handleDeleteClick); // إزالة أي أحداث سابقة
+        button.addEventListener('click', handleDeleteClick);
+      });
+
+      modal.show();
+    }
+
+    // دالة مساعدة لمعالجة النقر على زر الحذف
+    function handleDeleteClick(event) {
+      const tag = event.target.closest('.delete-text-tag').dataset.tag;
+      const userId = event.target.closest('.delete-text-tag').dataset.userId;
+      deleteTextTag(userId, tag);
+    }
+
+    // حذف تاغ نصي
+    async function deleteTextTag(userId, tag) {
+      try {
+        const userRef = db.collection('users').doc(userId);
+        const userDoc = await userRef.get();
+        
+        if (!userDoc.exists) {
+          alert('المستخدم غير موجود!');
+          return;
+        }
+
+        const currentTags = userDoc.data().areatags || [];
+        if (!currentTags.includes(tag)) {
+          alert('التاغ غير موجود في قائمة المستخدم!');
+          return;
+        }
+
+        const updatedTags = currentTags.filter(t => t !== tag);
+
+        await userRef.update({
+          areatags: updatedTags
+        });
+
+        // إعادة تحميل بيانات المستخدم وفتح المودال
+        const updatedUserDoc = await userRef.get();
+        const updatedUser = updatedUserDoc.data();
+        openManageTagsModal(userId, updatedUser);
+
+        alert('تم حذف التاغ النصي بنجاح!');
+      } catch (error) {
+        console.error('Error deleting text tag: ', error);
+        alert('حدث خطأ أثناء حذف التاغ النصي');
+      }
+    }
+
+    // حفظ تاجات المستخدم
+    async function saveUserTags() {
+      const checkboxes = document.querySelectorAll('#availableTagsCheckboxes input[type="checkbox"]');
+      const selectedTags = [];
+      
+      checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+          selectedTags.push(checkbox.value);
+        }
+      });
+
+      // إضافة التاغات النصية الموجودة
+      const textTagsList = document.getElementById('textTagsList');
+      const textTags = Array.from(textTagsList.querySelectorAll('.text-tag')).map(tag => 
+        tag.textContent.trim().split(' ')[0]
+      );
+      selectedTags.push(...textTags);
+      
+      try {
+        await db.collection('users').doc(currentEditingUserId).update({
+          areatags: selectedTags
+        });
+        
+        alert('تم تحديث تاجات المستخدم بنجاح!');
+        bootstrap.Modal.getInstance(document.getElementById('manageTagsModal')).hide();
+      } catch (error) {
+        console.error('Error updating user tags: ', error);
+        alert('حدث خطأ أثناء تحديث التاجات');
+      }
+    }
+
+    // بحث المستخدمين
+    function searchUsers() {
+      const searchTerm = this.value.toLowerCase();
+      const rows = document.querySelectorAll('#usersList tr');
+      
+      rows.forEach(row => {
+        const username = row.querySelector('td:first-child').textContent.toLowerCase();
+        if (username.includes(searchTerm)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -6,6 +6,9 @@ div {
 * {
     user-select: none
 }
+p{
+  color: #FFFFFF;
+}
 :root {
     --border-thickness: 2px;
     --border-2x-thickness: calc(2 * var(--border-thickness));
@@ -282,16 +285,19 @@ input {
        .back {
             position: absolute;
             border: none;
-            top: 20px;
+            background-color: transparent;
             left: 10px;
             cursor: pointer;
-            padding: 10px;
-            background: url(../icons/arrowBack-b77b1.png);
-            background-size:  contain;
-            background-position: center;
-            background-repeat: no-repeat;
+            padding: 5px;
+            font-size: 25px;
             z-index: 9999;
+            text-align: center;
+            transition: all 0.7s ;
+
         } 
+        .back:hover{
+          color: #9C9C9C;
+        }
       
 #whiteButton:hover {
     transform: translateY(var(--border-2x-thickness));
@@ -396,7 +402,7 @@ margin-top: 10px;
   border: 2px solid #DD42E7;
   background-color: #C50DD8;
       box-shadow:
-        0px var(--border-2x-thickness) 0px #751E78,
+        0px var(--border-2x-thickness) 0px #C62ECC,
         0 0 0 var(--border-thickness) #1a1a1b,
         0 var(--border-2x-thickness) 0 var(--border-thickness) #1a1a1b;
   width: 100%;
@@ -413,14 +419,14 @@ margin-top: 10px;
   height: auto;
   width: 100%;
   position: relative;
-  background-color: #BEBB00;
+  background-color: #BE7C16;
   box-shadow: 0 0 0 var(--border-thickness) #1a1a1b;
 }
 
 #goldButton {
   background-color: hsla(42, 77%, 50%, 1);
 border: 2px solid #FFC372;
-box-shadow: 0px var(--border-2x-thickness) 0px #7E4B04,
+box-shadow: 0px var(--border-2x-thickness) 0px #E19224,
 0 0 0 var(--border-thickness) #1a1a1b,
 0 var(--border-2x-thickness) 0 var(--border-thickness) #1a1a1b;
 width: 100%;
