@@ -1,7 +1,0 @@
-{
-  "extends": "astro/tsconfigs/base",
-  "compilerOptions": {
-    "strictNullChecks": true,
-    "plugins": [{ "name": "@astrojs/ts-plugin" }]
-  }
-}
