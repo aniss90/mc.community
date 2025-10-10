@@ -378,6 +378,10 @@
             margin-top: 2px;
             display: block;
         }
+        .error-message {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -591,7 +595,7 @@
                     return new TextDecoder().decode(decryptedData);
                 } catch (e) {
                     console.error("Decryption error:", e);
-                    return "خطأ في فك التشفير (مفتاح قديم أو بيانات تالفة)";
+                    return "error";
                 }
             }
 
@@ -731,7 +735,7 @@
                             }
                         } catch (error) {
                             console.error("Decryption failed:", error);
-                            displayMessage = "خطأ في فك التشفير (مفتاح قديم أو بيانات تالفة)";
+                            displayMessage = "error";
                         }
                     }
 
@@ -754,7 +758,11 @@
                     } else {
                         const processedMessage = await processMentions(displayMessage);
                         const escapedMessage = escapeHTML(processedMessage).replace(/\n/g, "<br>");
-                        contentHTML += `<span class="message-text">${escapedMessage}</span>`;
+                        if (displayMessage === "error") {
+                            contentHTML += `<span class="message-text"><span class="error-message">error</span></span>`;
+                        } else {
+                            contentHTML += `<span class="message-text">${escapedMessage}</span>`;
+                        }
                     }
 
                     messageElement.innerHTML = contentHTML;
