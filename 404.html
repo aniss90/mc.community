@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../style/main.css">
+  <link rel="icon" type="image/x-icon" href="../web/mcco-logo.png">
+  <title>404 - Page Not Found</title>
+  <meta name="description" content="Oops! The page you're looking for doesn't exist. Return to mcco to continue exploring, collecting coins, and connecting with friends!">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aniss90.github.io/mc.community/404">
+  <meta property="og:title" content="mcco - 404 Page Not Found">
+  <meta property="og:description" content="The page you're looking for is not available. Head back to mcco to log in, sign up, or explore more!">
+  <meta property="og:image" content="https://aniss90.github.io/mc.community/web/mcco-logo.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://aniss90.github.io/mc.community/404">
+  <meta property="twitter:title" content="mcco - 404 Page Not Found">
+  <meta property="twitter:description" content="The page you're looking for is not available. Head back to mcco to log in, sign up, or explore more!">
+  <meta property="twitter:image" content="https://aniss90.github.io/mc.community/web/mcco-logo.png">
+
+  <style>
+    @font-face {
+      font-family: minecraft;
+      src: url('../font/Minecraft-Default.otf');
+    }
+    @font-face {
+      font-family: minecraft-ten;
+      src: url('../font/Minecraft-Ten.ttf');
+    }
+    @font-face {
+      font-family: minecraft-five;
+      src: url('../font/Minecraft-Five.ttf');
+    }
+    @font-face {
+      font-family: MinecraftFive-Regular;
+      src: url('../font/MinecraftFive-Regular.ttf');
+    }
+
+
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+    }
+
+.header {
+ box-shadow: 0 2px 14px rgba(0, 0, 0, 0.47);
+}
+
+
+    .error-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+     
+      width: 100%;
+      
+    }
+
+    .error-box {
+      flex: 1;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .error-box h1 {
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      color: #FF3D3D;
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .error-box p {
+      color: #C4C4C4;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+
+    .error-button {
+      transition: background-color 0.5s;
+      width: 100%;
+      max-width: 200px;
+      border: 2px solid #FFFB8D;
+      background-color: #FFFB00;
+      text-shadow: 1px 1px 2px #B9B600;
+      box-shadow: 0px 3px 0px rgba(224, 155, 0, 1);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 10px;
+      color: #000000;
+      font-family: 'MinecraftFive-Regular', sans-serif;
+      border-radius: 5px;
+      transition: all 0.3s;
+    }
+
+    .error-button:hover {
+      background-color: #9D5F00;
+      transform: scale(1.05);
+    }
+
+    .error-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .error-image img {
+      width: 150px;
+      height: auto;
+      
+    }
+
+    @media (max-width: 768px) {
+      .error-container {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .error-image {
+        order: 2;
+        margin-top: 20px;
+      }
+
+      .error-box {
+        order: 1;
+        width: 100%;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header.sticky {
+      position: fixed;
+      top: 0;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="sticky-header">
+    <div class="header">
+      <button class="back" id="backButton" type="button" onclick="goBack()"><</button>
+      Page Not Found 
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="error-container">
+      <div class="error-box">
+        <h1>404</h1>
+        <p>Oops! The page you're looking for doesn't exist or has been moved. Let's get you back to the action!</p>
+        <button class="greenButton" onclick="window.location.href='Homepage.html'">Back to Home</button>
+      </div>
+      <div class="error-image">
+        <img src="../icons/No_items.png" alt="Error Image">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = 'Homepage.html';
+      }
+    }
+  </script>
+</body>
+</html>
