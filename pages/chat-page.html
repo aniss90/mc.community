@@ -7,632 +7,723 @@
     <link rel="icon" type="image/x-icon" href="../web/mcco-logo.png">
     <title>mc co-chat</title>
     <style>
-        @font-face {
-            font-family: minecraft;
-            src: url('../font/Minecraft-Default.otf');
-        }
-        @font-face {
-            font-family: minecraft-ten;
-            src: url('../font/Minecraft-Ten.ttf');
-        }
-        @font-face {
-            font-family: minecraft-five;
-            src: url('../font/Minecraft-Five.ttf');
-        }
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            margin: 0 auto;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0);
-        }
-        .message {
-            margin: 5px 0;
-            padding: 10px 15px;
-            border-radius: 7px;
-            max-width: 80%;
-            display: inline-block;
-            word-wrap: break-word;
-            position: relative;
-            clear: both;
-            transition: all 0.3s ease;
-        }
-        .myMessage {
-            background-color: #B7B7B7;
-            border: 2px solid #CDCDCD;
-            float: right;
-            margin-right: 10px;
-        }
-        .otherMessage {
-            background-color: #3A3A3A;
-            border: 2px solid #4D4D4D;
-            float: left;
-            color: #E1E1E1;
-            margin-left: 10px;
-        }
-        #chatBox {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-            background-color: #23232300;
-            padding-bottom: 90px;
-        }
-        .input-area {
-            position: fixed;
-            bottom: 6px;
-            left: 6px;
-            right: 6px;
-            display: flex;
-            align-items: flex-end;
-            padding: 5px 10px;
-            background-color: #292929DB;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid #4B4B4BDB;
-            border-radius: 25px;
-            box-sizing: border-box;
-            transition: all 0.2s ease, height 0.2s ease;
-            transition: height 0.25s cubic-bezier(0.25, 1, 0.5, 1),
-                        transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: height, transform;
-            z-index: 100;
-        }
-        #message-input {
-            width: 100%;
-            background-color: transparent;
-            border: none;
-            outline: none;
-            box-shadow: none;
-            color: white;
-            font-size: 16px;
-            padding: 6px 10px;
-            line-height: 20px;
-            resize: none;
-            overflow-y: hidden;
-            min-height: 20px;
-            max-height: 150px;
-            height: auto;
-            transition: height 0.25s cubic-bezier(0.25, 1, 0.5, 1),
-                        transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: height, transform;
-        }
-        .action-buttons {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-left: 8px;
-        }
-        #send-btn,
-        #upload-btn,
-        #sticker-btn {
-            width: 49px;
-            height: 40px;
-            border: none;
-            border-radius: 18px;
-            background-size: 25px 25px;
-            background-color: #555555A3;
-            background-position: center;
-            background-repeat: no-repeat;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        #upload-btn,
-        #sticker-btn {
-            width: 40px;
-            background-color: #42445A00;
-            transition: all 1s ease;
-        }
-        #send-btn {
-            background-image: url('../icons/send_icon.svg');
-            display: none;
-        }
-        #upload-btn {
-            background-image: url('../icons/Gallery_icon.svg');
-        }
-        #sticker-btn {
-            background-image: url('../icons/sticker_icon.svg');
-            display: block !important;
-        }
-        #send-btn.active {
-            display: block;
-        }
-        #upload-btn.hidden {
-            display: none;
-        }
-        #image-input {
-            display: none;
-        }
-        .blur-background .message:not(.selected-message) {
-            filter: blur(4px);
-        }
-        .message-options {
-            position: absolute;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px;
-            border-radius: 8px;
-            display: flex;
-            gap: 10px;
-            bottom: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: none;
-            z-index: 100;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(90px);
-        }
-        .option-btn {
-            padding: 6px 12px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        .option-btn.copy {
-            background-color: green;
-            color: white;
-        }
-        .option-btn.delete {
-            background-color: red;
-            color: white;
-        }
-        #chatUser {
-            font-family: minecraft-ten;
-            font-size: 30px;
-        }
-        .header {
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.81);
-            transition: all 0.3s ease;
-        }
-        .lodinimg {
-            top: 20%;
-            text-align: center;
-            color: #959595;
-            transition: all 0.3s ease;
-        }
-        @keyframes slideUpMessage {
-            0% {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        .message.new-message {
-            animation: slideUpMessage 0.4s ease-out;
-        }
-        .stickers-panel {
-            position: fixed;
-            display: none;
-            bottom: 80px;
-            right: 20px;
-            width: 300px;
-            max-height: 400px;
-            background-color: #262626A3;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(5px);
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            z-index: 1000;
-            border: 1px solid #444;
-            color: #FFFFFF;
-        }
-        .stickers-panel[aria-hidden="false"] {
-            display: block;
-        }
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            background-color: #3A3A3AAD;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(5px);
-            border-bottom: 1px solid #444;
-            color: white;
-            font-family: minecraft-ten;
-        }
-        .panel-close {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .stickers-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            padding: 15px;
-            overflow-y: auto;
-            max-height: 350px;
-        }
-        .sticker-item {
-            width: 100%;
-            aspect-ratio: 1;
-            cursor: pointer;
-            transition: transform 0.2s;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .sticker-item:hover {
-            transform: scale(1.1);
-            background-color: #bbb;
-        }
-        .sticker-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        .message.show-heart .heart-icon {
-            opacity: 1;
-            transform: translateY(-3px);
-        }
-        .message {
-            position: relative;
-        }
-        @keyframes heartFall {
-            0% {
-                transform: translateY(-50px) scale(0.5);
-                opacity: 0;
-            }
-            50% {
-                transform: translateY(0) scale(1.2);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-3px) scale(1);
-                opacity: 1;
-            }
-        }
-        .message .heart-icon {
-            position: absolute;
-            bottom: -12px;
-            left: 10px;
-            font-size: 18px;
-            color: red;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-        .message.show-heart .heart-icon {
-            animation: heartFall 0.6s ease forwards;
-        }
-        .profile-preview {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            width: 375px;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 10px;
-            transition: background-color 0.2s;
-        }
-        .profile-preview:hover {
-            background-color: rgba(0, 0, 0, 0.1);
-        }
-        .profile-image {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            object-fit: cover;
-            box-shadow: 0px 0px 14px #393939,
-                        0 0 0 var(--border-thickness) #7B7B7B,
-                        0 0 0 0 #7B7B7B;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-        .profile-info {
-            flex: 1;
-            min-width: 0;
-        }
-        .profile-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: white;
-        }
-        .profile-bio {
-            font-size: 14px;
-            color: white;
-            line-height: 1.3;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-        .profile-preview[data-is-long="true"] .profile-bio::after {
-            content: "... اقرأ المزيد";
-            color: #007bff;
-            cursor: pointer;
-        }
-        .encryption-status {
-            font-size: 12px;
-            margin-top: 5px;
-            opacity: 0.9;
-            font-family: minecraft-ten;
-        }
-        .encrypted {
-            color: #28a745;
-        }
-        .not-encrypted {
-            color: #ffc107;
-        }
-        .user-mention {
-            color: white !important;
-            background-color: transparent;
-            padding: 2px 5px;
-            border-radius: 3px;
-            text-decoration: none;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .user-mention-bio {
-            color: white;
-            background-color: transparent;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-size: 11px;
-            margin-top: 2px;
-            display: block;
-        }
+     @font-face {
+      font-family: minecraft;
+      src: url('../font/Minecraft-Default.otf');
+    }
+    @font-face {
+      font-family: minecraft-ten;
+      src: url('../font/Minecraft-Ten.ttf');
+    }
+    @font-face {
+      font-family: minecraft-five;
+      src: url('../font/Minecraft-Five.ttf');
+    }
+    .chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0 auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+}
+
+.message {
+margin: 5px 0;
+padding: 10px 15px;
+border-radius: 7px;
+max-width: 80%;
+display: inline-block;
+word-wrap: break-word;
+position: relative;
+clear: both;
+transition: all 0.3s ease;
+}
+
+.myMessage {
+    background-color: #B7B7B7;
+    border: 2px solid #CDCDCD;
+    float: right;
+    margin-right: 10px;
+}
+
+.otherMessage {
+    background-color: #3A3A3A;
+    border: 2px solid #4D4D4D;
+    float: left;
+    color: #E1E1E1;
+    margin-left: 10px;
+}
+
+#chatBox {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  background-color: #23232300;
+  padding-bottom: 90px; /* مساحة تحت عشان الإدخال ما يغطي الرسائل */
+}
+
+.input-area {
+  position: fixed; 
+  bottom: 6px;
+  left: 6px;   /* مسافة من اليسار */
+  right: 6px;  /* مسافة من اليمين */
+  
+  display: flex;
+  align-items: flex-end;
+  padding: 5px 10px;
+
+  background-color: #292929DB; 
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 2px solid #4B4B4BDB;
+  border-radius: 25px;
+
+  box-sizing: border-box;
+  transition: all 0.2s ease, height 0.2s ease;
+    transition: height 0.25s cubic-bezier(0.25, 1, 0.5, 1),
+        transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: height, transform;
+  z-index: 100;
+}
+
+
+ 
+
+#message-input {
+width: 100%;
+background-color: transparent;
+border: none;
+outline: none;
+box-shadow: none;
+color: white;
+font-size: 16px;
+padding: 6px 10px;
+line-height: 20px;
+resize: none;
+overflow-y: hidden;
+min-height: 20px;
+max-height: 150px;
+height: auto; 
+    transition:
+        height 0.25s cubic-bezier(0.25, 1, 0.5, 1),
+        transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: height, transform;
+}
+
+.action-buttons {
+display: flex;
+align-items: center;
+gap: 5px;
+margin-left: 8px;
+}
+
+/* تنسيق جديد لأزرار الإرسال والرفع والستيكرز */
+#send-btn,
+#upload-btn,
+#sticker-btn {
+width: 49px;
+height: 40px;
+border: none;
+border-radius: 18px;
+background-size: 25px 25px;
+background-color: #555555A3;
+background-position: center;
+background-repeat: no-repeat;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+#upload-btn,
+#sticker-btn {
+width: 40px;
+background-color: #42445A00;
+transition: all 1s ease;
+}
+#send-btn {
+background-image: url('../icons/send_icon.svg');
+display: none;
+}
+
+#upload-btn {
+background-image: url('../icons/Gallery_icon.svg');
+}
+
+#sticker-btn {
+background-image: url('../icons/sticker_icon.svg');
+display: block !important; /* التأكد من ظهور زر الستيكرز دائمًا */
+}
+
+#send-btn.active {
+display: block;
+
+}
+
+#upload-btn.hidden {
+display: none;
+}
+
+#image-input {
+display: none;
+}
+
+.blur-background .message:not(.selected-message) {
+filter: blur(4px);
+}
+
+.message-options {
+position: absolute;
+background: rgba(0, 0, 0, 0.8);
+color: white;
+padding: 8px;
+border-radius: 8px;
+display: flex;
+gap: 10px;
+bottom: -40px;
+left: 50%;
+transform: translateX(-50%);
+display: none;
+z-index: 100;
+backdrop-filter: blur(8px);
+-webkit-backdrop-filter: blur(90px);
+}
+
+.option-btn {
+padding: 6px 12px;
+border: none;
+cursor: pointer;
+border-radius: 5px;
+font-size: 14px;
+}
+
+.option-btn.copy {
+background-color: green;
+color: white;
+}
+
+.option-btn.delete {
+background-color: red;
+color: white;
+}
+
+#chatUser {
+font-family: minecraft-ten;
+font-size: 30px;
+}
+
+.header {
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.81);
+transition: all 0.3s ease;
+}
+
+.lodinimg {
+top: 20%;
+text-align: center;
+color: #959595;
+transition: all 0.3s ease;
+}
+@keyframes slideUpMessage {
+
+0% {
+transform: translateY(50px);
+opacity: 0;
+}
+100% {
+transform: translateY(0);
+opacity: 1;
+}
+}
+
+.message.new-message {
+animation: slideUpMessage 0.4s ease-out;
+}
+
+/* أنماط لوحة الستيكرات */
+.stickers-panel {
+position: fixed;
+display: none;
+bottom: 80px;
+right: 20px;
+width: 300px;
+max-height: 400px;
+background-color: #262626A3; /* يمكنك تقليل العتامة هنا إذا أردت */
+  backdrop-filter: blur(8px); /* هذه الخاصية تضيف تأثير البلور */
+  -webkit-backdrop-filter: blur(5px);
+border-radius: 15px;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+overflow: hidden;
+z-index: 1000;
+border: 1px solid #444;
+color: #FFFFFF; 
+}
+
+.stickers-panel[aria-hidden="false"] {
+display: block;
+}
+
+.panel-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 10px 15px;
+background-color: #3A3A3AAD; /* يمكنك تقليل العتامة هنا إذا أردت */
+  backdrop-filter: blur(8px); /* هذه الخاصية تضيف تأثير البلور */
+  -webkit-backdrop-filter: blur(5px);
+border-bottom: 1px solid #444;
+color: white;
+font-family: minecraft-ten;
+}
+
+.panel-close {
+background: none;
+border: none;
+color: white;
+cursor: pointer;
+font-size: 16px;
+}
+
+.stickers-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 10px;
+padding: 15px;
+overflow-y: auto;
+max-height: 350px;
+}
+
+.sticker-item {
+width: 100%;
+aspect-ratio: 1;
+cursor: pointer;
+transition: transform 0.2s;
+border-radius: 8px;
+overflow: hidden;
+}
+
+.sticker-item:hover {
+transform: scale(1.1);
+background-color: #bbb;
+}
+
+.sticker-item img {
+width: 100%;
+height: 100%;
+object-fit: contain;
+}
+
+.message.show-heart .heart-icon {
+opacity: 1;
+transform: translateY(-3px);
+}
+.message {
+position: relative;
+}
+@keyframes heartFall {
+  0% {
+    transform: translateY(-50px) scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(0) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-3px) scale(1);
+    opacity: 1;
+  }
+}
+
+.message .heart-icon {
+  position: absolute;
+  bottom: -12px;
+  left: 10px;
+  font-size: 18px;
+  color: red;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.message.show-heart .heart-icon {
+  animation: heartFall 0.6s ease forwards;
+}
+
+/* Profile preview styles */
+.profile-preview {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    width: 375px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    transition: background-color 0.2s;
+}
+
+.profile-preview:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.profile-image {
+    width: 50px;
+    height: 50px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow:
+        0px 0px 14px #393939,
+        0 0 0 var(--border-thickness) #7B7B7B,
+        0 0 0 0 #7B7B7B;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+ 
+.profile-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.profile-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: white; /* تغيير إلى أبيض كما طلبت */
+}
+
+.profile-bio {
+    font-size: 14px;
+    color: white; /* تغيير إلى أبيض كما طلبت */
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.profile-preview[data-is-long="true"] .profile-bio::after {
+    content: "... اقرأ المزيد";
+    color: #007bff;
+    cursor: pointer;
+}
+
+/* أنماط حالة التشفير في الهيدر */
+.encryption-status {
+    font-size: 12px;
+    margin-top: 5px;
+    opacity: 0.9;
+    font-family: minecraft-ten;
+}
+
+.encrypted {
+    color: #28a745; /* أخضر للتشفير الناجح */
+}
+
+.not-encrypted {
+    color: #ffc107; /* أصفر للتحذير */
+}
+
+/* أنماط للروابط المذكورة @username */
+.user-mention {
+    color: white !important;
+    background-color: #007bff;
+    padding: 2px 5px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.user-mention-bio {
+    color: white;
+    background-color: #007bff;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 11px;
+    margin-top: 2px;
+    display: block;
+}
     </style>
+
 </head>
 <body>
     <div class="chat-container">
-        <div class="header">
-            <button class="back" id="backButton" type="button" onclick="goBack()"><</button>
+        <div class="header"> 
+            <button class="back" id="backButton" type="button" onclick="goBack()"><</button>       
             <div id="chatUser">loading...</div>
             <div id="encryptionStatus" class="encryption-status not-encrypted">
                 The other user must enter the conversation to enable end-to-end encryption.
             </div>
-        </div>
+        </div> 
         <div id="chatBox">
-            <div class="lodinimg"> Loading messages...</div>
-        </div>
-        <div class="input-area">
-            <textarea id="message-input" placeholder="Message.." rows="1"></textarea>
-            <div class="action-buttons">
-                <button id="sticker-btn"></button>
-                <button id="upload-btn"></button>
-                <button id="send-btn"></button>
-                <input type="file" id="image-input" accept="image/*">
-            </div>
+<div class="lodinimg"> Loading messages...</div>
+            </div> 
+            <div class="input-area">
+    <textarea id="message-input" placeholder="Message.." rows="1"></textarea>
+    <div class="action-buttons">
+        <button id="sticker-btn"></button>
+        <button id="upload-btn"></button>
+        <button id="send-btn"></button>
+        <input type="file" id="image-input" accept="image/*">
+    </div>
+</div>
+
+</div>    <!-- لوحة الستيكرات -->   
+<div class="stickers-panel" id="stickersPanel" aria-hidden="true">
+    <div class="panel-header">
+        <div style="font-size:14px">Stickers</div>
+        <div>
+            <button class="panel-close" id="closeStickersBtn"> ✕</button>
         </div>
     </div>
-    <div class="stickers-panel" id="stickersPanel" aria-hidden="true">
-        <div class="panel-header">
-            <div style="font-size:14px">Stickers</div>
-            <div>
-                <button class="panel-close" id="closeStickersBtn"> ✕</button>
-            </div>
-        </div>
-        <div class="stickers-grid" id="stickersGrid"></div>
-        <div id="stickersEmpty" style="display:none; color:#bbb; padding:10px; text-align:center;">
-            no stickers right now.
-        </div>
+    <div class="stickers-grid" id="stickersGrid"></div>
+    <div id="stickersEmpty" style="display:none; color:#bbb; padding:10px; text-align:center;">
+        no stickers right now.
     </div>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, query, where, orderBy, onSnapshot, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-        import { deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
+</div>    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, query, where, orderBy, onSnapshot, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+    import { deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
+  
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
+        authDomain: "minecraft-community-4fd3d.firebaseapp.com",
+        projectId: "minecraft-community-4fd3d",
+        storageBucket: "minecraft-community-4fd3d.firebasestorage.app",
+        messagingSenderId: "550140131027",
+        appId: "1:550140131027:web:a5186726cf5372e138c626",
+        measurementId: "G-F18SFG2LMZ"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+        
+  
+    document.addEventListener("DOMContentLoaded", async () => {
+        // Get DOM elements
+        const chatBox = document.getElementById("chatBox");
+        const messageInput = document.getElementById("message-input");
+        const sendButton = document.getElementById("send-btn");
+        const imageInput = document.getElementById("image-input");
+        const uploadBtn = document.getElementById("upload-btn");
+        const stickerBtn = document.getElementById("sticker-btn");
+        const chatUser = document.getElementById("chatUser");
+        const encryptionStatus = document.getElementById("encryptionStatus");
+        const stickersPanel = document.getElementById("stickersPanel");
+        const closeStickersBtn = document.getElementById("closeStickersBtn");
+        const stickersGrid = document.getElementById("stickersGrid");
 
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBf-HKpI4G5p6E0xP1OHGLxtDTGwE_0gg0",
-            authDomain: "minecraft-community-4fd3d.firebaseapp.com",
-            projectId: "minecraft-community-4fd3d",
-            storageBucket: "minecraft-community-4fd3d.firebasestorage.app",
-            messagingSenderId: "550140131027",
-            appId: "1:550140131027:web:a5186726cf5372e138c626",
-            measurementId: "G-F18SFG2LMZ"
-        };
+        // Check if all required elements exist
+        if (!chatBox || !messageInput || !sendButton || !imageInput || !uploadBtn || !chatUser || !stickerBtn || !encryptionStatus) {
+            console.error("One or more required DOM elements not found");
+            return;
+        }
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const storage = getStorage(app);
+        // Get active user and receiver
+        const activeUser = localStorage.getItem("activeUser");
+        const urlParams = new URLSearchParams(window.location.search);
+        const receiver = urlParams.get("user");
 
-        document.addEventListener("DOMContentLoaded", async () => {
-            // Get DOM elements
-            const chatBox = document.getElementById("chatBox");
-            const messageInput = document.getElementById("message-input");
-            const sendButton = document.getElementById("send-btn");
-            const imageInput = document.getElementById("image-input");
-            const uploadBtn = document.getElementById("upload-btn");
-            const stickerBtn = document.getElementById("sticker-btn");
-            const chatUser = document.getElementById("chatUser");
-            const encryptionStatus = document.getElementById("encryptionStatus");
-            const stickersPanel = document.getElementById("stickersPanel");
-            const closeStickersBtn = document.getElementById("closeStickersBtn");
-            const stickersGrid = document.getElementById("stickersGrid");
+        if (!activeUser || !receiver) {
+            alert("يجب تسجيل الدخول واختيار مستخدم للدردشة!");
+            window.location.href = "Friends-management.html";
+            return;
+        }
 
-            // Check if all required elements exist
-            if (!chatBox || !messageInput || !sendButton || !imageInput || !uploadBtn || !chatUser || !stickerBtn || !encryptionStatus) {
-                console.error("One or more required DOM elements not found");
-                return;
-            }
+        // Set chat user name
+        chatUser.innerText = receiver;
 
-            // Get active user and receiver
-            const activeUser = localStorage.getItem("activeUser");
-            const urlParams = new URLSearchParams(window.location.search);
-            const receiver = urlParams.get("user");
+        // E2EE Setup
+        let activePrivateKey = null;
+        let receiverPublicKey = null;
+        const IV = new TextEncoder().encode("Initialization Vector"); // Fixed IV for simplicity (in production, generate random IV per message)
 
-            if (!activeUser || !receiver) {
-                alert("يجب تسجيل الدخول واختيار مستخدم للدردشة!");
-                window.location.href = "Friends-management.html";
-                return;
-            }
-
-            // Set chat user name
-            chatUser.innerText = receiver;
-
-            // E2EE Setup
-            let activePrivateKey = null;
-            let receiverPublicKey = null;
-
-            // Generate or load keys for active user
-            async function setupKeys() {
-                try {
-                    let privateKeyJwk = localStorage.getItem(`privateKey_${activeUser}`);
-                    if (!privateKeyJwk) {
-                        const keyPair = await window.crypto.subtle.generateKey(
-                            { name: "ECDH", namedCurve: "P-256" },
-                            true,
-                            ["deriveKey", "deriveBits"]
-                        );
-                        const publicKeyJwk = await window.crypto.subtle.exportKey("jwk", keyPair.publicKey);
-                        privateKeyJwk = await window.crypto.subtle.exportKey("jwk", keyPair.privateKey);
-
-                        // Save private key locally
-                        localStorage.setItem(`privateKey_${activeUser}`, JSON.stringify(privateKeyJwk));
-
-                        // Save public key to Firebase
-                        const userRef = doc(db, 'users', activeUser);
-                        await setDoc(userRef, { publicKey: publicKeyJwk }, { merge: true });
-                    } else {
-                        privateKeyJwk = JSON.parse(privateKeyJwk);
-                    }
-                    activePrivateKey = await window.crypto.subtle.importKey(
-                        "jwk",
-                        privateKeyJwk,
+        // Generate or load keys for active user
+        async function setupKeys() {
+            try {
+                let privateKeyJwk = localStorage.getItem(`privateKey_${activeUser}`);
+                if (!privateKeyJwk) {
+                    const keyPair = await window.crypto.subtle.generateKey(
                         { name: "ECDH", namedCurve: "P-256" },
                         true,
                         ["deriveKey", "deriveBits"]
                     );
+                    const publicKeyJwk = await window.crypto.subtle.exportKey("jwk", keyPair.publicKey);
+                    privateKeyJwk = await window.crypto.subtle.exportKey("jwk", keyPair.privateKey);
 
-                    // Load receiver's public key
-                    const receiverRef = doc(db, 'users', receiver);
-                    const receiverSnap = await getDoc(receiverRef);
-                    if (receiverSnap.exists()) {
-                        const receiverData = receiverSnap.data();
-                        if (receiverData.publicKey) {
-                            receiverPublicKey = await window.crypto.subtle.importKey(
-                                "jwk",
-                                receiverData.publicKey,
-                                { name: "ECDH", namedCurve: "P-256" },
-                                true,
-                                []
-                            );
-                            updateEncryptionStatus(true);
-                        } else {
-                            console.warn(`No public key found for receiver ${receiver}. Encryption disabled.`);
-                            updateEncryptionStatus(false);
-                        }
+                    // Save private key locally
+                    localStorage.setItem(`privateKey_${activeUser}`, JSON.stringify(privateKeyJwk));
+
+                    // Save public key to Firebase
+                    const userRef = doc(db, 'users', activeUser);
+                    await setDoc(userRef, { publicKey: publicKeyJwk }, { merge: true });
+                } else {
+                    privateKeyJwk = JSON.parse(privateKeyJwk);
+                }
+                activePrivateKey = await window.crypto.subtle.importKey(
+                    "jwk",
+                    privateKeyJwk,
+                    { name: "ECDH", namedCurve: "P-256" },
+                    true,
+                    ["deriveKey", "deriveBits"]
+                );
+
+                // Load receiver's public key
+                const receiverRef = doc(db, 'users', receiver);
+                const receiverSnap = await getDoc(receiverRef);
+                if (receiverSnap.exists()) {
+                    const receiverData = receiverSnap.data();
+                    if (receiverData.publicKey) {
+                        receiverPublicKey = await window.crypto.subtle.importKey(
+                            "jwk",
+                            receiverData.publicKey,
+                            { name: "ECDH", namedCurve: "P-256" },
+                            true,
+                            []
+                        );
+                        // تحديث حالة التشفير إذا كان المفتاح متوفراً
+                        updateEncryptionStatus(true);
                     } else {
-                        console.warn(`Receiver ${receiver} not found.`);
+                        console.warn(`No public key found for receiver ${receiver}. Encryption disabled for this chat.`);
                         updateEncryptionStatus(false);
                     }
-                } catch (error) {
-                    console.error("Error setting up keys:", error);
+                } else {
+                    console.warn(`Receiver ${receiver} not found.`);
                     updateEncryptionStatus(false);
                 }
+            } catch (error) {
+                console.error("Error setting up keys:", error);
+                updateEncryptionStatus(false);
             }
+        }
 
-            function updateEncryptionStatus(isEncrypted) {
-                if (isEncrypted) {
-                    encryptionStatus.textContent = 'End to End Encrypted';
-                    encryptionStatus.className = 'encryption-status encrypted';
-                } else {
-                    encryptionStatus.textContent = 'The other user must enter the conversation to enable End-to-End encryption';
-                    encryptionStatus.className = 'encryption-status not-encrypted';
-                }
+        // دالة تحديث حالة التشفير في الهيدر
+        function updateEncryptionStatus(isEncrypted) {
+            if (isEncrypted) {
+                encryptionStatus.textContent = 'End to End Encrypted';
+                encryptionStatus.className = 'encryption-status encrypted';
+            } else {
+                encryptionStatus.textContent = '                The other user must enter the conversation to enable end-to-end encryption.';
+                encryptionStatus.className = 'encryption-status not-encrypted';
             }
+        }
 
-            await setupKeys();
+        await setupKeys();
 
-            // Derive shared key
-            async function deriveSharedKey(privateKey, publicKey) {
-                if (!publicKey) throw new Error("Public key not available");
-                return await window.crypto.subtle.deriveKey(
-                    { name: "ECDH", public: publicKey },
-                    privateKey,
-                    { name: "AES-GCM", length: 256 },
-                    true,
-                    ["encrypt", "decrypt"]
-                );
-            }
+        // Derive shared key
+        async function deriveSharedKey(privateKey, publicKey) {
+            if (!publicKey) throw new Error("Public key not available");
+            return await window.crypto.subtle.deriveKey(
+                { name: "ECDH", public: publicKey },
+                privateKey,
+                { name: "AES-GCM", length: 256 },
+                true,
+                ["encrypt", "decrypt"]
+            );
+        }
 
-            // Encrypt function with random IV
-            async function encryptText(text, derivedKey) {
-                const encodedText = new TextEncoder().encode(text);
-                const iv = window.crypto.getRandomValues(new Uint8Array(12)); // Random 12-byte IV
-                const encryptedData = await window.crypto.subtle.encrypt(
-                    { name: "AES-GCM", iv },
+        // Encrypt function
+        async function encryptText(text, derivedKey) {
+            const encodedText = new TextEncoder().encode(text);
+            const encryptedData = await window.crypto.subtle.encrypt(
+                { name: "AES-GCM", iv: IV },
+                derivedKey,
+                encodedText
+            );
+            const uintArray = new Uint8Array(encryptedData);
+            const string = String.fromCharCode.apply(null, uintArray);
+            return btoa(string);
+        }
+
+        // Decrypt function
+        async function decryptText(encryptedBase64, derivedKey) {
+            try {
+                const string = atob(encryptedBase64);
+                const uintArray = new Uint8Array([...string].map(char => char.charCodeAt(0)));
+                const decryptedData = await window.crypto.subtle.decrypt(
+                    { name: "AES-GCM", iv: IV },
                     derivedKey,
-                    encodedText
+                    uintArray
                 );
-                const encryptedArray = new Uint8Array(encryptedData);
-                const fullCipher = new Uint8Array(iv.length + encryptedArray.length);
-                fullCipher.set(iv, 0);
-                fullCipher.set(encryptedArray, iv.length);
-                const string = String.fromCharCode(...fullCipher);
-                return btoa(string);
+                return new TextDecoder().decode(decryptedData);
+            } catch (e) {
+                console.error("Decryption error:", e);
+                return "Decryption error ";
             }
+        }
 
-            // Decrypt function to extract IV
-            async function decryptText(encryptedBase64, derivedKey) {
-                try {
-                    const string = atob(encryptedBase64);
-                    const fullCipher = new Uint8Array([...string].map(c => c.charCodeAt(0)));
-                    if (fullCipher.length < 12 + 16) {
-                        throw new Error("Invalid ciphertext length");
-                    }
-                    const iv = fullCipher.slice(0, 12);
-                    const data = fullCipher.slice(12);
-                    const decryptedData = await window.crypto.subtle.decrypt(
-                        { name: "AES-GCM", iv },
-                        derivedKey,
-                        data
-                    );
-                    return new TextDecoder().decode(decryptedData);
-                } catch (e) {
-                    console.error("Decryption error:", e);
-                    return "خطأ في فك التشفير (مفتاح قديم أو بيانات تالفة)";
+        // Messages collection reference
+        const messagesRef = collection(db, "messages");
+
+        // Time formatting function
+        function timeSince(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            let interval = Math.floor(seconds / 31536000);
+            if (interval >= 1) return ` ${interval} y`;
+            interval = Math.floor(seconds / 604800);
+            if (interval >= 1) return ` ${interval} w`;
+            interval = Math.floor(seconds / 86400);
+            if (interval >= 1) return ` ${interval} d`;
+            interval = Math.floor(seconds / 3600);
+            if (interval >= 1) return ` ${interval} h`;
+            interval = Math.floor(seconds / 60);
+            if (interval >= 1) return ` ${interval} min`;
+            return "now";
+        }
+
+        // HTML escaping function
+        function escapeHTML(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // Function to truncate bio
+        function truncateBio(bio, maxLength = 100) {
+            if (bio.length <= maxLength) return bio;
+            return bio.substring(0, maxLength) + 'read more...';
+        }
+
+        // Function to check and process profile link
+        async function processProfileLink(messageText) {
+            const profileLinkRegex = /^https:\/\/aniss90\.github\.io\/mc\.community\/pages\/profile\.html\?user=([^&]+)/;
+            const match = messageText.match(profileLinkRegex);
+            if (!match) return null;
+
+            const username = match[1];
+            try {
+                const userDocRef = doc(db, 'users', username);
+                const userSnap = await getDoc(userDocRef);
+                if (userSnap.exists()) {
+                    const userData = userSnap.data();
+                    const name = userData.name || username;
+                    const photoURL = userData.photoURL || '';
+                    const bio = userData.bio ? truncateBio(userData.bio) : '';
+                    const isLongBio = userData.bio && userData.bio.length > 100;
+
+                    return {
+                        type: 'profile',
+                        profile: {
+                            name,
+                            photoURL,
+                            bio,
+                            isLongBio
+                        },
+                        link: `https://aniss90.github.io/mc.community/pages/profile.html?user=${username}`
+                    };
                 }
+            } catch (error) {
+                console.error('Error fetching user profile:', error);
             }
+            return null;
+        }
 
-            // Messages collection reference
-            const messagesRef = collection(db, "messages");
-
-            // Time formatting function
-            function timeSince(date) {
-                const seconds = Math.floor((new Date() - date) / 1000);
-                let interval = Math.floor(seconds / 31536000);
-                if (interval >= 1) return ` ${interval} y`;
-                interval = Math.floor(seconds / 604800);
-                if (interval >= 1) return ` ${interval} w`;
-                interval = Math.floor(seconds / 86400);
-                if (interval >= 1) return ` ${interval} d`;
-                interval = Math.floor(seconds / 3600);
-                if (interval >= 1) return ` ${interval} h`;
-                interval = Math.floor(seconds / 60);
-                if (interval >= 1) return ` ${interval} min`;
-                return "now";
-            }
-
-            // HTML escaping function
-            function escapeHTML(text) {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            }
-
-            // Function to truncate bio
-            function truncateBio(bio, maxLength = 100) {
-                if (bio.length <= maxLength) return bio;
-                return bio.substring(0, maxLength) + 'Read more...  ';
-            }
-
-            // Function to check and process profile link
-            async function processProfileLink(messageText) {
-                const profileLinkRegex = /^https:\/\/aniss90\.github\.io\/mc\.community\/pages\/profile\.html\?user=([^&]+)/;
-                const match = messageText.match(profileLinkRegex);
-                if (!match) return null;
-
+        // دالة لمعالجة الإشارات @username في النص
+        async function processMentions(text) {
+            const mentionRegex = /@(\w+)/g;
+            let processedText = text;
+            let matches = [...text.matchAll(mentionRegex)];
+            for (let match of matches) {
                 const username = match[1];
                 try {
                     const userDocRef = doc(db, 'users', username);
@@ -640,533 +731,570 @@
                     if (userSnap.exists()) {
                         const userData = userSnap.data();
                         const name = userData.name || username;
-                        const photoURL = userData.photoURL || '';
-                        const bio = userData.bio ? truncateBio(userData.bio) : '';
-                        const isLongBio = userData.bio && userData.bio.length > 100;
-
-                        return {
-                            type: 'profile',
-                            profile: {
-                                name,
-                                photoURL,
-                                bio,
-                                isLongBio
-                            },
-                            link: `https://aniss90.github.io/mc.community/pages/profile.html?user=${username}`
-                        };
+                        const bio = userData.bio ? truncateBio(userData.bio) : 'No bio';
+                        const mentionHTML = `<a href="#" class="user-mention" data-username="${username}" onclick="openProfile('${username}')">${escapeHTML(name)}</a><span class="user-mention-bio">${escapeHTML(bio)}</span>`;
+                        processedText = processedText.replace(match[0], mentionHTML);
                     }
                 } catch (error) {
-                    console.error('Error fetching user profile:', error);
+                    console.error('Error fetching user for mention:', error);
                 }
-                return null;
             }
+            return processedText;
+        }
 
-            // Process mentions (@username)
-            async function processMentions(text) {
-                const mentionRegex = /@(\w+)/g;
-                let processedText = text;
-                let matches = [...text.matchAll(mentionRegex)];
-                for (let match of matches) {
-                    const username = match[1];
+        // دالة لفتح ملف تعريف المستخدم
+        window.openProfile = function(username) {
+            window.open(`https://aniss90.github.io/mc.community/pages/profile.html?user=${username}`, '_blank');
+        };
+
+        // Message query
+        const messagesQuery = query(
+            messagesRef,
+            where("sender", "in", [activeUser, receiver]),
+            where("receiver", "in", [activeUser, receiver]),
+            orderBy("timestamp")
+        );
+
+        // Real-time messages listener
+        const unsubscribe = onSnapshot(messagesQuery, async (snapshot) => {
+            chatBox.innerHTML = "";
+                
+            const docs = snapshot.docs;
+                
+            for (let i = 0; i < docs.length; i++) {
+                const docSnap = docs[i];
+                const data = docSnap.data();
+                const isMyMessage = (data.sender === activeUser);
+                const messageElement = document.createElement("div");
+                messageElement.classList.add("message", isMyMessage ? "myMessage" : "otherMessage");
+                messageElement.setAttribute("data-id", docSnap.id);
+                    
+                const timestamp = data.timestamp?.toDate ? data.timestamp.toDate() : new Date();
+                const formattedTime = timeSince(timestamp);
+                const fullDate = timestamp.toLocaleString("en-NM");
+
+                messageElement.setAttribute("data-id", docSnap.id);
+                messageElement.setAttribute("data-timestamp", fullDate);
+                messageElement.setAttribute("data-type", data.type || "text");
+  
+                let contentHTML = `<strong>${data.sender}:</strong><br>`;
+
+                let displayMessage = data.message;
+                if (data.type === "text" && data.encrypted) {
                     try {
-                        const userDocRef = doc(db, 'users', username);
-                        const userSnap = await getDoc(userDocRef);
-                        if (userSnap.exists()) {
-                            const userData = userSnap.data();
-                            const name = userData.name || username;
-                            const bio = userData.bio ? truncateBio(userData.bio) : ' no bio yet ';
-                            const mentionHTML = `<a href="#" class="user-mention" data-username="${username}" onclick="openProfile('${username}')">${escapeHTML(name)}</a><span class="user-mention-bio">${escapeHTML(bio)}</span>`;
-                            processedText = processedText.replace(match[0], mentionHTML);
+                        if (!receiverPublicKey || !activePrivateKey) {
+                            displayMessage = "لا يمكن فك التشفير: مفاتيح غير متوفرة";
+                        } else {
+                            const derivedKey = await deriveSharedKey(activePrivateKey, receiverPublicKey);
+                            displayMessage = await decryptText(data.message, derivedKey);
                         }
                     } catch (error) {
-                        console.error('Error fetching user for mention:', error);
+                        console.error("Decryption failed:", error);
+                        displayMessage = "Decryption failed";
                     }
                 }
-                return processedText;
-            }
 
-            window.openProfile = function(username) {
-                window.open(`https://aniss90.github.io/mc.community/pages/profile.html?user=${username}`, '_blank');
-            };
-
-            // Message query
-            const messagesQuery = query(
-                messagesRef,
-                where("sender", "in", [activeUser, receiver]),
-                where("receiver", "in", [activeUser, receiver]),
-                orderBy("timestamp")
-            );
-
-            // Real-time messages listener
-            const unsubscribe = onSnapshot(messagesQuery, async (snapshot) => {
-                chatBox.innerHTML = "";
-                const docs = snapshot.docs;
-
-                for (let i = 0; i < docs.length; i++) {
-                    const docSnap = docs[i];
-                    const data = docSnap.data();
-                    const isMyMessage = (data.sender === activeUser);
-                    const messageElement = document.createElement("div");
-                    messageElement.classList.add("message", isMyMessage ? "myMessage" : "otherMessage");
-                    messageElement.setAttribute("data-id", docSnap.id);
-
-                    const timestamp = data.timestamp?.toDate ? data.timestamp.toDate() : new Date();
-                    const formattedTime = timeSince(timestamp);
-                    const fullDate = timestamp.toLocaleString("en-NM");
-
-                    messageElement.setAttribute("data-id", docSnap.id);
-                    messageElement.setAttribute("data-timestamp", fullDate);
-                    messageElement.setAttribute("data-type", data.type || "text");
-
-                    let contentHTML = `<strong>${data.sender}:</strong><br>`;
-
-                    let displayMessage = data.message;
-                    if (data.type === "text" && data.encrypted) {
-                        try {
-                            if (!receiverPublicKey || !activePrivateKey) {
-                                displayMessage = "غير قادر على فك التشفير: المفاتيح غير متوفرة";
-                            } else {
-                                const derivedKey = await deriveSharedKey(activePrivateKey, receiverPublicKey);
-                                displayMessage = await decryptText(data.message, derivedKey);
-                            }
-                        } catch (error) {
-                            console.error("Decryption failed:", error);
-                            displayMessage = "خطأ في فك التشفير (مفتاح قديم أو بيانات تالفة)";
-                        }
-                    }
-
-                    if (data.type === "profile") {
-                        const profile = data.profile;
-                        const link = data.link;
-                        contentHTML = `
-                            <div class="profile-preview" data-is-long="${profile.isLongBio}" onclick="window.open('${link}', '_blank')">
-                                <img src="${profile.photoURL}" alt="${profile.name}" class="profile-image" onerror="this.src='default-avatar.png'">
-                                <div class="profile-info">
-                                    <div class="profile-name">${escapeHTML(profile.name)}</div>
-                                    <div class="profile-bio">${escapeHTML(profile.bio)}</div>
-                                </div>
+                if (data.type === "profile") {
+                    const profile = data.profile;
+                    const link = data.link;
+                    contentHTML = `
+                        <div class="profile-preview" data-is-long="${profile.isLongBio}" onclick="window.open('${link}', '_blank')">
+                            <img src="${profile.photoURL}" alt="${profile.name}" class="profile-image" onerror="this.src='default-avatar.png'">
+                            <div class="profile-info">
+                                <div class="profile-name">${escapeHTML(profile.name)}</div>
+                                <div class="profile-bio">${escapeHTML(profile.bio)}</div>
                             </div>
-                        `;
-                    } else if (data.type === "image") {
-                        contentHTML += `<img src="${displayMessage}" style="max-width:100%;max-height:300px;border-radius:10px;" alt="صورة محادثة">`;
-                    } else if (data.type === "sticker") {
-                        contentHTML += `<img src="${displayMessage}" style="max-width:150px;max-height:150px;" alt="ستيكر">`;
-                    } else {
-                        const processedMessage = await processMentions(displayMessage);
-                        const escapedMessage = escapeHTML(processedMessage).replace(/\n/g, "<br>");
-                        contentHTML += `<span class="message-text">${escapedMessage}</span>`;
-                    }
-
-                    messageElement.innerHTML = contentHTML;
-
-                    if (i === docs.length - 1) {
-                        messageElement.classList.add("new-message");
-                        setTimeout(() => {
-                            messageElement.classList.remove("new-message");
-                        }, 600);
-                    }
-                    if (data.liked) {
-                        const heart = document.createElement("div");
-                        heart.className = "heart-icon";
-                        heart.textContent = "💗";
-                        messageElement.appendChild(heart);
-                        messageElement.classList.add("show-heart");
-                    }
-                    chatBox.appendChild(messageElement);
-                }
-
-                chatBox.scrollTo({
-                    top: chatBox.scrollHeight,
-                    behavior: "smooth"
-                });
-            });
-
-            function autoResizeTextarea() {
-                const prevHeight = messageInput.offsetHeight;
-                messageInput.style.height = "auto";
-                const newHeight = Math.min(messageInput.scrollHeight, 150);
-                messageInput.style.height = newHeight + "px";
-                const inputArea = document.querySelector(".input-area");
-                if (newHeight > prevHeight) {
-                    inputArea.style.transform = "translateY(-2px)";
+                        </div>
+                    `;
+                } else if (data.type === "image") {
+                    contentHTML += `<img src="${displayMessage}" style="max-width:100%;max-height:300px;border-radius:10px;" alt="صورة محادثة">`;
+                } else if (data.type === "sticker") {
+                    contentHTML += `<img src="${displayMessage}" style="max-width:150px;max-height:150px;" alt="ستيكر">`;
                 } else {
-                    inputArea.style.transform = "translateY(2px)";
+                    // معالجة الإشارات @username في النص
+                    const processedMessage = await processMentions(displayMessage);
+                    const escapedMessage = escapeHTML(processedMessage).replace(/\n/g, "<br>");
+                    contentHTML += `<span class="message-text">${escapedMessage}</span>`;
                 }
-                setTimeout(() => {
-                    inputArea.style.transform = "translateY(0)";
-                }, 200);
+  
+                messageElement.innerHTML = contentHTML;
+
+                if (i === docs.length - 1) {
+                    messageElement.classList.add("new-message");
+                    setTimeout(() => {
+                        messageElement.classList.remove("new-message");
+                    }, 600);
+                }
+                if (data.liked) {
+                    const heart = document.createElement("div");
+                    heart.className = "heart-icon";
+                    heart.textContent = "💗";
+                    messageElement.appendChild(heart);
+                    messageElement.classList.add("show-heart");
+                }  
+                chatBox.appendChild(messageElement);
             }
-
-            messageInput.addEventListener("input", autoResizeTextarea);
-
-            // Send message
-            async function sendMessage() {
-                let messageText = messageInput.value.trim();
-                if (messageText === "") return;
-
-                if (messageText.length > 200) {
-                    messageText = messageText.substring(0, 200);
-                    alert("لا يمكنك إرسال أكثر من 200 حرف!");
-                }
-
-                const profileData = await processProfileLink(messageText);
-                if (profileData) {
-                    try {
-                        await addDoc(messagesRef, {
-                            sender: activeUser,
-                            receiver: receiver,
-                            ...profileData,
-                            timestamp: new Date()
-                        });
-                        messageInput.value = "";
-                        messageInput.style.height = "40px";
-                    } catch (error) {
-                        console.error("خطأ أثناء الإرسال:", error);
-                    }
-                    return;
-                }
-
-                try {
-                    if (!receiverPublicKey || !activePrivateKey) {
-                        await addDoc(messagesRef, {
-                            sender: activeUser,
-                            receiver: receiver,
-                            message: messageText,
-                            timestamp: new Date(),
-                            type: "text",
-                            encrypted: false
-                        });
-                    } else {
-                        const derivedKey = await deriveSharedKey(activePrivateKey, receiverPublicKey);
-                        const encryptedMessage = await encryptText(messageText, derivedKey);
-                        await addDoc(messagesRef, {
-                            sender: activeUser,
-                            receiver: receiver,
-                            message: encryptedMessage,
-                            timestamp: new Date(),
-                            type: "text",
-                            encrypted: true
-                        });
-                    }
-                    messageInput.value = "";
-                    messageInput.style.height = "40px";
-                } catch (error) {
-                    console.error("Error during send:", error);
-                    try {
-                        await addDoc(messagesRef, {
-                            sender: activeUser,
-                            receiver: receiver,
-                            message: messageText,
-                            timestamp: new Date(),
-                            type: "text",
-                            encrypted: false
-                        });
-                        messageInput.value = "";
-                        messageInput.style.height = "40px";
-                    } catch (fallbackError) {
-                        console.error("Fallback send failed:", fallbackError);
-                    }
-                }
-            }
-
-            sendButton.addEventListener("click", sendMessage);
-
-            // Image upload handling
-            uploadBtn.addEventListener("click", () => {
-                imageInput.click();
+  
+            chatBox.scrollTo({
+                top: chatBox.scrollHeight,
+                behavior: "smooth"
             });
+        }); 
+   function autoResizeTextarea() {
+    const prevHeight = messageInput.offsetHeight;
+    messageInput.style.height = "auto";
+    const newHeight = Math.min(messageInput.scrollHeight, 150);
+    
+    // تغييرات على textarea
+    messageInput.style.height = newHeight + "px";
+    
+    // نحرك input-area كمان
+    const inputArea = document.querySelector(".input-area");
+    if (newHeight > prevHeight) {
+        inputArea.style.transform = "translateY(-2px)";
+    } else {
+        inputArea.style.transform = "translateY(2px)";
+    }
+    
+    // نرجع الوضع الطبيعي بعد شوي
+    setTimeout(() => {
+        inputArea.style.transform = "translateY(0)";
+    }, 200);
+}
+  
+        messageInput.addEventListener("input", autoResizeTextarea);
 
-            imageInput.addEventListener("change", async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                uploadBtn.disabled = true;
-                uploadBtn.textContent = " wait...";
-
-                const reader = new FileReader();
-                reader.onload = async (event) => {
-                    const imageBase64 = event.target.result;
-                    try {
-                        await addDoc(messagesRef, {
-                            sender: activeUser,
-                            receiver: receiver,
-                            message: imageBase64,
-                            timestamp: new Date(),
-                            type: "image"
-                        });
-                    } catch (error) {
-                        console.error("حدث خطأ أثناء حفظ الصورة:", error);
-                        alert("فشل تحميل الصورة!");
-                    } finally {
-                        uploadBtn.disabled = false;
-                        uploadBtn.textContent = "photo";
-                        imageInput.value = "";
-                    }
-                };
-                reader.onerror = () => {
-                    alert("خطأ في قراءة الصورة!");
-                    uploadBtn.disabled = false;
-                    uploadBtn.textContent = "photo";
-                };
-                reader.readAsDataURL(file);
-            });
-
-            // Sticker button functionality
-            stickerBtn.addEventListener("click", toggleStickersPanel);
-            closeStickersBtn.addEventListener("click", toggleStickersPanel);
-
-            function toggleStickersPanel() {
-                const isHidden = stickersPanel.getAttribute("aria-hidden") === "true";
-                stickersPanel.setAttribute("aria-hidden", !isHidden);
-                if (isHidden) {
-                    loadStickers();
-                }
+        // عند الإرسال
+        async function sendMessage() {
+            let messageText = messageInput.value.trim();
+            if (messageText === "") return;
+                
+            if (messageText.length > 200) {
+                messageText = messageText.substring(0, 200);
+                alert("لا يمكنك إرسال أكثر من 200 حرف!");
             }
 
-            const stickers = [
-                "Banker.png", "Banned.png", "Battle Box.png", "Beta.png", "Big Head.png", "Boxes.png",
-                "Discord.png", "Earth.png", "Float.png", "Friends.png", "Gems.png", "Laser Tag.png",
-                "Lucky Shot.png", "Market.png", "Match 5.png", "Money.png", "Parkour Tag.png", "Rules.png",
-                "Santa.png", "Slime Walls.png", "Summer.png", "Sumo.png", "Tic Tac Toe.png", "Wizard.png"
-            ];
-
-            function loadStickers() {
-                stickersGrid.innerHTML = "";
-                stickers.forEach(file => {
-                    const stickerItem = document.createElement("div");
-                    stickerItem.className = "sticker-item";
-                    const img = document.createElement("img");
-                    img.src = `../Stickers/${file}`;
-                    img.alt = file;
-                    img.onerror = function() {
-                        this.parentNode.remove();
-                    };
-                    stickerItem.appendChild(img);
-                    stickerItem.addEventListener("click", () => {
-                        sendSticker(img.src);
-                        stickersPanel.setAttribute("aria-hidden", "true");
-                    });
-                    stickersGrid.appendChild(stickerItem);
-                });
-            }
-
-            async function sendSticker(stickerUrl) {
+            // Check for profile link
+            const profileData = await processProfileLink(messageText);
+            if (profileData) {
+                // Send profile preview (no encryption for non-text)
                 try {
                     await addDoc(messagesRef, {
                         sender: activeUser,
                         receiver: receiver,
-                        message: stickerUrl,
-                        timestamp: new Date(),
-                        type: "sticker"
+                        ...profileData,
+                        timestamp: new Date()
                     });
+                        
+                    messageInput.value = "";
+                    messageInput.style.height = "40px";
                 } catch (error) {
-                    console.error("Error sending sticker:", error);
-                    alert("Failed to send sticker");
+                    console.error("خطأ أثناء الإرسال:", error);
                 }
-            }
-
-            // Long press message handling
-            let holdTimeout;
-            let isHolding = false;
-
-            chatBox.addEventListener("mousedown", handleLongPress);
-            chatBox.addEventListener("touchstart", handleLongPress);
-            chatBox.addEventListener("mouseup", cancelHold);
-            chatBox.addEventListener("touchend", cancelHold);
-            chatBox.addEventListener("mouseleave", cancelHold);
-
-            function handleLongPress(event) {
-                if (!event.target.classList.contains("message")) return;
-                let messageElement = event.target.closest(".message,.myMessage,.otherMessage");
-                let messageText = messageElement.innerText;
-                isHolding = true;
-                holdTimeout = setTimeout(() => {
-                    if (isHolding) {
-                        showOptions(messageElement, messageText);
-                    }
-                }, 600);
-            }
-
-            function cancelHold() {
-                isHolding = false;
-                clearTimeout(holdTimeout);
-            }
-
-            async function deleteMessage(docId, messageElement) {
-                try {
-                    const messageRef = doc(db, "messages", docId);
-                    await deleteDoc(messageRef);
-                    messageElement.remove();
-                } catch (error) {
-                    console.error("فشل في حذف الرسالة:", error);
-                }
-            }
-
-            function startEditing(messageElement) {
-                console.log("Edit not fully implemented yet");
-            }
-
-            function showOptions(messageElement, messageText) {
-                closeOptions();
-                document.body.classList.add("blur-background");
-                messageElement.classList.add("selected-message");
-                const optionsContainer = document.createElement("div");
-                optionsContainer.classList.add("message-options");
-
-                const timestamp = messageElement.getAttribute("data-timestamp");
-                if (timestamp) {
-                    const dateBtn = document.createElement("button");
-                    dateBtn.innerText = timestamp;
-                    dateBtn.classList.add("option-btn");
-                    dateBtn.disabled = true;
-                    dateBtn.style.backgroundColor = "#555";
-                    dateBtn.style.color = "#fff";
-                    optionsContainer.appendChild(dateBtn);
-                }
-
-                let copyBtn = document.createElement("button");
-                copyBtn.innerText = "copy";
-                copyBtn.classList.add("option-btn", "copy");
-                copyBtn.addEventListener("click", () => {
-                    const textEl = messageElement.querySelector('.message-text');
-                    const textToCopy = textEl ? textEl.innerText : messageText;
-                    navigator.clipboard.writeText(textToCopy);
-                    alert("copied ✅\n تم نسخ ✅");
-                    closeOptions();
-                });
-                optionsContainer.appendChild(copyBtn);
-
-                let deleteBtn = document.createElement("button");
-                deleteBtn.innerText = "Delete";
-                deleteBtn.classList.add("option-btn", "delete");
-                deleteBtn.style.display = messageElement.classList.contains("myMessage") ? "block" : "none";
-                deleteBtn.addEventListener("click", async () => {
-                    if (confirm("Are you sure or are you kidding?\nهل انت متاكد او تمزح?")) {
-                        const docId = messageElement.getAttribute("data-id");
-                        await deleteMessage(docId, messageElement);
-                        closeOptions();
-                    }
-                });
-                optionsContainer.appendChild(deleteBtn);
-
-                let editBtn = document.createElement("button");
-                editBtn.innerText = "Edit";
-                editBtn.classList.add("option-btn");
-                editBtn.style.backgroundColor = "orange";
-                editBtn.style.color = "white";
-                const isMine = messageElement.classList.contains("myMessage");
-                const type = messageElement.getAttribute("data-type") || "text";
-                if (isMine && type === "text") {
-                    editBtn.style.display = "block";
-                    editBtn.addEventListener("click", () => {
-                        startEditing(messageElement);
-                        closeOptions();
-                    });
-                } else {
-                    editBtn.style.display = "none";
-                }
-                optionsContainer.appendChild(editBtn);
-
-                messageElement.appendChild(optionsContainer);
-                optionsContainer.style.display = "flex";
-                setTimeout(() => {
-                    document.addEventListener("click", closeOptions);
-                }, 100);
-            }
-
-            function closeOptions() {
-                let options = document.querySelector(".message-options");
-                if (options) options.remove();
-                document.body.classList.remove("blur-background");
-                let selectedMessage = document.querySelector(".selected-message");
-                if (selectedMessage) selectedMessage.classList.remove("selected-message");
-                document.removeEventListener("click", closeOptions);
-            }
-
-            // Last seen functionality
-            let lastSeenTimestamp = null;
-
-            function updateLastSeen() {
-                lastSeenTimestamp = new Date().toISOString();
-                const userDocRef = doc(db, 'users', activeUser);
-                updateDoc(userDocRef, {
-                    [`lastSeenMessages.${receiver}`]: lastSeenTimestamp
-                }).catch(error => {
-                    console.error("Error updating last seen:", error);
-                });
-            }
-
-            updateLastSeen();
-            window.addEventListener('click', updateLastSeen);
-            window.addEventListener('scroll', updateLastSeen);
-            window.addEventListener('keydown', updateLastSeen);
-
-            // Clean up on page unload
-            window.addEventListener('beforeunload', () => {
-                unsubscribe();
-            });
-
-            chatBox.addEventListener("dblclick", async function(e) {
-                const messageEl = e.target.closest(".message");
-                if (!messageEl) return;
-                const docId = messageEl.getAttribute("data-id");
-                const isLiked = messageEl.classList.contains("show-heart");
-                try {
-                    const messageRef = doc(db, "messages", docId);
-                    await updateDoc(messageRef, { liked: !isLiked });
-                    if (isLiked) {
-                        messageEl.classList.remove("show-heart");
-                        const heart = messageEl.querySelector(".heart-icon");
-                        if (heart) heart.remove();
-                    } else {
-                        const heart = document.createElement("div");
-                        heart.className = "heart-icon";
-                        heart.textContent = "💗";
-                        messageEl.appendChild(heart);
-                        messageEl.classList.add("show-heart");
-                    }
-                } catch (error) {
-                    console.error("خطأ أثناء تحديث الإعجاب:", error);
-                }
-            });
-        });
-    </script>
-    <script>
-        const messageInput = document.getElementById('message-input');
-        messageInput.addEventListener('input', function() {
-            const value = this.value.trim();
-            if (value === '') {
-                this.style.direction = 'ltr';
                 return;
             }
-            const firstChar = value[0];
-            const isArabic = /[\u0600-\u06FF]/.test(firstChar);
-            this.style.direction = isArabic ? 'rtl' : 'ltr';
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const messageInput = document.getElementById('message-input');
-            const sendBtn = document.getElementById('send-btn');
-            const uploadBtn = document.getElementById('upload-btn');
-            messageInput.addEventListener('input', function() {
-                if (this.value.trim() !== '') {
-                    sendBtn.classList.add('active');
-                    uploadBtn.classList.add('hidden');
-                } else {
-                    sendBtn.classList.remove('active');
-                    uploadBtn.classList.remove('hidden');
-                }
-            });
-        });
 
-        function goBack() {
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                window.location.href = '/';
+            // Send text message (encrypt if possible)
+            try {
+                if (!receiverPublicKey || !activePrivateKey) {
+                    // Send unencrypted
+                    await addDoc(messagesRef, {
+                        sender: activeUser,
+                        receiver: receiver,
+                        message: messageText,
+                        timestamp: new Date(),
+                        type: "text",
+                        encrypted: false
+                    });
+                } else {
+                    // Encrypt
+                    const derivedKey = await deriveSharedKey(activePrivateKey, receiverPublicKey);
+                    const encryptedMessage = await encryptText(messageText, derivedKey);
+                    await addDoc(messagesRef, {
+                        sender: activeUser,
+                        receiver: receiver,
+                        message: encryptedMessage,
+                        timestamp: new Date(),
+                        type: "text",
+                        encrypted: true
+                    });
+                }
+                    
+                messageInput.value = "";
+                messageInput.style.height = "40px";
+            } catch (error) {
+                console.error("خطأ أثناء الإرسال:", error);
+                // Fallback: send unencrypted
+                try {
+                    await addDoc(messagesRef, {
+                        sender: activeUser,
+                        receiver: receiver,
+                        message: messageText,
+                        timestamp: new Date(),
+                        type: "text",
+                        encrypted: false
+                    });
+                    messageInput.value = "";
+                    messageInput.style.height = "40px";
+                } catch (fallbackError) {
+                    console.error("Fallback send failed:", fallbackError);
+                }
             }
         }
-    </script>
-</body>
+
+        sendButton.addEventListener("click", sendMessage);
+
+        // Image upload handling (no encryption for images)
+        uploadBtn.addEventListener("click", () => {
+            imageInput.click();
+        });
+
+        imageInput.addEventListener("change", async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            uploadBtn.disabled = true;
+            uploadBtn.textContent = " wait...";
+
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                const imageBase64 = event.target.result;
+
+                try {
+                    await addDoc(messagesRef, {
+                        sender: activeUser,
+                        receiver: receiver,
+                        message: imageBase64,
+                        timestamp: new Date(),
+                        type: "image"
+                    });
+                } catch (error) {
+                    console.error("حدث خطأ أثناء حفظ الصورة:", error);
+                    alert("فشل تحميل الصورة!");
+                } finally {
+                    uploadBtn.disabled = false;
+                    uploadBtn.textContent = "photo";
+                    imageInput.value = "";
+                }
+            };
+            reader.onerror = () => {
+                alert("خطأ في قراءة الصورة!");
+                uploadBtn.disabled = false;
+                uploadBtn.textContent = "photo";
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Sticker button functionality (no encryption for stickers)
+        stickerBtn.addEventListener("click", toggleStickersPanel);
+        closeStickersBtn.addEventListener("click", toggleStickersPanel);
+
+        function toggleStickersPanel() {
+            const isHidden = stickersPanel.getAttribute("aria-hidden") === "true";
+            stickersPanel.setAttribute("aria-hidden", !isHidden);
+                
+            if (isHidden) {
+                loadStickers();
+            }
+        }
+
+const stickers = [
+"Banker.png",
+"Banned.png",
+"Battle Box.png",
+"Beta.png",
+"Big Head.png",
+"Boxes.png",
+"Discord.png",
+"Earth.png",
+"Float.png",
+"Friends.png",
+"Gems.png",
+"Laser Tag.png",
+"Lucky Shot.png",
+"Market.png",
+"Match 5.png",
+"Money.png",
+"Parkour Tag.png",
+"Rules.png",
+"Santa.png",
+"Slime Walls.png",
+"Summer.png",
+"Sumo.png",
+"Tic Tac Toe.png",
+"Wizard.png"
+];
+
+function loadStickers() {
+stickersGrid.innerHTML = "";
+
+stickers.forEach(file => {
+    const stickerItem = document.createElement("div");
+    stickerItem.className = "sticker-item";
+        
+    const img = document.createElement("img");
+    img.src = `../Stickers/${file}`;
+    img.alt = file;
+        
+    img.onerror = function() {
+        this.parentNode.remove();
+    };
+        
+    stickerItem.appendChild(img);
+    stickerItem.addEventListener("click", () => {
+        sendSticker(img.src);
+        stickersPanel.setAttribute("aria-hidden", "true");
+    });
+        
+    stickersGrid.appendChild(stickerItem);
+});  
+
+}
+
+async function sendSticker(stickerUrl) {
+            try {
+                await addDoc(messagesRef, {
+                    sender: activeUser,
+                    receiver: receiver,
+                    message: stickerUrl,
+                    timestamp: new Date(),
+                    type: "sticker"
+                });
+            } catch (error) {
+                console.error("Error sending sticker:", error);
+                alert("Failed to send sticker");
+            }
+        }
+
+        // Long press message handling
+        let holdTimeout;
+        let isHolding = false;
+
+        chatBox.addEventListener("mousedown", handleLongPress);
+        chatBox.addEventListener("touchstart", handleLongPress);
+        chatBox.addEventListener("mouseup", cancelHold);
+        chatBox.addEventListener("touchend", cancelHold);
+        chatBox.addEventListener("mouseleave", cancelHold);
+
+        function handleLongPress(event) {
+            if (!event.target.classList.contains("message")) return;
+
+            let messageElement = event.target.closest(".message,.mymessage,.othermessage");
+            let messageText = messageElement.innerText;
+
+            isHolding = true;
+
+            holdTimeout = setTimeout(() => {
+                if (isHolding) {
+                    showOptions(messageElement, messageText);
+                }
+            }, 600);
+        }
+
+        function cancelHold() {
+            isHolding = false;
+            clearTimeout(holdTimeout);
+        }
+
+        async function deleteMessage(docId, messageElement) {
+            try {
+                const messageRef = doc(db, "messages", docId);
+                await deleteDoc(messageRef);
+                messageElement.remove();
+            } catch (error) {
+                console.error("فشل في حذف الرسالة:", error);
+            }
+        }
+
+        // Edit functionality (placeholder - implement as needed)
+        function startEditing(messageElement) {
+            // TODO: Implement edit logic
+            console.log("Edit not fully implemented yet");
+        }
+
+    function showOptions(messageElement, messageText) {
+closeOptions();
+
+document.body.classList.add("blur-background");
+messageElement.classList.add("selected-message");
+
+const optionsContainer = document.createElement("div");
+optionsContainer.classList.add("message-options");
+
+// --- زر عرض التاريخ (معطّل)
+const timestamp = messageElement.getAttribute("data-timestamp");
+if (timestamp) {
+    const dateBtn = document.createElement("button");
+    dateBtn.innerText = timestamp; // نص التاريخ (مثلاً: "9/8/2025, 12:00:00")
+    dateBtn.classList.add("option-btn");
+    dateBtn.disabled = true; // معطّل لوجوده فقط للعرض
+    dateBtn.style.backgroundColor = "#555";
+    dateBtn.style.color = "#fff";
+    optionsContainer.appendChild(dateBtn);
+}
+
+// --- زر النسخ
+let copyBtn = document.createElement("button");
+copyBtn.innerText = "copy";
+copyBtn.classList.add("option-btn", "copy");
+copyBtn.addEventListener("click", () => {
+    // نسخ نص الرسالة الصافي (نختار .message-text لو متوفر)
+    const textEl = messageElement.querySelector('.message-text');
+    const textToCopy = textEl ? textEl.innerText : messageText;
+    navigator.clipboard.writeText(textToCopy);
+    alert("copied ✅\n تم نسخ ✅");
+    closeOptions();
+});
+optionsContainer.appendChild(copyBtn);
+
+// --- زر الحذف (مثل السابق)
+let deleteBtn = document.createElement("button");
+deleteBtn.innerText = "Delete";
+deleteBtn.classList.add("option-btn", "delete");
+deleteBtn.style.display = messageElement.classList.contains("myMessage") ? "block" : "none";
+deleteBtn.addEventListener("click", async () => {
+    if (confirm("Are you sure or are you kidding?\nهل انت متاكد او تمزح?")) {
+        const docId = messageElement.getAttribute("data-id");
+        await deleteMessage(docId, messageElement);
+        closeOptions();
+    }
+});
+optionsContainer.appendChild(deleteBtn);
+
+// --- زر التعديل (يظهر فقط للرسائل النصية الخاصة بك)
+const isMine = messageElement.classList.contains("myMessage");
+const type = messageElement.getAttribute("data-type") || "text";
+
+let editBtn = document.createElement("button");
+editBtn.innerText = "Edit";
+editBtn.classList.add("option-btn");
+editBtn.style.backgroundColor = "orange";
+editBtn.style.color = "white";
+
+if (isMine && type === "text") {
+    editBtn.style.display = "block";
+    editBtn.addEventListener("click", () => {
+        startEditing(messageElement);
+        closeOptions();
+    });
+} else {
+    editBtn.style.display = "none";
+}
+optionsContainer.appendChild(editBtn);
+
+messageElement.appendChild(optionsContainer);
+optionsContainer.style.display = "flex";
+
+setTimeout(() => {
+    document.addEventListener("click", closeOptions);
+}, 100);
+
+}
+
+function closeOptions() {
+            let options = document.querySelector(".message-options");
+            if (options) options.remove();
+            document.body.classList.remove("blur-background");
+
+            let selectedMessage = document.querySelector(".selected-message");
+            if (selectedMessage) selectedMessage.classList.remove("selected-message");
+
+            document.removeEventListener("click", closeOptions);
+        }
+
+        // Last seen functionality
+        let lastSeenTimestamp = null;
+
+        function updateLastSeen() {
+            lastSeenTimestamp = new Date().toISOString();
+            const userDocRef = doc(db, 'users', activeUser);
+            updateDoc(userDocRef, {
+                [`lastSeenMessages.${receiver}`]: lastSeenTimestamp
+            }).catch(error => {
+                console.error("Error updating last seen:", error);
+            });
+        }
+
+        updateLastSeen();
+
+        window.addEventListener('click', updateLastSeen);
+        window.addEventListener('scroll', updateLastSeen);
+        window.addEventListener('keydown', updateLastSeen);
+
+        // Clean up on page unload
+        window.addEventListener('beforeunload', () => {
+            unsubscribe();
+        });
+
+chatBox.addEventListener("dblclick", async function(e) {
+const messageEl = e.target.closest(".message");
+if (!messageEl) return;
+
+const docId = messageEl.getAttribute("data-id");
+const isLiked = messageEl.classList.contains("show-heart");
+
+try {
+    const messageRef = doc(db, "messages", docId);
+    await updateDoc(messageRef, { liked: !isLiked });
+        
+    if (isLiked) {
+        // إزالة القلب
+        messageEl.classList.remove("show-heart");
+        const heart = messageEl.querySelector(".heart-icon");
+        if (heart) heart.remove();
+    } else {
+        // إضافة القلب
+        const heart = document.createElement("div");
+        heart.className = "heart-icon";
+        heart.textContent = "💗";
+        messageEl.appendChild(heart);
+        messageEl.classList.add("show-heart");
+    }
+} catch (error) {
+    console.error("خطأ أثناء تحديث الإعجاب:", error);
+}
+
+});
+    });
+</script>  <script>
+const messageInput = document.getElementById('message-input');
+
+messageInput.addEventListener('input', function() {
+    const value = this.value.trim();
+        
+    if (value === '') {
+        this.style.direction = 'ltr';
+        return;
+    }
+        
+    const firstChar = value[0];
+    const isArabic = /[\u0600-\u06FF]/.test(firstChar);
+        
+    this.style.direction = isArabic ? 'rtl' : 'ltr';
+});
+
+</script>    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        const uploadBtn = document.getElementById('upload-btn');  messageInput.addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+            sendBtn.classList.add('active');
+            uploadBtn.classList.add('hidden');
+        } else {
+            sendBtn.classList.remove('active');
+            uploadBtn.classList.remove('hidden');
+        }
+    });
+});
+
+function goBack() {
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        window.location.href = '/';
+    }
+}
+
+</script>    </body>
 </html>
