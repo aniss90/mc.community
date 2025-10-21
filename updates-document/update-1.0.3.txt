@@ -1,0 +1,28 @@
+New games have been added, including chess and tic-tac-toe (xo). 
+تمت إضافة ألعاب جديدة، بما في ذلك الشطرنج ولعبة الـXO. 
+
+The user list button has been changed to a “Show Friends Only” button, with the ability to send a friend request. 
+تم تغيير زر قائمة المستخدمين إلى زر "إظهار الأصدقاء فقط"، مع إمكانية إرسال طلب صداقة. 
+
+A website for learning Japanese characters, Hiragana, has been added. Try it and learn. 
+أُضيف موقع إلكتروني لتعلم حروف الهيراجانا اليابانية. جرّبه وتعلّم. 
+
+The feature of activating the private account has been added so that no one can see your information.
+تم إضافة خاصية تفعيل الحساب الخاص حتى لا يتمكن أحد من رؤية معلوماتك.
+
+You can download the users' image now by clicking on the image and pressing the download button. 
+يمكنك الآن تحميل صورة المستخدم بالضغط على الصورة والضغط على زر التحميل. 
+
+The account creation method has been updated so that a 6-digit code will be sent to the email account you entered to confirm account creation. 
+لقد تم تحديث طريقة إنشاء الحساب بحيث سيتم إرسال رمز مكون من 6 أرقام إلى حساب البريد الإلكتروني الذي أدخلته لتأكيد إنشاء الحساب. 
+
+End-to-end encryption has been added to chats, ensuring that conversations between users are secure (if you encounter errors or problems, please contact support). 
+تمت إضافة التشفير الشامل للمحادثات، مما يضمن أمان المحادثات بين المستخدمين (إذا واجهت أخطاء أو مشكلات، فيرجى الاتصال بالدعم). 
+
+New chests have been added to the marketplace and they are 3 new amazing chests 
+تمت إضافة صناديق جديدة إلى السوق وهي عبارة عن 3 صناديق جديدة مذهلة 
+
+
+
+bug fixed....
+  اصلاح لبعض الاخطاء...
