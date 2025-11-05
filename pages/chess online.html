@@ -28,11 +28,14 @@
       flex-direction: column;
       padding: 10px;
       margin: 10px 0;
-      background-color: #262626;
+      border: 2px solid #313131D1;
       border-radius: 8px;
-      transition: all 0.3s;
+      background-color: #2a2a2a;
+      color: #ffffff;
+      outline: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       cursor: pointer;
-      border: 2px solid #333;
     }
 
     .user-container:hover {
@@ -107,21 +110,26 @@
     }
 
     .btn {
-      padding: 6px 12px;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-      font-family: minecraft-five;
-      transition: all 0.3s;
+      padding: 4px 10px;
+border-radius: 8px;
+background: transparent;
+cursor: pointer;
+font-family: minecraft-five;
+transition: all 0.3s;
+border: none;
+color: #FFFFFF;
     }
 
     .btn-play {
-      background-color: #2196F3;
-      color: white;
+    background-color: #BF844D;
+color: white;
+box-shadow: 0 2px 0 0 #976639; 
     }
 
     .btn-play:hover {
-      background-color: #0b7dda;
+      
+      box-shadow: 0 0px 0 0 #DEB060; 
+      transform: translateY(var(--border-2x-thickness));
     }
 
     .btn-play.cooldown {
@@ -130,12 +138,15 @@
     }
 
     .btn-unfollow {
-      background-color: #f44336;
-      color: white;
+      background-color: #DD3E33;
+box-shadow: 0 2px 0 0 #9A160D;
+color: white;
+    
     }
 
     .btn-unfollow:hover {
-      background-color: #da190b;
+box-shadow: 0 0px 0 0 #9A160D; 
+transform: translateY(var(--border-2x-thickness));
     }
 
     /* Modal for Stake */
@@ -237,11 +248,12 @@
     #surrenderBtn, #drawBtn {
       position: fixed;
       bottom: 20px;
-      padding: 10px 20px;
+      padding: 4px 10px;
       background-color: #f44336;
       color: white;
+      box-shadow: 0 2px 0 0 #942921; 
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
       cursor: pointer;
       font-family: minecraft-five;
       display: none;
@@ -250,12 +262,14 @@
     }
 
     #surrenderBtn:hover {
-      background-color: #da190b;
+      box-shadow: 0 0px 0 0 #DEB060; 
+      
     }
 
     #drawBtn {
-      background-color: #FFC107;
-      color: black;
+      background-color: #DEB060;
+      color: white;
+      box-shadow: 0 2px 0 0 #9C7C44; 
       left: calc(50% + 100px);
       transform: translateX(-50%);
     }
@@ -266,7 +280,8 @@
     }
 
     #drawBtn:hover {
-      background-color: #FFB300;
+      
+      box-shadow: 0 0px 0 0 #DEB060; 
     }
 
     /* Notification */
@@ -361,7 +376,7 @@
       background: #333;
       padding: 20px;
       border-radius: 8px;
-      z-index: 9995;
+      z-index: 9999;
       text-align: center;
       width: 80%;
       max-width: 400px;
@@ -432,7 +447,7 @@
     }
 
     .square.king-in-check {
-      background-color: #B51818;
+      background-color: #B51818AB;
       z-index: 20;
     }
 
@@ -609,17 +624,43 @@
       background-color: #1a1a1b;
     }
 
-.valid-move::after {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: rgba(0, 255, 0, 0.5);
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+    .valid-move::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: rgba(0, 255, 0, 0.5);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Game Results */
+    .game-result {
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #3a3a3a;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .game-result.win {
+      border-left: 4px solid #4CAF50;
+    }
+
+    .game-result.loss {
+      border-left: 4px solid #f44336;
+    }
+
+    .game-result.draw {
+      border-left: 4px solid #FFC107;
+    }
+
+    .results-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
 
   </style>
 </head>
@@ -636,8 +677,8 @@
   <div id="toast" class="toast"></div>
 
   <!-- Surrender and Draw Buttons -->
-  <button id="surrenderBtn" onclick="surrenderGame()">Surrender</button>
-  <button id="drawBtn" onclick="offerDraw()">Offer Draw</button>
+  <button id="surrenderBtn" onclick="surrenderGame()">Resign</button>
+  <button id="drawBtn" onclick="offerDraw()"> Draw</button>
 
   <!-- Game Invite Notification -->
   <div id="gameInviteNotif">
@@ -646,7 +687,7 @@
       <p id="inviteText"></p>
       <div class="notif-buttons">
         <button class="btn-reject-invite" onclick="rejectInvite()">✘</button>
-        <button class="btn-accept-invite" onclick="acceptInvite()">✓</button>
+        <button class="btn-accept-invite" onclick="acceptInvite()">accept</button>
       </div>
     </div>
   </div>
@@ -658,7 +699,7 @@
       <p id="drawText">Your opponent wants a draw</p>
       <div class="notif-buttons">
         <button class="btn-reject-draw" onclick="rejectDraw()">✘</button>
-        <button class="btn-accept-draw" onclick="acceptDraw()">✓</button>
+        <button class="btn-accept-draw" onclick="acceptDraw()">accept</button>
       </div>
     </div>
   </div>
@@ -686,20 +727,16 @@
   </div>
 
   <!-- Win Popup -->
-  <div id="winPopup">
-    <h2 id="winTitle"></h2>
-    <p id="winAmount"></p>
-    <button class="btn btn-play" onclick="endGame()">Back to Friends</button>
-  </div>
-<div id="winPopup" class="modal" style="display: none;">
-  <div class="modal-content">
-    <h2 id="winTitle"></h2>
-    <p id="winAmount"></p>
-    <div class="dropdown">
-      <button class="btn btn-play" onclick="endGame()">Back</button>
+  <div id="winPopup" class="modal">
+    <div class="modal-content">
+      <h2 id="winTitle"></h2>
+      <p id="winAmount"></p>
+      <div class="dropdown">
+        <button class="btn btn-play" onclick="endGame()">Back to Friends</button>
+      </div>
     </div>
   </div>
-</div>
+
   <!-- Promotion Message -->
   <div class="overlay" id="promotionMessage">
     <div class="overlay-inner">
@@ -714,12 +751,12 @@
     </div>
   </div>
 
-  <!-- End Message -->
-  <div class="overlay" id="endMessage">
-    <div class="overlay-inner">
-      <span class="overlay-title">Game Over!</span>
-      <p class="overlay-text" id="endText"></p>
-      <a href="#" class="overlay-button" onclick="newGame();">New Game</a>
+  <!-- Game History Modal -->
+  <div id="gameHistoryModal" class="modal">
+    <div class="modal-content">
+      <h2>Game History</h2>
+      <div id="gameHistoryList" class="results-list"></div>
+      <button class="btn btn-play" onclick="closeGameHistory()">Close</button>
     </div>
   </div>
 
@@ -730,6 +767,9 @@
         <div class="tab-content active" id="friends-tab">
           <div class="search-container">
             <input type="text" id="friendsSearch" placeholder="Search your friends..." onkeyup="searchFriends()" />
+          </div>
+          <div class="action-buttons" style="margin: 10px 0; justify-content: flex-start;">
+            <button class="btn btn-play" onclick="showGameHistory()">View Game History</button>
           </div>
           <div id="friendsList">
             <div style="color: white; padding: 5px;">
@@ -768,501 +808,1478 @@
   const checkmateSound = new Audio('../sounds/game-end.ogg');
   const gameStartSound = new Audio('../sounds/game-start.ogg');
 
-  // Global Variables
-  window.activeUser = localStorage.getItem("activeUser");
-  window.friends = [];
-  window.friendsData = [];
-  window.db = db;
-  window.currentTargetUser = null;
-  window.currentPlayBtn = null;
-  window.inviteCooldown = {};
-  window.currentGame = null;
-  window.gameDoc = null;
-  window.playerColor = '';
-  window.opponentColor = '';
-  window.isPlayerTurn = false;
-  window.turnTimerInterval = null;
-  window.playerRemainingTime = 600;
-  window.opponentRemainingTime = 600;
-  window.userData = {};
-  window.opponentData = {};
-  window.pgn = '';
-  window.moveHistory = [];
-  window.pieces = [];
-  window.boardSquares = [];
-  window.selectedSquare = null;
-  window.currentCallback = null;
-  window.white = new Player("white");
-  window.black = new Player("black");
-  window.currentPlayer = window.white;
-  window.turn = 1;
-  window.pendingMove = null;
-  let isSettingUpBoard = false;
-
-  // Toast Notification
-  window.showToast = function(message, isError = false) {
-    const toast = document.getElementById('toast');
-    toast.textContent = message;
-    toast.className = `toast ${isError ? 'error' : ''} show`;
-    setTimeout(() => {
-      toast.classList.remove('show');
-    }, 3000);
-  };
-
-  window.formatPoints = function(num) {
-    if (num >= 1_000_000_000_000) return (num / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 'T';
-    if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
-    if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
-    if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
-    return num.toString();
-  };
-
-  // Stake Modal and Invite Functions
-  window.showStakeModal = function(username, btn) {
-    window.currentTargetUser = username;
-    window.currentPlayBtn = btn;
-    document.getElementById('stakeModal').style.display = 'block';
-  };
-
-  window.closeStakeModal = function() {
-    document.getElementById('stakeModal').style.display = 'none';
-    document.getElementById('coinsStake').value = '';
-    document.getElementById('tokensStake').value = '';
-    window.currentPlayBtn = null;
-  };
-
-  window.sendGameInvite = async function() {
-    let coinsInput = parseInt(document.getElementById('coinsStake').value) || 0;
-    let tokensInput = parseInt(document.getElementById('tokensStake').value) || 0;
-    if (coinsInput === 0 && tokensInput === 0) {
-      window.showToast('Enter at least one stake (coins or tokens)', true);
-      return;
+  // Game Manager - Handles game state and logic
+  class GameManager {
+    constructor() {
+      this.activeUser = localStorage.getItem("activeUser");
+      this.friends = [];
+      this.friendsData = [];
+      this.currentTargetUser = null;
+      this.currentPlayBtn = null;
+      this.inviteCooldown = {};
+      this.currentGame = null;
+      this.gameDoc = null;
+      this.playerColor = '';
+      this.opponentColor = '';
+      this.isPlayerTurn = false;
+      this.turnTimerInterval = null;
+      this.playerRemainingTime = 600;
+      this.opponentRemainingTime = 600;
+      this.userData = {};
+      this.opponentData = {};
+      this.pgn = '';
+      this.moveHistory = [];
+      this.pieces = [];
+      this.boardSquares = [];
+      this.selectedSquare = null;
+      this.currentCallback = null;
+      this.white = new Player("white");
+      this.black = new Player("black");
+      this.currentPlayer = this.white;
+      this.turn = 1;
+      this.pendingMove = null;
+      this.isSettingUpBoard = false;
+      
+      // Initialize game
+      this.init();
     }
-    if (coinsInput > 0 && coinsInput < 500) {
-      window.showToast('Minimum 500 coins', true);
-      return;
+
+    init() {
+      if (!this.activeUser) {
+        this.showToast('Please log in to continue', true);
+        setTimeout(() => {
+          window.location.href = '../index.html';
+        }, 2000);
+      } else {
+        this.loadFriends();
+        this.listenForInvites();
+        this.listenForOwnInvites();
+      }
     }
-    if (tokensInput > 0 && tokensInput < 5) {
-      window.showToast('Minimum 5 fall tokens', true);
-      return;
+
+    // Toast Notification
+    showToast(message, isError = false) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast ${isError ? 'error' : ''} show`;
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
     }
-    const targetUser = window.currentTargetUser;
-    const inviteId = `${window.activeUser}_${targetUser}`;
-    if (window.inviteCooldown[targetUser] && Date.now() - window.inviteCooldown[targetUser] < 5000) {
-      window.showToast('Wait 5 seconds before resending', true);
-      return;
+
+    formatPoints(num) {
+      if (num >= 1_000_000_000_000) return (num / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 'T';
+      if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
+      if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+      if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
+      return num.toString();
     }
-    try {
-      const userDoc = await getDoc(doc(window.db, "users", window.activeUser));
-      if (!userDoc.exists()) {
-        window.showToast('User data not found', true);
+
+    // Stake Modal and Invite Functions
+    showStakeModal(username, btn) {
+      this.currentTargetUser = username;
+      this.currentPlayBtn = btn;
+      document.getElementById('stakeModal').style.display = 'block';
+    }
+
+    closeStakeModal() {
+      document.getElementById('stakeModal').style.display = 'none';
+      document.getElementById('coinsStake').value = '';
+      document.getElementById('tokensStake').value = '';
+      this.currentPlayBtn = null;
+    }
+
+    async sendGameInvite() {
+      let coinsInput = parseInt(document.getElementById('coinsStake').value) || 0;
+      let tokensInput = parseInt(document.getElementById('tokensStake').value) || 0;
+      if (coinsInput === 0 && tokensInput === 0) {
+        this.showToast('Enter at least one stake (coins or tokens)', true);
         return;
       }
-      const userData = userDoc.data();
-      if (userData.points < coinsInput || userData.fallTokens < tokensInput) {
-        window.showToast('Not enough balance to stake', true);
+      if (coinsInput > 0 && coinsInput < 500) {
+        this.showToast('Minimum 500 coins', true);
         return;
       }
-      await setDoc(doc(window.db, "gameInvites", inviteId), {
-        from: window.activeUser,
-        to: targetUser,
-        coins: coinsInput,
-        tokens: tokensInput,
-        status: 'pending',
+      if (tokensInput > 0 && tokensInput < 5) {
+        this.showToast('Minimum 5 fall tokens', true);
+        return;
+      }
+      const targetUser = this.currentTargetUser;
+      const inviteId = `${this.activeUser}_${targetUser}`;
+      if (this.inviteCooldown[targetUser] && Date.now() - this.inviteCooldown[targetUser] < 5000) {
+        this.showToast('Wait 5 seconds before resending', true);
+        return;
+      }
+      try {
+        const userDoc = await getDoc(doc(db, "users", this.activeUser));
+        if (!userDoc.exists()) {
+          this.showToast('User data not found', true);
+          return;
+        }
+        const userData = userDoc.data();
+        if (userData.points < coinsInput || userData.fallTokens < tokensInput) {
+          this.showToast('Not enough balance to stake', true);
+          return;
+        }
+        await setDoc(doc(db, "gameInvites", inviteId), {
+          from: this.activeUser,
+          to: targetUser,
+          coins: coinsInput,
+          tokens: tokensInput,
+          status: 'pending',
+          timestamp: serverTimestamp()
+        });
+        this.inviteCooldown[targetUser] = Date.now();
+        if (this.currentPlayBtn) {
+          this.currentPlayBtn.classList.add('cooldown');
+          this.currentPlayBtn.textContent = 'Wait 5s';
+          setTimeout(() => {
+            this.currentPlayBtn.classList.remove('cooldown');
+            this.currentPlayBtn.textContent = 'Play';
+          }, 5000);
+        }
+        this.showToast(`Invite sent to ${targetUser}`);
+        this.closeStakeModal();
+      } catch (error) {
+        console.error('Error sending invite:', error);
+        this.showToast('Failed to send invite', true);
+      }
+    }
+
+    listenForInvites() {
+      const q = query(collection(db, "gameInvites"), where("to", "==", this.activeUser), where("status", "==", "pending"));
+      onSnapshot(q, (snapshot) => {
+        snapshot.forEach((docSnap) => {
+          const invite = docSnap.data();
+          invite.id = docSnap.id;
+          this.showInviteNotification(invite);
+        });
+      });
+    }
+
+    showInviteNotification(invite) {
+      document.getElementById('inviteText').innerHTML = `${invite.from} wants to play Chess with <br> ${invite.coins} coins & ${invite.tokens} tokens`;
+      document.getElementById('countdown').textContent = '10';
+      const notif = document.getElementById('gameInviteNotif');
+      notif.style.display = 'block';
+      notif.classList.add('show');
+      this.currentInvite = invite;
+      let time = 10;
+      const interval = setInterval(() => {
+        time--;
+        document.getElementById('countdown').textContent = time;
+        if (time <= 0) {
+          clearInterval(interval);
+          this.rejectInvite();
+        }
+      }, 1000);
+    }
+
+    async acceptInvite() {
+      const invite = this.currentInvite;
+      const gameId = invite.id;
+      try {
+        const userDoc = await getDoc(doc(db, "users", this.activeUser));
+        if (!userDoc.exists()) {
+          this.showToast('User data not found', true);
+          return;
+        }
+        const userData = userDoc.data();
+        if (userData.points < invite.coins || userData.fallTokens < invite.tokens) {
+          this.showToast('Not enough balance to accept', true);
+          await updateDoc(doc(db, "gameInvites", gameId), { status: 'rejected' });
+          this.hideNotification();
+          return;
+        }
+        await updateDoc(doc(db, "gameInvites", gameId), { status: 'accepted' });
+        this.hideNotification();
+        this.startGame(invite.from, invite, 'opponent');
+      } catch (error) {
+        console.error('Error accepting invite:', error);
+        this.showToast('Failed to accept invite', true);
+      }
+    }
+
+    async rejectInvite() {
+      const invite = this.currentInvite;
+      if (invite) {
+        await updateDoc(doc(db, "gameInvites", invite.id), { status: 'rejected' });
+        this.hideNotification();
+      }
+    }
+
+    hideNotification() {
+      const notif = document.getElementById('gameInviteNotif');
+      notif.classList.remove('show');
+      notif.classList.add('hide');
+      setTimeout(() => {
+        notif.style.display = 'none';
+        notif.classList.remove('hide');
+      }, 500);
+      this.currentInvite = null;
+    }
+
+    listenForOwnInvites() {
+      const q = query(collection(db, "gameInvites"), where("from", "==", this.activeUser), where("status", "==", "accepted"));
+      onSnapshot(q, (snapshot) => {
+        snapshot.forEach((docSnap) => {
+          const invite = docSnap.data();
+          invite.id = docSnap.id;
+          this.startGame(invite.to, invite, 'inviter');
+        });
+      });
+    }
+
+    getPairFolder(user1, user2) {
+      return [user1, user2].sort().join('_');
+    }
+
+    async saveMatchHistory(gameData, winnerSymbol) {
+      const pairFolder = this.getPairFolder(this.activeUser, this.currentGame.opponent);
+      const matchesRef = collection(db, "chess-games", pairFolder, "matches");
+      const matchesSnapshot = await getDocs(matchesRef);
+      const matchNumber = matchesSnapshot.size + 1;
+      const matchId = `#${matchNumber}`;
+      await setDoc(doc(matchesRef, matchId), {
+        pgn: this.pgn,
+        winner: winnerSymbol,
+        stakes: gameData.stakes,
+        players: gameData.players,
         timestamp: serverTimestamp()
       });
-      window.inviteCooldown[targetUser] = Date.now();
-      if (window.currentPlayBtn) {
-        window.currentPlayBtn.classList.add('cooldown');
-        window.currentPlayBtn.textContent = 'Wait 5s';
-        setTimeout(() => {
-          window.currentPlayBtn.classList.remove('cooldown');
-          window.currentPlayBtn.textContent = 'Play';
-        }, 5000);
-      }
-      window.showToast(`Invite sent to ${targetUser}`);
-      window.closeStakeModal();
-    } catch (error) {
-      console.error('Error sending invite:', error);
-      window.showToast('Failed to send invite', true);
     }
-  };
 
-  window.listenForInvites = function() {
-    const q = query(collection(window.db, "gameInvites"), where("to", "==", window.activeUser), where("status", "==", "pending"));
-    onSnapshot(q, (snapshot) => {
-      snapshot.forEach((docSnap) => {
-        const invite = docSnap.data();
-        invite.id = docSnap.id;
-        showInviteNotification(invite);
-      });
-    });
-  };
-
-  window.showInviteNotification = function(invite) {
-    document.getElementById('inviteText').innerHTML = `${invite.from} wants to play Chess with <br> ${invite.coins} coins & ${invite.tokens} tokens`;
-    document.getElementById('countdown').textContent = '10';
-    const notif = document.getElementById('gameInviteNotif');
-    notif.style.display = 'block';
-    notif.classList.add('show');
-    window.currentInvite = invite;
-    let time = 10;
-    const interval = setInterval(() => {
-      time--;
-      document.getElementById('countdown').textContent = time;
-      if (time <= 0) {
-        clearInterval(interval);
-        rejectInvite();
-      }
-    }, 1000);
-  };
-
-  window.acceptInvite = async function() {
-    const invite = window.currentInvite;
-    const gameId = invite.id;
-    try {
-      const userDoc = await getDoc(doc(window.db, "users", window.activeUser));
-      if (!userDoc.exists()) {
-        window.showToast('User data not found', true);
+    // Start Game with Correct Color and Timer
+    async startGame(opponent, invite, role) {
+      if (!this.activeUser) {
+        this.showToast('User not logged in', true);
         return;
       }
-      const userData = userDoc.data();
-      if (userData.points < invite.coins || userData.fallTokens < invite.tokens) {
-        window.showToast('Not enough balance to accept', true);
-        await updateDoc(doc(window.db, "gameInvites", gameId), { status: 'rejected' });
-        hideNotification();
+      gameStartSound.play().catch(error => console.error('Error playing game start sound:', error));
+      this.currentGame = { gameId: invite.id, opponent, coins: invite.coins, tokens: invite.tokens, stakes: { coins: invite.coins, tokens: invite.tokens } };
+      const userDoc = await getDoc(doc(db, "users", this.activeUser));
+      this.userData = userDoc.data();
+      const oppDoc = await getDoc(doc(db, "users", opponent));
+      this.opponentData = oppDoc.data();
+      this.gameDoc = doc(db, "games", invite.id);
+      document.getElementById('gameContainer').style.display = 'flex';
+      document.getElementById('surrenderBtn').style.display = 'block';
+      document.getElementById('drawBtn').style.display = 'block';
+      document.getElementById('winPopup').style.display = 'none';
+      this.playerRemainingTime = 600;
+      this.opponentRemainingTime = 600;
+      if (role === 'inviter') {
+        const isWhiteFirst = Math.random() > 0.5;
+        this.playerColor = isWhiteFirst ? 'white' : 'black';
+        this.opponentColor = isWhiteFirst ? 'black' : 'white';
+        const firstTurn = isWhiteFirst ? this.activeUser : opponent;
+        const gameData = {
+          players: {
+            [this.activeUser]: this.playerColor,
+            [opponent]: this.opponentColor
+          },
+          pgn: '',
+          currentTurn: 'white',
+          currentPlayer: firstTurn,
+          stakes: { coins: invite.coins, tokens: invite.tokens },
+          status: 'playing',
+          startTime: serverTimestamp(),
+          turnStartTime: serverTimestamp(),
+          times: {
+            [this.activeUser]: 600,
+            [opponent]: 600
+          },
+          drawOffer: null
+        };
+        await setDoc(this.gameDoc, gameData);
+        this.pgn = '';
+        this.currentGame.currentTurn = 'white';
+        this.currentGame.currentPlayer = firstTurn;
+        this.currentGame.status = 'playing';
+        this.currentGame.times = gameData.times;
+        this.hideNotification();
+      }
+      this.isPlayerTurn = this.playerColor === 'white';
+      this.setupBoard();
+      this.startTimer();
+      this.listenForGameUpdates();
+    }
+
+    // Listen for Game Updates with Turn Enforcement
+    listenForGameUpdates() {
+      onSnapshot(this.gameDoc, async (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          
+          if (data.players) {
+            this.playerColor = data.players[this.activeUser];
+            this.opponentColor = data.players[this.currentGame.opponent];
+          }
+          
+          this.currentGame = { ...this.currentGame, ...data };
+          
+          this.isPlayerTurn = data.currentPlayer === this.activeUser;
+          
+          if (this.playerColor) {
+            this.renderPlayerInfo();
+            this.renderOpponentInfo();
+            
+            document.getElementById('board').classList.toggle('board-flipped', this.playerColor === 'black');
+            
+            if (data.pgn !== this.pgn) {
+              this.applyPgnToBoard(data.pgn);
+            }
+          }
+          
+          if (data.status === 'ended') {
+            this.endGameWithResult(data.winner);
+            document.getElementById('surrenderBtn').style.display = 'none';
+            document.getElementById('drawBtn').style.display = 'none';
+            clearInterval(this.turnTimerInterval);
+            if (data.winner !== 'draw') {
+              checkmateSound.play().catch(error => console.error('Error playing checkmate sound:', error));
+            }
+            return;
+          }
+          
+          if (this.isKingVsKing()) {
+            await updateDoc(this.gameDoc, { status: 'ended', winner: 'draw' });
+            await this.saveMatchHistory(data, 'draw');
+          }
+          
+          this.playerRemainingTime = data.times[this.activeUser] || 600;
+          this.opponentRemainingTime = data.times[this.currentGame.opponent] || 600;
+          
+          if (data.turnStartTime) {
+            const used = Math.floor((Date.now() - data.turnStartTime.toMillis()) / 1000);
+            const currentRemaining = data.times[data.currentPlayer] - used;
+            
+            if (this.activeUser === data.currentPlayer) {
+              this.playerRemainingTime = Math.max(0, currentRemaining);
+            } else {
+              this.opponentRemainingTime = Math.max(0, currentRemaining);
+            }
+            
+            if (currentRemaining <= 0) {
+              this.handleTimeout();
+            }
+          }
+          
+          this.updateTimerDisplay();
+          
+          if (data.drawOffer && data.drawOffer.to === this.activeUser && data.drawOffer.status === 'pending') {
+            this.showDrawOfferNotification(data.drawOffer);
+          }
+        }
+      });
+    }
+
+    // Render Player Info
+    renderPlayerInfo() {
+      const info = document.getElementById('playerInfo');
+      info.innerHTML = `
+        <img src="${this.userData.photoURL || '../icons/player-head-128-052ba.png'}" class="user-avatar">
+        <div>
+          <div>${this.activeUser} playing as ${this.playerColor}</div>
+          <div class="points"><img src="../icons/coinss_gif.gif" height="12"> ${this.formatPoints(this.userData.points)}</div>
+          <div class="fall-tokens"><img src="../icons/fall_token.png" height="12"> ${this.formatPoints(this.userData.fallTokens)}</div>
+        </div>
+        <div id="playerTimer" class="player-timer">${this.formatTime(this.playerRemainingTime)}</div>
+      `;
+    }
+
+    // Render Opponent Info
+    renderOpponentInfo() {
+      const info = document.getElementById('opponentInfo');
+      info.innerHTML = `
+        <img src="${this.opponentData.photoURL || '../icons/player-head-128-052ba.png'}" class="user-avatar">
+        <div>
+          <div>${this.currentGame.opponent} playing as ${this.opponentColor}</div>
+          <div class="points"><img src="../icons/coinss_gif.gif" height="12"> ${this.formatPoints(this.opponentData.points)}</div>
+          <div class="fall-tokens"><img src="../icons/fall_token.png" height="12"> ${this.formatPoints(this.opponentData.fallTokens)}</div>
+        </div>
+        <div id="opponentTimer" class="player-timer">${this.formatTime(this.opponentRemainingTime)}</div>
+      `;
+    }
+
+    formatTime(seconds) {
+      const min = Math.floor(seconds / 60);
+      const sec = seconds % 60;
+      return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+    }
+
+    // Timer Logic
+    startTimer() {
+      clearInterval(this.turnTimerInterval);
+      this.turnTimerInterval = setInterval(() => {
+        if (this.currentGame.status !== 'playing') {
+          clearInterval(this.turnTimerInterval);
+          return;
+        }
+        if (this.isPlayerTurn && this.currentGame.currentTurn === this.playerColor) {
+          this.playerRemainingTime = Math.max(0, this.playerRemainingTime - 1);
+          this.updateTimerDisplay();
+          if (this.playerRemainingTime <= 0) {
+            this.handleTimeout();
+          }
+        } else if (!this.isPlayerTurn && this.currentGame.currentTurn === this.opponentColor) {
+          this.opponentRemainingTime = Math.max(0, this.opponentRemainingTime - 1);
+          this.updateTimerDisplay();
+          if (this.opponentRemainingTime <= 0) {
+            this.handleTimeout();
+          }
+        }
+      }, 1000);
+    }
+
+    updateTimerDisplay() {
+      const playerTimer = document.getElementById('playerTimer');
+      const opponentTimer = document.getElementById('opponentTimer');
+      if (playerTimer) playerTimer.textContent = this.formatTime(this.playerRemainingTime);
+      if (opponentTimer) opponentTimer.textContent = this.formatTime(this.opponentRemainingTime);
+    }
+
+    async handleTimeout() {
+      const winner = this.currentGame.currentPlayer === this.activeUser ? this.opponentColor : this.playerColor;
+      await updateDoc(this.gameDoc, { status: 'ended', winner });
+      await this.saveMatchHistory(this.currentGame, winner);
+    }
+
+    // Draw Offer
+    async offerDraw() {
+      if (confirm('Offer draw?')) {
+        await updateDoc(this.gameDoc, {
+          drawOffer: {
+            from: this.activeUser,
+            to: this.currentGame.opponent,
+            status: 'pending'
+          }
+        });
+        this.showToast('Draw offered');
+      }
+    }
+
+    showDrawOfferNotification(offer) {
+      document.getElementById('drawText').innerHTML = `${offer.from} wants a draw`;
+      document.getElementById('drawCountdown').textContent = '10';
+      const notif = document.getElementById('drawOfferNotif');
+      notif.style.display = 'block';
+      notif.classList.add('show');
+      this.currentDrawOffer = offer;
+      let time = 10;
+      const interval = setInterval(() => {
+        time--;
+        document.getElementById('drawCountdown').textContent = time;
+        if (time <= 0) {
+          clearInterval(interval);
+          this.rejectDraw();
+        }
+      }, 1000);
+    }
+
+    async acceptDraw() {
+      await updateDoc(this.gameDoc, { status: 'ended', winner: 'draw', drawOffer: null });
+      await this.saveMatchHistory(this.currentGame, 'draw');
+      this.hideDrawNotification();
+      this.showToast('Draw accepted');
+    }
+
+    async rejectDraw() {
+      await updateDoc(this.gameDoc, { drawOffer: null });
+      this.hideDrawNotification();
+      this.showToast('Draw rejected');
+    }
+
+    hideDrawNotification() {
+      const notif = document.getElementById('drawOfferNotif');
+      notif.classList.remove('show');
+      notif.classList.add('hide');
+      setTimeout(() => {
+        notif.style.display = 'none';
+        notif.classList.remove('hide');
+      }, 500);
+      this.currentDrawOffer = null;
+    }
+
+    // Chess Logic
+    setupBoard() {
+      if (this.isSettingUpBoard) {
+        console.warn('setupBoard already in progress, skipping');
         return;
       }
-      await updateDoc(doc(window.db, "gameInvites", gameId), { status: 'accepted' });
-      hideNotification();
-      startGame(invite.from, invite, 'opponent');
-    } catch (error) {
-      console.error('Error accepting invite:', error);
-      window.showToast('Failed to accept invite', true);
+      this.isSettingUpBoard = true;
+      
+      this.boardSquares = [];
+      const boardContainer = document.getElementById("board");
+      
+      if (!boardContainer) {
+        console.error('Board container not found');
+        this.isSettingUpBoard = false;
+        return;
+      }
+      
+      boardContainer.innerHTML = '';
+      
+      for (let i = 1; i <= 8; i++) {
+        for (let j = 1; j <= 8; j++) {
+          let squareElement = document.createElement("div");
+          let color = ((i + j) % 2 === 0) ? "light" : "dark";
+          
+          squareElement.className = `square ${color} empty`;
+          squareElement.setAttribute("data-x", j);
+          squareElement.setAttribute("data-y", i);
+          squareElement.addEventListener("click", (e) => this.squareClicked(e));
+          
+          let square = new SquareObject(j, i, color, false, squareElement, null);
+          this.boardSquares.push(square);
+          boardContainer.appendChild(squareElement);
+        }
+      }
+      
+      this.addBoardLabels(boardContainer, this.playerColor === 'black');
+      
+      this.resetPieces();
+      
+      this.forceRenderBoard();
+      this.isSettingUpBoard = false;
     }
-  };
 
-  window.rejectInvite = async function() {
-    const invite = window.currentInvite;
-    if (invite) {
-      await updateDoc(doc(window.db, "gameInvites", invite.id), { status: 'rejected' });
-      hideNotification();
+    addBoardLabels(board, flipped) {
+      const files = flipped ? ['h', 'g', 'f', 'e', 'd', 'c', 'b', 'a'] : ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+      const ranks = flipped ? ['1', '2', '3', '4', '5', '6', '7', '8'] : ['8', '7', '6', '5', '4', '3', '2', '1'];
+      for (let i = 0; i < 8; i++) {
+        const topLabel = document.createElement('div');
+        topLabel.style.position = 'absolute';
+        topLabel.style.top = '-20px';
+        topLabel.style.left = `${i * 12.5}%`;
+        topLabel.style.width = '12.5%';
+        topLabel.style.textAlign = 'center';
+        topLabel.style.color = '#FFFFFF';
+        topLabel.textContent = files[i];
+        board.appendChild(topLabel);
+
+        const bottomLabel = document.createElement('div');
+        bottomLabel.style.position = 'absolute';
+        bottomLabel.style.bottom = '-20px';
+        bottomLabel.style.left = `${i * 12.5}%`;
+        bottomLabel.style.width = '12.5%';
+        bottomLabel.style.textAlign = 'center';
+        bottomLabel.style.color = '#FFFFFF';
+        bottomLabel.textContent = files[i];
+        board.appendChild(bottomLabel);
+      }
+      for (let i = 0; i < 8; i++) {
+        const leftLabel = document.createElement('div');
+        leftLabel.style.position = 'absolute';
+        leftLabel.style.left = '-20px';
+        leftLabel.style.top = `${i * 12.5}%`;
+        leftLabel.style.height = '12.5%';
+        leftLabel.style.display = 'flex';
+        leftLabel.style.alignItems = 'center';
+        leftLabel.style.color = '#FFFFFF';
+        leftLabel.textContent = ranks[i];
+        board.appendChild(leftLabel);
+
+        const rightLabel = document.createElement('div');
+        rightLabel.style.position = 'absolute';
+        rightLabel.style.right = '-20px';
+        rightLabel.style.top = `${i * 12.5}%`;
+        rightLabel.style.height = '12.5%';
+        rightLabel.style.display = 'flex';
+        rightLabel.style.alignItems = 'center';
+        rightLabel.style.color = '#FFFFFF';
+        rightLabel.textContent = ranks[i];
+        board.appendChild(rightLabel);
+      }
     }
-  };
 
-  function hideNotification() {
-    const notif = document.getElementById('gameInviteNotif');
-    notif.classList.remove('show');
-    notif.classList.add('hide');
-    setTimeout(() => {
-      notif.style.display = 'none';
-      notif.classList.remove('hide');
-    }, 500);
-    window.currentInvite = null;
-  }
-
-  window.listenForOwnInvites = function() {
-    const q = query(collection(window.db, "gameInvites"), where("from", "==", window.activeUser), where("status", "==", "accepted"));
-    onSnapshot(q, (snapshot) => {
-      snapshot.forEach((docSnap) => {
-        const invite = docSnap.data();
-        invite.id = docSnap.id;
-        startGame(invite.to, invite, 'inviter');
+    rebuildBoardDOM() {
+      const boardContainer = document.getElementById("board");
+      if (!boardContainer) return;
+      const isFlipped = boardContainer.classList.contains('board-flipped');
+      boardContainer.innerHTML = '';
+      this.boardSquares.sort((a, b) => (a.y - b.y) * 8 + (a.x - b.x));
+      this.boardSquares.forEach(square => {
+        const newElement = document.createElement("div");
+        newElement.className = `square ${square.color} empty`;
+        newElement.setAttribute("data-x", square.x);
+        newElement.setAttribute("data-y", square.y);
+        newElement.addEventListener("click", (e) => this.squareClicked(e));
+        boardContainer.appendChild(newElement);
+        square.element = newElement;
       });
-    });
-  };
-
-  function getPairFolder(user1, user2) {
-    return [user1, user2].sort().join('_');
-  }
-
-  async function saveMatchHistory(gameData, winnerSymbol) {
-    const pairFolder = getPairFolder(window.activeUser, window.currentGame.opponent);
-    const matchesRef = collection(window.db, "chess-games", pairFolder, "matches");
-    const matchesSnapshot = await getDocs(matchesRef);
-    const matchNumber = matchesSnapshot.size + 1;
-    const matchId = `#${matchNumber}`;
-    await setDoc(doc(matchesRef, matchId), {
-      pgn: window.pgn,
-      winner: winnerSymbol,
-      stakes: gameData.stakes,
-      players: gameData.players,
-      timestamp: serverTimestamp()
-    });
-  }
-
-  // Start Game with Correct Color and Timer
-  window.startGame = async function(opponent, invite, role) {
-    if (!window.activeUser) {
-      window.showToast('User not logged in', true);
-      return;
+      this.addBoardLabels(boardContainer, isFlipped);
     }
-    gameStartSound.play().catch(error => console.error('Error playing game start sound:', error));
-    window.currentGame = { gameId: invite.id, opponent, coins: invite.coins, tokens: invite.tokens, stakes: { coins: invite.coins, tokens: invite.tokens } };
-    const userDoc = await getDoc(doc(window.db, "users", window.activeUser));
-    window.userData = userDoc.data();
-    const oppDoc = await getDoc(doc(window.db, "users", opponent));
-    window.opponentData = oppDoc.data();
-    window.gameDoc = doc(window.db, "games", invite.id);
-    document.getElementById('gameContainer').style.display = 'flex';
-    document.getElementById('surrenderBtn').style.display = 'block';
-    document.getElementById('drawBtn').style.display = 'block';
-    document.getElementById('winPopup').style.display = 'none'; // إخفاء النافذة المنبثقة عند بدء اللعبة
-    window.playerRemainingTime = 600;
-    window.opponentRemainingTime = 600;
-    if (role === 'inviter') {
-      const isWhiteFirst = Math.random() > 0.5;
-      window.playerColor = isWhiteFirst ? 'white' : 'black';
-      window.opponentColor = isWhiteFirst ? 'black' : 'white';
-      const firstTurn = isWhiteFirst ? window.activeUser : opponent;
-      const gameData = {
-        players: {
-          [window.activeUser]: window.playerColor,
-          [opponent]: window.opponentColor
-        },
-        pgn: '',
-        currentTurn: 'white',
-        currentPlayer: firstTurn,
-        stakes: { coins: invite.coins, tokens: invite.tokens },
-        status: 'playing',
-        startTime: serverTimestamp(),
+
+    resetPieces() {
+      this.pieces = [];
+      this.white.king = new King(5, 8, "white");
+      this.pieces.push(this.white.king);
+      this.pieces.push(new Queen(4, 8, "white"));
+      this.pieces.push(new Rook(1, 8, "white"));
+      this.pieces.push(new Rook(8, 8, "white"));
+      this.pieces.push(new Bishop(3, 8, "white"));
+      this.pieces.push(new Bishop(6, 8, "white"));
+      this.pieces.push(new Knight(2, 8, "white"));
+      this.pieces.push(new Knight(7, 8, "white"));
+      for (let i = 1; i <= 8; i++) {
+        this.pieces.push(new Pawn(i, 7, "white"));
+      }
+      this.black.king = new King(5, 1, "black");
+      this.pieces.push(this.black.king);
+      this.pieces.push(new Queen(4, 1, "black"));
+      this.pieces.push(new Rook(1, 1, "black"));
+      this.pieces.push(new Rook(8, 1, "black"));
+      this.pieces.push(new Bishop(3, 1, "black"));
+      this.pieces.push(new Bishop(6, 1, "black"));
+      this.pieces.push(new Knight(2, 1, "black"));
+      this.pieces.push(new Knight(7, 1, "black"));
+      for (let i = 1; i <= 8; i++) {
+        this.pieces.push(new Pawn(i, 2, "black"));
+      }
+      this.forceRenderBoard();
+    }
+
+    renderBoard() {
+      if (!this.boardSquares || this.boardSquares.length === 0) {
+        console.warn('boardSquares is empty or undefined, skipping render');
+        return;
+      }
+      const missingElements = this.boardSquares.filter(s => !s.element).length;
+      if (missingElements > 0) {
+        console.warn(`Missing ${missingElements} elements, rebuilding DOM`);
+        this.rebuildBoardDOM();
+      }
+      this.boardSquares.forEach(square => square.update());
+      this.updateMoveNotation();
+    }
+
+    forceRenderBoard() {
+      if (!this.boardSquares || this.boardSquares.length === 0) {
+        console.warn('boardSquares is empty, calling setupBoard');
+        this.setupBoard();
+        return;
+      }
+      this.renderBoard();
+    }
+
+    updateMoveNotation() {
+      const notation = document.getElementById('moveNotation');
+      if (!notation) return;
+      notation.innerHTML = '';
+      const moves = this.parsePgn(this.pgn);
+      moves.forEach((move, index) => {
+        const moveDiv = document.createElement('div');
+        moveDiv.className = 'move-entry';
+        moveDiv.textContent = `${index + 1}. ${move.white} ${move.black || ''}`;
+        notation.appendChild(moveDiv);
+      });
+      notation.scrollLeft = notation.scrollWidth;
+    }
+
+    parsePgn(pgn) {
+      const moves = [];
+      const moveStrings = pgn.trim().split(/\s+/);
+      for (let i = 0; i < moveStrings.length; i += 2) {
+        moves.push({
+          white: moveStrings[i],
+          black: moveStrings[i + 1] || ''
+        });
+      }
+      return moves;
+    }
+
+    applyPgnMove(moveText, color) {
+      if (!moveText) return false;
+      const move = this.parseMove(moveText, color);
+      if (!move) {
+        console.warn(`Invalid move text: ${moveText} for ${color}`);
+        return false;
+      }
+      
+      const pieces = this.pieces.filter(p => p.type === move.pieceType && p.color === color && !p.captured);
+      let startSquare = null;
+      let endSquare = this.getSquare(move.toX, move.toY);
+      let moveResult = null;
+      
+      if (!endSquare) {
+        console.warn(`End square not found at (${move.toX}, ${move.toY})`);
+        return false;
+      }
+      
+      for (let piece of pieces) {
+        const result = piece.isValidMove(endSquare);
+        if (result.valid && !this.kingExposedAfterMove(piece, endSquare)) {
+          startSquare = piece.square;
+          moveResult = result;
+          break;
+        }
+      }
+      
+      if (!startSquare) {
+        console.warn(`No valid piece found for move ${moveText}`);
+        return false;
+      }
+      
+      this.movePiece(startSquare, endSquare, { ...moveResult, promotionType: move.promotion });
+      return true;
+    }
+
+    parseMove(moveText, color) {
+      const files = { 'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8 };
+      let pieceType = 'pawn';
+      let moveStr = moveText;
+      if (moveText.startsWith('O-O')) {
+        pieceType = 'king';
+        moveStr = moveText === 'O-O' ? (color === 'white' ? 'Kg1' : 'Kg8') : (color === 'white' ? 'Kc1' : 'Kc8');
+      } else {
+        if (moveText.startsWith('Q')) pieceType = 'queen';
+        else if (moveText.startsWith('R')) pieceType = 'rook';
+        else if (moveText.startsWith('B')) pieceType = 'bishop';
+        else if (moveText.startsWith('N')) pieceType = 'knight';
+        else if (moveText.startsWith('K')) pieceType = 'king';
+      }
+      const to = moveStr.match(/[a-h][1-8]/);
+      if (!to) return null;
+      const toX = files[to[0][0]];
+      const rank = parseInt(to[0][1]);
+      const toY = 9 - rank;
+      const promotion = moveStr.includes('=') ? moveStr.split('=')[1].toLowerCase() : null;
+      return { pieceType, toX, toY, promotion };
+    }
+
+    squareClicked(event) {
+      if (!this.isPlayerTurn || this.currentGame.currentTurn !== this.playerColor) {
+        invalidSound.play().catch(error => console.error('Error playing invalid sound:', error));
+        this.showToast('Not your turn!', true);
+        return;
+      }
+      const square = this.boardSquares.find(s => s.element === event.target);
+      if (!square) {
+        console.warn('Clicked element not associated with any square');
+        return;
+      }
+      if (this.selectedSquare) {
+        if (square === this.selectedSquare) {
+          this.clearSelection();
+        } else if (square.piece && square.piece.color === this.currentPlayer.color) {
+          this.selectSquare(square);
+        } else {
+          this.makeMove(this.selectedSquare, square);
+        }
+      } else if (square.piece && square.piece.color === this.currentPlayer.color) {
+        this.selectSquare(square);
+      }
+    }
+
+    selectSquare(square) {
+      this.clearSelection();
+      this.selectedSquare = square;
+      square.selected = true;
+      square.update();
+      const validMoves = this.getValidMoves(square.piece);
+      validMoves.forEach(move => {
+        const target = this.getSquare(move.x, move.y);
+        if (target && target.element) {
+          target.element.classList.add('valid-move');
+        }
+      });
+    }
+
+    clearSelection() {
+      if (this.selectedSquare) {
+        this.selectedSquare.selected = false;
+        this.selectedSquare.update();
+        this.boardSquares.forEach(square => {
+          if (square.element) square.element.classList.remove('valid-move');
+        });
+        this.selectedSquare = null;
+      }
+    }
+
+    getValidMoves(piece) {
+      if (!piece) return [];
+
+      const moves = [];
+      const possibleMoves = [];
+
+      if (piece.type === 'pawn') {
+        const direction = piece.color === 'white' ? -1 : 1;
+        const startY = piece.color === 'white' ? 7 : 2;
+        possibleMoves.push({ x: piece.x, y: piece.y + direction });
+        if (piece.y === startY) {
+          possibleMoves.push({ x: piece.x, y: piece.y + 2 * direction });
+        }
+        possibleMoves.push({ x: piece.x - 1, y: piece.y + direction });
+        possibleMoves.push({ x: piece.x + 1, y: piece.y + direction });
+      } else if (piece.type === 'knight') {
+        const knightMoves = [
+          { x: piece.x + 2, y: piece.y + 1 }, { x: piece.x + 2, y: piece.y - 1 },
+          { x: piece.x - 2, y: piece.y + 1 }, { x: piece.x - 2, y: piece.y - 1 },
+          { x: piece.x + 1, y: piece.y + 2 }, { x: piece.x + 1, y: piece.y - 2 },
+          { x: piece.x - 1, y: piece.y + 2 }, { x: piece.x - 1, y: piece.y - 2 }
+        ];
+        possibleMoves.push(...knightMoves);
+      } else if (piece.type === 'bishop') {
+        for (let i = 1; i <= 8; i++) {
+          possibleMoves.push({ x: piece.x + i, y: piece.y + i });
+          possibleMoves.push({ x: piece.x + i, y: piece.y - i });
+          possibleMoves.push({ x: piece.x - i, y: piece.y + i });
+          possibleMoves.push({ x: piece.x - i, y: piece.y - i });
+        }
+      } else if (piece.type === 'rook') {
+        for (let i = 1; i <= 8; i++) {
+          possibleMoves.push({ x: piece.x + i, y: piece.y });
+          possibleMoves.push({ x: piece.x - i, y: piece.y });
+          possibleMoves.push({ x: piece.x, y: piece.y + i });
+          possibleMoves.push({ x: piece.x, y: piece.y - i });
+        }
+      } else if (piece.type === 'queen') {
+        for (let i = 1; i <= 8; i++) {
+          possibleMoves.push({ x: piece.x + i, y: piece.y });
+          possibleMoves.push({ x: piece.x - i, y: piece.y });
+          possibleMoves.push({ x: piece.x, y: piece.y + i });
+          possibleMoves.push({ x: piece.x, y: piece.y - i });
+          possibleMoves.push({ x: piece.x + i, y: piece.y + i });
+          possibleMoves.push({ x: piece.x + i, y: piece.y - i });
+          possibleMoves.push({ x: piece.x - i, y: piece.y + i });
+          possibleMoves.push({ x: piece.x - i, y: piece.y - i });
+        }
+      } else if (piece.type === 'king') {
+        possibleMoves.push(
+          { x: piece.x + 1, y: piece.y }, { x: piece.x - 1, y: piece.y },
+          { x: piece.x, y: piece.y + 1 }, { x: piece.x, y: piece.y - 1 },
+          { x: piece.x + 1, y: piece.y + 1 }, { x: piece.x + 1, y: piece.y - 1 },
+          { x: piece.x - 1, y: piece.y + 1 }, { x: piece.x - 1, y: piece.y - 1 }
+        );
+        if (!piece.player.kingMoved && !piece.player.checked) {
+          possibleMoves.push({ x: piece.x + 2, y: piece.y });
+          possibleMoves.push({ x: piece.x - 2, y: piece.y });
+        }
+      }
+
+      for (const move of possibleMoves) {
+        if (move.x < 1 || move.x > 8 || move.y < 1 || move.y > 8) continue;
+        const target = this.getSquare(move.x, move.y);
+        if (!target) continue;
+        const result = piece.isValidMove(target);
+        if (result.valid && !this.kingExposedAfterMove(piece, target)) {
+          moves.push({ x: move.x, y: move.y, result });
+        }
+      }
+
+      return moves;
+    }
+
+    async makeMove(start, end) {
+      if (!this.isPlayerTurn || this.currentGame.currentTurn !== this.playerColor) {
+        invalidSound.play().catch(error => console.error('Error playing invalid sound:', error));
+        this.showToast('Not your turn!', true);
+        this.clearSelection();
+        return;
+      }
+      const moveResult = start.piece.isValidMove(end);
+      if (!moveResult.valid || this.kingExposedAfterMove(start.piece, end)) {
+        invalidSound.play().catch(error => console.error('Error playing invalid sound:', error));
+        this.showToast('Invalid move!', true);
+        this.clearSelection();
+        return;
+      }
+      this.pendingMove = { start, end, moveResult };
+      if (moveResult.promotion) {
+        document.getElementById('promotionMessage').classList.add('show');
+        document.getElementById('promotionList').className = start.piece.color;
+      } else {
+        await this.executeMove(start, end, moveResult);
+      }
+    }
+
+    async promote(type) {
+      document.getElementById('promotionMessage').classList.remove('show');
+      const { start, end, moveResult } = this.pendingMove;
+      moveResult.promotionType = type;
+      await this.executeMove(start, end, moveResult);
+      promoteSound.play().catch(error => console.error('Error playing promote sound:', error));
+      this.pendingMove = null;
+    }
+
+    async executeMove(start, end, moveResult) {
+      const piece = start.piece;
+      if (!piece) {
+        console.warn(`No piece at start square (${start.x}, ${start.y})`);
+        this.clearSelection();
+        return;
+      }
+      
+      let moveText = this.generateMoveText(start, end, piece, moveResult);
+      this.movePiece(start, end, moveResult);
+      
+      if (moveResult.castling) {
+        castleSound.play().catch(error => console.error('Error playing castle sound:', error));
+      } else if (moveResult.capture || moveResult.enPassant) {
+        captureSound.play().catch(error => console.error('Error playing capture sound:', error));
+      } else if (this.kingExposed(piece.player === this.white ? this.black.king : this.white.king)) {
+        checkSound.play().catch(error => console.error('Error playing check sound:', error));
+      } else {
+        moveSound.play().catch(error => console.error('Error playing move sound:', error));
+      }
+      
+      this.pgn += (this.pgn ? ' ' : '') + moveText;
+      
+      const nextTurn = this.currentGame.currentTurn === 'white' ? 'black' : 'white';
+      const nextPlayer = this.currentGame.currentPlayer === this.activeUser ?
+        this.currentGame.opponent : this.activeUser;
+      
+      const updateData = {
+        pgn: this.pgn,
+        currentTurn: nextTurn,
+        currentPlayer: nextPlayer,
         turnStartTime: serverTimestamp(),
-        times: {
-          [window.activeUser]: 600,
-          [opponent]: 600
-        },
+        [`times.${this.activeUser}`]: this.playerRemainingTime,
         drawOffer: null
       };
-      await setDoc(window.gameDoc, gameData);
-      window.currentGame.pgn = '';
-      window.currentGame.currentTurn = 'white';
-      window.currentGame.currentPlayer = firstTurn;
-      window.currentGame.status = 'playing';
-      window.currentGame.times = gameData.times;
-      hideNotification();
+      
+      try {
+        await updateDoc(this.gameDoc, updateData);
+        
+        this.currentPlayer = nextTurn === 'white' ? this.white : this.black;
+        this.isPlayerTurn = nextPlayer === this.activeUser;
+        
+        this.forceRenderBoard();
+        this.startTimer();
+        
+        // Check for checkmate or stalemate
+        const opponentPlayer = piece.player === this.white ? this.black : this.white;
+        if (this.isCheckmate(opponentPlayer)) {
+          const winner = nextTurn;
+          await updateDoc(this.gameDoc, { status: 'ended', winner });
+          await this.saveMatchHistory(this.currentGame, winner);
+          checkmateSound.play().catch(error => console.error('Error playing checkmate sound:', error));
+          // Show win popup for checkmate
+          document.getElementById('winTitle').textContent = `${piece.player.color} wins by checkmate!`;
+          document.getElementById('winAmount').textContent = winner === this.playerColor 
+            ? `You won ${this.currentGame.stakes.coins * 2} coins and ${this.currentGame.stakes.tokens * 2} fall tokens!`
+            : `You lost ${this.currentGame.stakes.coins} coins and ${this.currentGame.stakes.tokens} fall tokens.`;
+          document.getElementById('winPopup').style.display = 'block';
+        } else if (this.isStalemate(opponentPlayer)) {
+          await updateDoc(this.gameDoc, { status: 'ended', winner: 'draw' });
+          await this.saveMatchHistory(this.currentGame, 'draw');
+          // Show win popup for stalemate
+          document.getElementById('winTitle').textContent = 'Game ended in stalemate!';
+          document.getElementById('winAmount').textContent = `You get back ${this.currentGame.stakes.coins} coins and ${this.currentGame.stakes.tokens} fall tokens.`;
+          document.getElementById('winPopup').style.display = 'block';
+        }
+        
+      } catch (error) {
+        console.error('Error updating game in Firebase:', error);
+        this.showToast('Failed to update move', true);
+        this.movePiece(end, start, { ...moveResult, revert: true });
+        this.pgn = this.pgn.replace(new RegExp(`\\s*${moveText}$`), '');
+        this.forceRenderBoard();
+      }
+      
+      this.clearSelection();
     }
-    window.isPlayerTurn = window.playerColor === 'white';
-    setupBoard();
-    startTimer();
-    listenForGameUpdates();
-  };
 
-  // Listen for Game Updates with Turn Enforcement
-  window.listenForGameUpdates = function() {
-    onSnapshot(window.gameDoc, async (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        
-        if (data.players) {
-          window.playerColor = data.players[window.activeUser];
-          window.opponentColor = data.players[window.currentGame.opponent];
+    movePiece(start, end, moveResult) {
+      const piece = start.piece;
+      if (!piece) {
+        console.warn(`No piece at start square (${start.x}, ${start.y})`);
+        return;
+      }
+      if (moveResult.castling) {
+        const direction = moveResult.castling;
+        const rookX = direction === 'right' ? 8 : 1;
+        const rook = this.getSquare(rookX, piece.y)?.piece;
+        const newRookX = direction === 'right' ? end.x - 1 : end.x + 1;
+        const rookStartSquare = this.getSquare(rookX, piece.y);
+        const rookEndSquare = this.getSquare(newRookX, piece.y);
+        if (rook && rookStartSquare && rookEndSquare) {
+          rookStartSquare.piece = null;
+          rookEndSquare.setPiece(rook);
+          piece.player.rooksMoved[direction] = true;
+          piece.player.castled = true;
         }
-        
-        window.currentGame = { ...window.currentGame, ...data };
-        
-        window.isPlayerTurn = data.currentPlayer === window.activeUser;
-        
-        if (window.playerColor) {
-          renderPlayerInfo();
-          renderOpponentInfo();
-          
-          document.getElementById('board').classList.toggle('board-flipped', window.playerColor === 'black');
-          
-          if (data.pgn !== window.pgn) {
-            applyPgnToBoard(data.pgn);
+      }
+      if (moveResult.enPassant) {
+        const capturedPawn = this.getSquare(end.x, start.y)?.piece;
+        if (capturedPawn) capturedPawn.captured = true;
+      }
+      if (end.piece) end.piece.captured = true;
+      start.piece = null;
+      if (moveResult.promotion && moveResult.promotionType) {
+        const NewPiece = { queen: Queen, rook: Rook, bishop: Bishop, knight: Knight }[moveResult.promotionType];
+        const newPiece = new NewPiece(end.x, end.y, piece.color);
+        this.pieces = this.pieces.filter(p => p !== piece);
+        this.pieces.push(newPiece);
+        end.setPiece(newPiece);
+      } else {
+        end.setPiece(piece);
+      }
+      piece.firstMove = false;
+      if (piece.type === 'king') piece.player.kingMoved = true;
+      if (piece.type === 'rook') {
+        piece.player.rooksMoved[piece.x === 8 ? 'right' : 'left'] = true;
+      }
+      if (!moveResult.revert) {
+        this.moveHistory.push({ piece, from: start, to: end });
+      }
+      this.checkForCheck();
+      this.forceRenderBoard();
+    }
+
+    generateMoveText(start, end, piece, moveResult) {
+      const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+      let moveText = '';
+      if (piece.type === 'king' && moveResult.castling) {
+        moveText = moveResult.castling === 'right' ? 'O-O' : 'O-O-O';
+      } else {
+        const pieceChar = { king: 'K', queen: 'Q', rook: 'R', bishop: 'B', knight: 'N', pawn: '' }[piece.type];
+        moveText += pieceChar;
+        if (moveResult.capture || moveResult.enPassant) moveText += 'x';
+        moveText += files[end.x - 1] + (9 - end.y);
+        if (moveResult.promotion && moveResult.promotionType) {
+          moveText += '=' + moveResult.promotionType.charAt(0).toUpperCase();
+        }
+      }
+      if (this.isCheckmate(piece.player === this.white ? this.black : this.white)) {
+        moveText += '#';
+      } else if (this.kingExposed(piece.player === this.white ? this.black.king : this.white.king)) {
+        moveText += '+';
+      }
+      return moveText;
+    }
+
+    isCheckmate(player) {
+      if (!this.kingExposed(player.king)) return false;
+      const pieces = this.pieces.filter(p => p.color === player.color && !p.captured);
+      for (let piece of pieces) {
+        const moves = this.getValidMoves(piece);
+        if (moves.length > 0) return false;
+      }
+      return true;
+    }
+
+    isStalemate(player) {
+      if (this.kingExposed(player.king)) return false;
+      const pieces = this.pieces.filter(p => p.color === player.color && !p.captured);
+      for (let piece of pieces) {
+        const moves = this.getValidMoves(piece);
+        if (moves.length > 0) return false;
+      }
+      return true;
+    }
+
+    checkForCheck() {
+      this.white.checked = this.kingExposed(this.white.king);
+      this.black.checked = this.kingExposed(this.black.king);
+      this.forceRenderBoard();
+    }
+
+    applyPgnToBoard(pgn) {
+      if (this.pgn === pgn) return;
+
+      console.log('Applying PGN to board:', pgn);
+
+      const oldMoves = this.pgn.trim().split(/\s+/).filter(Boolean);
+      const newMoves = pgn.trim().split(/\s+/).filter(Boolean);
+
+      if (newMoves.length < oldMoves.length) {
+        console.warn('New PGN shorter than old, resetting board');
+        this.resetPieces();
+        this.pgn = '';
+        oldMoves.length = 0;
+      }
+
+      const addedMoves = newMoves.slice(oldMoves.length);
+      let color = (oldMoves.length % 2 === 0) ? 'white' : 'black';
+
+      for (const moveText of addedMoves) {
+        console.log(`Applying ${color} move: ${moveText}`);
+        if (!this.applyPgnMove(moveText, color)) {
+          console.warn(`Failed to apply move: ${moveText} for ${color}`);
+        }
+        color = color === 'white' ? 'black' : 'white';
+      }
+
+      this.pgn = pgn;
+      this.currentPlayer = (newMoves.length % 2 === 0) ? this.white : this.black;
+      this.forceRenderBoard();
+      this.updateMoveNotation();
+    }
+
+    isKingVsKing() {
+      const whitePieces = this.pieces.filter(p => p.color === 'white' && !p.captured);
+      const blackPieces = this.pieces.filter(p => p.color === 'black' && !p.captured);
+      return whitePieces.length === 1 && blackPieces.length === 1 && 
+             whitePieces[0].type === 'king' && blackPieces[0].type === 'king';
+    }
+
+    getSquare(x, y) {
+      const square = this.boardSquares.find(s => s.x === x && s.y === y);
+      if (!square) {
+        console.warn(`No square found at (${x}, ${y})`);
+      }
+      return square;
+    }
+
+    isPathClear(start, end) {
+      const dx = Math.sign(end.x - start.x);
+      const dy = Math.sign(end.y - start.y);
+      let x = start.x + dx;
+      let y = start.y + dy;
+      while (x !== end.x || y !== end.y) {
+        if (this.getSquare(x, y).piece) return false;
+        x += dx;
+        y += dy;
+      }
+      return true;
+    }
+
+    isEnPassant(pawn, end) {
+      if (Math.abs(end.x - pawn.x) === 1 && end.y === pawn.y + (pawn.color === 'white' ? -1 : 1)) {
+        const lastMove = this.moveHistory[this.moveHistory.length - 1];
+        if (lastMove && lastMove.piece.type === 'pawn' && Math.abs(lastMove.from.y - lastMove.to.y) === 2 && lastMove.to.x === end.x && lastMove.to.y === pawn.y) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    kingExposed(king) {
+      const opponentColor = king.color === 'white' ? 'black' : 'white';
+      const opponentPieces = this.pieces.filter(p => p.color === opponentColor && !p.captured);
+      for (let piece of opponentPieces) {
+        const result = piece.isValidMove(king.square);
+        if (result.valid && (!result.capture || king.square.piece)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    kingExposedAfterMove(piece, end) {
+      const originalSquare = piece.square;
+      const targetPiece = end.piece;
+      piece.square.piece = null;
+      end.piece = piece;
+      piece.x = end.x;
+      piece.y = end.y;
+      piece.square = end;
+      const exposed = this.kingExposed(piece.player.king);
+      piece.x = originalSquare.x;
+      piece.y = originalSquare.y;
+      piece.square = originalSquare;
+      originalSquare.piece = piece;
+      end.piece = targetPiece;
+      return exposed;
+    }
+
+    async surrenderGame() {
+      if (confirm('Are you sure you want to surrender?')) {
+        const winner = this.playerColor === 'white' ? 'black' : 'white';
+        try {
+          await updateDoc(this.gameDoc, { status: 'ended', winner });
+          await this.saveMatchHistory(this.currentGame, winner);
+          this.showToast('You surrendered the game');
+        } catch (error) {
+          console.error('Error surrendering game:', error);
+          this.showToast('Failed to surrender game', true);
+        }
+      }
+    }
+
+    async endGameWithResult(winner) {
+      clearInterval(this.turnTimerInterval);
+      this.turnTimerInterval = null;
+      let message = '';
+      let amountText = '';
+      const coins = this.currentGame.stakes.coins;
+      const tokens = this.currentGame.stakes.tokens;
+      const totalPot = coins * 2 + tokens * 2 * 1000;
+      
+      if (winner === 'draw') {
+        message = 'Game ended in a draw!';
+        amountText = `You get back ${coins} coins and ${tokens} fall tokens.`;
+        await this.updateUserBalance(this.activeUser, coins, tokens);
+        await this.updateUserBalance(this.currentGame.opponent, coins, tokens);
+      } else if (winner === this.playerColor) {
+        message = 'You won!';
+        amountText = `You won ${totalPot} coins and ${tokens * 2} fall tokens!`;
+        await this.updateUserBalance(this.activeUser, totalPot, tokens * 2);
+      } else {
+        message = 'You lost!';
+        amountText = `You lost ${coins} coins and ${tokens} fall tokens.`;
+      }
+      
+      // Show win popup for all cases (except checkmate and stalemate which are handled in executeMove)
+      if (!document.getElementById('winPopup').style.display === 'block') {
+        document.getElementById('winTitle').textContent = message;
+        document.getElementById('winAmount').textContent = amountText;
+        document.getElementById('winPopup').style.display = 'block';
+      }
+      
+      await deleteDoc(doc(db, "gameInvites", this.currentGame.gameId));
+      await deleteDoc(this.gameDoc);
+      this.currentGame = null;
+      this.gameDoc = null;
+      this.isPlayerTurn = false;
+    }
+
+    async updateUserBalance(username, coins, tokens) {
+      try {
+        const userRef = doc(db, "users", username);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          await updateDoc(userRef, {
+            points: userData.points + coins,
+            fallTokens: userData.fallTokens + tokens
+          });
+        }
+      } catch (error) {
+        console.error('Error updating user balance:', error);
+        this.showToast('Failed to update balance', true);
+      }
+    }
+
+    endGame() {
+      document.getElementById('gameContainer').style.display = 'none';
+      document.getElementById('winPopup').style.display = 'none';
+      document.getElementById('surrenderBtn').style.display = 'none';
+      document.getElementById('drawBtn').style.display = 'none';
+      this.pgn = '';
+      this.moveHistory = [];
+      this.boardSquares = [];
+      this.pieces = [];
+      this.selectedSquare = null;
+      this.currentPlayer = this.white;
+      this.turn = 1;
+      this.playerRemainingTime = 600;
+      this.opponentRemainingTime = 600;
+      clearInterval(this.turnTimerInterval);
+      this.turnTimerInterval = null;
+      this.loadFriends();
+    }
+
+    newGame() {
+      document.getElementById('endMessage').style.display = 'none';
+      document.getElementById('winPopup').style.display = 'none';
+      this.setupBoard();
+      gameStartSound.play().catch(error => console.error('Error playing game start sound:', error));
+    }
+
+    async loadFriends() {
+      try {
+        const userDoc = await getDoc(doc(db, "users", this.activeUser));
+        if (!userDoc.exists()) {
+          this.showToast('User data not found', true);
+          return;
+        }
+        this.friends = userDoc.data().friends || [];
+        this.friendsData = [];
+        const friendsList = document.getElementById('friendsList');
+        friendsList.innerHTML = '<div style="color: white; padding: 5px;"><img src="../icons/loading_spinner.gif" height="15" loading="lazy" /> Loading friends...</div>';
+        if (this.friends.length === 0) {
+          friendsList.innerHTML = '<div class="no-results">No friends found</div>';
+          return;
+        }
+        for (let friend of this.friends) {
+          const friendDoc = await getDoc(doc(db, "users", friend));
+          if (friendDoc.exists()) {
+            this.friendsData.push({ username: friend, ...friendDoc.data() });
           }
         }
+        this.renderFriends();
+      } catch (error) {
+        console.error('Error loading friends:', error);
+        this.showToast('Failed to load friends', true);
+      }
+    }
+
+   renderFriends() {
+  const friendsList = document.getElementById('friendsList');
+  friendsList.innerHTML = '';
+  if (this.friendsData.length === 0) {
+    friendsList.innerHTML = '<div class="no-results">No friends found</div>';
+    return;
+  }
+  this.friendsData.forEach(friend => {
+    const userContainer = document.createElement('div');
+    userContainer.className = 'user-container';
+    userContainer.innerHTML = `
+      <div class="user-header">
+        <img src="${friend.photoURL || '../icons/player-head-128-052ba.png'}" class="user-avatar">
+        <div class="user-details">
+          <div class="user-name">${friend.username}</div>
+          <div class="user-info-right">
+            <div class="points"><img src="../icons/coinss_gif.gif" height="12"> ${this.formatPoints(friend.points)}</div>
+            <div class="fall-tokens"><img src="../icons/fall_token.png" height="12"> ${this.formatPoints(friend.fallTokens)}</div>
+          </div>
+        </div>
+      </div>
+      <div class="user-bio">${friend.bio || 'No bio available'}</div>
+      <div class="action-buttons">
+        <button class="btn btn-play" onclick="window.showStakeModal('${friend.username}', this)">Play</button>
+        <button class="btn btn-unfollow" onclick="window.unfollowFriend('${friend.username}')">Unfollow</button>
+      </div>
+    `;
+    friendsList.appendChild(userContainer);
+  });
+}
+
+   searchFriends() {
+  const searchTerm = document.getElementById('friendsSearch').value.toLowerCase();
+  const filteredFriends = this.friendsData.filter(friend => friend.username.toLowerCase().includes(searchTerm));
+  const friendsList = document.getElementById('friendsList');
+  friendsList.innerHTML = '';
+  if (filteredFriends.length === 0) {
+    friendsList.innerHTML = '<div class="no-results">No friends found</div>';
+    return;
+  }
+  filteredFriends.forEach(friend => {
+    const userContainer = document.createElement('div');
+    userContainer.className = 'user-container';
+    userContainer.innerHTML = `
+      <div class="user-header">
+        <img src="${friend.photoURL || '../icons/player-head-128-052ba.png'}" class="user-avatar">
+        <div class="user-details">
+          <div class="user-name">${friend.username}</div>
+          <div class="user-info-right">
+            <div class="points"><img src="../icons/coinss_gif.gif" height="12"> ${this.formatPoints(friend.points)}</div>
+            <div class="fall-tokens"><img src="../icons/fall_token.png" height="12"> ${this.formatPoints(friend.fallTokens)}</div>
+          </div>
+        </div>
+      </div>
+      <div class="user-bio">${friend.bio || 'No bio available'}</div>
+      <div class="action-buttons">
+        <button class="btn btn-play" onclick="window.showStakeModal('${friend.username}', this)">Play</button>
+        <button class="btn btn-unfollow" onclick="window.unfollowFriend('${friend.username}')">Remove</button>
+      </div>
+    `;
+    friendsList.appendChild(userContainer);
+  });
+}
+
+    async unfollowFriend(username) {
+      if (confirm(`Removing ${username}?`)) {
+        try {
+          const userRef = doc(db, "users", this.activeUser);
+          await updateDoc(userRef, {
+            friends: arrayRemove(username)
+          });
+          this.showToast(`Removed ${username}`);
+          this.loadFriends();
+        } catch (error) {
+          console.error('Error removing friend:', error);
+          this.showToast('Failed to remove friend', true);
+        }
+      }
+    }
+
+    async showGameHistory() {
+      const modal = document.getElementById('gameHistoryModal');
+      const list = document.getElementById('gameHistoryList');
+      list.innerHTML = '<div style="color: white; padding: 5px;"><img src="../icons/loading_spinner.gif" height="15" loading="lazy" /> Loading game history...</div>';
+      modal.style.display = 'block';
+      
+      try {
+        // Get all friends
+        const friends = this.friendsData.map(f => f.username);
+        const allGames = [];
         
-        if (data.status === 'ended') {
-          endGameWithResult(data.winner);
-          document.getElementById('surrenderBtn').style.display = 'none';
-          document.getElementById('drawBtn').style.display = 'none';
-          clearInterval(window.turnTimerInterval);
-          if (data.winner !== 'draw') {
-            checkmateSound.play().catch(error => console.error('Error playing checkmate sound:', error));
-          }
+        // Get games with each friend
+        for (const friend of friends) {
+          const pairFolder = this.getPairFolder(this.activeUser, friend);
+          const matchesRef = collection(db, "chess-games", pairFolder, "matches");
+          const matchesSnapshot = await getDocs(matchesRef);
+          
+          matchesSnapshot.forEach(doc => {
+            const game = doc.data();
+            game.id = doc.id;
+            game.opponent = friend;
+            allGames.push(game);
+          });
+        }
+        
+        // Sort by timestamp (newest first)
+        allGames.sort((a, b) => {
+          const timeA = a.timestamp ? a.timestamp.toMillis() : 0;
+          const timeB = b.timestamp ? b.timestamp.toMillis() : 0;
+          return timeB - timeA;
+        });
+        
+        // Display games
+        list.innerHTML = '';
+        if (allGames.length === 0) {
+          list.innerHTML = '<div class="no-results">No game history found</div>';
           return;
         }
         
-        if (isKingVsKing()) {
-          await updateDoc(window.gameDoc, { status: 'ended', winner: 'draw' });
-          await saveMatchHistory(data, 'draw');
-        }
-        
-        window.playerRemainingTime = data.times[window.activeUser] || 600;
-        window.opponentRemainingTime = data.times[window.currentGame.opponent] || 600;
-        
-        if (data.turnStartTime) {
-          const used = Math.floor((Date.now() - data.turnStartTime.toMillis()) / 1000);
-          const currentRemaining = data.times[data.currentPlayer] - used;
+        allGames.forEach(game => {
+          const gameDiv = document.createElement('div');
+          let resultClass = 'draw';
+          let resultText = 'Draw';
           
-          if (window.activeUser === data.currentPlayer) {
-            window.playerRemainingTime = Math.max(0, currentRemaining);
-          } else {
-            window.opponentRemainingTime = Math.max(0, currentRemaining);
+          if (game.winner === 'white' || game.winner === 'black') {
+            const playerColor = game.players[this.activeUser];
+            if (game.winner === playerColor) {
+              resultClass = 'win';
+              resultText = 'Win';
+            } else {
+              resultClass = 'loss';
+              resultText = 'Loss';
+            }
           }
           
-          if (currentRemaining <= 0) {
-            handleTimeout();
-          }
-        }
-        
-        updateTimerDisplay();
-        
-        if (data.drawOffer && data.drawOffer.to === window.activeUser && data.drawOffer.status === 'pending') {
-          showDrawOfferNotification(data.drawOffer);
-        }
+          gameDiv.className = `game-result ${resultClass}`;
+          gameDiv.innerHTML = `
+            <div><strong>vs ${game.opponent}</strong> - ${resultText}</div>
+            <div>Stakes: ${game.stakes.coins} coins, ${game.stakes.tokens} tokens</div>
+            <div>Date: ${game.timestamp ? new Date(game.timestamp.toMillis()).toLocaleDateString() : 'Unknown'}</div>
+          `;
+          list.appendChild(gameDiv);
+        });
+      } catch (error) {
+        console.error('Error loading game history:', error);
+        list.innerHTML = '<div class="no-results">Error loading game history</div>';
       }
-    });
-  };
-
-  // Render Player Info
-  function renderPlayerInfo() {
-    const info = document.getElementById('playerInfo');
-    info.innerHTML = `
-      <img src="${window.userData.photoURL || '../icons/player-head-128-052ba.png'}" class="user-avatar">
-      <div>
-        <div>${window.activeUser} playing as ${window.playerColor}</div>
-        <div class="points"><img src="../icons/coinss_gif.gif" height="12"> ${window.formatPoints(window.userData.points)}</div>
-        <div class="fall-tokens"><img src="../icons/fall_token.png" height="12"> ${window.formatPoints(window.userData.fallTokens)}</div>
-      </div>
-      <div id="playerTimer" class="player-timer">${formatTime(window.playerRemainingTime)}</div>
-    `;
-  }
-
-  // Render Opponent Info
-  function renderOpponentInfo() {
-    const info = document.getElementById('opponentInfo');
-    info.innerHTML = `
-      <img src="${window.opponentData.photoURL || '../icons/player-head-128-052ba.png'}" class="user-avatar">
-      <div>
-        <div>${window.currentGame.opponent} playing as ${window.opponentColor}</div>
-        <div class="points"><img src="../icons/coinss_gif.gif" height="12"> ${window.formatPoints(window.opponentData.points)}</div>
-        <div class="fall-tokens"><img src="../icons/fall_token.png" height="12"> ${window.formatPoints(window.opponentData.fallTokens)}</div>
-      </div>
-      <div id="opponentTimer" class="player-timer">${formatTime(window.opponentRemainingTime)}</div>
-    `;
-  }
-
-  function formatTime(seconds) {
-    const min = Math.floor(seconds / 60);
-    const sec = seconds % 60;
-    return `${min}:${sec < 10 ? '0' : ''}${sec}`;
-  }
-
-  // Timer Logic
-  function startTimer() {
-    clearInterval(window.turnTimerInterval);
-    window.turnTimerInterval = setInterval(() => {
-      if (window.currentGame.status !== 'playing') {
-        clearInterval(window.turnTimerInterval);
-        return;
-      }
-      if (window.isPlayerTurn && window.currentGame.currentTurn === window.playerColor) {
-        window.playerRemainingTime = Math.max(0, window.playerRemainingTime - 1);
-        updateTimerDisplay();
-        if (window.playerRemainingTime <= 0) {
-          handleTimeout();
-        }
-      } else if (!window.isPlayerTurn && window.currentGame.currentTurn === window.opponentColor) {
-        window.opponentRemainingTime = Math.max(0, window.opponentRemainingTime - 1);
-        updateTimerDisplay();
-        if (window.opponentRemainingTime <= 0) {
-          handleTimeout();
-        }
-      }
-    }, 1000);
-  }
-
-  function updateTimerDisplay() {
-    const playerTimer = document.getElementById('playerTimer');
-    const opponentTimer = document.getElementById('opponentTimer');
-    if (playerTimer) playerTimer.textContent = formatTime(window.playerRemainingTime);
-    if (opponentTimer) opponentTimer.textContent = formatTime(window.opponentRemainingTime);
-  }
-
-  async function handleTimeout() {
-    const winner = window.currentGame.currentPlayer === window.activeUser ? window.opponentColor : window.playerColor;
-    await updateDoc(window.gameDoc, { status: 'ended', winner });
-    await saveMatchHistory(window.currentGame, winner);
-  }
-
-  // Draw Offer
-  window.offerDraw = async function() {
-    if (confirm('Offer draw?')) {
-      await updateDoc(window.gameDoc, {
-        drawOffer: {
-          from: window.activeUser,
-          to: window.currentGame.opponent,
-          status: 'pending'
-        }
-      });
-      window.showToast('Draw offered');
     }
-  };
 
-  window.showDrawOfferNotification = function(offer) {
-    document.getElementById('drawText').innerHTML = `${offer.from} wants a draw`;
-    document.getElementById('drawCountdown').textContent = '10';
-    const notif = document.getElementById('drawOfferNotif');
-    notif.style.display = 'block';
-    notif.classList.add('show');
-    window.currentDrawOffer = offer;
-    let time = 10;
-    const interval = setInterval(() => {
-      time--;
-      document.getElementById('drawCountdown').textContent = time;
-      if (time <= 0) {
-        clearInterval(interval);
-        rejectDraw();
-      }
-    }, 1000);
-  };
+    closeGameHistory() {
+      document.getElementById('gameHistoryModal').style.display = 'none';
+    }
 
-  window.acceptDraw = async function() {
-    await updateDoc(window.gameDoc, { status: 'ended', winner: 'draw', drawOffer: null });
-    await saveMatchHistory(window.currentGame, 'draw');
-    hideDrawNotification();
-    window.showToast('Draw accepted');
-  };
-
-  window.rejectDraw = async function() {
-    await updateDoc(window.gameDoc, { drawOffer: null });
-    hideDrawNotification();
-    window.showToast('Draw rejected');
-  };
-
-  function hideDrawNotification() {
-    const notif = document.getElementById('drawOfferNotif');
-    notif.classList.remove('show');
-    notif.classList.add('hide');
-    setTimeout(() => {
-      notif.style.display = 'none';
-      notif.classList.remove('hide');
-    }, 500);
-    window.currentDrawOffer = null;
+    goBack() {
+      window.location.href = '../index.html';
+    }
   }
 
-  // Chess Logic
-  function Player(color) {
-    this.checked = false;
-    this.color = color;
-    this.castled = false;
-    this.king = null;
-    this.kingMoved = false;
-    this.rooksMoved = { left: false, right: false };
-    this.promote = null;
-    this.moved = null;
+  // Chess Pieces Classes
+  class Player {
+    constructor(color) {
+      this.checked = false;
+      this.color = color;
+      this.castled = false;
+      this.king = null;
+      this.kingMoved = false;
+      this.rooksMoved = { left: false, right: false };
+      this.promote = null;
+      this.moved = null;
+    }
   }
 
-  function SquareObject(x, y, color, selected, element, piece) {
-    this.x = x;
-    this.y = y;
-    this.color = color;
-    this.element = element;
-    this.piece = piece;
-    this.selected = selected;
-    this.update = function() {
+  class SquareObject {
+    constructor(x, y, color, selected, element, piece) {
+      this.x = x;
+      this.y = y;
+      this.color = color;
+      this.element = element;
+      this.piece = piece;
+      this.selected = selected;
+    }
+
+    update() {
       this.element.className = `square ${this.color}`;
       if (this.selected) {
         this.element.classList.add('selected');
@@ -1281,8 +2298,9 @@
       } else {
         this.element.classList.add('empty');
       }
-    };
-    this.setPiece = function(piece) {
+    }
+
+    setPiece(piece) {
       this.piece = piece;
       if (piece) {
         piece.square = this;
@@ -1290,24 +2308,29 @@
         piece.y = this.y;
       }
       this.update();
-    };
+    }
   }
 
-  function Piece(x, y, color, type, player) {
-    this.x = x;
-    this.y = y;
-    this.color = color;
-    this.type = type;
-    this.player = player;
-    this.captured = false;
-    this.square = getSquare(x, y);
-    this.firstMove = true;
-    if (this.square) this.square.setPiece(this);
+  class Piece {
+    constructor(x, y, color, type, player) {
+      this.x = x;
+      this.y = y;
+      this.color = color;
+      this.type = type;
+      this.player = player;
+      this.captured = false;
+      this.square = gameManager.getSquare(x, y);
+      this.firstMove = true;
+      if (this.square) this.square.setPiece(this);
+    }
   }
 
-  function King(x, y, color) {
-    Piece.call(this, x, y, color, 'king', color === 'white' ? window.white : window.black);
-    this.isValidMove = function(end) {
+  class King extends Piece {
+    constructor(x, y, color) {
+      super(x, y, color, 'king', color === 'white' ? gameManager.white : gameManager.black);
+    }
+
+    isValidMove(end) {
       const dx = Math.abs(end.x - this.x);
       const dy = Math.abs(end.y - this.y);
       if (dx <= 1 && dy <= 1 && !(dx === 0 && dy === 0)) {
@@ -1316,11 +2339,11 @@
       if (!this.player.kingMoved && dy === 0 && dx === 2 && !this.player.checked) {
         const direction = end.x > this.x ? 'right' : 'left';
         const rookX = direction === 'right' ? 8 : 1;
-        const rook = getSquare(rookX, this.y).piece;
+        const rook = gameManager.getSquare(rookX, this.y).piece;
         if (rook && rook.type === 'rook' && !this.player.rooksMoved[direction]) {
           const step = direction === 'right' ? 1 : -1;
           for (let x = this.x + step; x !== rookX; x += step) {
-            if (getSquare(x, this.y).piece || kingExposedAfterMove(this, getSquare(x, this.y))) {
+            if (gameManager.getSquare(x, this.y).piece || gameManager.kingExposedAfterMove(this, gameManager.getSquare(x, this.y))) {
               return { valid: false };
             }
           }
@@ -1328,63 +2351,73 @@
         }
       }
       return { valid: false };
-    };
+    }
   }
-  King.prototype = Object.create(Piece.prototype);
 
-  function Queen(x, y, color) {
-    Piece.call(this, x, y, color, 'queen', color === 'white' ? window.white : window.black);
-    this.isValidMove = function(end) {
+  class Queen extends Piece {
+    constructor(x, y, color) {
+      super(x, y, color, 'queen', color === 'white' ? gameManager.white : gameManager.black);
+    }
+
+    isValidMove(end) {
       const dx = Math.abs(end.x - this.x);
       const dy = Math.abs(end.y - this.y);
       if (dx === 0 || dy === 0 || dx === dy) {
-        if (isPathClear(this.square, end)) {
+        if (gameManager.isPathClear(this.square, end)) {
           return { valid: true };
         }
       }
       return { valid: false };
-    };
+    }
   }
-  Queen.prototype = Object.create(Piece.prototype);
 
-  function Rook(x, y, color) {
-    Piece.call(this, x, y, color, 'rook', color === 'white' ? window.white : window.black);
-    this.isValidMove = function(end) {
-      if ((end.x === this.x || end.y === this.y) && isPathClear(this.square, end)) {
+  class Rook extends Piece {
+    constructor(x, y, color) {
+      super(x, y, color, 'rook', color === 'white' ? gameManager.white : gameManager.black);
+    }
+
+    isValidMove(end) {
+      if ((end.x === this.x || end.y === this.y) && gameManager.isPathClear(this.square, end)) {
         return { valid: true };
       }
       return { valid: false };
-    };
+    }
   }
-  Rook.prototype = Object.create(Piece.prototype);
 
-  function Bishop(x, y, color) {
-    Piece.call(this, x, y, color, 'bishop', color === 'white' ? window.white : window.black);
-    this.isValidMove = function(end) {
-      if (Math.abs(end.x - this.x) === Math.abs(end.y - this.y) && isPathClear(this.square, end)) {
+  class Bishop extends Piece {
+    constructor(x, y, color) {
+      super(x, y, color, 'bishop', color === 'white' ? gameManager.white : gameManager.black);
+    }
+
+    isValidMove(end) {
+      if (Math.abs(end.x - this.x) === Math.abs(end.y - this.y) && gameManager.isPathClear(this.square, end)) {
         return { valid: true };
       }
       return { valid: false };
-    };
+    }
   }
-  Bishop.prototype = Object.create(Piece.prototype);
 
-  function Knight(x, y, color) {
-    Piece.call(this, x, y, color, 'knight', color === 'white' ? window.white : window.black);
-    this.isValidMove = function(end) {
+  class Knight extends Piece {
+    constructor(x, y, color) {
+      super(x, y, color, 'knight', color === 'white' ? gameManager.white : gameManager.black);
+    }
+
+    isValidMove(end) {
       const dx = Math.abs(end.x - this.x);
       const dy = Math.abs(end.y - this.y);
       if ((dx === 2 && dy === 1) || (dx === 1 && dy === 2)) {
         return { valid: true };
       }
       return { valid: false };
-    };
+    }
   }
-  Knight.prototype = Object.create(Piece.prototype);
 
-  function Pawn(x, y, color) {
-    Piece.call(this, x, y, color, 'pawn', color === 'white' ? window.white : window.black);
-    this.isValidMove = function(end) {
+  class Pawn extends Piece {
+    constructor(x, y, color) {
+      super(x, y, color, 'pawn', color === 'white' ? gameManager.white : gameManager.black);
+    }
+
+    isValidMove(end) {
       const direction = this.color === 'white' ? -1 : 1;
       const startY = this.color === 'white' ? 7 : 2;
       const dx = end.x - this.x;
@@ -1392,903 +2425,45 @@
       if (dx === 0 && dy === direction && !end.piece) {
         return { valid: true, promotion: end.y === (this.color === 'white' ? 1 : 8) };
       }
-      if (dx === 0 && dy === 2 * direction && this.y === startY && !end.piece && !getSquare(this.x, this.y + direction).piece) {
+      if (dx === 0 && dy === 2 * direction && this.y === startY && !end.piece && !gameManager.getSquare(this.x, this.y + direction).piece) {
         return { valid: true };
       }
-      if (Math.abs(dx) === 1 && dy === direction && (end.piece || isEnPassant(this, end))) {
+      if (Math.abs(dx) === 1 && dy === direction && (end.piece || gameManager.isEnPassant(this, end))) {
         return { valid: true, capture: true, promotion: end.y === (this.color === 'white' ? 1 : 8), enPassant: !end.piece };
       }
       return { valid: false };
-    };
-  }
-  Pawn.prototype = Object.create(Piece.prototype);
-
-  function isPathClear(start, end) {
-    const dx = Math.sign(end.x - start.x);
-    const dy = Math.sign(end.y - start.y);
-    let x = start.x + dx;
-    let y = start.y + dy;
-    while (x !== end.x || y !== end.y) {
-      if (getSquare(x, y).piece) return false;
-      x += dx;
-      y += dy;
-    }
-    return true;
-  }
-
-  function isEnPassant(pawn, end) {
-    if (Math.abs(end.x - pawn.x) === 1 && end.y === pawn.y + (pawn.color === 'white' ? -1 : 1)) {
-      const lastMove = window.moveHistory[window.moveHistory.length - 1];
-      if (lastMove && lastMove.piece.type === 'pawn' && Math.abs(lastMove.from.y - lastMove.to.y) === 2 && lastMove.to.x === end.x && lastMove.to.y === pawn.y) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function kingExposed(king) {
-    const opponentColor = king.color === 'white' ? 'black' : 'white';
-    const opponentPieces = window.pieces.filter(p => p.color === opponentColor && !p.captured);
-    for (let piece of opponentPieces) {
-      const result = piece.isValidMove(king.square);
-      if (result.valid && (!result.capture || king.square.piece)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function kingExposedAfterMove(piece, end) {
-    const originalSquare = piece.square;
-    const targetPiece = end.piece;
-    piece.square.piece = null;
-    end.piece = piece;
-    piece.x = end.x;
-    piece.y = end.y;
-    piece.square = end;
-    const exposed = kingExposed(piece.player.king);
-    piece.x = originalSquare.x;
-    piece.y = originalSquare.y;
-    piece.square = originalSquare;
-    originalSquare.piece = piece;
-    end.piece = targetPiece;
-    return exposed;
-  }
-
-  function getSquare(x, y) {
-    const square = window.boardSquares.find(s => s.x === x && s.y === y);
-    if (!square) {
-      console.warn(`No square found at (${x}, ${y})`);
-    }
-    return square;
-  }
-
-  function setupBoard() {
-    if (isSettingUpBoard) {
-      console.warn('setupBoard already in progress, skipping');
-      return;
-    }
-    isSettingUpBoard = true;
-    
-    window.boardSquares = [];
-    const boardContainer = document.getElementById("board");
-    
-    if (!boardContainer) {
-      console.error('Board container not found');
-      isSettingUpBoard = false;
-      return;
-    }
-    
-    boardContainer.innerHTML = '';
-    
-    for (let i = 1; i <= 8; i++) {
-      for (let j = 1; j <= 8; j++) {
-        let squareElement = document.createElement("div");
-        let color = ((i + j) % 2 === 0) ? "light" : "dark";
-        
-        squareElement.className = `square ${color} empty`;
-        squareElement.setAttribute("data-x", j);
-        squareElement.setAttribute("data-y", i);
-        squareElement.addEventListener("click", squareClicked);
-        
-        let square = new SquareObject(j, i, color, false, squareElement, null);
-        window.boardSquares.push(square);
-        boardContainer.appendChild(squareElement);
-      }
-    }
-    
-    addBoardLabels(boardContainer, window.playerColor === 'black');
-    
-    resetPieces();
-    
-    forceRenderBoard();
-    isSettingUpBoard = false;
-  }
-
-  function addBoardLabels(board, flipped) {
-    const files = flipped ? ['h', 'g', 'f', 'e', 'd', 'c', 'b', 'a'] : ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-    const ranks = flipped ? ['1', '2', '3', '4', '5', '6', '7', '8'] : ['8', '7', '6', '5', '4', '3', '2', '1'];
-    for (let i = 0; i < 8; i++) {
-      const topLabel = document.createElement('div');
-      topLabel.style.position = 'absolute';
-      topLabel.style.top = '-20px';
-      topLabel.style.left = `${i * 12.5}%`;
-      topLabel.style.width = '12.5%';
-      topLabel.style.textAlign = 'center';
-      topLabel.style.color = '#FFFFFF';
-      topLabel.textContent = files[i];
-      board.appendChild(topLabel);
-
-      const bottomLabel = document.createElement('div');
-      bottomLabel.style.position = 'absolute';
-      bottomLabel.style.bottom = '-20px';
-      bottomLabel.style.left = `${i * 12.5}%`;
-      bottomLabel.style.width = '12.5%';
-      bottomLabel.style.textAlign = 'center';
-      bottomLabel.style.color = '#FFFFFF';
-      bottomLabel.textContent = files[i];
-      board.appendChild(bottomLabel);
-    }
-    for (let i = 0; i < 8; i++) {
-      const leftLabel = document.createElement('div');
-      leftLabel.style.position = 'absolute';
-      leftLabel.style.left = '-20px';
-      leftLabel.style.top = `${i * 12.5}%`;
-      leftLabel.style.height = '12.5%';
-      leftLabel.style.display = 'flex';
-      leftLabel.style.alignItems = 'center';
-      leftLabel.style.color = '#FFFFFF';
-      leftLabel.textContent = ranks[i];
-      board.appendChild(leftLabel);
-
-      const rightLabel = document.createElement('div');
-      rightLabel.style.position = 'absolute';
-      rightLabel.style.right = '-20px';
-      rightLabel.style.top = `${i * 12.5}%`;
-      rightLabel.style.height = '12.5%';
-      rightLabel.style.display = 'flex';
-      rightLabel.style.alignItems = 'center';
-      rightLabel.style.color = '#FFFFFF';
-      rightLabel.textContent = ranks[i];
-      board.appendChild(rightLabel);
     }
   }
 
-  function rebuildBoardDOM() {
-    const boardContainer = document.getElementById("board");
-    if (!boardContainer) return;
-    const isFlipped = boardContainer.classList.contains('board-flipped');
-    boardContainer.innerHTML = '';
-    window.boardSquares.sort((a, b) => (a.y - b.y) * 8 + (a.x - b.x));
-    window.boardSquares.forEach(square => {
-      const newElement = document.createElement("div");
-      newElement.className = `square ${square.color} empty`;
-      newElement.setAttribute("data-x", square.x);
-      newElement.setAttribute("data-y", square.y);
-      newElement.addEventListener("click", squareClicked);
-      boardContainer.appendChild(newElement);
-      square.element = newElement;
-    });
-    addBoardLabels(boardContainer, isFlipped);
-  }
+  // Initialize Game Manager
+  const gameManager = new GameManager();
 
-  function resetPieces() {
-    window.pieces = [];
-    window.white.king = new King(5, 8, "white");
-    window.pieces.push(window.white.king);
-    window.pieces.push(new Queen(4, 8, "white"));
-    window.pieces.push(new Rook(1, 8, "white"));
-    window.pieces.push(new Rook(8, 8, "white"));
-    window.pieces.push(new Bishop(3, 8, "white"));
-    window.pieces.push(new Bishop(6, 8, "white"));
-    window.pieces.push(new Knight(2, 8, "white"));
-    window.pieces.push(new Knight(7, 8, "white"));
-    for (let i = 1; i <= 8; i++) {
-      window.pieces.push(new Pawn(i, 7, "white"));
-    }
-    window.black.king = new King(5, 1, "black");
-    window.pieces.push(window.black.king);
-    window.pieces.push(new Queen(4, 1, "black"));
-    window.pieces.push(new Rook(1, 1, "black"));
-    window.pieces.push(new Rook(8, 1, "black"));
-    window.pieces.push(new Bishop(3, 1, "black"));
-    window.pieces.push(new Bishop(6, 1, "black"));
-    window.pieces.push(new Knight(2, 1, "black"));
-    window.pieces.push(new Knight(7, 1, "black"));
-    for (let i = 1; i <= 8; i++) {
-      window.pieces.push(new Pawn(i, 2, "black"));
-    }
-    forceRenderBoard();
-  }
+  // Global functions for HTML event handlers
+  // في نهاية الكود بعد تعريف gameManager
+window.gameManager = gameManager;
 
-  function renderBoard() {
-    if (!window.boardSquares || window.boardSquares.length === 0) {
-      console.warn('boardSquares is empty or undefined, skipping render');
-      return;
-    }
-    const missingElements = window.boardSquares.filter(s => !s.element).length;
-    if (missingElements > 0) {
-      console.warn(`Missing ${missingElements} elements, rebuilding DOM`);
-      rebuildBoardDOM();
-    }
-    window.boardSquares.forEach(square => square.update());
-    updateMoveNotation();
-  }
+// تعريف الدوال في النطاق العام
+window.showStakeModal = (username, btn) => gameManager.showStakeModal(username, btn);
+window.closeStakeModal = () => gameManager.closeStakeModal();
+window.sendGameInvite = () => gameManager.sendGameInvite();
+window.acceptInvite = () => gameManager.acceptInvite();
+window.rejectInvite = () => gameManager.rejectInvite();
+window.surrenderGame = () => gameManager.surrenderGame();
+window.offerDraw = () => gameManager.offerDraw();
+window.acceptDraw = () => gameManager.acceptDraw();
+window.rejectDraw = () => gameManager.rejectDraw();
+window.promote = (type) => gameManager.promote(type);
+window.endGame = () => gameManager.endGame();
+window.newGame = () => gameManager.newGame();
+window.searchFriends = () => gameManager.searchFriends();
+window.unfollowFriend = (username) => gameManager.unfollowFriend(username);
+window.showGameHistory = () => gameManager.showGameHistory();
+window.closeGameHistory = () => gameManager.closeGameHistory();
+window.goBack = () => gameManager.goBack();
 
-  function forceRenderBoard() {
-    if (!window.boardSquares || window.boardSquares.length === 0) {
-      console.warn('boardSquares is empty, calling setupBoard');
-      setupBoard();
-      return;
-    }
-    renderBoard();
-  }
-
-  function updateMoveNotation() {
-    const notation = document.getElementById('moveNotation');
-    if (!notation) return;
-    notation.innerHTML = '';
-    const moves = parsePgn(window.pgn);
-    moves.forEach((move, index) => {
-      const moveDiv = document.createElement('div');
-      moveDiv.className = 'move-entry';
-      moveDiv.textContent = `${index + 1}. ${move.white} ${move.black || ''}`;
-      notation.appendChild(moveDiv);
-    });
-    notation.scrollLeft = notation.scrollWidth;
-  }
-
-  function parsePgn(pgn) {
-    const moves = [];
-    const moveStrings = pgn.trim().split(/\s+/);
-    for (let i = 0; i < moveStrings.length; i += 2) {
-      moves.push({
-        white: moveStrings[i],
-        black: moveStrings[i + 1] || ''
-      });
-    }
-    return moves;
-  }
-
-  function applyPgnMove(moveText, color) {
-    if (!moveText) return false;
-    const move = parseMove(moveText, color);
-    if (!move) {
-      console.warn(`Invalid move text: ${moveText} for ${color}`);
-      return false;
-    }
-    
-    const pieces = window.pieces.filter(p => p.type === move.pieceType && p.color === color && !p.captured);
-    let startSquare = null;
-    let endSquare = getSquare(move.toX, move.toY);
-    let moveResult = null;
-    
-    if (!endSquare) {
-      console.warn(`End square not found at (${move.toX}, ${move.toY})`);
-      return false;
-    }
-    
-    for (let piece of pieces) {
-      const result = piece.isValidMove(endSquare);
-      if (result.valid && !kingExposedAfterMove(piece, endSquare)) {
-        startSquare = piece.square;
-        moveResult = result;
-        break;
-      }
-    }
-    
-    if (!startSquare) {
-      console.warn(`No valid piece found for move ${moveText}`);
-      return false;
-    }
-    
-    movePiece(startSquare, endSquare, { ...moveResult, promotionType: move.promotion });
-    return true;
-  }
-
-  function parseMove(moveText, color) {
-    const files = { 'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8 };
-    let pieceType = 'pawn';
-    let moveStr = moveText;
-    if (moveText.startsWith('O-O')) {
-      pieceType = 'king';
-      moveStr = moveText === 'O-O' ? (color === 'white' ? 'Kg1' : 'Kg8') : (color === 'white' ? 'Kc1' : 'Kc8');
-    } else {
-      if (moveText.startsWith('Q')) pieceType = 'queen';
-      else if (moveText.startsWith('R')) pieceType = 'rook';
-      else if (moveText.startsWith('B')) pieceType = 'bishop';
-      else if (moveText.startsWith('N')) pieceType = 'knight';
-      else if (moveText.startsWith('K')) pieceType = 'king';
-    }
-    const to = moveStr.match(/[a-h][1-8]/);
-    if (!to) return null;
-    const toX = files[to[0][0]];
-    const toY = parseInt(to[0][1]);
-    const promotion = moveStr.includes('=') ? moveStr.split('=')[1].toLowerCase() : null;
-    return { pieceType, toX, toY, promotion };
-  }
-
-  function squareClicked(event) {
-    if (!window.isPlayerTurn || window.currentGame.currentTurn !== window.playerColor) {
-      invalidSound.play().catch(error => console.error('Error playing invalid sound:', error));
-      window.showToast('Not your turn!', true);
-      return;
-    }
-    const square = window.boardSquares.find(s => s.element === event.target);
-    if (!square) {
-      console.warn('Clicked element not associated with any square');
-      return;
-    }
-    if (window.selectedSquare) {
-      if (square === window.selectedSquare) {
-        clearSelection();
-      } else if (square.piece && square.piece.color === window.currentPlayer.color) {
-        selectSquare(square);
-      } else {
-        window.makeMove(window.selectedSquare, square);
-      }
-    } else if (square.piece && square.piece.color === window.currentPlayer.color) {
-      selectSquare(square);
-    }
-  }
-
-  function selectSquare(square) {
-    clearSelection();
-    window.selectedSquare = square;
-    square.selected = true;
-    square.update();
-    const validMoves = getValidMoves(square.piece);
-    validMoves.forEach(move => {
-      const target = getSquare(move.x, move.y);
-      if (target && target.element) {
-        target.element.classList.add('valid-move');
-      }
-    });
-  }
-
-  function clearSelection() {
-    if (window.selectedSquare) {
-      window.selectedSquare.selected = false;
-      window.selectedSquare.update();
-      window.boardSquares.forEach(square => {
-        if (square.element) square.element.classList.remove('valid-move');
-      });
-      window.selectedSquare = null;
-    }
-  }
-
-  function getValidMoves(piece) {
-    if (!piece) return [];
-
-    const moves = [];
-    const possibleMoves = [];
-
-    if (piece.type === 'pawn') {
-      const direction = piece.color === 'white' ? -1 : 1;
-      const startY = piece.color === 'white' ? 7 : 2;
-      possibleMoves.push({ x: piece.x, y: piece.y + direction });
-      if (piece.y === startY) {
-        possibleMoves.push({ x: piece.x, y: piece.y + 2 * direction });
-      }
-      possibleMoves.push({ x: piece.x - 1, y: piece.y + direction });
-      possibleMoves.push({ x: piece.x + 1, y: piece.y + direction });
-    } else if (piece.type === 'knight') {
-      const knightMoves = [
-        { x: piece.x + 2, y: piece.y + 1 }, { x: piece.x + 2, y: piece.y - 1 },
-        { x: piece.x - 2, y: piece.y + 1 }, { x: piece.x - 2, y: piece.y - 1 },
-        { x: piece.x + 1, y: piece.y + 2 }, { x: piece.x + 1, y: piece.y - 2 },
-        { x: piece.x - 1, y: piece.y + 2 }, { x: piece.x - 1, y: piece.y - 2 }
-      ];
-      possibleMoves.push(...knightMoves);
-    } else if (piece.type === 'bishop') {
-      for (let i = 1; i <= 8; i++) {
-        possibleMoves.push({ x: piece.x + i, y: piece.y + i });
-        possibleMoves.push({ x: piece.x + i, y: piece.y - i });
-        possibleMoves.push({ x: piece.x - i, y: piece.y + i });
-        possibleMoves.push({ x: piece.x - i, y: piece.y - i });
-      }
-    } else if (piece.type === 'rook') {
-      for (let i = 1; i <= 8; i++) {
-        possibleMoves.push({ x: piece.x + i, y: piece.y });
-        possibleMoves.push({ x: piece.x - i, y: piece.y });
-        possibleMoves.push({ x: piece.x, y: piece.y + i });
-        possibleMoves.push({ x: piece.x, y: piece.y - i });
-      }
-    } else if (piece.type === 'queen') {
-      for (let i = 1; i <= 8; i++) {
-        possibleMoves.push({ x: piece.x + i, y: piece.y });
-        possibleMoves.push({ x: piece.x - i, y: piece.y });
-        possibleMoves.push({ x: piece.x, y: piece.y + i });
-        possibleMoves.push({ x: piece.x, y: piece.y - i });
-        possibleMoves.push({ x: piece.x + i, y: piece.y + i });
-        possibleMoves.push({ x: piece.x + i, y: piece.y - i });
-        possibleMoves.push({ x: piece.x - i, y: piece.y + i });
-        possibleMoves.push({ x: piece.x - i, y: piece.y - i });
-      }
-    } else if (piece.type === 'king') {
-      possibleMoves.push(
-        { x: piece.x + 1, y: piece.y }, { x: piece.x - 1, y: piece.y },
-        { x: piece.x, y: piece.y + 1 }, { x: piece.x, y: piece.y - 1 },
-        { x: piece.x + 1, y: piece.y + 1 }, { x: piece.x + 1, y: piece.y - 1 },
-        { x: piece.x - 1, y: piece.y + 1 }, { x: piece.x - 1, y: piece.y - 1 }
-      );
-      if (!piece.player.kingMoved && !piece.player.checked) {
-        possibleMoves.push({ x: piece.x + 2, y: piece.y });
-        possibleMoves.push({ x: piece.x - 2, y: piece.y });
-      }
-    }
-
-    for (const move of possibleMoves) {
-      if (move.x < 1 || move.x > 8 || move.y < 1 || move.y > 8) continue;
-      const target = getSquare(move.x, move.y);
-      if (!target) continue;
-      const result = piece.isValidMove(target);
-      if (result.valid && !kingExposedAfterMove(piece, target)) {
-        moves.push({ x: move.x, y: move.y, result });
-      }
-    }
-
-    return moves;
-  }
-
-  window.makeMove = async function(start, end) {
-    if (!window.isPlayerTurn || window.currentGame.currentTurn !== window.playerColor) {
-      invalidSound.play().catch(error => console.error('Error playing invalid sound:', error));
-      window.showToast('Not your turn!', true);
-      clearSelection();
-      return;
-    }
-    const moveResult = start.piece.isValidMove(end);
-    if (!moveResult.valid || kingExposedAfterMove(start.piece, end)) {
-      invalidSound.play().catch(error => console.error('Error playing invalid sound:', error));
-      window.showToast('Invalid move!', true);
-      clearSelection();
-      return;
-    }
-    window.pendingMove = { start, end, moveResult };
-    if (moveResult.promotion) {
-      document.getElementById('promotionMessage').classList.add('show');
-      document.getElementById('promotionList').className = start.piece.color;
-    } else {
-      await executeMove(start, end, moveResult);
-    }
-  };
-
-  window.promote = async function(type) {
-    document.getElementById('promotionMessage').classList.remove('show');
-    const { start, end, moveResult } = window.pendingMove;
-    moveResult.promotionType = type;
-    await executeMove(start, end, moveResult);
-    promoteSound.play().catch(error => console.error('Error playing promote sound:', error));
-    window.pendingMove = null;
-  };
-
-  async function executeMove(start, end, moveResult) {
-    const piece = start.piece;
-    if (!piece) {
-      console.warn(`No piece at start square (${start.x}, ${start.y})`);
-      clearSelection();
-      return;
-    }
-    
-    let moveText = generateMoveText(start, end, piece, moveResult);
-    movePiece(start, end, moveResult);
-    
-    if (moveResult.castling) {
-      castleSound.play().catch(error => console.error('Error playing castle sound:', error));
-    } else if (moveResult.capture || moveResult.enPassant) {
-      captureSound.play().catch(error => console.error('Error playing capture sound:', error));
-    } else if (kingExposed(piece.player === window.white ? window.black.king : window.white.king)) {
-      checkSound.play().catch(error => console.error('Error playing check sound:', error));
-    } else {
-      moveSound.play().catch(error => console.error('Error playing move sound:', error));
-    }
-    
-    window.pgn += (window.pgn ? ' ' : '') + moveText;
-    
-    const nextTurn = window.currentGame.currentTurn === 'white' ? 'black' : 'white';
-    const nextPlayer = window.currentGame.currentPlayer === window.activeUser ?
-      window.currentGame.opponent : window.activeUser;
-    
-    const updateData = {
-      pgn: window.pgn,
-      currentTurn: nextTurn,
-      currentPlayer: nextPlayer,
-      turnStartTime: serverTimestamp(),
-      [`times.${window.activeUser}`]: window.playerRemainingTime,
-      drawOffer: null
-    };
-    
-    try {
-      await updateDoc(window.gameDoc, updateData);
-      
-      window.currentPlayer = nextTurn === 'white' ? window.white : window.black;
-      window.isPlayerTurn = nextPlayer === window.activeUser;
-      
-      forceRenderBoard();
-      startTimer();
-      
-      // التحقق من الشيك ميت أو الستيل ميت
-      const opponentPlayer = piece.player === window.white ? window.black : window.white;
-      if (isCheckmate(opponentPlayer)) {
-        const winner = nextTurn;
-        await updateDoc(window.gameDoc, { status: 'ended', winner });
-        await saveMatchHistory(window.currentGame, winner);
-        checkmateSound.play().catch(error => console.error('Error playing checkmate sound:', error));
-        // إظهار النافذة المنبثقة عند الشيك ميت
-        document.getElementById('winTitle').textContent = `${piece.player.color} wins by checkmate!`;
-        document.getElementById('winAmount').textContent = winner === window.playerColor 
-          ? `You won ${window.currentGame.stakes.coins * 2} coins and ${window.currentGame.stakes.tokens * 2} fall tokens!`
-          : `You lost ${window.currentGame.stakes.coins} coins and ${window.currentGame.stakes.tokens} fall tokens.`;
-        document.getElementById('winPopup').style.display = 'block';
-      } else if (isStalemate(opponentPlayer)) {
-        await updateDoc(window.gameDoc, { status: 'ended', winner: 'draw' });
-        await saveMatchHistory(window.currentGame, 'draw');
-        // إظهار النافذة المنبثقة عند الستيل ميت
-        document.getElementById('winTitle').textContent = 'Game ended in stalemate!';
-        document.getElementById('winAmount').textContent = `You get back ${window.currentGame.stakes.coins} coins and ${window.currentGame.stakes.tokens} fall tokens.`;
-        document.getElementById('winPopup').style.display = 'block';
-      }
-      
-    } catch (error) {
-      console.error('Error updating game in Firebase:', error);
-      window.showToast('Failed to update move', true);
-      movePiece(end, start, { ...moveResult, revert: true });
-      window.pgn = window.pgn.replace(new RegExp(`\\s*${moveText}$`), '');
-      forceRenderBoard();
-    }
-    
-    clearSelection();
-  }
-
-  function movePiece(start, end, moveResult) {
-    const piece = start.piece;
-    if (!piece) {
-      console.warn(`No piece at start square (${start.x}, ${start.y})`);
-      return;
-    }
-    if (moveResult.castling) {
-      const direction = moveResult.castling;
-      const rookX = direction === 'right' ? 8 : 1;
-      const rook = getSquare(rookX, piece.y)?.piece;
-      const newRookX = direction === 'right' ? end.x - 1 : end.x + 1;
-      const rookStartSquare = getSquare(rookX, piece.y);
-      const rookEndSquare = getSquare(newRookX, piece.y);
-      if (rook && rookStartSquare && rookEndSquare) {
-        rookStartSquare.piece = null;
-        rookEndSquare.setPiece(rook);
-        piece.player.rooksMoved[direction] = true;
-        piece.player.castled = true;
-      }
-    }
-    if (moveResult.enPassant) {
-      const capturedPawn = getSquare(end.x, start.y)?.piece;
-      if (capturedPawn) capturedPawn.captured = true;
-    }
-    if (end.piece) end.piece.captured = true;
-    start.piece = null;
-    if (moveResult.promotion && moveResult.promotionType) {
-      const NewPiece = { queen: Queen, rook: Rook, bishop: Bishop, knight: Knight }[moveResult.promotionType];
-      const newPiece = new NewPiece(end.x, end.y, piece.color);
-      window.pieces = window.pieces.filter(p => p !== piece);
-      window.pieces.push(newPiece);
-      end.setPiece(newPiece);
-    } else {
-      end.setPiece(piece);
-    }
-    piece.firstMove = false;
-    if (piece.type === 'king') piece.player.kingMoved = true;
-    if (piece.type === 'rook') {
-      piece.player.rooksMoved[piece.x === 8 ? 'right' : 'left'] = true;
-    }
-    if (!moveResult.revert) {
-      window.moveHistory.push({ piece, from: start, to: end });
-    }
-    checkForCheck();
-    forceRenderBoard();
-  }
-
-  function generateMoveText(start, end, piece, moveResult) {
-    const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-    let moveText = '';
-    if (piece.type === 'king' && moveResult.castling) {
-      moveText = moveResult.castling === 'right' ? 'O-O' : 'O-O-O';
-    } else {
-      const pieceChar = { king: 'K', queen: 'Q', rook: 'R', bishop: 'B', knight: 'N', pawn: '' }[piece.type];
-      moveText += pieceChar;
-      if (moveResult.capture || moveResult.enPassant) moveText += 'x';
-      moveText += files[end.x - 1] + end.y;
-      if (moveResult.promotion && moveResult.promotionType) {
-        moveText += '=' + moveResult.promotionType.charAt(0).toUpperCase();
-      }
-    }
-    if (isCheckmate(piece.player === window.white ? window.black : window.white)) {
-      moveText += '#';
-    } else if (kingExposed(piece.player === window.white ? window.black.king : window.white.king)) {
-      moveText += '+';
-    }
-    return moveText;
-  }
-
-  function isCheckmate(player) {
-    if (!kingExposed(player.king)) return false;
-    const pieces = window.pieces.filter(p => p.color === player.color && !p.captured);
-    for (let piece of pieces) {
-      const moves = getValidMoves(piece);
-      if (moves.length > 0) return false;
-    }
-    return true;
-  }
-
-  function isStalemate(player) {
-    if (kingExposed(player.king)) return false;
-    const pieces = window.pieces.filter(p => p.color === player.color && !p.captured);
-    for (let piece of pieces) {
-      const moves = getValidMoves(piece);
-      if (moves.length > 0) return false;
-    }
-    return true;
-  }
-
-  function checkForCheck() {
-    window.white.checked = kingExposed(window.white.king);
-    window.black.checked = kingExposed(window.black.king);
-    forceRenderBoard();
-  }
-
-  function applyPgnToBoard(pgn) {
-    if (window.pgn === pgn) return;
-
-    console.log('Applying PGN to board:', pgn);
-
-    const oldMoves = window.pgn.trim().split(/\s+/).filter(Boolean);
-    const newMoves = pgn.trim().split(/\s+/).filter(Boolean);
-
-    if (newMoves.length < oldMoves.length) {
-      console.warn('New PGN shorter than old, resetting board');
-      resetPieces();
-      window.pgn = '';
-      oldMoves.length = 0;
-    }
-
-    const addedMoves = newMoves.slice(oldMoves.length);
-    let color = (oldMoves.length % 2 === 0) ? 'white' : 'black';
-
-    for (const moveText of addedMoves) {
-      console.log(`Applying ${color} move: ${moveText}`);
-      if (!applyPgnMove(moveText, color)) {
-        console.warn(`Failed to apply move: ${moveText} for ${color}`);
-      }
-      color = color === 'white' ? 'black' : 'white';
-    }
-
-    window.pgn = pgn;
-    window.currentPlayer = (newMoves.length % 2 === 0) ? window.white : window.black;
-    forceRenderBoard();
-    updateMoveNotation();
-  }
-
-  function isKingVsKing() {
-    const whitePieces = window.pieces.filter(p => p.color === 'white' && !p.captured);
-    const blackPieces = window.pieces.filter(p => p.color === 'black' && !p.captured);
-    return whitePieces.length === 1 && blackPieces.length === 1 && 
-           whitePieces[0].type === 'king' && blackPieces[0].type === 'king';
-  }
-
-  window.surrenderGame = async function() {
-    if (confirm('Are you sure you want to surrender?')) {
-      const winner = window.playerColor === 'white' ? 'black' : 'white';
-      try {
-        await updateDoc(window.gameDoc, { status: 'ended', winner });
-        await saveMatchHistory(window.currentGame, winner);
-        window.showToast('You surrendered the game');
-      } catch (error) {
-        console.error('Error surrendering game:', error);
-        window.showToast('Failed to surrender game', true);
-      }
-    }
-  };
-
-  async function endGameWithResult(winner) {
-    clearInterval(window.turnTimerInterval);
-    window.turnTimerInterval = null;
-    let message = '';
-    let amountText = '';
-    const coins = window.currentGame.stakes.coins;
-    const tokens = window.currentGame.stakes.tokens;
-    const totalPot = coins * 2 + tokens * 2 * 1000;
-    
-    if (winner === 'draw') {
-      message = 'Game ended in a draw!';
-      amountText = `You get back ${coins} coins and ${tokens} fall tokens.`;
-      await updateUserBalance(window.activeUser, coins, tokens);
-      await updateUserBalance(window.currentGame.opponent, coins, tokens);
-    } else if (winner === window.playerColor) {
-      message = 'You won!';
-      amountText = `You won ${totalPot} coins and ${tokens * 2} fall tokens!`;
-      await updateUserBalance(window.activeUser, totalPot, tokens * 2);
-    } else {
-      message = 'You lost!';
-      amountText = `You lost ${coins} coins and ${tokens} fall tokens.`;
-    }
-    
-    // إظهار النافذة المنبثقة لجميع الحالات (باستثناء الشيك ميت والستيل ميت، اللذين يتم التعامل معهما في executeMove)
-    if (!document.getElementById('winPopup').style.display === 'block') {
-      document.getElementById('winTitle').textContent = message;
-      document.getElementById('winAmount').textContent = amountText;
-      document.getElementById('winPopup').style.display = 'block';
-    }
-    
-    await deleteDoc(doc(window.db, "gameInvites", window.currentGame.gameId));
-    await deleteDoc(window.gameDoc);
-    window.currentGame = null;
-    window.gameDoc = null;
-    window.isPlayerTurn = false;
-  }
-
-  async function updateUserBalance(username, coins, tokens) {
-    try {
-      const userRef = doc(window.db, "users", username);
-      const userDoc = await getDoc(userRef);
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        await updateDoc(userRef, {
-          points: userData.points + coins,
-          fallTokens: userData.fallTokens + tokens
-        });
-      }
-    } catch (error) {
-      console.error('Error updating user balance:', error);
-      window.showToast('Failed to update balance', true);
-    }
-  }
-
-  window.endGame = function() {
-    document.getElementById('gameContainer').style.display = 'none';
-    document.getElementById('winPopup').style.display = 'none';
-    document.getElementById('surrenderBtn').style.display = 'none';
-    document.getElementById('drawBtn').style.display = 'none';
-    window.pgn = '';
-    window.moveHistory = [];
-    window.boardSquares = [];
-    window.pieces = [];
-    window.selectedSquare = null;
-    window.currentPlayer = window.white;
-    window.turn = 1;
-    window.playerRemainingTime = 600;
-    window.opponentRemainingTime = 600;
-    clearInterval(window.turnTimerInterval);
-    window.turnTimerInterval = null;
-    loadFriends();
-  };
-
-  window.newGame = function() {
-    document.getElementById('endMessage').style.display = 'none';
-    document.getElementById('winPopup').style.display = 'none'; // إخفاء النافذة المنبثقة عند بدء لعبة جديدة
-    setupBoard();
-    gameStartSound.play().catch(error => console.error('Error playing game start sound:', error));
-  };
-
-  window.loadFriends = async function() {
-    try {
-      const userDoc = await getDoc(doc(window.db, "users", window.activeUser));
-      if (!userDoc.exists()) {
-        window.showToast('User data not found', true);
-        return;
-      }
-      window.friends = userDoc.data().friends || [];
-      window.friendsData = [];
-      const friendsList = document.getElementById('friendsList');
-      friendsList.innerHTML = '<div style="color: white; padding: 5px;"><img src="../icons/loading_spinner.gif" height="15" loading="lazy" /> Loading friends...</div>';
-      if (window.friends.length === 0) {
-        friendsList.innerHTML = '<div class="no-results">No friends found</div>';
-        return;
-      }
-      for (let friend of window.friends) {
-        const friendDoc = await getDoc(doc(window.db, "users", friend));
-        if (friendDoc.exists()) {
-          window.friendsData.push({ username: friend, ...friendDoc.data() });
-        }
-      }
-      renderFriends();
-    } catch (error) {
-      console.error('Error loading friends:', error);
-      window.showToast('Failed to load friends', true);
-    }
-  };
-
-  function renderFriends() {
-    const friendsList = document.getElementById('friendsList');
-    friendsList.innerHTML = '';
-    if (window.friendsData.length === 0) {
-      friendsList.innerHTML = '<div class="no-results">No friends found</div>';
-      return;
-    }
-    window.friendsData.forEach(friend => {
-      const userContainer = document.createElement('div');
-      userContainer.className = 'user-container';
-      userContainer.innerHTML = `
-        <div class="user-header">
-          <img src="${friend.photoURL || '../icons/player-head-128-052ba.png'}" class="user-avatar">
-          <div class="user-details">
-            <div class="user-name">${friend.username}</div>
-            <div class="user-info-right">
-              <div class="points"><img src="../icons/coinss_gif.gif" height="12"> ${window.formatPoints(friend.points)}</div>
-              <div class="fall-tokens"><img src="../icons/fall_token.png" height="12"> ${window.formatPoints(friend.fallTokens)}</div>
-            </div>
-          </div>
-        </div>
-        <div class="user-bio">${friend.bio || 'No bio available'}</div>
-        <div class="action-buttons">
-          <button class="btn btn-play" onclick="showStakeModal('${friend.username}', this)">Play</button>
-          <button class="btn btn-unfollow" onclick="unfollowFriend('${friend.username}')">Unfollow</button>
-        </div>
-      `;
-      friendsList.appendChild(userContainer);
-    });
-  }
-
-  window.searchFriends = function() {
-    const searchTerm = document.getElementById('friendsSearch').value.toLowerCase();
-    const filteredFriends = window.friendsData.filter(friend => friend.username.toLowerCase().includes(searchTerm));
-    const friendsList = document.getElementById('friendsList');
-    friendsList.innerHTML = '';
-    if (filteredFriends.length === 0) {
-      friendsList.innerHTML = '<div class="no-results">No friends found</div>';
-      return;
-    }
-    filteredFriends.forEach(friend => {
-      const userContainer = document.createElement('div');
-      userContainer.className = 'user-container';
-      userContainer.innerHTML = `
-        <div class="user-header">
-          <img src="${friend.photoURL || '../icons/player-head-128-052ba.png'}" class="user-avatar">
-          <div class="user-details">
-            <div class="user-name">${friend.username}</div>
-            <div class="user-info-right">
-              <div class="points"><img src="../icons/coinss_gif.gif" height="12"> ${window.formatPoints(friend.points)}</div>
-              <div class="fall-tokens"><img src="../icons/fall_token.png" height="12"> ${window.formatPoints(friend.fallTokens)}</div>
-            </div>
-          </div>
-        </div>
-        <div class="user-bio">${friend.bio || 'No bio available'}</div>
-        <div class="action-buttons">
-          <button class="btn btn-play" onclick="showStakeModal('${friend.username}', this)">Play</button>
-          <button class="btn btn-unfollow" onclick="unfollowFriend('${friend.username}')">Unfollow</button>
-        </div>
-      `;
-      friendsList.appendChild(userContainer);
-    });
-  };
-
-  window.unfollowFriend = async function(username) {
-    if (confirm(`Unfollow ${username}?`)) {
-      try {
-        const userRef = doc(window.db, "users", window.activeUser);
-        await updateDoc(userRef, {
-          friends: arrayRemove(username)
-        });
-        window.showToast(`Unfollowed ${username}`);
-        window.loadFriends();
-      } catch (error) {
-        console.error('Error unfollowing friend:', error);
-        window.showToast('Failed to unfollow friend', true);
-      }
-    }
-  };
-
-  window.goBack = function() {
-    window.location.href = '../index.html';
-  };
-
-  if (!window.activeUser) {
-    window.showToast('Please log in to continue', true);
-    setTimeout(() => {
-      window.location.href = '../index.html';
-    }, 2000);
-  } else {
-    window.loadFriends();
-    window.listenForInvites();
-    window.listenForOwnInvites();
-  }
-</script> </body> </html>
+// الدوال المساعدة
+window.formatPoints = (num) => gameManager.formatPoints(num);
+window.showToast = (message, isError) => gameManager.showToast(message, isError);
+</script>
+</body>
+</html>
