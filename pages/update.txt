@@ -1,3 +1,5 @@
+https://aniss90.github.io/mc.community/
+
 New games have been added, including chess and tic-tac-toe (xo). 
 تمت إضافة ألعاب جديدة، بما في ذلك الشطرنج ولعبة الـXO. 
 
@@ -22,7 +24,7 @@ End-to-end encryption has been added to chats, ensuring that conversations betwe
 New chests have been added to the marketplace and they are 3 new amazing chests 
 تمت إضافة صناديق جديدة إلى السوق وهي عبارة عن 3 صناديق جديدة مذهلة 
 
-mc co chat bot
+
 
 
 
