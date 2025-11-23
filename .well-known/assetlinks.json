@@ -3,9 +3,9 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.example.myapplication3", 
+      "package_name": "com.mcco.app",
       "sha256_cert_fingerprints": [
-        "D9:21:9B:2B:74:58:CB:32:E0:74:D0:8F:4F:B4:CC:16:0F:17:E2:28:11:CB:18:7E:B1:96:49:44:F4:05:C1:57" 
+        "03:A7:BA:89:D0:CF:43:CE:1F:8C:24:1F:7A:43:CF:8E:F0:1A:DE:74:44:7F:22:F0:E5:D7:CF:4C:BB:98:F2:CC"
       ]
     }
   }
